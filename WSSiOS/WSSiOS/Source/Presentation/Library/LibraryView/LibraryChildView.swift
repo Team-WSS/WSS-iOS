@@ -41,7 +41,7 @@ final class LibraryChildView: UIView {
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 20.0
             layout.minimumInteritemSpacing = 6
-            layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             let cellWidth = (UIScreen.main.bounds.width - (6 * 2) - (20 * 2)) / 3
             layout.itemSize = CGSize(width: cellWidth, height: 240.0)
             
@@ -68,7 +68,7 @@ final class LibraryChildView: UIView {
         libraryCollectionView.snp.makeConstraints() {
             $0.top.equalTo(descriptionView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(18)
+            $0.bottom.equalToSuperview()
         }
         
         libraryEmptyView.snp.makeConstraints() {
@@ -85,4 +85,3 @@ final class LibraryChildView: UIView {
         }
     }
 }
-

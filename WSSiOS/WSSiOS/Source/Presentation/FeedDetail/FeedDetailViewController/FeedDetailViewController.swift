@@ -187,7 +187,7 @@ final class FeedDetailViewController: UIViewController {
         // 작품 연결
         output.presentNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

@@ -24,7 +24,7 @@ final class MyPageViewModel: ViewModelType {
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
     private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
-    private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
+    private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
     
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
@@ -33,7 +33,7 @@ final class MyPageViewModel: ViewModelType {
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
-    private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
+    private let bindFeedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
     private let isEmptyFeedRelay = PublishRelay<Bool>()
     private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
@@ -41,10 +41,10 @@ final class MyPageViewModel: ViewModelType {
     private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
     private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
-    private let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
+    private let pushToEditViewControllerRelay = PublishRelay<MyProfileEntity>()
     private let pushToSettingViewControllerRelay = PublishRelay<Void>()
     private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
-    private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
+    private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileEntity)>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let popViewControllerRelay = PublishRelay<Void>()
@@ -97,15 +97,15 @@ final class MyPageViewModel: ViewModelType {
     struct Output {
         let isMyPage: BehaviorRelay<Bool>
         let isProfilePrivate: BehaviorRelay<(Bool, String)>
-        let profileData: BehaviorRelay<MyProfileResult>
+        let profileData: BehaviorRelay<MyProfileEntity>
         let updateNavigationBar: BehaviorRelay<(Bool, String)>
         let updateStickyHeader: BehaviorRelay<(Bool)>
         
-        let pushToEditViewController: PublishRelay<MyProfileResult>
+        let pushToEditViewController: PublishRelay<MyProfileEntity>
         let pushToSettingViewController: PublishRelay<Void>
         let popViewController: PublishRelay<Void>
         let pushToLibraryViewController: PublishRelay<Int>
-        let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
+        let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileEntity)>
         
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
@@ -116,7 +116,7 @@ final class MyPageViewModel: ViewModelType {
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
         
-        let bindFeedData: BehaviorRelay<[FeedCellData]>
+        let bindFeedData: BehaviorRelay<[MyFeedListItem]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
         let isEmptyFeed: PublishRelay<Bool>
         let showFeedDetailButton: BehaviorSubject<Bool>
@@ -357,7 +357,7 @@ final class MyPageViewModel: ViewModelType {
         } else {
             return self.getOtherProfileData(userId: self.profileId)
                 .do(onNext: { profileData in
-                    let data = MyProfileResult(
+                    let data = MyProfileEntity(
                         nickname: profileData.nickname,
                         intro: profileData.intro,
                         avatarImage: profileData.avatarImage,
@@ -373,7 +373,7 @@ final class MyPageViewModel: ViewModelType {
                     //현재 로직상 알 수 없는 유저 프로필을 확인하는 것은 불가능하지만
                     //서버에러에 대응하여 아래처럼 처리
                     if self.isUnknownUserError(error) {
-                        let data = MyProfileResult(
+                        let data = MyProfileEntity(
                             nickname: "",
                             intro: "",
                             avatarImage: "",
@@ -451,9 +451,9 @@ final class MyPageViewModel: ViewModelType {
     // 활동 데이터 바인딩
     private func updateMyPageFeedData() -> Observable<Void> {
         return getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
-            .map { feedResult -> [FeedCellData] in
+            .map { feedResult -> [MyFeedListItem] in
                 feedResult.feeds.map { feed in
-                    FeedCellData(
+                    MyFeedListItem(
                         feed: feed,
                         avatarImage: self.profileDataRelay.value.avatarImage,
                         nickname: self.profileDataRelay.value.nickname
@@ -500,38 +500,37 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - API
     
-    private func getProfileData() -> Observable<MyProfileResult> {
-        return userRepository.getMyProfileData()
+    private func getProfileData() -> Observable<MyProfileEntity> {
+        return userRepository.userInfoRepository.getMyProfileData()
             .observe(on: MainScheduler.instance)
     }
     
-    private func getOtherProfileData(userId: Int) -> Observable<OtherProfileResult> {
-        return userRepository.getOtherProfile(userId: userId)
-            .asObservable()
+    private func getOtherProfileData(userId: Int) -> Observable<OtherProfileEntity> {
+        return userRepository.userInfoRepository.getOtherProfile(userId: userId)
     }
     
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesResponse> {
-        return userRepository.getUserNovelPreferences(userId: userId)
+        return userRepository.userInfoRepository.getUserNovelPreferences(userId: userId)
             .asObservable()
     }
     
     private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferences> {
-        return userRepository.getUserGenrePreferences(userId: userId)
+        return userRepository.userInfoRepository.getUserGenrePreferences(userId: userId)
             .asObservable()
     }
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
-        return userRepository.getUserNovelStatus(userId: userId)
+        return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
             .asObservable()
     }
     
     private func postBlockUser(userId: Int) -> Observable<Void> {
-        return userRepository.postBlockUser(userId: userId)
-            .asObservable()
+        return userRepository.userBlockRepository.postBlockUser(userId: userId)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
     }
     
-    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
-        return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
-            .asObservable()
+    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
+        return userRepository.userInfoRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 import RxSwift
-import RxRelay
+import RxCocoa
 
 final class MyPageInfoViewController: UIViewController {
     
@@ -16,6 +16,7 @@ final class MyPageInfoViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageInfoViewModel
+    
     private let emailRelay = BehaviorRelay(value: "")
     private let logoutRelay = PublishRelay<Bool>()
     
@@ -43,39 +44,58 @@ final class MyPageInfoViewController: UIViewController {
         super.viewDidLoad()
         
         register()
+        bindAction()
         bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNavigationBar()
-        hideTabBar()
-        swipeBackGesture()
+        bindViewWillAppearAction()
     }
     
     //MARK: - Delegate
     
     private func register() {
-        rootView.tableView.register(
-            MyPageSettingTableViewCell.self,
-            forCellReuseIdentifier: MyPageSettingTableViewCell.cellIdentifier)
+        rootView.settingTableView.register( MyPageSettingTableViewCell.self,
+                                            forCellReuseIdentifier: MyPageSettingTableViewCell.cellIdentifier)
     }
     
     
     //MARK: - Bind
     
+    private func bindViewWillAppearAction() {
+        hideTabBar()
+        swipeBackGesture()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                            left: self.rootView.backButton,
+                            right: nil)
+    }
+    
+    private func bindAction() {
+        rootView.backButton.rx.tap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name("ChangeUserInfo"))
+            .bind(with: self, onNext: { owner, _ in
+                owner.showToast(.changeUserInfo)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input(
-            cellDidTapped: self.rootView.tableView.rx.itemSelected,
-            logoutButtonTapped: self.logoutRelay,
-            backButtonDidTap: rootView.backButton.rx.tap,
-            changeInfoNotification: NotificationCenter.default.rx.notification(NSNotification.Name("ChangeUserInfo")).asObservable())
+            cellDidTapped: self.rootView.settingTableView.rx.itemSelected,
+            logoutButtonTapped: self.logoutRelay)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.bindSettingCell
-            .bind(to: rootView.tableView.rx.items(
+        output.cellData
+            .bind(to: rootView.settingTableView.rx.items(
                 cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
                     cell.bindData(title: element)
@@ -85,84 +105,41 @@ final class MyPageInfoViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.pushToChangeUserInfoViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                owner.pushToChangeUserInfoViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToBlockIDViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.pushToBlockIDViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToMyPageDeleteIDWarningViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.pushToMyPageDeleteIDWarningViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.presentToAlertViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self as MyPageInfoViewController, onNext: { owner, _ in
-                owner.presentToAlertViewController(iconImage: .icModalWarning,
-                                                   titleText: StringLiterals.Alert.logoutTitle,
-                                                   contentText: nil,
-                                                   leftTitle: StringLiterals.Alert.cancel,
-                                                   rightTitle: StringLiterals.Alert.logout,
-                                                   rightBackgroundColor: UIColor.wssPrimary100.cgColor)
-                .bind(with: self, onNext: { owner, buttonType in
-                    AmplitudeManager.shared.track(AmplitudeEvent.MyPage.logout)
-                    if buttonType == .right {
-                        owner.logoutRelay.accept(true)
-                    }
-                })
-                .disposed(by: owner.disposeBag)
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToLoginViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.pushToLoginViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.popViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.bindEmail
+        output.emailData
             .bind(with: self, onNext: { owner, email in
                 owner.emailRelay.accept(email)
-                owner.rootView.tableView.reloadData()
+                owner.rootView.settingTableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        output.showToastMessage
+        output.pushToOtherViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.showToast(.changeUserInfo)
+            .bind(with: self, onNext: { owner, destination in
+                switch destination {
+                case .changeUserInfo:
+                    owner.pushToChangeUserInfoViewController()
+                case .blockUser:
+                    owner.pushToBlockUserViewController()
+                case .myPageDeleteIDWarning:
+                    owner.pushToMyPageDeleteIDWarningViewController()
+                case .logoutAlert:
+                    owner.presentToAlertViewController(iconImage: .icModalWarning,
+                                                       titleText: StringLiterals.Alert.logoutTitle,
+                                                       contentText: nil,
+                                                       leftTitle: StringLiterals.Alert.cancel,
+                                                       rightTitle: StringLiterals.Alert.logout,
+                                                       rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    .bind(with: self, onNext: { owner, buttonType in
+                        if buttonType == .right {
+                            owner.logoutRelay.accept(true)
+                            AmplitudeManager.shared.track(AmplitudeEvent.MyPage.logout)
+                        }
+                    })
+                    .disposed(by: owner.disposeBag)
+                case .login:
+                    owner.pushToLoginViewController()
+                }
             })
             .disposed(by: disposeBag)
     }
 }
-
-extension MyPageInfoViewController {
-    
-    //MARK: - UI
-    
-    private func setNavigationBar() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                         left: self.rootView.backButton,
-                         right: nil)
-    }
-}
-

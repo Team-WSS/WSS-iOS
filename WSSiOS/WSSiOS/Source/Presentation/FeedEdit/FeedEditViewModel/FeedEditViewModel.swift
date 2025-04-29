@@ -103,8 +103,8 @@ final class FeedEditViewModel: ViewModelType {
                 self.getSingleFeed(feedId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.initialRelevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
-                owner.newRelevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
+                owner.initialRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
+                owner.newRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.categoryListData.accept(self.relevantCategoryList)
                 
                 owner.initialFeedContent.accept(data.feedContent)
@@ -271,7 +271,7 @@ final class FeedEditViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
+    private func getSingleFeed(_ feedId: Int) -> Observable<FeedEntity> {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }

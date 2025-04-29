@@ -169,7 +169,7 @@ final class FeedDetailReplyWritingView: UIView {
         }
     }
     
-    func bindUserProfile(_ data: MyProfileResult) {
+    func bindUserProfile(_ data: MyProfileEntity) {
         userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
     }
 }

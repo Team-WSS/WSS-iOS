@@ -11,10 +11,11 @@ import RxSwift
 import RxRelay
 import RxGesture
 
-class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
+final class FeedGenreViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var viewModel: FeedGenreViewModel
     private let disposeBag = DisposeBag()
     
     private let feedProfileViewDidTap = PublishRelay<Int>()
@@ -26,12 +27,10 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Components
     
     private var rootView = FeedGenreView()
-    private var viewModel: FeedGenreViewModel
     
     // MARK: - Life Cycle
     
     init(viewModel: FeedGenreViewModel) {
-        
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -54,8 +53,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         reloadFeed.accept(())
-        navigationController?.setNavigationBarHidden(true, animated: true)
         showTabBar()
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     //MARK: - Bind
@@ -90,7 +89,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: rootView.feedTableView.rx.items(
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
-                    cell.bindData(feed: element)
+                    cell.bindFeedData(feed: element)
                     cell.delegate = self
                 }
                 .disposed(by: disposeBag)
@@ -119,7 +118,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

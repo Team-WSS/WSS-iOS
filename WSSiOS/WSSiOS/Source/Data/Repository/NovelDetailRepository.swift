@@ -14,7 +14,7 @@ protocol NovelDetailRepository {
     func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoEntity>
     func getNovelDetailFeedData(novelId: Int,
                                 lastFeedId: Int,
-                                size: Int?) -> Observable<NovelDetailFeedResult>
+                                size: Int?) -> Observable<NovelDetailFeedEntity>
     func postUserInterest(novelId: Int) -> Observable<Void>
     func deleteUserInterest(novelId: Int) -> Observable<Void>
     func deleteNovelReview(novelId: Int) -> Observable<Void>
@@ -35,11 +35,13 @@ extension DefaultNovelDetailRepository: NovelDetailRepository  {
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoEntity> {
-        return novelDetailService.getNovelDetailInfoData(novelId: novelId).map { $0.toEntity()}
+        return novelDetailService.getNovelDetailInfoData(novelId: novelId).map { $0.toEntity() }
     }
     
-    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int?) -> Observable<NovelDetailFeedResult> {
-        return novelDetailService.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId, size: size ?? novelDetailFeedSize).asObservable()
+    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int?) -> Observable<NovelDetailFeedEntity> {
+        return novelDetailService.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId, size: size ?? novelDetailFeedSize)
+            .map { $0.toEntity() }
+            .asObservable()
     }
     
     func deleteNovelReview(novelId: Int) -> Observable<Void> {

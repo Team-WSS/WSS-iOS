@@ -10,18 +10,26 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+enum PushToViewControllerFromInfoViewController {
+    case changeUserInfo
+    case blockUser
+    case myPageDeleteIDWarning
+    case logoutAlert
+    case login
+}
+
 final class MyPageInfoViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     private let authRepository: AuthRepository
     
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository, authRepository: AuthRepository) {
+    init(userRepository: UserInfoRepository, authRepository: AuthRepository) {
         self.userRepository = userRepository
         self.authRepository = authRepository
     }
@@ -29,36 +37,20 @@ final class MyPageInfoViewModel: ViewModelType {
     struct Input {
         let cellDidTapped: ControlEvent<IndexPath>
         let logoutButtonTapped: PublishRelay<Bool>
-        let backButtonDidTap: ControlEvent<Void>
-        let changeInfoNotification: Observable<Notification>
     }
     
     struct Output {
-        let bindSettingCell = BehaviorRelay<[String]>(value: [""])
-        let pushToChangeUserInfoViewController = PublishRelay<ChangeUserInfo>()
-        let pushToBlockIDViewController = PublishRelay<Void>()
-        let presentToAlertViewController = PublishRelay<Void>()
-        let pushToMyPageDeleteIDWarningViewController = PublishRelay<Void>()
-        let pushToLoginViewController = PublishRelay<Void>()
-        
-        let popViewController = PublishRelay<Bool>()
-        let bindEmail = BehaviorRelay<String>(value: "")
-        let genderAndBirth = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", birth: 0))
-        let showToastMessage = PublishRelay<Void>()
+        let cellData = BehaviorRelay<[String]>(value: [""])
+        let emailData = BehaviorRelay<String>(value: "")
+        let genderAndBirthData = BehaviorRelay<ChangeUserInfoEntity>(value: ChangeUserInfoEntity(gender: "", birth: 0))
+        let pushToOtherViewController = PublishRelay<PushToViewControllerFromInfoViewController>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
         Observable.just(settingList)
-            .bind(to: output.bindSettingCell)
-            .disposed(by: disposeBag)
-        
-        input.backButtonDidTap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                output.popViewController.accept(true)
-            })
+            .bind(to: output.cellData)
             .disposed(by: disposeBag)
         
         input.cellDidTapped
@@ -66,38 +58,35 @@ final class MyPageInfoViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 switch indexPath.row {
                 case 0:
-                    //성별/나이 변경
-                    output.pushToChangeUserInfoViewController.accept(output.genderAndBirth.value)
+                    //성별|나이 변경
+                    output.pushToOtherViewController.accept(.changeUserInfo)
                 case 1:
                     //이메일
                     break;
                 case 2:
                     //차단유저 목록
-                    output.pushToBlockIDViewController.accept(())
+                    output.pushToOtherViewController.accept(.blockUser)
                 case 3:
                     //로그아웃
-                    output.presentToAlertViewController.accept(())
+                    output.pushToOtherViewController.accept(.logoutAlert)
                 case 4:
                     //회원탈퇴
-                    output.pushToMyPageDeleteIDWarningViewController.accept(())
-                default: break
+                    output.pushToOtherViewController.accept(.myPageDeleteIDWarning)
+                default:
+                    break
                 }
             })
             .disposed(by: disposeBag)
         
         Observable.just(())
-            .flatMapLatest { [weak self] _ -> Observable<UserInfo> in
+            .flatMapLatest { [weak self] _ -> Observable<UserInfoEntity> in
                 guard let self = self else { return Observable.empty() }
                 return self.getUserInfo()
             }
             .subscribe(with: self, onNext: { owner, data in
-                output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
-                                                            birth: data.birth))
-
+                output.emailData.accept(data.email)
+                output.genderAndBirthData.accept(ChangeUserInfoEntity(gender: data.gender, birth: data.birth))
                 UserDefaults.standard.set(data.birth, forKey: StringLiterals.UserDefault.userBirth)
-                
-                guard let email = data.email, !email.isEmpty else { return }
-                output.bindEmail.accept(email)
             }, onError: { owner, error in
                 print(error)
             })
@@ -109,7 +98,7 @@ final class MyPageInfoViewModel: ViewModelType {
                 guard let self = self else { return Observable.empty() }
                 guard let refreshTokenString = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else { return Observable.empty() }
                 guard let deviceIdentifierString = try? KeychainHelper.shared.readString(forKey: StringLiterals.KeyChain.deviceIdentifier) else { return Observable.empty() }
-
+                
                 return self.postLogout(refreshToken: refreshTokenString, deviceIdentifier: deviceIdentifierString)
             }
             .subscribe(
@@ -120,7 +109,7 @@ final class MyPageInfoViewModel: ViewModelType {
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
                     
-                    output.pushToLoginViewController.accept(())
+                    output.pushToOtherViewController.accept(.login)
                 },
                 onError: { error in
                     print(error.localizedDescription)
@@ -128,25 +117,18 @@ final class MyPageInfoViewModel: ViewModelType {
             )
             .disposed(by: disposeBag)
         
-        input.changeInfoNotification
-            .subscribe(with: self, onNext: { owner, _ in
-                output.showToastMessage.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         return output
     }
     
     //MARK: - API
     
-    private func getUserInfo() -> Observable<UserInfo> {
+    private func getUserInfo() -> Observable<UserInfoEntity> {
         return userRepository.getUserInfo()
             .observe(on: MainScheduler.instance)
     }
     
     private func postLogout(refreshToken: String, deviceIdentifier: String) -> Observable<Void> {
         return authRepository.postLogout(refreshToken: refreshToken, deviceIdentifier: deviceIdentifier)
-            .asObservable()
     }
 }
 

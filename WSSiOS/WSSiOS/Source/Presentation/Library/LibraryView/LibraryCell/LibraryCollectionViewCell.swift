@@ -30,7 +30,6 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         setLayout()
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -61,7 +60,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             $0.textColor = .wssGray200
         }
     }
-
+    
     private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,
@@ -100,21 +99,15 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: UserNovel) {
+    func bindData(_ data: UserNovelEntity) {
         novelImageView.kfSetImage(url: data.novelImage)
         novelTitleLabel.applyWSSFont(.body4, with: data.title)
         novelAuthorLabel.applyWSSFont(.body5, with: data.author)
         
-        let novelRating = data.novelRating
-        
-        if novelRating == 0.0 {
-            ratingStarImage.isHidden = true
-            novelRatingLabel.isHidden = true
-        }
-        else {
-            ratingStarImage.isHidden = false
-            novelRatingLabel.isHidden = false
-            novelRatingLabel.applyWSSFont(.body5, with: String(data.novelRating))
+        ratingStarImage.isHidden = !data.hasNovelRating
+        novelRatingLabel.isHidden = !data.hasNovelRating
+        if data.hasNovelRating {
+            novelRatingLabel.applyWSSFont(.body5, with: data.novelRating)
         }
     }
 }

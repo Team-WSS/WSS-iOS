@@ -15,7 +15,7 @@ final class HomeViewModel: ViewModelType {
     //MARK: - Properties
     
     private let recommendRepository: RecommendRepository
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
     
@@ -91,7 +91,7 @@ final class HomeViewModel: ViewModelType {
     //MARK: - init
     
     init(recommendRepository: RecommendRepository,
-         userRepository: UserRepository,
+         userRepository: UserInfoRepository,
          notificationRepository: NotificationRepository) {
         self.recommendRepository = recommendRepository
         self.userRepository = userRepository
@@ -176,7 +176,6 @@ extension HomeViewModel {
                 UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
                 UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
-                
                 owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
                 
                 owner.getTermSetting(disposeBag: disposeBag)

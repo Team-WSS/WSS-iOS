@@ -10,14 +10,14 @@ import Foundation
 import RxSwift
 
 protocol AvatarService {
-    func getAvatarList() -> Single<AvatarResponse>
+    func getAvatarList() -> Single<AvatarListResponse>
 }
 
 final class DefaultAvatarService: NSObject, Networking {
 }
 
 extension DefaultAvatarService: AvatarService {
-    func getAvatarList() -> Single<AvatarResponse> {
+    func getAvatarList() -> Single<AvatarListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Avatar.getAvatar,
@@ -28,7 +28,7 @@ extension DefaultAvatarService: AvatarService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: AvatarResponse.self) }
+                                       to: AvatarListResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)

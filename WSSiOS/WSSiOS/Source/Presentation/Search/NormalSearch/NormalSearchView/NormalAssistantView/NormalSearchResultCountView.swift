@@ -14,7 +14,9 @@ final class NormalSearchResultCountView: UIView {
     
     private let titleLabel = UILabel()
     let novelCountLabel = UILabel()
-    private let stackView = UIStackView()
+    let noSearchResultLabel = UILabel()
+    private let leftStackView = UIStackView()
+    private let mainStackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,20 +40,34 @@ final class NormalSearchResultCountView: UIView {
             $0.textColor = .wssGray100
         }
         
-        stackView.do {
+        noSearchResultLabel.do {
+            $0.applyWSSFontWithUnderLine(.body4, with: StringLiterals.Search.noSearchResult)
+            $0.textColor = .wssGray200
+        }
+        
+        leftStackView.do {
             $0.axis = .horizontal
             $0.spacing = 5
+            $0.alignment = .center
+        }
+        
+        mainStackView.do {
+            $0.axis = .horizontal
+            $0.distribution = .equalSpacing
+            $0.alignment = .center
         }
     }
     
     private func setHierarchy() {
-        stackView.addArrangedSubviews(titleLabel,
-                                      novelCountLabel)
-        self.addSubview(stackView)
+        leftStackView.addArrangedSubviews(titleLabel,
+                                          novelCountLabel)
+        mainStackView.addArrangedSubviews(leftStackView,
+                                          noSearchResultLabel)
+        self.addSubview(mainStackView)
     }
     
     private func setLayout() {
-        stackView.snp.makeConstraints {
+        mainStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

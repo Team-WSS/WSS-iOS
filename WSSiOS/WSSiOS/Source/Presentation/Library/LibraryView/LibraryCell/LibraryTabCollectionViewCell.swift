@@ -7,17 +7,11 @@
 
 import UIKit
 
-import RxSwift
-import RxCocoa
 import SnapKit
 import Then
 
 final class LibraryTabCollectionViewCell: UICollectionViewCell {
-    
-    //MARK: - Properties
 
-    private let disposeBag = DisposeBag()
-    
     //MARK: - Components
     
     private let libraryTabLabel = UILabel()
@@ -33,7 +27,6 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
         setLayout()
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

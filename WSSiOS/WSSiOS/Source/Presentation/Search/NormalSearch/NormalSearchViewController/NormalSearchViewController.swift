@@ -52,6 +52,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         registerCell()
         setDelegate()
         bindViewModel()
+        bindAction()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -175,7 +176,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.inquiryButtonEnabled
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: URLs.Contact.kakao) {
+                if let url = URL(string: URLs.Contact.inquiry) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
@@ -189,7 +190,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
@@ -209,6 +210,17 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in
                 owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.resultView.resultCountView.noSearchResultLabel.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                if let url = URL(string: URLs.Contact.inquiry) {
+                    UIApplication.shared.open(url, options: [:])
+                }
             })
             .disposed(by: disposeBag)
     }

@@ -107,7 +107,7 @@ extension UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    func pushToDetailViewController(novelId: Int) {
+    func pushToNovelDetailViewController(novelId: Int) {
         let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.hidesBottomBarWhenPushed = true
@@ -158,9 +158,8 @@ extension UIViewController {
     
     func pushToMyPageDeleteIDWarningViewController() {
         let viewController = MyPageDeleteIDWarningViewController(
-            userRepository: DefaultUserRepository(
-                userService: DefaultUserService(),
-                blocksService: DefaultBlocksService()
+            userRepository: DefaultUserInfoRepository(
+                userService: DefaultUserService()
             )
         )
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -180,9 +179,8 @@ extension UIViewController {
     func pushToMyPageInfoViewController() {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()),
                 authRepository: DefaultAuthRepository(
                     authService: DefaultAuthService())))
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -228,13 +226,10 @@ extension UIViewController {
         self.dismiss(animated: true)
     }
     
-    func pushToBlockIDViewController() {
+    func pushToBlockUserViewController() {
         let viewController = MyPageBlockUserViewController(
-            viewModel:MyPageBlockUserViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
-                )
+            userRepository: DefaultUserBlockRepository(
+                blocksService: DefaultBlocksService()
             )
         )
         
@@ -287,9 +282,8 @@ extension UIViewController {
             viewModel: FeedDetailViewModel(
                 feedDetailRepository: DefaultFeedDetailRepository(
                     feedDetailService: DefaultFeedDetailService()
-                ), userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
+                ), userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
                 ),
                 feedId: feedId
             )
@@ -310,20 +304,22 @@ extension UIViewController {
         let viewController = MyPageViewController(
             viewModel: MyPageViewModel(
                 userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                    userInfoRepository: DefaultUserInfoRepository(
+                        userService: DefaultUserService()),
+                    userBlockRepository: DefaultUserBlockRepository(
+                        blocksService: DefaultBlocksService())),
                 profileId: userId))
         
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileResult?) {
+    func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) {
         let viewController = MyPageEditProfileViewController(
             viewModel: MyPageEditProfileViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+                ),
                 entryType: entryType,
                 profileData: profile))
         
@@ -364,11 +360,8 @@ extension UIViewController {
     
     func pushToMyPageProfileVisibilityViewController() {
         let viewController = MyPageProfileVisibilityViewController(
-            viewModel: MyPageProfileVisibilityViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
-                )
+            userInfoRepository: DefaultUserInfoRepository(
+                userService: DefaultUserService()
             )
         )
         
@@ -377,9 +370,8 @@ extension UIViewController {
     
     func pushToMyPagePushNotificationViewController() {
         let viewController = MyPagePushNotificationViewController(
-            viewModel: MyPagePushNotificationViewModel(
-                notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNotificationService())))
+            notificationRepository: DefaultNotificationRepository(
+                notificationService: DefaultNotificationService()))
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
         
@@ -387,34 +379,28 @@ extension UIViewController {
     
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
-            viewModel: MyPageChangeUserInfoViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+            )
+        )
         viewController.hidesBottomBarWhenPushed = true
-        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
-        let viewController = LibraryViewController(
-            libraryViewModel: LibraryViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
-                userId: userId))
-        
-        viewController.pageIndex = pageIndex
+        let viewController = LibraryViewController(userId: userId)
+
+        viewController.setPageIndex(target: pageIndex)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileResult) {
+    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
         let viewController = MyPageFeedDetailViewController(
             viewModel: MyPageFeedDetailViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+                ),
                 profileId: userId,
                 profileData: useData))
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -455,8 +441,8 @@ extension UIViewController {
     }
     
     func pushToNotificationDetailViewController(notificationId: Int) {
-        let viewController = HomeNoticeDetailViewController(
-            viewModel: HomeNoticeDetailViewModel(
+        let viewController = HomeNotificationDetailViewController(
+            viewModel: HomeNotificationDetailViewModel(
                 notificationRepository: DefaultNotificationRepository(
                     notificationService: DefaultNotificationService()),
                 notificationId: notificationId))

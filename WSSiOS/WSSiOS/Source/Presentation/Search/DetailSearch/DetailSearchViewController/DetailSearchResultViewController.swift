@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class DetailSearchResultViewController: UIViewController, UIScrollViewDelegate {
     
@@ -54,6 +55,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         setDelegate()
 
         bindViewModel()
+        bindAction()
         
         viewDidLoadEvent.accept(())
     }
@@ -116,7 +118,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
@@ -139,6 +141,17 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in
                 owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.novelView.noSearchResultLabel.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                if let url = URL(string: URLs.Contact.inquiry) {
+                    UIApplication.shared.open(url, options: [:])
+                }
             })
             .disposed(by: disposeBag)
     }

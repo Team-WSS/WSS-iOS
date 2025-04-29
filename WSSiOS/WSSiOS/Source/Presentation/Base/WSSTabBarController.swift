@@ -8,11 +8,14 @@
 import UIKit
 
 import Then
+import RxSwift
+import RxCocoa
 
-final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate {
+final class WSSTabBarController: UITabBarController {
     
     //MARK: - Properties
     
+    private let disposeBag = DisposeBag()
     private let isLogined = APIConstants.isLogined
     
     init() {
@@ -30,7 +33,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         super.viewDidLoad()
         
         setUI()
-        setTabBarController()
+        bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,6 +69,38 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
     
     //MARK: - Custom Method
     
+    private func bind() {
+        if isLogined {
+            DefaultUserInfoRepository(userService: DefaultUserService()).getUserMeData()
+                .observe(on: MainScheduler.instance)
+                .subscribe(with: self, onNext: { owner, data in
+                    UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                    UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                    
+                    owner.setTabBarController()
+                })
+                .disposed(by: disposeBag)
+        } else {
+            self.setTabBarController()
+        }
+        
+        NotificationCenter.default.rx.notification(StringLiterals.NotificationCenter.moveToLibraryTab)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, notification in
+                if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
+                   let libraryVC = libraryNavigationVC.topViewController as? LibraryViewController {
+                    
+                    owner.selectedIndex = WSSTabBarItem.library.rawValue
+                    
+                    if let pageIndex = notification.object as? Int {
+                        libraryVC.setPageIndex(target: pageIndex)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func setTabBarController() {
         var navigationControllers = [UINavigationController]()
         
@@ -100,6 +135,9 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         
         return navigationController
     }
+}
+
+extension WSSTabBarController: UITabBarControllerDelegate {
     
     //MARK: - Delegate
     
@@ -108,7 +146,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
             return true
         }
         
-        if !isLogined && (selectedIndex == 2 || selectedIndex == 3) {
+        if !isLogined && (selectedIndex >= WSSTabBarItem.feed.rawValue) {
             self.presentInduceLoginViewController()
             return false
         }

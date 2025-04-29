@@ -14,7 +14,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     
     //MARK: - Components
     
@@ -22,7 +22,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserInfoRepository) {
         self.userRepository = userRepository
         
         super.init(nibName: nil, bundle: nil)
@@ -39,34 +39,37 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bindData()
         bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        setNavigationBar()
-        hideTabBar()
-        swipeBackGesture()
+        bindViewWillAppearAction()
     }
     
     //MARK: - Bind
-    
-    private func bindData() {
-        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+
+    private func bindViewWillAppearAction() {
+        hideTabBar()
+        swipeBackGesture()
         
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+                         left: self.rootView.backButton,
+                         right: nil)
+    }
+    
+    private func bindAction() {
+        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
         userRepository.getUserNovelStatus(userId: userId)
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, status in 
+            .subscribe(with: self, onNext: { owner, status in
                 owner.rootView.bindData(count: status)
             },onError: { owner, error in
                 print(error)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindAction() {
+        
         rootView.backButton.rx.tap
             .asDriver()
             .throttle(.seconds(3), latest: false)
@@ -82,15 +85,5 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
                 owner.pushToMyPageDeleteIDViewController()
             })
             .disposed(by: disposeBag)
-    }
-}
-
-//MARK: - UI
-
-extension MyPageDeleteIDWarningViewController {
-    private func setNavigationBar() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
-                         left: self.rootView.backButton,
-                         right: nil)
     }
 }

@@ -14,8 +14,8 @@ import RxSwift
 protocol AuthRepository {
     func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResponse>
     func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResponse>
-    func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
-    func postLogout(refreshToken: String, deviceIdentifier: String) -> Single<Void>
+    func postWithdrawId(withdrawData: WithdrawRequest) -> Observable<Void>
+    func postLogout(refreshToken: String, deviceIdentifier: String) -> Observable<Void>
 }
 
 struct DefaultAuthRepository: AuthRepository {
@@ -35,13 +35,15 @@ struct DefaultAuthRepository: AuthRepository {
         return authService.loginWithKakao(kakaoAccessToken.accessToken)
     }
     
-    func postWithdrawId(reason: String, refreshToken: String) -> Single<Void> {
-        return authService.postWithdrawId(reason: reason, refreshToken: refreshToken)
+    func postWithdrawId(withdrawData: WithdrawRequest) -> Observable<Void> {
+        return authService.postWithdrawId(withdrawData: withdrawData)
+            .asObservable()
     }
     
-    func postLogout(refreshToken: String, deviceIdentifier: String) -> Single<Void> {
+    func postLogout(refreshToken: String, deviceIdentifier: String) -> Observable<Void> {
         let logoutRequest = LogoutRequest(refreshToken: refreshToken, deviceIdentifier: deviceIdentifier)
         return authService.postLogout(logoutRequest: logoutRequest)
+            .asObservable()
     }
 }
 

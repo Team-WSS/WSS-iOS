@@ -35,13 +35,13 @@ struct UserNickNameResult: Codable {
     let userNickname: String
 }
 
-struct UserInfo: Codable {
+struct UserInfoResponse: Decodable {
     let email: String?
     let gender: String
     let birth: Int
 }
 
-struct ChangeUserInfo: Codable {
+struct ChangeUserInfoRequest: Encodable {
     let gender: String
     let birth: Int
 }

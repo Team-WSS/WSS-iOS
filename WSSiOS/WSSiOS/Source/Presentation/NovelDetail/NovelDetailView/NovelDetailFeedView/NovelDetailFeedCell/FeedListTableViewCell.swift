@@ -27,7 +27,7 @@ final class FeedListTableViewCell: UITableViewCell {
     private let disposeBag = DisposeBag()
     weak var delegate: FeedTableViewDelegate?
     
-    private let feed = PublishRelay<TotalFeeds>()
+    private let feed = PublishRelay<TotalFeedEntity>()
     
     //MARK: - Components
     
@@ -125,8 +125,8 @@ final class FeedListTableViewCell: UITableViewCell {
             .withLatestFrom(feed)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
-                if let novelId = feed.novelId {
-                    owner.delegate?.connectedNovelViewDidTap(novelId: novelId)
+                if (feed.novelId != -1) {
+                    owner.delegate?.connectedNovelViewDidTap(novelId: feed.novelId)
                 }
             })
             .disposed(by: disposeBag)
@@ -143,21 +143,20 @@ final class FeedListTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(feed: TotalFeeds) {
+    func bindFeedData(feed: TotalFeedEntity) {
         self.feed.accept(feed)
         
         feedHeaderView.bindData(avatarImage: feed.avatarImage,
-                                           nickname: feed.nickname,
-                                           createdDate: feed.createdDate,
-                                           isModified: feed.isModified)
+                                nickname: feed.nickname,
+                                createdDate: feed.createdDate,
+                                isModified: feed.isModified)
         feedContentView.bindData(feedContent: feed.feedContent,
-                                            isSpoiler: feed.isSpoiler)
-        if let title = feed.title,
-           let novelRatingCount = feed.novelRatingCount,
-           let novelRating = feed.novelRating {
-            feedConnectedNovelView.bindData(title: title,
-                                                       novelRatingCount: novelRatingCount,
-                                                       novelRating: novelRating)
+                                 isSpoiler: feed.isSpoiler)
+        
+        if (feed.title != "" && feed.novelRatingCount != -1 && feed.novelRating != -1) {
+            feedConnectedNovelView.bindData(title: feed.title,
+                                            novelRatingCount: feed.novelRatingCount,
+                                            novelRating: feed.novelRating)
             
             self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
@@ -168,41 +167,31 @@ final class FeedListTableViewCell: UITableViewCell {
         }
         feedCategoryView.bindData(relevantCategories: feed.relevantCategories)
         feedReactView.bindData(isLiked: feed.isLiked,
-                                          likeCount: feed.likeCount,
-                                          commentCount: feed.commentCount)
+                               likeCount: feed.likeCount,
+                               commentCount: feed.commentCount)
     }
     
-    func bindProfileData(feed: FeedCellData) {
+    func bindProfileFeedData(feed: MyFeedListItem) {
         feedHeaderView.dropdownButtonView.isHidden = true
-        
-        let createdDate = feed.feed.createdDate
-        let inputDateFormatter = DateFormatter()
-        inputDateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        var formattedDate: String = ""
-
-        if let date = inputDateFormatter.date(from: createdDate) {
-            let outputDateFormatter = DateFormatter()
-            outputDateFormatter.locale = Locale(identifier: "ko_KR")
-            outputDateFormatter.dateFormat = "M월 d일"
-            formattedDate = outputDateFormatter.string(from: date)
-        } else {
-            formattedDate = ""
-        }
-        
         feedHeaderView.bindData(avatarImage: feed.avatarImage,
-                                           nickname: feed.nickname,
-                                           createdDate: formattedDate,
-                                           isModified: feed.feed.isModified)
+                                nickname: feed.nickname,
+                                createdDate: feed.feed.createdDate,
+                                isModified: feed.feed.isModified)
         feedContentView.bindData(feedContent: feed.feed.feedContent,
-                                            isSpoiler: feed.feed.isSpoiler)
-        if let title = feed.feed.title,
-           let novelRatingCount = feed.feed.novelRatingCount,
-           let novelRating = feed.feed.novelRating {
-            feedConnectedNovelView.bindData(title: title,
-                                                       novelRatingCount: novelRatingCount,
-                                                       novelRating: novelRating)
-            
+                                 isSpoiler: feed.feed.isSpoiler)
+        feedCategoryView.temporaryBindData(relevantCategories: feed.feed.relevantCategories)
+        feedReactView.bindData(isLiked: feed.feed.isLiked,
+                               likeCount: feed.feed.likeCount,
+                               commentCount: feed.feed.commentCount)
+        
+        //연결된 소설 유무에 따라 UI 조정
+        if feed.feed.novelId != -1,
+           !feed.feed.title.isEmpty,
+           feed.feed.novelRatingCount != -1,
+           feed.feed.novelRating != -1 {
+            feedConnectedNovelView.bindData(title: feed.feed.title,
+                                            novelRatingCount: feed.feed.novelRatingCount,
+                                            novelRating: feed.feed.novelRating)
             self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
                 $0.setCustomSpacing(20, after: feedConnectedNovelView)
@@ -210,13 +199,5 @@ final class FeedListTableViewCell: UITableViewCell {
         } else {
             feedConnectedNovelView.removeFromSuperview()
         }
-        
-        let translatedGenres = feed.feed.relevantCategories.compactMap {
-            NewNovelGenre(rawValue: $0)?.withKorean
-        }
-        feedCategoryView.bindData(relevantCategories: translatedGenres)
-        feedReactView.bindData(isLiked: feed.feed.isLiked,
-                                          likeCount: feed.feed.likeCount,
-                                          commentCount: feed.feed.commentCount)
     }
 }

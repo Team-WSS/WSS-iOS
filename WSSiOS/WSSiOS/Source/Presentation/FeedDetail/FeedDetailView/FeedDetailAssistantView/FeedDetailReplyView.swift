@@ -100,7 +100,7 @@ final class FeedDetailReplyView: UIView {
         
         let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
         let numberOfItems = replyCollectionView.numberOfItems(inSection: indexPath.section)
-        let isLastTwoCells = numberOfItems >= 3 && indexPath.item >= numberOfItems - 2
+        let isLastTwoCells = indexPath.item >= numberOfItems - 2
         
         dropdownView.snp.updateConstraints {
             $0.top.equalToSuperview().inset(isLastTwoCells ? cellFrameInSuperview.minY - dropdownView.frame.height : cellFrameInSuperview.minY + 40)

@@ -12,6 +12,21 @@ enum StringLiterals {
         static let deviceIdentifier = "DEVICE_IDENTIFIER"
     }
     
+    enum NotificationCenter {
+        static let novelReviewKeywordSelected = Notification.Name("novelReviewKeywordSelected")
+        static let novelReviewDataSelected = Notification.Name("novelReviewDataSelected")
+        static let novelReviewDateRemoved = Notification.Name("novelReviewDateRemoved")
+        static let feedEdited = Notification.Name("feedEdited")
+        static let novelReviewed = Notification.Name("novelReviewed")
+        static let popFeedDetailViewController = Notification.Name("popFeedDetailViewController")
+        static let feedNovelConnected = Notification.Name("feedNovelConnected")
+        static let blockUser = Notification.Name("blockUser")
+        static let pushToUpdateDetailSearchResult = Notification.Name("pushToUpdateDetailSearchResult")
+        static let pushToDetailSearchResult = Notification.Name("pushToDetailSearchResult")
+        static let changeRepresentativeAvatar = Notification.Name("changeRepresentativeAvatar")
+        static let moveToLibraryTab = Notification.Name("moveToLibraryTab")
+    }
+    
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"
@@ -70,19 +85,20 @@ enum StringLiterals {
         enum Title {
             static let home = "홈"
             static let search = "탐색"
-            static let feed = "수다"
+            static let feed = "피드"
+            static let libary = "서재"
             static let myPage = "My"
         }
     }
     
     enum Navigation {
         enum Title {
-            static let library = "보관함"
+            static let library = "서재"
             static let record = "내 기록"
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let feed = "소소한 수다"
+            static let feed = "소소피드"
             static let notification = "알림"
             static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
@@ -105,14 +121,14 @@ enum StringLiterals {
     enum Home {
         enum Title {
             static let todayPopular = "오늘의 발견"
-            static let realtimePopular = "지금 뜨는 수다글"
+            static let realtimePopular = "지금 뜨는 글"
             static let interest = "님의 관심글"
             static let notLoggedInInterest = "관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
         
         enum SubTitle {
-            static let interest = "관심 등록한 작품의 최근 수다예요"
+            static let interest = "관심 등록한 작품의 최신 글이에요"
             static let recommend = "선호 장르를 기반으로 추천해드려요"
         }
         
@@ -179,7 +195,7 @@ enum StringLiterals {
         enum Profile {
             static let registerNovel = "등록 작품"
             static let record = "기록"
-            static let inventoryTitle = "보관함"
+            static let inventoryTitle = "서재"
             static let preferenceEmpty = "취향 분석"
             static let preferenceEmptyLabel = "작품 취향을 파악할 수 없어요"
             static let genrePreferenceTitle = "장르 취향"
@@ -187,8 +203,8 @@ enum StringLiterals {
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
             static let unknownAlertButtonTitle = "확인"
-            static let myProfileLibrary = "내 서재"
-            static let otherProfileLibrary = "서재"
+            static let myProfileLibrary = "내 통계"
+            static let otherProfileLibrary = "통계"
             static let myProfileFeed = "내 활동"
             static let otherProfileFeed = "활동"
             static let activityButton = "활동기록 더보기"
@@ -316,7 +332,7 @@ enum StringLiterals {
     }
     
     enum Library {
-        static let empty = "보관함이 비어있어요"
+        static let empty = "서재가 비어있어요"
         static let lookForNovel = "웹소설 찾으러 가기"
     }
     
@@ -440,7 +456,7 @@ enum StringLiterals {
         
         enum Tab {
             static let info = "정보"
-            static let feed = "수다"
+            static let feed = "피드"
         }
         
         enum Info {
@@ -523,9 +539,11 @@ enum StringLiterals {
         static let induceButton = "내 취향에 맞는 웹소설 찾기"
         
         static let sosoTitle = "소소"
-        static let sosoDescription = "다른 독자들이 최근에 읽고 있는 웹소설이에요"
+        static let sosoDescription = "다른 독자들이 최근에 찾아본 웹소설이에요"
         
         static let novel = "작품"
+        
+        static let noSearchResult = "찾는 작품이 없다면?"
         
         enum Empty {
             static let description = "해당 검색어를 가진 작품은\n아직 등록되지 않았어요.."
@@ -592,7 +610,7 @@ enum StringLiterals {
     }
     
     enum FeedDetail {
-        static let title = "수다글"
+        static let title = "게시글"
         static let reply = "댓글"
         static let placeHolder = "댓글을 남겨보세요"
         

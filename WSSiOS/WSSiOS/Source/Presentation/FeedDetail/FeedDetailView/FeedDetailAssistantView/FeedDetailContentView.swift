@@ -86,7 +86,7 @@ final class FeedDetailContentView: UIView {
         }
     }
     
-    func bindData(data: Feed) {
+    func bindData(data: FeedEntity) {
         contentLabel.do {
             $0.applyWSSFont(.body2, with: data.feedContent)
             $0.numberOfLines = 0
@@ -94,29 +94,27 @@ final class FeedDetailContentView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        if let title = data.novelTitle, let rating = data.novelRating, let count = data.novelRatingCount {
+        if data.hasLinkedNovel {
             linkNovelView.isHidden = false
             linkNovelView.snp.remakeConstraints {
                 $0.top.equalTo(contentLabel.snp.bottom).offset(20)
                 $0.leading.trailing.equalToSuperview().inset(20)
                 $0.height.equalTo(48)
             }
-            linkNovelView.bindData(title: title,
-                                   rating: rating,
-                                   participants: count)
-        }
-        else {
+            linkNovelView.bindData(title: data.novelTitle ?? "",
+                                   rating: data.novelRating ?? 0,
+                                   participants: data.novelRatingCount ?? 0)
+        } else {
             linkNovelView.isHidden = true
             genreLabel.snp.remakeConstraints {
                 $0.top.equalTo(contentLabel.snp.bottom).offset(20)
                 $0.leading.trailing.equalToSuperview().inset(20)
             }
         }
-        
-        let genres = data.genres.joined(separator: ", ")
-        
+
         genreLabel.do {
-            $0.applyWSSFont(.body2, with: genres)
+            let genreCategories = data.genreCategories.joined(separator: ",")
+            $0.applyWSSFont(.body2, with: genreCategories)
             $0.lineBreakMode = .byTruncatingTail
         }
         

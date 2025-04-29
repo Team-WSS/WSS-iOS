@@ -21,7 +21,7 @@ final class LibraryPageBar: UIView {
     
     //MARK: - Components
     
-    public lazy var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    lazy var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     
@@ -57,7 +57,7 @@ final class LibraryPageBar: UIView {
     }
 
     private func setHierarchy() {
-        self.addSubview(libraryTabCollectionView)
+        addSubview(libraryTabCollectionView)
     }
     
     private func setLayout() {

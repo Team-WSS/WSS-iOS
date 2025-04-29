@@ -312,7 +312,8 @@ final class MyPageViewController: UIViewController {
             .bind(to: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.items(
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
-                    cell.bindProfileData(feed: element)
+                    cell.bindProfileFeedData(feed: element)
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -331,17 +332,32 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.pushToLibraryViewController
+            .withLatestFrom(output.isMyPage) {
+                (userId, isMyPage) in (userId, isMyPage)
+            }
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, userId in
-                owner.pushToLibraryViewController(userId: userId)
+            .bind(with: self, onNext: { owner, data in
+                let (userId, isMyPage) = data
+                if isMyPage {
+                    NotificationCenter.default.post(name: StringLiterals.NotificationCenter.moveToLibraryTab, object: nil)
+                } else {
+                    owner.pushToLibraryViewController(userId: userId)
+                }
             })
             .disposed(by: disposeBag)
         
         output.pushToSpecificLibraryViewController
+            .withLatestFrom(output.isMyPage) { (userData, isMyPage) in
+               (userData.0, userData.1, isMyPage)
+            }
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, userData in
-                let (id, pageIndex) = userData
-                owner.pushToLibraryViewController(userId: id, pageIndex: pageIndex)
+            .bind(with: self, onNext: { owner, data in
+                let (userId, pageIndex, isMyPage) = data
+                if isMyPage {
+                    NotificationCenter.default.post(name: StringLiterals.NotificationCenter.moveToLibraryTab, object: pageIndex)
+                } else {
+                    owner.pushToLibraryViewController(userId: userId, pageIndex: pageIndex)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -384,7 +400,7 @@ final class MyPageViewController: UIViewController {
         output.pushToNovelDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
@@ -405,11 +421,10 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let keywords = try? viewModel.bindKeywordRelay.value,
-              indexPath.row < keywords.count else {
+        let keywords = viewModel.bindKeywordRelay.value
+        guard indexPath.row < keywords.count else {
             return CGSize(width: 0, height: 0)
         }
-        
         let keyword = keywords[indexPath.row]
         let text = "\(keyword.keywordName) \(keyword.keywordCount)"
         
