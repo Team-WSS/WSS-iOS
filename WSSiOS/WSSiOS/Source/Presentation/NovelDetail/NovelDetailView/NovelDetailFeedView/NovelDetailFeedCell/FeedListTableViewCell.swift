@@ -35,7 +35,6 @@ final class FeedListTableViewCell: UITableViewCell {
     let feedHeaderView = FeedListHeaderView()
     private let feedContentView = FeedListContentView()
     private let feedConnectedNovelView = FeedListConnectedNovelView()
-    private let feedCategoryView = FeedListCategoryView()
     private let feedReactView = FeedListReactView()
     private let dividerView = UIView()
     
@@ -78,7 +77,6 @@ final class FeedListTableViewCell: UITableViewCell {
         stackView.addArrangedSubviews(feedHeaderView,
                                       feedContentView,
                                       feedConnectedNovelView,
-                                      feedCategoryView,
                                       feedReactView)
     }
     
@@ -89,7 +87,6 @@ final class FeedListTableViewCell: UITableViewCell {
             stackView.do {
                 $0.setCustomSpacing(12, after: feedHeaderView)
                 $0.setCustomSpacing(20, after: feedContentView)
-                $0.setCustomSpacing(24, after: feedCategoryView)
             }
         }
         
@@ -165,7 +162,6 @@ final class FeedListTableViewCell: UITableViewCell {
         } else {
             feedConnectedNovelView.removeFromSuperview()
         }
-        feedCategoryView.bindData(relevantCategories: feed.relevantCategories)
         feedReactView.bindData(isLiked: feed.isLiked,
                                likeCount: feed.likeCount,
                                commentCount: feed.commentCount)
@@ -179,7 +175,6 @@ final class FeedListTableViewCell: UITableViewCell {
                                 isModified: feed.feed.isModified)
         feedContentView.bindData(feedContent: feed.feed.feedContent,
                                  isSpoiler: feed.feed.isSpoiler)
-        feedCategoryView.temporaryBindData(relevantCategories: feed.feed.relevantCategories)
         feedReactView.bindData(isLiked: feed.feed.isLiked,
                                likeCount: feed.feed.likeCount,
                                commentCount: feed.feed.commentCount)
