@@ -107,6 +107,7 @@ final class FeedEditViewController: UIViewController {
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             spoilerButtonDidTap: rootView.feedEditContentView.spoilerView.spoilerButton.rx.tap,
+            publicButtonDidTap: rootView.feedEditPrivateSettingView.privateSettingButton.rx.tap,
             categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
             categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
             feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
@@ -156,6 +157,12 @@ final class FeedEditViewController: UIViewController {
         output.isSpoiler
             .subscribe(with: self, onNext: { owner, isSpoiler in
                 owner.rootView.feedEditContentView.spoilerView.spoilerButton.updateToggle(isSpoiler)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isPublic
+            .subscribe(with: self, onNext: { owner, isPublic in
+                owner.rootView.feedEditPrivateSettingView.privateSettingButton.updateToggle(isPublic)
             })
             .disposed(by: disposeBag)
         

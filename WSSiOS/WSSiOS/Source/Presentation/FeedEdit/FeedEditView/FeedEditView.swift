@@ -19,7 +19,7 @@ final class FeedEditView: UIView {
     let scrollView = UIScrollView()
     private let stackView = UIStackView()
     // 비공개 설정
-    private let feedEditPrivateSettingView = FeedEditPrivateSettingView()
+    let feedEditPrivateSettingView = FeedEditPrivateSettingView()
     // 장르 카테고리
     let feedEditCategoryView = FeedEditCategoryView()
     // 작품 피드 작성

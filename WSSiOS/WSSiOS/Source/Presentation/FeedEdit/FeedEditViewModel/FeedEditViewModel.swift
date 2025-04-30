@@ -31,10 +31,12 @@ final class FeedEditViewModel: ViewModelType {
     // 기존 피드 수정
     private var initialRelevantCategories: [NewNovelGenre]?
     private var initialIsSpoiler: Bool?
+    private var initialIsPublic: Bool?
     private var initialNovelId: Int?
     private var isRelevantCategoriesChanged: Bool = false
     private var isFeedContentChanged: Bool = false
     private var isSpoilerChanged: Bool = false
+    private var isPublicChanged: Bool = false
     private var isNovelIdChanged: Bool = false
     
     // Output
@@ -43,6 +45,7 @@ final class FeedEditViewModel: ViewModelType {
     private let popViewController = PublishRelay<Void>()
     private let initialFeedContent = BehaviorRelay<String>(value: "")
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
+    private let isPublic = BehaviorRelay<Bool>(value: false)
     private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
@@ -70,6 +73,7 @@ final class FeedEditViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
         let spoilerButtonDidTap: ControlEvent<Void>
+        let publicButtonDidTap: ControlEvent<Void>
         let categoryCollectionViewItemSelected: Observable<IndexPath>
         let categoryCollectionViewItemDeselected: Observable<IndexPath>
         let feedContentUpdated: Observable<String>
@@ -87,6 +91,7 @@ final class FeedEditViewModel: ViewModelType {
         let popViewController: Observable<Void>
         let initialFeedContent: Observable<String>
         let isSpoiler: Observable<Bool>
+        let isPublic: Observable<Bool>
         let feedContentWithLengthLimit: Observable<String>
         let completeButtonIsAbled: Observable<Bool>
         let showPlaceholder: Observable<Bool>
@@ -115,6 +120,9 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.initialIsSpoiler = data.isSpoiler
                 owner.isSpoiler.accept(data.isSpoiler)
+                
+                owner.initialIsPublic = data.isPublic
+                owner.isPublic.accept(data.isPublic)
             }, onError: { owner, error in
                 print(error)
             })
@@ -138,13 +146,12 @@ final class FeedEditViewModel: ViewModelType {
             .do(onNext: { _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
-            .withLatestFrom(isSpoiler)
-            .flatMapLatest { isSpoiler in
-                
+            .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic))
+            .flatMapLatest { (isSpoiler, isPublic) in
                 if let feedId = self.feedId {
-                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler)
+                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic)
                 } else {
-                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler)
+                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic)
                 }
             }
             .subscribe(with: self, onNext: { owner, _ in
@@ -160,6 +167,15 @@ final class FeedEditViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, isSpoiler in
                 owner.isSpoiler.accept(!isSpoiler)
                 owner.isSpoilerChanged = owner.initialIsSpoiler != owner.isSpoiler.value
+                owner.checkIfCompleteButtonIsAbled()
+            })
+            .disposed(by: disposeBag)
+        
+        input.publicButtonDidTap
+            .withLatestFrom(isPublic)
+            .subscribe(with: self, onNext: { owner, isPublic in
+                owner.isPublic.accept(!isPublic)
+                owner.isPublicChanged = owner.initialIsPublic != owner.isPublic.value
                 owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
@@ -250,6 +266,7 @@ final class FeedEditViewModel: ViewModelType {
                       popViewController: popViewController.asObservable(),
                       initialFeedContent: initialFeedContent.asObservable(),
                       isSpoiler: isSpoiler.asObservable(),
+                      isPublic: isPublic.asObservable(),
                       feedContentWithLengthLimit: feedContentWithLengthLimit.asObservable(),
                       completeButtonIsAbled: completeButtonIsAbled.asObservable(),
                       showPlaceholder: showPlaceholder.asObservable(),
@@ -262,7 +279,7 @@ final class FeedEditViewModel: ViewModelType {
     // MARK: - Custom Method
     
     func isInitialFeedChanged() -> Bool {
-        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isNovelIdChanged : true
+        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged : true
     }
     
     func checkIfCompleteButtonIsAbled() {

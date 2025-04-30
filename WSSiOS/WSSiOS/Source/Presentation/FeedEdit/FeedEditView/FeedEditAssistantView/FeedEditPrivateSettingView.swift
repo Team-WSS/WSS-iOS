@@ -16,7 +16,7 @@ final class FeedEditPrivateSettingView: UIView {
     
     private let lockImageView = UIImageView()
     private let privateSettingLabel = UILabel()
-    private let privateSettingButton = WSSToggleButton()
+    let privateSettingButton = WSSToggleButton()
     
     //MARK: - Life Cycle
     
