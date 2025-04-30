@@ -162,7 +162,7 @@ final class FeedEditViewController: UIViewController {
         
         output.isPublic
             .subscribe(with: self, onNext: { owner, isPublic in
-                owner.rootView.feedEditPrivateSettingView.privateSettingButton.updateToggle(isPublic)
+                owner.rootView.feedEditPrivateSettingView.privateSettingButton.updateToggle(!isPublic)
             })
             .disposed(by: disposeBag)
         

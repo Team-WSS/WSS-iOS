@@ -45,7 +45,7 @@ final class FeedEditViewModel: ViewModelType {
     private let popViewController = PublishRelay<Void>()
     private let initialFeedContent = BehaviorRelay<String>(value: "")
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
-    private let isPublic = BehaviorRelay<Bool>(value: false)
+    private let isPublic = BehaviorRelay<Bool>(value: true)
     private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
