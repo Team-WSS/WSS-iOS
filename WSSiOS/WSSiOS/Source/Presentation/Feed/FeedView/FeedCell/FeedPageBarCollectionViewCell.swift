@@ -46,7 +46,6 @@ final class FeedPageBarCollectionViewCell: UICollectionViewCell {
         }
         
         titleLabel.do {
-            $0.font = .Title3
             $0.textColor = isSelected ? .wssWhite : .wssGray300
         }
     }
@@ -66,10 +65,7 @@ final class FeedPageBarCollectionViewCell: UICollectionViewCell {
     func bindData(text: NewNovelGenre) {
         titleLabel.do {
             $0.text = text.withKorean
-            $0.makeAttribute(with: $0.text)?
-                .lineSpacing(spacingPercentage: 0)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.title3, with: $0.text)
         }
     }
 }

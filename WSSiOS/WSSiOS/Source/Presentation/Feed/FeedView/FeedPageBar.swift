@@ -54,8 +54,7 @@ final class FeedPageBar: UIView {
     
     private func setLayout() {
         feedPageBarCollectionView.snp.makeConstraints() {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 }
