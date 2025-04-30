@@ -31,6 +31,7 @@ struct TotalFeedResponse: Decodable {
     let isSpoiler: Bool
     let isModified: Bool
     let isMyFeed: Bool
+    let isPublic: Bool
 }
 
 struct FeedContentRequest: Encodable {
