@@ -38,4 +38,5 @@ struct FeedContentRequest: Encodable {
     let feedContent: String
     let novelId: Int?
     let isSpoiler: Bool
+    let isPublic: Bool
 }

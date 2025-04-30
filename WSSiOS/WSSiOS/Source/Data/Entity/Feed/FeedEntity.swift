@@ -32,6 +32,7 @@ struct FeedEntity {
     let isSpoiler: Bool
     let isModified: Bool
     let isMyFeed: Bool
+    let isPublic: Bool
 }
 
 extension FeedResponse {
@@ -56,6 +57,7 @@ extension FeedResponse {
                           novelRating: self.novelRating,
                           isSpoiler: self.isSpoiler,
                           isModified: self.isModified,
-                          isMyFeed: self.isMyFeed)
+                          isMyFeed: self.isMyFeed,
+                          isPublic: self.isPublic)
     }
 }
