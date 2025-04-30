@@ -39,6 +39,7 @@ struct TotalFeedEntity {
     let isSpoiler: Bool
     let isModified: Bool
     let isMyFeed: Bool
+    let isPublic: Bool
 }
 
 extension TotalFeedResponse {
@@ -68,7 +69,8 @@ extension TotalFeedResponse {
             relevantCategories: categoryText,
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
-            isMyFeed: self.isMyFeed
+            isMyFeed: self.isMyFeed,
+            isPublic: self.isPublic
         )
     }
 }
