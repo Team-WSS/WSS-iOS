@@ -124,10 +124,10 @@ final class MyPageInfoViewController: UIViewController {
                     owner.pushToMyPageDeleteIDWarningViewController()
                 case .logoutAlert:
                     owner.presentToAlertViewController(iconImage: .icModalWarning,
-                                                       titleText: StringLiterals.Alert.logoutTitle,
+                                                       titleText: StringLiterals.MyPage.Logout.logoutTitle,
                                                        contentText: nil,
-                                                       leftTitle: StringLiterals.Alert.cancel,
-                                                       rightTitle: StringLiterals.Alert.logout,
+                                                       leftTitle: StringLiterals.MyPage.Logout.cancel,
+                                                       rightTitle: StringLiterals.MyPage.Logout.logout,
                                                        rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                     .bind(with: self, onNext: { owner, buttonType in
                         if buttonType == .right {
