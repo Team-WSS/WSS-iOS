@@ -152,6 +152,19 @@ enum StringLiterals {
                 return "오래된 순"
             }
         }
+        
+        var lastId: Int {
+            switch self {
+            case .newest:
+                return 0
+            case .oldest:
+                return 0
+            }
+        }
+        
+        var sizeData: Int {
+            return 10
+        }
     }
     
     enum AppMinimumVersion {
