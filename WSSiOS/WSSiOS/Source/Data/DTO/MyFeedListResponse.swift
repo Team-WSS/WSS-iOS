@@ -27,4 +27,5 @@ struct MyFeedResponse: Decodable {
     let novelRating: Float?
     let novelRatingCount: Int?
     let relevantCategories: [String]
+    let isPublic: Bool
 }
