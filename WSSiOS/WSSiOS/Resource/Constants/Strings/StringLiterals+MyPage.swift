@@ -43,13 +43,6 @@ extension StringLiterals {
             case termsOfService = "서비스 이용약관"
         }
         
-        enum SettingURL {
-            static let QNAInHompageURL = "https://websoso.notion.site/144600bd746881d4b012fbaf586c264d?pvs=105"
-            static let instaURL = "https://www.instagram.com/websoso_official/"
-            static let termsURL = "https://websoso.notion.site/143600bd746880668556fb005fcef491?pvs=4"
-            static let infoURL = "https://websoso.notion.site/143600bd74688050be18f4da31d9403e?pvs=4"
-        }
-        
         enum SettingInfo: String, CaseIterable {
             case changeProfile = "성별/나이 변경"
             case email = "이메일"
