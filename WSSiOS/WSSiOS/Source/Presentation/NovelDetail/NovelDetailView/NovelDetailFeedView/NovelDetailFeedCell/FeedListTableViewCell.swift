@@ -84,10 +84,11 @@ final class FeedListTableViewCell: UITableViewCell {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+            $0.top.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(10)
             
             stackView.do {
-                $0.setCustomSpacing(12, after: feedHeaderView)
+                $0.setCustomSpacing(10, after: feedHeaderView)
                 $0.setCustomSpacing(20, after: feedContentView)
             }
         }
@@ -159,7 +160,7 @@ final class FeedListTableViewCell: UITableViewCell {
             
             self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
-                $0.setCustomSpacing(20, after: feedConnectedNovelView)
+                $0.setCustomSpacing(10, after: feedConnectedNovelView)
             }
         } else {
             feedConnectedNovelView.removeFromSuperview()
@@ -199,7 +200,7 @@ final class FeedListTableViewCell: UITableViewCell {
                                             novelRating: feed.feed.novelRating)
             self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
-                $0.setCustomSpacing(20, after: feedConnectedNovelView)
+                $0.setCustomSpacing(10, after: feedConnectedNovelView)
             }
         } else {
             feedConnectedNovelView.removeFromSuperview()
