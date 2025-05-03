@@ -54,7 +54,6 @@ final class NormalSearchResultCountView: UIView {
         mainStackView.do {
             $0.axis = .horizontal
             $0.distribution = .equalSpacing
-            $0.alignment = .center
         }
     }
     
