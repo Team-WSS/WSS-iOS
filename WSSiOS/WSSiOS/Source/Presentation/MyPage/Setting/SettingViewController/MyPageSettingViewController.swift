@@ -89,22 +89,22 @@ final class MyPageSettingViewController: UIViewController {
                     owner.checkNotificationAuthorizationStatus()
                 case 3:
                     print("웹소소 공식 계정")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
+                    if let url = URL(string: URLs.Setting.instaURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 4:
                     print("문의하기 & 의견 보내기")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.QNAInHompageURL) {
+                    if let url = URL(string: URLs.Setting.QNAInHompageURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 5:
                     print("개인정보 처리 방침")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
+                    if let url = URL(string: URLs.Setting.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 6:
                     print("서비스 이용약관")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.infoURL) {
+                    if let url = URL(string: URLs.Setting.infoURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 default: break
