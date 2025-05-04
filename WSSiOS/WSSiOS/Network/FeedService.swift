@@ -11,8 +11,8 @@ import RxSwift
 
 protocol FeedService {
     func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse>
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void>
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void>
 }
 
 final class DefaultFeedService: NSObject, Networking, FeedService {
@@ -48,9 +48,13 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         }
     }
     
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void> {
         guard let feedContentData = try? JSONEncoder().encode(
-            FeedContentRequest(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler))
+            FeedContentRequest(relevantCategories: relevantCategories,
+                               feedContent: feedContent,
+                               novelId: novelId,
+                               isSpoiler: isSpoiler,
+                               isPublic: isPublic))
         else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
@@ -71,9 +75,13 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         }
     }
     
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void> {
         guard let feedContentData = try? JSONEncoder().encode(
-            FeedContentRequest(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler))
+            FeedContentRequest(relevantCategories: relevantCategories,
+                               feedContent: feedContent,
+                               novelId: novelId,
+                               isSpoiler: isSpoiler,
+                               isPublic: isPublic))
         else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }

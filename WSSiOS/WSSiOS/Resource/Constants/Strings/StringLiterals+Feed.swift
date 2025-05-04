@@ -11,21 +11,23 @@ extension StringLiterals {
     enum FeedEdit {
         static let complete = "완료"
         static let edit = "수정"
+        static let setPrivate = "비공개 기록"
         
         enum Category {
-            static let category = "카테고리"
-            static let multipleSelect = "중복 선택 가능"
+            static let category = "기록 작성"
+            static let multipleSelect = "장르는 여러 개 선택할 수 있어요."
         }
         
         enum Content {
-            static let writeContent = "내용 작성하기"
+            static let writeContent = "작품에 대한 이야기"
             static let spoiler = "스포일러"
             static let placeHolder = "웹소설과 관련된 글을 자유롭게 남겨보세요\n\n • 작품에 대한 한줄평\n • 여운이 남는 명장면, 명대사\n • 수다 떨고 싶은 작품 이야기\n • 다른 독자들과 공유하고 싶은 작품 정보 등"
         }
         
         enum Novel {
-            static let novelConnect = "작품 연결하기"
-            static let novelSearch = "작품 제목, 작가를 검색하세요"
+            static let novelConnect = "작품 연결"
+            static let novelConnectSub = "연결한 작품의 피드에도 함께 등록돼요."
+            static let novelSearch = "작품 제목, 작가로 검색하기"
             static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
             static let connectSelectedNovel = "해당 작품 연결"
         }
@@ -40,6 +42,7 @@ extension StringLiterals {
     enum Feed {
         static let spoilerText = "스포일러가 포함된 글 보기"
         static let modifiedText = "(수정됨)"
+        static let isPrivate = "비공개 기록이에요."
     }
     
     enum FeedDetail {

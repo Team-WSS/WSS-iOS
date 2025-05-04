@@ -30,6 +30,7 @@ struct FeedResponse: Decodable {
     var isSpoiler: Bool
     var isModified: Bool
     var isMyFeed: Bool
+    var isPublic: Bool
 }
 
 /// 소소피드 댓글 전체 조회

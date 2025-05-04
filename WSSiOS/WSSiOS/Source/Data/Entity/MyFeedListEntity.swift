@@ -33,6 +33,7 @@ struct MyFeedEntity {
     let novelRating: Float
     let novelRatingCount: Int
     let relevantCategories: [String]
+    let isPublic: Bool
 }
 
 extension MyFeedResponse {
@@ -60,7 +61,8 @@ extension MyFeedResponse {
                             title: self.title ?? "",
                             novelRating: makeNovelRating,
                             novelRatingCount: self.novelRatingCount ?? -1,
-                            relevantCategories: translatedGenres)
+                            relevantCategories: translatedGenres,
+                            isPublic: isPublic)
     }
     
     private func formattedDate() -> String {

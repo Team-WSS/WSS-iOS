@@ -16,7 +16,6 @@ final class FeedDetailContentView: UIView {
     
     private let contentLabel = UILabel()
     let linkNovelView = FeedNovelView()
-    private let genreLabel = UILabel()
     let reactView = FeedReactView()
     private let dividerView = UIView()
     
@@ -40,10 +39,6 @@ final class FeedDetailContentView: UIView {
             $0.textColor = .wssBlack
         }
         
-        genreLabel.do {
-            $0.textColor = .wssGray200
-        }
-        
         dividerView.do {
             $0.backgroundColor = .wssGray50
         }
@@ -52,7 +47,6 @@ final class FeedDetailContentView: UIView {
     private func setHierarchy() {
         self.addSubviews(contentLabel,
                          linkNovelView,
-                         genreLabel,
                          reactView,
                          dividerView)
     }
@@ -69,13 +63,8 @@ final class FeedDetailContentView: UIView {
             $0.height.equalTo(48)
         }
         
-        genreLabel.snp.makeConstraints {
-            $0.top.equalTo(linkNovelView.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-        
         reactView.snp.makeConstraints {
-            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
+            $0.top.equalTo(linkNovelView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -106,16 +95,10 @@ final class FeedDetailContentView: UIView {
                                    participants: data.novelRatingCount ?? 0)
         } else {
             linkNovelView.isHidden = true
-            genreLabel.snp.remakeConstraints {
+            reactView.snp.remakeConstraints {
                 $0.top.equalTo(contentLabel.snp.bottom).offset(20)
                 $0.leading.trailing.equalToSuperview().inset(20)
             }
-        }
-
-        genreLabel.do {
-            let genreCategories = data.genreCategories.joined(separator: ",")
-            $0.applyWSSFont(.body2, with: genreCategories)
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         reactView.do {

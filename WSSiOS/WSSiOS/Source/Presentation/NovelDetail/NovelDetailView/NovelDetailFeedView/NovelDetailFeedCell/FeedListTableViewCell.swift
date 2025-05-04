@@ -35,8 +35,8 @@ final class FeedListTableViewCell: UITableViewCell {
     let feedHeaderView = FeedListHeaderView()
     private let feedContentView = FeedListContentView()
     private let feedConnectedNovelView = FeedListConnectedNovelView()
-    private let feedCategoryView = FeedListCategoryView()
     private let feedReactView = FeedListReactView()
+    private let feedPrivateView = FeedListPrivateView()
     private let dividerView = UIView()
     
     //MARK: - Life Cycle
@@ -78,18 +78,18 @@ final class FeedListTableViewCell: UITableViewCell {
         stackView.addArrangedSubviews(feedHeaderView,
                                       feedContentView,
                                       feedConnectedNovelView,
-                                      feedCategoryView,
-                                      feedReactView)
+                                      feedReactView,
+                                      feedPrivateView)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+            $0.top.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(10)
             
             stackView.do {
-                $0.setCustomSpacing(12, after: feedHeaderView)
+                $0.setCustomSpacing(10, after: feedHeaderView)
                 $0.setCustomSpacing(20, after: feedContentView)
-                $0.setCustomSpacing(24, after: feedCategoryView)
             }
         }
         
@@ -160,15 +160,22 @@ final class FeedListTableViewCell: UITableViewCell {
             
             self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
-                $0.setCustomSpacing(20, after: feedConnectedNovelView)
+                $0.setCustomSpacing(10, after: feedConnectedNovelView)
             }
         } else {
             feedConnectedNovelView.removeFromSuperview()
         }
-        feedCategoryView.bindData(relevantCategories: feed.relevantCategories)
-        feedReactView.bindData(isLiked: feed.isLiked,
-                               likeCount: feed.likeCount,
-                               commentCount: feed.commentCount)
+        
+        if feed.isPublic {
+            feedReactView.bindData(isLiked: feed.isLiked,
+                                   likeCount: feed.likeCount,
+                                   commentCount: feed.commentCount)
+            feedPrivateView.removeFromSuperview()
+            self.stackView.addArrangedSubview(feedReactView)
+        } else {
+            feedReactView.removeFromSuperview()
+            self.stackView.addArrangedSubview(feedPrivateView)
+        }
     }
     
     func bindProfileFeedData(feed: MyFeedListItem) {
@@ -179,12 +186,11 @@ final class FeedListTableViewCell: UITableViewCell {
                                 isModified: feed.feed.isModified)
         feedContentView.bindData(feedContent: feed.feed.feedContent,
                                  isSpoiler: feed.feed.isSpoiler)
-        feedCategoryView.temporaryBindData(relevantCategories: feed.feed.relevantCategories)
         feedReactView.bindData(isLiked: feed.feed.isLiked,
                                likeCount: feed.feed.likeCount,
                                commentCount: feed.feed.commentCount)
         
-        //연결된 소설 유무에 따라 UI 조정
+        //연결된 소설 유무에 따른 UI 조정
         if feed.feed.novelId != -1,
            !feed.feed.title.isEmpty,
            feed.feed.novelRatingCount != -1,
@@ -194,10 +200,19 @@ final class FeedListTableViewCell: UITableViewCell {
                                             novelRating: feed.feed.novelRating)
             self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
-                $0.setCustomSpacing(20, after: feedConnectedNovelView)
+                $0.setCustomSpacing(10, after: feedConnectedNovelView)
             }
         } else {
             feedConnectedNovelView.removeFromSuperview()
+        }
+        
+        // 피드 공개 여부에 따른 UI 조정
+        if feed.feed.isPublic {
+            feedPrivateView.removeFromSuperview()
+            self.stackView.addArrangedSubview(feedReactView)
+        } else {
+            feedReactView.removeFromSuperview()
+            self.stackView.addArrangedSubview(feedPrivateView)
         }
     }
 }
