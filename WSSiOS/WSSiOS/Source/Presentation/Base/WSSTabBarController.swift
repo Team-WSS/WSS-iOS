@@ -85,7 +85,7 @@ final class WSSTabBarController: UITabBarController {
             self.setTabBarController()
         }
         
-        NotificationCenter.default.rx.notification(StringLiterals.NotificationCenter.moveToLibraryTab)
+        NotificationCenter.default.rx.notification(NotificationName.moveToLibraryTab)
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, notification in
                 if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
