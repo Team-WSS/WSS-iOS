@@ -42,7 +42,7 @@ extension StringLiterals {
     enum Feed {
         static let spoilerText = "스포일러가 포함된 글 보기"
         static let modifiedText = "(수정됨)"
-        static let isPrivate = "비공개 기록이에요."
+        static let isPrivate = "나만 볼 수 있는 글이에요."
     }
     
     enum FeedDetail {
