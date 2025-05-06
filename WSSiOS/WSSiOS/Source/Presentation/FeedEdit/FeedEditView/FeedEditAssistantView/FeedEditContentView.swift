@@ -82,7 +82,6 @@ final class FeedEditContentView: UIView {
                          spoilerView)
         feedTextWrapperView.addSubviews(feedTextView,
                                         placeholderLabel,
-                                        photoImageView,
                                         letterCountLabel)
     }
     
@@ -109,12 +108,12 @@ final class FeedEditContentView: UIView {
             $0.top.leading.equalToSuperview().inset(20)
         }
         
-        photoImageView.snp.makeConstraints {
-            $0.size.equalTo(24)
-            $0.leading.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(12)
-        }
-        
+//        photoImageView.snp.makeConstraints {
+//            $0.size.equalTo(24)
+//            $0.leading.equalToSuperview().inset(20)
+//            $0.bottom.equalToSuperview().inset(12)
+//        }
+   
         letterCountLabel.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(12.5)
