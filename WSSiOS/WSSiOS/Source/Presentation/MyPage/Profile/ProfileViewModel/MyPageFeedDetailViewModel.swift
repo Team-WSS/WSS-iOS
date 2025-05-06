@@ -80,9 +80,27 @@ final class MyPageFeedDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         input.viewWillAppearEvent
-            .bind(with: self, onNext: { owner, _ in
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
                 let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-                owner.isMyPage.accept(userId == self.profileId)
+                self.isMyPage.accept(userId == self.profileId)
+                
+                self.feedDataRelay.accept([])
+                self.lastFeedIdRelay.accept(0)
+                self.isLoadableRelay.accept(true)
+                self.isFetching = true
+            })
+            .flatMapLatest { [weak self] _ -> Observable<MyFeedListEntity> in
+                guard let self = self else { return .empty() }
+                return self.getUserFeed(userId: self.profileId,
+                                        lastFeedId: 0,
+                                        size: 20)
+            }
+            .subscribe(onNext: { [weak self] feedResult in
+                self?.updateFeedList(feedResult)
+            }, onError: { [weak self] error in
+                self?.isFetching = false
+                print(error.localizedDescription)
             })
             .disposed(by: disposeBag)
         
@@ -92,7 +110,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
                 self.pushToFeedDetailViewController.accept(feedId)
             })
             .disposed(by: disposeBag)
-
+        
         return Output(bindFeedData: self.feedDataRelay,
                       isMyPage: self.isMyPage,
                       pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable())
@@ -102,8 +120,8 @@ final class MyPageFeedDetailViewModel: ViewModelType {
         let newFeedData = feedResult.feeds
             .map { feed in
                 MyFeedListItem(feed: feed,
-                             avatarImage: self.profileData.avatarImage,
-                             nickname: self.profileData.nickname)
+                               avatarImage: self.profileData.avatarImage,
+                               nickname: self.profileData.nickname)
             }
         
         if let lastFeed = feedResult.feeds.last {
