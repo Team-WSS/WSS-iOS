@@ -179,6 +179,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             $0.applyWSSFont(.body2, with: data.commentType.commentContent(originalContent: data.commentContent))
             $0.textColor = data.commentType.textColor
             $0.numberOfLines = 0
+            $0.isUserInteractionEnabled = data.commentType == .spoiler ? true : false
         }
         
         self.isModifiedLabel.isHidden = !data.commentType.showModifiedLabel
