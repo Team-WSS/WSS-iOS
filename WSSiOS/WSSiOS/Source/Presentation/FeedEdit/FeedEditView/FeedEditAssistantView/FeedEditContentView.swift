@@ -70,6 +70,7 @@ final class FeedEditContentView: UIView {
         
         photoImageView.do {
             $0.image = .icPhoto
+            
         }
         
         letterCountLabel.do {
