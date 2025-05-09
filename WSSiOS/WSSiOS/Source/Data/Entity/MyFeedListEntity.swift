@@ -35,6 +35,7 @@ struct MyFeedEntity {
     let relevantCategories: [String]
     let isPublic: Bool
     
+    let thumbnailImage: String
     let hasImage: Bool
     let imageCount: Int
 }
@@ -66,6 +67,7 @@ extension MyFeedResponse {
                             novelRatingCount: self.novelRatingCount ?? -1,
                             relevantCategories: translatedGenres,
                             isPublic: isPublic,
+                            thumbnailImage: "",
                             hasImage: true,
                             imageCount: 20)
     }

@@ -37,7 +37,6 @@ final class FeedListImageView: UIView {
             $0.layer.cornerRadius = 14
             $0.clipsToBounds = true
             $0.contentMode = .scaleAspectFill
-            $0.image = .test
         }
         
         imageCountBackgroundView.do {
@@ -48,7 +47,6 @@ final class FeedListImageView: UIView {
         
         imageCountLabel.do {
             $0.textColor = .wssWhite
-            $0.applyWSSFont(.body5, with: "20")
         }
     }
     
@@ -77,5 +75,12 @@ final class FeedListImageView: UIView {
             imageCountBackgroundView.layoutIfNeeded()
             imageCountBackgroundView.layer.cornerRadius = imageCountBackgroundView.frame.height / 2
         }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(thumbnailImage: String, imageCount: Int) {
+        thumbnailImageView.kfSetImage(url: thumbnailImage)
+        imageCountLabel.applyWSSFont(.body5, with: String(imageCount))
     }
 }
