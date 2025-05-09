@@ -37,6 +37,8 @@ final class FeedListImageView: UIView {
             $0.layer.cornerRadius = 14
             $0.clipsToBounds = true
             $0.contentMode = .scaleAspectFill
+            // 서버 연결 시 삭제 예정
+            $0.image = .test
         }
         
         imageCountBackgroundView.do {
