@@ -203,23 +203,34 @@ final class FeedListTableViewCell: UITableViewCell {
                                likeCount: feed.feed.likeCount,
                                commentCount: feed.feed.commentCount)
         
-        //연결된 소설 유무에 따른 UI 조정
-        if feed.feed.novelId != -1,
-           !feed.feed.title.isEmpty,
-           feed.feed.novelRatingCount != -1,
-           feed.feed.novelRating != -1 {
+        //연결된 작품 바인딩
+        let hasConnectedNovel = feed.feed.novelId != -1
+        && !feed.feed.title.isEmpty
+        && feed.feed.novelRatingCount != -1
+        && feed.feed.novelRating != -1
+        
+        if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.feed.title,
                                             novelRatingCount: feed.feed.novelRatingCount,
                                             novelRating: feed.feed.novelRating)
-            self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
-            stackView.do {
-                $0.setCustomSpacing(10, after: feedConnectedNovelView)
-            }
+            
+            stackView.insertArrangedSubview(feedConnectedNovelView, at: 3)
+            stackView.setCustomSpacing(10, after: feedConnectedNovelView)
         } else {
             feedConnectedNovelView.removeFromSuperview()
         }
         
-        // 피드 공개 여부에 따른 UI 조정
+        // 첨부 이미지 바인딩
+        if (feed.feed.hasImage && !feed.feed.isSpoiler) {
+            stackView.insertArrangedSubview(feedImageView, at: 2)
+            
+            let spacingAfterImage: CGFloat = hasConnectedNovel ? 20 : 10
+            stackView.setCustomSpacing(spacingAfterImage, after: feedImageView)
+        } else {
+            feedImageView.removeFromSuperview()
+        }
+        
+        // 비공개 여부 바인딩
         if feed.feed.isPublic {
             feedPrivateView.removeFromSuperview()
             self.stackView.addArrangedSubview(feedReactView)
