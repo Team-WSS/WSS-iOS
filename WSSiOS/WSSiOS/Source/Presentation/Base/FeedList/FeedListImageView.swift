@@ -15,7 +15,7 @@ final class FeedListImageView: UIView {
     //MARK: - Components
     
     private let thumbnailImageView = UIImageView()
-    private let imageCountBackgroundVIew = UIView()
+    private let imageCountBackgroundView = UIView()
     private let imageCountLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -40,10 +40,10 @@ final class FeedListImageView: UIView {
             $0.image = .test
         }
         
-        imageCountBackgroundVIew.do {
+        imageCountBackgroundView.do {
             $0.backgroundColor = .wssGrayToast
-            $0.layer.cornerRadius = 14
             $0.clipsToBounds = true
+            $0.layoutMargins = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
         }
         
         imageCountLabel.do {
@@ -55,8 +55,8 @@ final class FeedListImageView: UIView {
     private func setHierarchy() {
         self.addSubview(thumbnailImageView)
         
-        thumbnailImageView.addSubview(imageCountBackgroundVIew)
-        imageCountBackgroundVIew.addSubview(imageCountLabel)
+        thumbnailImageView.addSubview(imageCountBackgroundView)
+        imageCountBackgroundView.addSubview(imageCountLabel)
     }
     
     private func setLayout() {
@@ -64,16 +64,18 @@ final class FeedListImageView: UIView {
             $0.edges.equalToSuperview()
             $0.height.equalTo(160)
             
-            imageCountBackgroundVIew.snp.makeConstraints {
-                $0.width.equalTo(28)
-                $0.height.equalTo(25)
+            imageCountBackgroundView.snp.makeConstraints {
                 $0.trailing.equalToSuperview().inset(12)
                 $0.bottom.equalToSuperview().inset(10)
+                $0.height.greaterThanOrEqualTo(25)
                 
                 imageCountLabel.snp.makeConstraints {
-                    $0.center.equalToSuperview()
+                    $0.edges.equalToSuperview().inset(imageCountBackgroundView.layoutMargins)
                 }
             }
+            
+            imageCountBackgroundView.layoutIfNeeded()
+            imageCountBackgroundView.layer.cornerRadius = imageCountBackgroundView.frame.height / 2
         }
     }
 }
