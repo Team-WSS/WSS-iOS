@@ -40,6 +40,9 @@ struct TotalFeedEntity {
     let isModified: Bool
     let isMyFeed: Bool
     let isPublic: Bool
+    // 첨부 이미지 관련
+    let hasImage: Bool
+    let imageCount: Int
 }
 
 extension TotalFeedResponse {
@@ -70,7 +73,10 @@ extension TotalFeedResponse {
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
             isMyFeed: self.isMyFeed,
-            isPublic: self.isPublic
+            isPublic: self.isPublic,
+            //TODO: DTO 수정
+            hasImage: true,
+            imageCount: 20
         )
     }
 }
