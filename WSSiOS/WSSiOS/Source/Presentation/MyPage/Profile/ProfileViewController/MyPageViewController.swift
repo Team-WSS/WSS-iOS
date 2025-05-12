@@ -339,7 +339,7 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, data in
                 let (userId, isMyPage) = data
                 if isMyPage {
-                    NotificationCenter.default.post(name: StringLiterals.NotificationCenter.moveToLibraryTab, object: nil)
+                    NotificationCenter.default.post(name: NotificationName.moveToLibraryTab, object: nil)
                 } else {
                     owner.pushToLibraryViewController(userId: userId)
                 }
@@ -354,7 +354,7 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, data in
                 let (userId, pageIndex, isMyPage) = data
                 if isMyPage {
-                    NotificationCenter.default.post(name: StringLiterals.NotificationCenter.moveToLibraryTab, object: pageIndex)
+                    NotificationCenter.default.post(name: NotificationName.moveToLibraryTab, object: pageIndex)
                 } else {
                     owner.pushToLibraryViewController(userId: userId, pageIndex: pageIndex)
                 }

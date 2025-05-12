@@ -14,8 +14,7 @@ final class FeedDetailUnknownFeedErrorViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let popFeedDetailViewControllerNotificationName = Notification.Name("PopFeedDetailViewControllerNotificationName")
-    
+   
     //MARK: - UI Components
     
     private let rootView = FeedDetailUnknownFeedErrorView()
@@ -34,7 +33,7 @@ final class FeedDetailUnknownFeedErrorViewController: UIViewController {
         rootView.confirmationButton.rx.tap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                NotificationCenter.default.post(name: owner.popFeedDetailViewControllerNotificationName,
+                NotificationCenter.default.post(name: NotificationName.popFeedDetailViewController,
                                                 object: nil)
                 owner.dismiss(animated: true)
             })

@@ -130,7 +130,7 @@ final class FeedDetailViewController: UIViewController {
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
             commentDropdownDidTap: commentDropdownButtonDidTap,
             reloadComments: reloadComments.asObservable(),
-            popFeedDetailViewControllerNotification: NotificationCenter.default.rx.notification(Notification.Name("PopFeedDetailViewControllerNotificationName")).asObservable()
+            popFeedDetailViewControllerNotification: NotificationCenter.default.rx.notification(NotificationName.popFeedDetailViewController).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
