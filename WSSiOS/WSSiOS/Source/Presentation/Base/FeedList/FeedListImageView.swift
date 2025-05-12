@@ -18,6 +18,8 @@ final class FeedListImageView: UIView {
     private let imageCountBackgroundView = UIView()
     private let imageCountLabel = UILabel()
     
+    private let backgroundHeight: CGFloat = 25
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -43,6 +45,7 @@ final class FeedListImageView: UIView {
         
         imageCountBackgroundView.do {
             $0.backgroundColor = .wssGrayToast
+            $0.layer.cornerRadius = backgroundHeight / 2
             $0.clipsToBounds = true
             $0.layoutMargins = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
         }
@@ -67,15 +70,12 @@ final class FeedListImageView: UIView {
             imageCountBackgroundView.snp.makeConstraints {
                 $0.trailing.equalToSuperview().inset(12)
                 $0.bottom.equalToSuperview().inset(10)
-                $0.height.greaterThanOrEqualTo(25)
+                $0.height.equalTo(25)
                 
                 imageCountLabel.snp.makeConstraints {
                     $0.edges.equalToSuperview().inset(imageCountBackgroundView.layoutMargins)
                 }
             }
-            
-            imageCountBackgroundView.layoutIfNeeded()
-            imageCountBackgroundView.layer.cornerRadius = imageCountBackgroundView.frame.height / 2
         }
     }
     
