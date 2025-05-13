@@ -15,6 +15,20 @@ protocol FeedRepository {
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void>
 }
 
+struct TestFeedRepository: FeedRepository {
+    func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
+        return Observable.just(TotalFeedListEntity.dummyFullData)
+    }
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void> {
+        return Observable.just(())
+    }
+}
+
 struct DefaultFeedRepository: FeedRepository {
     private var feedService: FeedService
     private let size = 20

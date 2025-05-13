@@ -34,6 +34,10 @@ struct MyFeedEntity {
     let novelRatingCount: Int
     let relevantCategories: [String]
     let isPublic: Bool
+    
+    let thumbnailImage: String
+    let hasImage: Bool
+    let imageCount: Int
 }
 
 extension MyFeedResponse {
@@ -62,7 +66,10 @@ extension MyFeedResponse {
                             novelRating: makeNovelRating,
                             novelRatingCount: self.novelRatingCount ?? -1,
                             relevantCategories: translatedGenres,
-                            isPublic: isPublic)
+                            isPublic: isPublic,
+                            thumbnailImage: "",
+                            hasImage: true,
+                            imageCount: 20)
     }
     
     private func formattedDate() -> String {
