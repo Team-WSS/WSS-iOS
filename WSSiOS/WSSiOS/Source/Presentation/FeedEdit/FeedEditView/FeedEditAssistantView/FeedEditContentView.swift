@@ -19,7 +19,7 @@ final class FeedEditContentView: UIView {
     let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
     let placeholderLabel = UILabel()
-    private let photoImageView = UIImageView()
+    let photoAddButton = UIButton()
     private let letterCountLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -68,8 +68,8 @@ final class FeedEditContentView: UIView {
             $0.numberOfLines = 0
         }
         
-        photoImageView.do {
-            $0.image = .icPhoto
+        photoAddButton.do {
+            $0.setImage(.icPhoto, for: .normal)
         }
         
         letterCountLabel.do {
@@ -82,6 +82,7 @@ final class FeedEditContentView: UIView {
                          spoilerView)
         feedTextWrapperView.addSubviews(feedTextView,
                                         placeholderLabel,
+                                        photoAddButton,
                                         letterCountLabel)
     }
     
@@ -108,11 +109,11 @@ final class FeedEditContentView: UIView {
             $0.top.leading.equalToSuperview().inset(20)
         }
         
-//        photoImageView.snp.makeConstraints {
-//            $0.size.equalTo(24)
-//            $0.leading.equalToSuperview().inset(20)
-//            $0.bottom.equalToSuperview().inset(12)
-//        }
+        photoAddButton.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.leading.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(12)
+        }
    
         letterCountLabel.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
