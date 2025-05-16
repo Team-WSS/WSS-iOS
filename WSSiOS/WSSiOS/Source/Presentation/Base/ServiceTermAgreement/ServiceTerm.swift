@@ -50,9 +50,9 @@ enum ServiceTerm: CaseIterable {
     var connectedURLString: String? {
         switch self {
         case .serviceAgreement:
-            return "https://websoso.notion.site/143600bd74688050be18f4da31d9403e"
+            return "https://websoso.notion.site/143600bd74688050be18f4da31d9403e?pvs=4"
         case .privacyPolicy:
-            return "https://websoso.notion.site/198600bd746880699fd6f22dd42a7215"
+            return "https://websoso.notion.site/143600bd746880668556fb005fcef491?pvs=143"
         case .marketingConsent:
             return nil
         }
