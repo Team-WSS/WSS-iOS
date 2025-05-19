@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 import Then
 
+protocol FeedAddImageCollectionDelegate: AnyObject {
+    func cancelButtonDidTap()
+}
+
 final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Components
