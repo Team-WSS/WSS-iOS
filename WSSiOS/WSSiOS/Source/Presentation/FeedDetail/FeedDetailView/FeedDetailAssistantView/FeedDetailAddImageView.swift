@@ -62,14 +62,14 @@ final class FeedDetailAddImageView: UIView {
         }
     }
     
-    func bindImages(images: [UIImage]) {
+    func bindImages(imageURLs: [URL?]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        let imageWidth = calculateImageWidth(for: images.count)
+        let imageWidth = calculateImageWidth(for: imageURLs.count)
         
-        for image in images {
+        for imageURL in imageURLs {
             let imageView = UIImageView().then {
-                $0.image = image
+                $0.kfSetImage(url: imageURL)
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
                 $0.contentMode = .scaleAspectFill
@@ -78,7 +78,7 @@ final class FeedDetailAddImageView: UIView {
             stackView.addArrangedSubview(imageView)
         }
         
-        scrollView.isScrollEnabled = images.count > 3
+        scrollView.isScrollEnabled = imageURLs.count > 3
         
         stackView.snp.updateConstraints {
             $0.height.equalTo(imageWidth)
