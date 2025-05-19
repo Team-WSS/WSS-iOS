@@ -33,12 +33,21 @@ struct FeedEntity {
     let isModified: Bool
     let isMyFeed: Bool
     let isPublic: Bool
+    
+    // 피드 첨부 이미지 관련
+    let hasImage: Bool
+    let imageCount: Int
+    let imageURLs: [URL?]
 }
 
 extension FeedResponse {
     func toEntity() -> FeedEntity {
         let userProfileImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         let hasLinkedNovel = self.novelId != nil
+        let hasImage = self.images.count > 0
+        let imageCount = self.images.count
+       // let imageURLs: [URL?] = self.images.map { KingFisherRxHelper.makeBucketImageURL(path: $0) }
+        let imageURLs: [URL?] = self.images.map { URL(string: $0)! }
         
         return FeedEntity(userId: self.userId,
                           userNickname: self.nickname,
@@ -58,6 +67,9 @@ extension FeedResponse {
                           isSpoiler: self.isSpoiler,
                           isModified: self.isModified,
                           isMyFeed: self.isMyFeed,
-                          isPublic: self.isPublic)
+                          isPublic: self.isPublic,
+                          hasImage: hasImage,
+                          imageCount: imageCount,
+                          imageURLs: imageURLs)
     }
 }
