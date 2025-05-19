@@ -113,10 +113,19 @@ final class FeedEditView: UIView {
         }
         
         stackView.setCustomSpacing(12, after: feedEditCategoryView)
-        stackView.setCustomSpacing(14, after: feedEditContentView)
     }
     
     //MARK: - Custom Method
+    
+    func showAddImages(hasImage: Bool) {
+        if hasImage {
+            stackView.insertArrangedSubview(feedEditAddImageView, at: 2)
+            stackView.setCustomSpacing(14, after: feedEditContentView)
+        } else {
+            feedEditAddImageView.removeFromSuperview()
+            stackView.setCustomSpacing(36, after: feedEditContentView)
+        }
+    }
     
     func enableCompleteButton(isAbled: Bool) {
         completeButton.do {
