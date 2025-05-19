@@ -53,6 +53,8 @@ final class FeedEditViewModel: ViewModelType {
     private let connectedNovelTitle = BehaviorRelay<String?>(value: nil)
     private let showAlreadyConnectedToast = PublishRelay<Void>()
     private let showStopEditingAlert = PublishRelay<Void>()
+    private let presentPhotoPicker = PublishRelay<Void>()
+    var selectedImages = BehaviorRelay<[UIImage]>(value: [])
     
     //MARK: - Life Cycle
     
@@ -83,6 +85,7 @@ final class FeedEditViewModel: ViewModelType {
         let feedNovelConnectedNotification: Observable<Notification>
         let novelRemoveButtonDidTap: ControlEvent<Void>
         let stopEditButtonDidTap: Observable<Void>
+        let photoAddButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -99,6 +102,8 @@ final class FeedEditViewModel: ViewModelType {
         let connectedNovelTitle: Observable<String?>
         let showAlreadyConnectedToast: Observable<Void>
         let showStopEditingAlert: Observable<Void>
+        let presentPhotoPicker: Observable<Void>
+        let selectedImages: Observable<[UIImage]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -261,6 +266,12 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.photoAddButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentPhotoPicker.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
@@ -273,7 +284,9 @@ final class FeedEditViewModel: ViewModelType {
                       presentFeedEditNovelConnectModalViewController: presentFeedEditNovelConnectModalViewController.asObservable(),
                       connectedNovelTitle: connectedNovelTitle.asObservable(),
                       showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
-                      showStopEditingAlert: showStopEditingAlert.asObservable())
+                      showStopEditingAlert: showStopEditingAlert.asObservable(),
+                      presentPhotoPicker: presentPhotoPicker.asObservable(),
+                      selectedImages: selectedImages.asObservable())
     }
     
     // MARK: - Custom Method
