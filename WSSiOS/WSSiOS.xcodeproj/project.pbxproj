@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 71;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,40 +22,28 @@
 		39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB382D38D9A7009F071A /* FirebaseAnalytics */; };
 		39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
-		B9DDB08B2D70300A00D8D4B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9DDB0892D70300A00D8D4B3 /* GoogleService-Info.plist */; };
-		B9DDB08C2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9DDB08A2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
 		CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDE0C0302D23B04D000BC822 /* AmplitudeSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2CD229182B42E685005400BE /* WSSiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WSSiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B9DDB0892D70300A00D8D4B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B9DDB08A2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
-		CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WSSiOS.entitlements; sourceTree = "<group>"; };
-		E486AE282CFEB2CC00465AEE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		E4EC12DF2D06FDB200B961BB /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E44D2D582DDC6565003EF82A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Debug.xcconfig,
+				Info.plist,
+				Release.xcconfig,
+			);
+			target = 2CD229172B42E685005400BE /* WSSiOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B90DFC2A2D8E896200D62D76 /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
-		E4E960BE2D7718A50058E6CC /* Feed */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Feed; sourceTree = "<group>"; };
-		E4E9613E2D7718CB0058E6CC /* Network */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Network; sourceTree = "<group>"; };
-		E4E961A42D7718D00058E6CC /* Data */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Data; sourceTree = "<group>"; };
-		E4E961E62D7718D50058E6CC /* FeedDetail */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FeedDetail; sourceTree = "<group>"; };
-		E4E962142D7718E00058E6CC /* NovelReview */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NovelReview; sourceTree = "<group>"; };
-		E4E962412D7718E20058E6CC /* Login */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Login; sourceTree = "<group>"; };
-		E4E962632D7718E40058E6CC /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
-		E4E962992D7718E60058E6CC /* NovelDetail */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NovelDetail; sourceTree = "<group>"; };
-		E4E962CA2D7718E80058E6CC /* FeedEdit */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FeedEdit; sourceTree = "<group>"; };
-		E4E962E92D7718EA0058E6CC /* Library */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Library; sourceTree = "<group>"; };
-		E4E963262D7718EB0058E6CC /* Search */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Search; sourceTree = "<group>"; };
-		E4E963692D7718F30058E6CC /* Profile */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Profile; sourceTree = "<group>"; };
-		E4E963AD2D7718F40058E6CC /* Setting */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Setting; sourceTree = "<group>"; };
-		E4E963FB2D7719030058E6CC /* Base */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Base; sourceTree = "<group>"; };
-		E4E964502D77190B0058E6CC /* Resource */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resource; sourceTree = "<group>"; };
-		E4E964792D77190D0058E6CC /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
+		E44D2BBB2DDC6565003EF82A /* WSSiOS */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E44D2D582DDC6565003EF82A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = WSSiOS; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,19 +74,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2CCBF9E92B4C1E2200D787C2 /* MyPage */ = {
-			isa = PBXGroup;
-			children = (
-				E4E963AD2D7718F40058E6CC /* Setting */,
-				E4E963692D7718F30058E6CC /* Profile */,
-			);
-			path = MyPage;
-			sourceTree = "<group>";
-		};
 		2CD2290F2B42E685005400BE = {
 			isa = PBXGroup;
 			children = (
-				2CD2291A2B42E685005400BE /* WSSiOS */,
+				E44D2BBB2DDC6565003EF82A /* WSSiOS */,
 				2CD229192B42E685005400BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,51 +88,6 @@
 				2CD229182B42E685005400BE /* WSSiOS.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		2CD2291A2B42E685005400BE /* WSSiOS */ = {
-			isa = PBXGroup;
-			children = (
-				B9DDB0892D70300A00D8D4B3 /* GoogleService-Info.plist */,
-				B9DDB08A2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist */,
-				CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */,
-				E4E964792D77190D0058E6CC /* App */,
-				E4E964502D77190B0058E6CC /* Resource */,
-				2CD2294F2B42E9AD005400BE /* Source */,
-				E4E9613E2D7718CB0058E6CC /* Network */,
-				2CD229292B42E687005400BE /* Info.plist */,
-				E486AE282CFEB2CC00465AEE /* Debug.xcconfig */,
-				E4EC12DF2D06FDB200B961BB /* Release.xcconfig */,
-			);
-			path = WSSiOS;
-			sourceTree = "<group>";
-		};
-		2CD2294F2B42E9AD005400BE /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				2CD229502B42E9C8005400BE /* Presentation */,
-				E4E961A42D7718D00058E6CC /* Data */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		2CD229502B42E9C8005400BE /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				E4E962142D7718E00058E6CC /* NovelReview */,
-				E4E962412D7718E20058E6CC /* Login */,
-				E4E962632D7718E40058E6CC /* Onboarding */,
-				E4E962992D7718E60058E6CC /* NovelDetail */,
-				E4E961E62D7718D50058E6CC /* FeedDetail */,
-				E4E962CA2D7718E80058E6CC /* FeedEdit */,
-				E4E960BE2D7718A50058E6CC /* Feed */,
-				E4E962E92D7718EA0058E6CC /* Library */,
-				B90DFC2A2D8E896200D62D76 /* Home */,
-				E4E963262D7718EB0058E6CC /* Search */,
-				2CCBF9E92B4C1E2200D787C2 /* MyPage */,
-				E4E963FB2D7719030058E6CC /* Base */,
-			);
-			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,23 +106,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				B90DFC2A2D8E896200D62D76 /* Home */,
-				E4E960BE2D7718A50058E6CC /* Feed */,
-				E4E9613E2D7718CB0058E6CC /* Network */,
-				E4E961A42D7718D00058E6CC /* Data */,
-				E4E961E62D7718D50058E6CC /* FeedDetail */,
-				E4E962142D7718E00058E6CC /* NovelReview */,
-				E4E962412D7718E20058E6CC /* Login */,
-				E4E962632D7718E40058E6CC /* Onboarding */,
-				E4E962992D7718E60058E6CC /* NovelDetail */,
-				E4E962CA2D7718E80058E6CC /* FeedEdit */,
-				E4E962E92D7718EA0058E6CC /* Library */,
-				E4E963262D7718EB0058E6CC /* Search */,
-				E4E963692D7718F30058E6CC /* Profile */,
-				E4E963AD2D7718F40058E6CC /* Setting */,
-				E4E963FB2D7719030058E6CC /* Base */,
-				E4E964502D77190B0058E6CC /* Resource */,
-				E4E964792D77190D0058E6CC /* App */,
+				E44D2BBB2DDC6565003EF82A /* WSSiOS */,
 			);
 			name = WSSiOS;
 			packageProductDependencies = (
@@ -265,8 +183,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9DDB08B2D70300A00D8D4B3 /* GoogleService-Info.plist in Resources */,
-				B9DDB08C2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +201,8 @@
 /* Begin XCBuildConfiguration section */
 		2CD2292A2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E486AE282CFEB2CC00465AEE /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = E44D2BBB2DDC6565003EF82A /* WSSiOS */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -350,7 +267,8 @@
 		};
 		2CD2292B2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E4EC12DF2D06FDB200B961BB /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = E44D2BBB2DDC6565003EF82A /* WSSiOS */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -409,7 +327,8 @@
 		};
 		2CD2292D2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E486AE282CFEB2CC00465AEE /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = E44D2BBB2DDC6565003EF82A /* WSSiOS */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -451,7 +370,8 @@
 		};
 		2CD2292E2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E4EC12DF2D06FDB200B961BB /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = E44D2BBB2DDC6565003EF82A /* WSSiOS */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
