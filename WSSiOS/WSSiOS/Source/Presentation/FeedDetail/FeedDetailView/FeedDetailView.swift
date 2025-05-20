@@ -130,7 +130,7 @@ final class FeedDetailView: UIView {
         }
         
         replyView.snp.makeConstraints {
-            $0.top.equalTo(feedContentView.snp.bottom)
+            $0.top.equalTo(feedContentView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         

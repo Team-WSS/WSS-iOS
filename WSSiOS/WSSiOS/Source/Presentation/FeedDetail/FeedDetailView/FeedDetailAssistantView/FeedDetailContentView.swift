@@ -15,9 +15,12 @@ final class FeedDetailContentView: UIView {
     //MARK: - UI Components
     
     private let stackView = UIStackView()
+    private let contentWrapperView = UIView()
     private let contentLabel = UILabel()
     private let addImageView = FeedDetailAddImageView()
+    private let linkNovelWrapperView = UIView()
     let linkNovelView = FeedNovelView()
+    private let reactWrapperView = UIView()
     let reactView = FeedReactView()
     private let dividerView = UIView()
     
@@ -55,22 +58,31 @@ final class FeedDetailContentView: UIView {
     private func setHierarchy() {
         self.addSubviews(stackView,
                          dividerView)
-        stackView.addArrangedSubviews(contentLabel,
+        contentWrapperView.addSubview(contentLabel)
+        linkNovelWrapperView.addSubview(linkNovelView)
+        reactWrapperView.addSubview(reactView)
+        stackView.addArrangedSubviews(contentWrapperView,
                                       addImageView,
-                                      linkNovelView,
-                                      reactView)
+                                      linkNovelWrapperView,
+                                      reactWrapperView)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.edges.equalToSuperview()
+        }
+
+        [contentLabel, linkNovelView, reactView].forEach {
+            $0.snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview()
+                $0.horizontalEdges.equalToSuperview().inset(20)
+            }
         }
         
         dividerView.snp.makeConstraints {
-            $0.top.equalTo(stackView.snp.bottom).offset(22)
+            $0.top.equalTo(stackView.snp.bottom).offset(16)
             $0.height.equalTo(7)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
         }
     }
     
@@ -83,12 +95,12 @@ final class FeedDetailContentView: UIView {
         }
         
         if data.hasLinkedNovel {
-            stackView.insertArrangedSubview(linkNovelView, at: 2)
+            stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
             linkNovelView.bindData(title: data.novelTitle ?? "",
                                    rating: data.novelRating ?? 0,
                                    participants: data.novelRatingCount ?? 0)
         } else {
-            linkNovelView.removeFromSuperview()
+            linkNovelWrapperView.removeFromSuperview()
         }
         
         reactView.do {
