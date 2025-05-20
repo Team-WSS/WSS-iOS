@@ -8,8 +8,8 @@
 import Foundation
 
 struct UserNovelPreferenceResponse: Decodable {
-    let attractivePoints: [String]?
-    let keywords: [KeywordResponse]?
+    let attractivePoints: [String]
+    let keywords: [KeywordResponse]
 }
 
 struct UserGenrePreferenceListResponse: Decodable {
@@ -18,6 +18,6 @@ struct UserGenrePreferenceListResponse: Decodable {
 
 struct UserGenrePreferenceResponse: Decodable {
     let genreName: String
-    let genreImage: String
+    let genreImageURL: URL?
     let genreCount: Int
 }

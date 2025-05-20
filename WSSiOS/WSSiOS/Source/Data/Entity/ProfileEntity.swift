@@ -36,3 +36,8 @@ extension OtherProfileResponse {
                                   isProfilePublic: self.isProfilePublic)
     }
 }
+
+struct ProfileFeedData {
+    let nickname: String
+    let avatarImage: String
+}

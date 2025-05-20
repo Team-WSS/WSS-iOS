@@ -17,9 +17,9 @@ struct UserNovelListEntity {
 extension UserNovelListResponse {
     func toEntity() -> UserNovelListEntity {
         return UserNovelListEntity(userNovelCount: self.userNovelCount,
-                               userNovelRating: self.userNovelRating,
-                               isLoadable: self.isLoadable,
-                               userNovels: self.userNovels.map { $0.toEntity() })
+                                   userNovelRating: self.userNovelRating,
+                                   isLoadable: self.isLoadable,
+                                   userNovels: self.userNovels.map { $0.toEntity() })
     }
 }
 
@@ -39,12 +39,12 @@ extension UserNovelResponse {
         let hasNovelRating = self.novelRating != 0.0
         
         return UserNovelEntity(userNovelId: self.userNovelId,
-                                   novelId: self.novelId,
-                                   author: self.author,
-                                   novelImage: self.novelImage,
-                                   title: self.title,
-                                   novelRating: novelRatingText,
-                                   hasNovelRating: hasNovelRating)
+                               novelId: self.novelId,
+                               author: self.author,
+                               novelImage: self.novelImage,
+                               title: self.title,
+                               novelRating: novelRatingText,
+                               hasNovelRating: hasNovelRating)
     }
 }
 
