@@ -23,7 +23,7 @@ protocol UserInfoRepository {
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -114,7 +114,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         return userService.getNicknameisValid(nickname: nickname)
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity> {
         return userService.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
             .map { $0.toEntity() }
             .asObservable()

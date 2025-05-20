@@ -90,7 +90,6 @@ enum WSSTabBarItem: Int, CaseIterable {
                         userBlockRepository: DefaultUserBlockRepository(
                             blocksService: DefaultBlocksService())),
                     profileId: userId))
-            myPageVC.entryType = .tabBar
             return myPageVC
         }
     }

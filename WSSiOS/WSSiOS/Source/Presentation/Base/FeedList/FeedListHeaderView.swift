@@ -126,8 +126,8 @@ final class FeedListHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(avatarImage: String, nickname: String, createdDate: String, isModified: Bool) {
-        userImageView.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
+    func bindData(avatarImageURL: URL?, nickname: String, createdDate: String, isModified: Bool) {
+        userImageView.kfSetImage(url: avatarImageURL)
         userNicknameLabel.applyWSSFont(.title2, with: nickname)
         createdDateLabel.applyWSSFont(.body5, with: createdDate)
         isModifiedLabel.isHidden = !isModified

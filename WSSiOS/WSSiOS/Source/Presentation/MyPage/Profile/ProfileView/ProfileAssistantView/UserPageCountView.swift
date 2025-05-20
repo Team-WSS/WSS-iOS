@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageCountView: UIView {
+final class UserPageCountView: UIView {
     
     //MARK: - Properties
     
@@ -18,7 +18,7 @@ final class MyPageCountView: UIView {
     
     //MARK: - Components
     
-    var countLabel = UILabel()
+    private var countLabel = UILabel()
     private let countLimitLabel = UILabel()
     
     // MARK: - Life Cycle
@@ -66,5 +66,9 @@ final class MyPageCountView: UIView {
             $0.top.leading.bottom.equalToSuperview()
             $0.trailing.equalTo(countLimitLabel.snp.leading)
         }
+    }
+    
+    func bindData(text: String) {
+        countLabel.applyWSSFont(.body4, with: String(text.count))
     }
 }

@@ -25,7 +25,7 @@ struct TotalFeedEntity {
     let feedId: Int
     let userId: Int
     let nickname: String
-    let avatarImage: String
+    let avatarImage: URL?
     let createdDate: String
     let feedContent: String
     let likeCount: Int
@@ -48,6 +48,7 @@ struct TotalFeedEntity {
 
 extension TotalFeedResponse {
     func toEntity() -> TotalFeedEntity {
+        let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         let categoryText = self.relevantCategories.joined(separator: ", ")
         let makeNovelRating: Float
         if let novelRating = self.novelRating {
@@ -60,7 +61,7 @@ extension TotalFeedResponse {
             feedId: self.feedId,
             userId: self.userId,
             nickname: self.nickname,
-            avatarImage: self.avatarImage,
+            avatarImage: avatarImageURL,
             createdDate: self.createdDate,
             feedContent: self.feedContent,
             likeCount: self.likeCount,
@@ -91,7 +92,7 @@ extension TotalFeedListEntity {
                                                     TotalFeedEntity(feedId: 10003,
                                                                     userId: 31313131,
                                                                     nickname: "최고다이순신",
-                                                                    avatarImage: "",
+                                                                    avatarImage: nil,
                                                                     createdDate: "10월 4일",
                                                                     feedContent: "안녕 테스트 레포지토리야",
                                                                     likeCount: 12,
@@ -112,7 +113,7 @@ extension TotalFeedListEntity {
                                                     TotalFeedEntity(feedId: 123123,
                                                                     userId: 31313131,
                                                                     nickname: "구리",
-                                                                    avatarImage: "",
+                                                                    avatarImage: nil,
                                                                     createdDate: "10월 3일",
                                                                     feedContent: "이번엔 소설이 없고 이미지가 있어요",
                                                                     likeCount: 12,
@@ -133,7 +134,7 @@ extension TotalFeedListEntity {
                                                     TotalFeedEntity(feedId: 123123,
                                                                     userId: 31313131,
                                                                     nickname: "구림",
-                                                                    avatarImage: "",
+                                                                    avatarImage: nil,
                                                                     createdDate: "10월 3일",
                                                                     feedContent: "이번엔 이미지 없음",
                                                                     likeCount: 12,
@@ -154,7 +155,7 @@ extension TotalFeedListEntity {
                                                     TotalFeedEntity(feedId: 123123,
                                                                     userId: 31313131,
                                                                     nickname: "구리",
-                                                                    avatarImage: "",
+                                                                    avatarImage: nil,
                                                                     createdDate: "10월 3일",
                                                                     feedContent: "이번엔 소설이 없군",
                                                                     likeCount: 12,

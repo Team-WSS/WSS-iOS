@@ -22,18 +22,20 @@ extension MyProfileResponse {
 }
 
 struct OtherProfileEntity {
-    let nickname, intro, avatarImage: String
+    let nickname, intro: String
     let genrePreferences: [String]
     let isProfilePublic: Bool
+    let avatarImageURL: URL?
 }
 
 extension OtherProfileResponse {
     func toEntity() -> OtherProfileEntity {
+        let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         return OtherProfileEntity(nickname: self.nickname,
                                   intro: self.intro,
-                                  avatarImage: self.avatarImage,
                                   genrePreferences: self.genrePreferences,
-                                  isProfilePublic: self.isProfilePublic)
+                                  isProfilePublic: self.isProfilePublic,
+                                  avatarImageURL: avatarImageURL)
     }
 }
 

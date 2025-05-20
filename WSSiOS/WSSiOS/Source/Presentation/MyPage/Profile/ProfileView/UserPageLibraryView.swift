@@ -1,5 +1,5 @@
 //
-//  MyPageLibraryView.swift
+//  UserPageLibraryView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,18 +10,17 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageLibraryView: UIView {
-    
+final class UserPageLibraryView: UIView {
     
     // MARK: - Components
     
     let stackView = UIStackView()
-    let inventoryView = MyPageInventoryView()
-    let genrePrefrerencesView = MyPageGenrePreferencesView()
-    let novelPrefrerencesView = MyPageNovelPreferencesView()
+    let inventoryView = UserPageInventoryView()
+    let genrePrefrerencesView = UserPageGenrePreferencesView()
+    let novelPrefrerencesView = UserPageNovelPreferencesView()
     
-    private let preferencesEmptyView = MyPagePreferencesEmptyView()
-    private let myPagePrivateView = MyPagePrivateView()
+    private let preferencesEmptyView = UserPagePreferencesEmptyView()
+    private let userPagePrivateView = UserPagePrivateView()
     
     private let firstDividerView = UIView()
     private let secondDividerView = UIView()
@@ -53,7 +52,7 @@ final class MyPageLibraryView: UIView {
             $0.backgroundColor = .wssGray50
         }
         
-        myPagePrivateView.isHidden = true
+        userPagePrivateView.isHidden = true
         preferencesEmptyView.isHidden = true
     }
     
@@ -64,7 +63,7 @@ final class MyPageLibraryView: UIView {
                                       genrePrefrerencesView,
                                       secondDividerView,
                                       novelPrefrerencesView,
-                                      myPagePrivateView,
+                                      userPagePrivateView,
                                       preferencesEmptyView)
     }
     
@@ -88,7 +87,7 @@ final class MyPageLibraryView: UIView {
             }
         }
         
-        myPagePrivateView.snp.makeConstraints {
+        userPagePrivateView.snp.makeConstraints {
             $0.height.equalTo(450)
         }
         
@@ -118,13 +117,10 @@ final class MyPageLibraryView: UIView {
                 }
             }
             
-            myPagePrivateView.isHidden = false
+            userPagePrivateView.isHidden = false
             
             let text = nickname + StringLiterals.MyPage.Profile.privateLabel
-            myPagePrivateView.isPrivateDescriptionLabel.do {
-                $0.applyWSSFont(.body2, with: text)
-                $0.textAlignment = .center
-            }
+            userPagePrivateView.bindData(nickname: text)
         }
     }
     

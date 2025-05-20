@@ -113,9 +113,9 @@ final class FeedUserView: UIView {
     
     //MARK: - Data
     
-    func bindData(imageURL: String, nickname: String, createdDate: String, isModified: Bool) {
+    func bindData(imageURL: URL?, nickname: String, createdDate: String, isModified: Bool) {
         userImageView.do {
-            $0.kfSetImage(url: makeBucketImageURLString(path: imageURL))
+            $0.kfSetImage(url: imageURL)
             $0.layer.cornerRadius = 12
             $0.layer.masksToBounds = true
         }

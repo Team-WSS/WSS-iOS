@@ -26,7 +26,7 @@ final class MyPageEditProfileView: UIView {
     lazy var nicknameClearButton = UIButton()
     lazy var nicknameDuplicatedButton = UIButton()
     private let nicknameWarningLabel = UILabel()
-    private var nicknameCountView = MyPageCountView(maxLimit: 10)
+    private var nicknameCountView = UserPageCountView(maxLimit: 10)
     
     private let divide1View = UIView()
     
@@ -34,7 +34,7 @@ final class MyPageEditProfileView: UIView {
     private let introLabel = UILabel()
     lazy var introTextView = UITextView()
     private let introTextViewPlaceholder = UILabel()
-    private var introCountView = MyPageCountView(maxLimit: 50)
+    private var introCountView = UserPageCountView(maxLimit: 50)
     
     private let divide2View = UIView()
     
@@ -381,7 +381,7 @@ extension MyPageEditProfileView {
     
     //닉네임
     func updateNicknameCount(text: String) {
-        nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
+        nicknameCountView.bindData(text: text)
     }
     
     func updateNicknameTextField(isEditing: Bool, availablity: NicknameAvailablity) {
@@ -463,7 +463,7 @@ extension MyPageEditProfileView {
     }
     
     func updateIntroCount(text: String) {
-        introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
+        introCountView.bindData(text: text)
     }
     
     //MARK: - Data
@@ -472,7 +472,7 @@ extension MyPageEditProfileView {
         nicknameTextField.makeAttribute(with: data.nickname)
             .kerning(kerningPixel: -0.6)
             .applyAttribute()
-        nicknameCountView.countLabel.text = String(data.nickname.count)
+        nicknameCountView.bindData(text: data.nickname)
         
         introTextView.applyWSSFont(.body2, with: data.intro)
         if !data.intro.isEmpty {

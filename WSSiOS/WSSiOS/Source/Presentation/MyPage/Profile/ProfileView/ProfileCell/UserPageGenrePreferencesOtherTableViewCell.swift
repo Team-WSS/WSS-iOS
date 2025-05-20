@@ -1,5 +1,5 @@
 //
-//  MyPageGenrePreferencesOtherTableViewCell.swift
+//  UserPageGenrePreferencesOtherTableViewCell.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageGenrePreferencesOtherTableViewCell: UITableViewCell {
+final class UserPageGenrePreferencesOtherTableViewCell: UITableViewCell {
 
     //MARK: - Components
     
@@ -36,7 +36,6 @@ final class MyPageGenrePreferencesOtherTableViewCell: UITableViewCell {
     
     private func setUI() {
         genreLabel.textColor = .wssBlack
-        
         countLabel.textColor = .wssGray200
     }
     

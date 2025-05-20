@@ -1,5 +1,5 @@
 //
-//  MyPageGenrePreferencesTopView.swift
+//  UserPageGenrePreferencesTopView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,14 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageGenrePreferencesTopView: UIView {
+final class UserPageGenrePreferencesTopView: UIView {
     
     //MARK: - Components
     
-    let topGenreImageView = UIImageView()
-    let topGenreTitleLabel = UILabel()
-    let topGenreCountLabel = UILabel()
-    
+    private let topGenreImageView = UIImageView()
+    private let topGenreTitleLabel = UILabel()
+    private let topGenreCountLabel = UILabel()
     
     // MARK: - Life Cycle
     

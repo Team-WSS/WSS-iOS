@@ -1,8 +1,8 @@
 //
-//  MyPageProfileHeaderView.swift
+//  UserPageProfileHeaderView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 5/29/24.
+//  Created by 신지원 on 5/20/25.
 //
 
 import UIKit
@@ -10,14 +10,27 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageProfileHeaderView: UIView {
+class CircularImageView: UIImageView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.bounds.width / 2
+        self.clipsToBounds = true
+    }
+}
+
+class CircularButton: UIButton {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.bounds.width / 2
+        self.clipsToBounds = true
+    }
+}
+
+final class UserPageProfileHeaderView: UIView {
     
     //MARK: - Components
     
-    lazy var userImageChangeButton = CircularButton()
     private let userImageView = CircularImageView()
-    private let userImageChangeButtonView = UIImageView()
-    
     private let userNicknameLabel = UILabel()
     private let userIntroLabel = UILabel()
     
@@ -40,21 +53,6 @@ final class MyPageProfileHeaderView: UIView {
     private func setUI() {
         self.backgroundColor = .wssPrimary20
         
-        userImageChangeButtonView.do {
-            $0.image = .icPencil
-        }
-        
-        userImageChangeButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.baseBackgroundColor = .wssWhite
-            
-            $0.configuration = configuration
-            $0.imageView?.contentMode = .scaleAspectFit
-            
-            $0.layer.borderWidth = 1.04
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
-        }
-        
         userNicknameLabel.do {
             $0.textColor = .wssBlack
             $0.numberOfLines = 1
@@ -69,10 +67,8 @@ final class MyPageProfileHeaderView: UIView {
     
     private func setHierarchy() {
         addSubviews(userImageView,
-                    userImageChangeButton,
                     userNicknameLabel,
                     userIntroLabel)
-        userImageChangeButton.addSubview(userImageChangeButtonView)
     }
     
     private func setLayout() {
@@ -82,19 +78,8 @@ final class MyPageProfileHeaderView: UIView {
             $0.size.equalTo(94)
         }
         
-        userImageChangeButtonView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.size.equalTo(20)
-        }
-        
-        userImageChangeButton.snp.makeConstraints {
-            $0.trailing.equalTo(userImageView.snp.trailing)
-            $0.bottom.equalTo(userImageView.snp.bottom)
-            $0.size.equalTo(25)
-        }
-        
         userNicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(userImageChangeButton.snp.bottom).offset(20)
+            $0.top.equalTo(userImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
         }
         
@@ -108,12 +93,8 @@ final class MyPageProfileHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: MyProfileEntity) {
-        if data.avatarImage == "" {
-            userImageView.image = .imgProfile
-        } else {
-            userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
-        }
+    func bindData(data: OtherProfileEntity) {
+        userImageView.kfSetImage(url: data.avatarImageURL)
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
             $0.applyWSSFont(.body2, with: data.intro)

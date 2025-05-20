@@ -1,5 +1,5 @@
 //
-//  MyPageGenrePreferencesOtherView.swift
+//  UserPageGenrePreferencesOtherView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageGenrePreferencesOtherView: UIView {
+final class UserPageGenrePreferencesOtherView: UIView {
 
     //MARK: - Components
 
@@ -54,7 +54,3 @@ final class MyPageGenrePreferencesOtherView: UIView {
         }
     }
 }
-
-
-
-

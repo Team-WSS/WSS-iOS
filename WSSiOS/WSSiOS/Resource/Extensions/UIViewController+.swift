@@ -314,6 +314,20 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToUserPageViewController(userId: Int) {
+        let viewController = UserPageViewController(
+            viewModel: UserPageViewModel(
+                userRepository: DefaultUserRepository(
+                    userInfoRepository: DefaultUserInfoRepository(
+                        userService: DefaultUserService()),
+                    userBlockRepository: DefaultUserBlockRepository(
+                        blocksService: DefaultBlocksService())),
+                profileId: userId))
+        
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) {
         let viewController = MyPageEditProfileViewController(
             viewModel: MyPageEditProfileViewModel(
@@ -395,14 +409,14 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
-        let viewController = MyPageFeedDetailViewController(
-            viewModel: MyPageFeedDetailViewModel(
+    func pushToUserPageFeedDetailViewController(userId: Int, userData: OtherProfileEntity) {
+        let viewController = UserPageFeedDetailViewController(
+            viewModel: UserPageFeedDetailViewModel(
                 userRepository: DefaultUserInfoRepository(
                     userService: DefaultUserService()
                 ),
                 profileId: userId,
-                profileData: useData))
+                profileData: userData))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

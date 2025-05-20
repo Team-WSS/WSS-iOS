@@ -112,7 +112,7 @@ final class FeedGenreViewController: UIViewController {
         output.pushToUserViewController
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, userId in
-                owner.pushToMyPageViewController(userId: userId)
+                owner.pushToUserPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
         

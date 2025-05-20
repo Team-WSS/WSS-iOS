@@ -10,13 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class MyPageFeedDetailViewModel: ViewModelType {
+final class UserPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
     //init
     private let userRepository: UserInfoRepository
-    private let profileData: MyProfileEntity
+    private let profileData: OtherProfileEntity
     private let profileId: Int
     
     //피드 정보 관련 데이터
@@ -25,7 +25,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     private var isMyFeed: Bool = false
     
     //무한스크롤 기능
-    private let feedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
+    private let feedDataRelay = BehaviorRelay<[UserFeedListItem]>(value: [])
     private let isLoadableRelay = BehaviorRelay<Bool>(value: true)
     private let lastFeedIdRelay = BehaviorRelay<Int>(value: 0)
     private var isFetching = false
@@ -37,7 +37,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserInfoRepository, profileId: Int, profileData: MyProfileEntity) {
+    init(userRepository: UserInfoRepository, profileId: Int, profileData: OtherProfileEntity) {
         self.userRepository = userRepository
         
         self.profileId = profileId
@@ -51,7 +51,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let bindFeedData: BehaviorRelay<[MyFeedListItem]>
+        let bindFeedData: BehaviorRelay<[UserFeedListItem]>
         let isMyPage: PublishRelay<Bool>
         let pushToFeedDetailViewController: Observable<Int>
     }
@@ -65,7 +65,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
             .do(onNext: { [weak self] _ in
                 self?.isFetching = true
             })
-            .flatMapLatest { [weak self] _ -> Observable<MyFeedListEntity> in
+            .flatMapLatest { [weak self] _ -> Observable<UserFeedListEntity> in
                 guard let self = self else { return .empty() }
                 return self.getUserFeed(userId: self.profileId,
                                         lastFeedId: self.lastFeedIdRelay.value,
@@ -78,7 +78,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
                 print(error.localizedDescription)
             })
             .disposed(by: disposeBag)
-
+        
         input.viewWillAppearEvent
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -90,7 +90,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
                 self.isLoadableRelay.accept(true)
                 self.isFetching = true
             })
-            .flatMapLatest { [weak self] _ -> Observable<MyFeedListEntity> in
+            .flatMapLatest { [weak self] _ -> Observable<UserFeedListEntity> in
                 guard let self = self else { return .empty() }
                 return self.getUserFeed(userId: self.profileId,
                                         lastFeedId: 0,
@@ -116,12 +116,12 @@ final class MyPageFeedDetailViewModel: ViewModelType {
                       pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable())
     }
     
-    private func updateFeedList(_ feedResult: MyFeedListEntity) {
+    private func updateFeedList(_ feedResult: UserFeedListEntity) {
         let newFeedData = feedResult.feeds
             .map { feed in
-                MyFeedListItem(feed: feed,
-                               avatarImage: self.profileData.avatarImage,
-                               nickname: self.profileData.nickname)
+                UserFeedListItem(feed: feed,
+                                 avatarImage: self.profileData.avatarImageURL,
+                                 nickname: self.profileData.nickname)
             }
         
         if let lastFeed = feedResult.feeds.last {
@@ -135,7 +135,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
+    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity> {
         return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
     }
 }

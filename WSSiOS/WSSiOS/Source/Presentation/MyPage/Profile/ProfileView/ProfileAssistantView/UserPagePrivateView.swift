@@ -1,8 +1,8 @@
 //
-//  MyPageFeedEmptyView.swift
+//  MyPagePrivateView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 12/1/24.
+//  Created by 신지원 on 11/29/24.
 //
 
 import UIKit
@@ -10,13 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-
-final class MyPageFeedEmptyView: UIView {
+final class UserPagePrivateView: UIView {
     
     //MARK: - Components
     
-    private let isEmptyImageView = UIImageView()
-    let isEmptyDescriptionLabel = UILabel()
+    private let isPrivateImageView = UIImageView()
+    private var isPrivateDescriptionLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -37,36 +36,41 @@ final class MyPageFeedEmptyView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        isEmptyImageView.do {
-            $0.image = .imgFeedEmptyCat
+        isPrivateImageView.do {
+            $0.image = .imgEmptyCatLocked
             $0.contentMode = .scaleAspectFit
         }
         
-        isEmptyDescriptionLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Profile.emptyFeed)
-            $0.numberOfLines = 1
+        isPrivateDescriptionLabel.do {
             $0.textColor = .wssGray200
+            $0.textAlignment = .center
+            $0.numberOfLines = 2
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(isEmptyImageView,
-                         isEmptyDescriptionLabel)
+        self.addSubviews(isPrivateImageView,
+                         isPrivateDescriptionLabel)
     }
     
     private func setLayout() {
-        isEmptyImageView.snp.makeConstraints {
+        isPrivateImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(58)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(166)
             $0.height.equalTo(160)
         }
         
-        isEmptyDescriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(isEmptyImageView.snp.bottom).offset(20)
+        isPrivateDescriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(isPrivateImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(70)
         }
     }
+    
+    func bindData(nickname: String) {
+        isPrivateDescriptionLabel.do {
+            $0.applyWSSFont(.body2, with: nickname)
+        }
+    }
 }
-
