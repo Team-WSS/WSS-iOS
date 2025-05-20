@@ -51,9 +51,12 @@ final class MyPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.viewWillAppearEvent.onNext(())
-        decideNavigation()
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+                            left: nil,
+                            right: rootView.settingButton,
+                            isVisibleBeforeScroll: false)
     }
     
     override func viewDidLayoutSubviews() {
@@ -244,18 +247,5 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollView
         if scrollView.contentOffset.y < 0 {
             scrollView.contentOffset.y = 0
         }
-    }
-}
-
-extension MyPageViewController {
-    
-    //MARK: - UI
-    
-    private func decideNavigation() {
-        setWSSNavigationBar(title: "마이페이지",
-                            left: nil,
-                            right: rootView.settingButton,
-                            isVisibleBeforeScroll: false)
-        
     }
 }

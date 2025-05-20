@@ -51,16 +51,16 @@ final class UserPageViewController: UIViewController {
         bindViewModel()
         
         AmplitudeManager.shared.track(AmplitudeEvent.MyPage.otherMypage)
-        hideTabBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.viewWillAppearEvent.onNext(())
-        decideNavigation(navigationTitle: navigationTitle)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        setNavigation(userNickname: navigationTitle)
         swipeBackGesture()
+        hideTabBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -385,7 +385,7 @@ extension UserPageViewController {
     
     //MARK: - UI
     
-    private func decideNavigation(navigationTitle: String) {
+    private func setNavigation(userNickname: String) {
         let dropdownButton = WSSDropdownButton().then {
             $0.makeDropdown(dropdownRootView: self.rootView,
                             dropdownWidth: 120,
@@ -397,7 +397,7 @@ extension UserPageViewController {
             .disposed(by: disposeBag)
         }
         
-        setWSSNavigationBar(title: navigationTitle,
+        setWSSNavigationBar(title: userNickname,
                             left: rootView.backButton,
                             right: dropdownButton,
                             isVisibleBeforeScroll: false)
@@ -421,4 +421,3 @@ extension UserPageViewController: FeedTableViewDelegate {
         self.feedConnectedNovelViewDidTap.accept(novelId)
     }
 }
-
