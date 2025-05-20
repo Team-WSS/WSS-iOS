@@ -109,10 +109,10 @@ final class MyPageProfileHeaderView: UIView {
     //MARK: - Data
     
     func bindData(data: MyProfileEntity) {
-        if data.avatarImage == "" {
+        if data.avatarImageURL == nil {
             userImageView.image = .imgProfile
         } else {
-            userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
+            userImageView.kfSetImage(url: data.avatarImageURL)
         }
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {

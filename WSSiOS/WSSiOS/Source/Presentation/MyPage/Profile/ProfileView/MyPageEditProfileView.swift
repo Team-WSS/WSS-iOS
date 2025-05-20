@@ -482,8 +482,10 @@ extension MyPageEditProfileView {
             introCountView.isHidden = false
         }
         
-        userImageView.do {
-            $0.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
+        if data.avatarImageURL == nil {
+            userImageView.image = .imgProfile
+        } else {
+            userImageView.kfSetImage(url: data.avatarImageURL)
         }
     }
 }

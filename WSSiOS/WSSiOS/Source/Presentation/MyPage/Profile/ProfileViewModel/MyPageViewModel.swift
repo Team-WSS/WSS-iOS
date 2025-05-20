@@ -25,9 +25,9 @@ final class MyPageViewModel: ViewModelType {
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
     private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
                                                                                          intro: "",
-                                                                                         avatarImage: "",
-                                                                                         genrePreferences: []))
-    
+                                                                                         genrePreferences: [],
+                                                                                         avatarImageURL: nil))
+                                                                  
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
