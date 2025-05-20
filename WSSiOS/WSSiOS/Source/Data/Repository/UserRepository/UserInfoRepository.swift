@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserInfoRepository {
-    func getUserMeData() -> Observable<UserMeResponse>
+    func getUserMeData() -> Observable<UserMeEntity>
     func getMyProfileData() -> Observable<MyProfileEntity>
     func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity>
     func getUserInfo() -> Observable<UserInfoEntity>
@@ -42,8 +42,9 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         self.userService = userService
     }
     
-    func getUserMeData() -> Observable<UserMeResponse> {
+    func getUserMeData() -> Observable<UserMeEntity> {
         return userService.getUserData()
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
