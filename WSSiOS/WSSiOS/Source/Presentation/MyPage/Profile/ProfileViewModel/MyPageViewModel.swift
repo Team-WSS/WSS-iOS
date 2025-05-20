@@ -52,14 +52,10 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository, profileId: Int) {
+    init(userRepository: UserRepository) {
         self.userRepository = userRepository
-        if profileId == 0 {
-            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-            self.profileId = userId
-        } else {
-            self.profileId = profileId
-        }
+        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        self.profileId = userId
     }
     
     struct Input {
