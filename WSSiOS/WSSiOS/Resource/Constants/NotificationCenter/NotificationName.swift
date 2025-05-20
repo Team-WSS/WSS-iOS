@@ -15,7 +15,7 @@ enum NotificationName {
     static let novelReviewed = Notification.Name("novelReviewed")
     static let popFeedDetailViewController = Notification.Name("popFeedDetailViewController")
     static let feedNovelConnected = Notification.Name("feedNovelConnected")
-    static let blockUser = Notification.Name("blockUser")
+    static let blockUser = Notification.Name("BlockUser")
     static let pushToUpdateDetailSearchResult = Notification.Name("pushToUpdateDetailSearchResult")
     static let pushToDetailSearchResult = Notification.Name("pushToDetailSearchResult")
     static let changeRepresentativeAvatar = Notification.Name("changeRepresentativeAvatar")

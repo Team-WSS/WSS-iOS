@@ -409,7 +409,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToUserPageFeedDetailViewController(userId: Int, userData: OtherProfileEntity) {
+    func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {
         let viewController = UserPageFeedDetailViewController(
             viewModel: UserPageFeedDetailViewModel(
                 userRepository: DefaultUserInfoRepository(

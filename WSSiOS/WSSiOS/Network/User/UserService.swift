@@ -18,7 +18,7 @@ protocol UserService {
     func getUserProfileVisibility() -> Single<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResponse>
-    func getOtherProfile(userId: Int) -> Single<OtherProfileResponse>
+    func getOtherProfile(userId: Int) -> Single<UserProfileResponse>
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferencesListResponse>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
@@ -198,7 +198,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getOtherProfile(userId: Int) -> Single<OtherProfileResponse> {
+    func getOtherProfile(userId: Int) -> Single<UserProfileResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.otherProfile(userId: userId),
@@ -209,7 +209,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: OtherProfileResponse.self) }
+                                       to: UserProfileResponse.self) }
                 .asSingle()
             
         } catch {

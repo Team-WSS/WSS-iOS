@@ -16,7 +16,7 @@ final class UserPageFeedEmptyView: UIView {
     //MARK: - Components
     
     private let isEmptyImageView = UIImageView()
-    let isEmptyDescriptionLabel = UILabel()
+    private let isEmptyDescriptionLabel = UILabel()
     
     // MARK: - Life Cycle
     

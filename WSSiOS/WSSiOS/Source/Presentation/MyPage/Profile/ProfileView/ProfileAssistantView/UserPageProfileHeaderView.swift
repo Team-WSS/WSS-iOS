@@ -93,7 +93,7 @@ final class UserPageProfileHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: OtherProfileEntity) {
+    func bindData(data: UserProfileEntity) {
         userImageView.kfSetImage(url: data.avatarImageURL)
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {

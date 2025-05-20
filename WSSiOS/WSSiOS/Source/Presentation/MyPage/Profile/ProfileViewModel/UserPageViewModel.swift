@@ -23,11 +23,11 @@ final class UserPageViewModel: ViewModelType {
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
     private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
-    private let profileDataRelay = BehaviorRelay<OtherProfileEntity>(value: OtherProfileEntity(nickname: "",
-                                                                                               intro: "",
-                                                                                               genrePreferences: [],
-                                                                                               isProfilePublic: true,
-                                                                                               avatarImageURL: nil))
+    private let profileDataRelay = BehaviorRelay<UserProfileEntity>(value: UserProfileEntity(nickname: "",
+                                                                                             intro: "",
+                                                                                             genrePreferences: [],
+                                                                                             isProfilePublic: true,
+                                                                                             avatarImageURL: nil))
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
@@ -47,7 +47,7 @@ final class UserPageViewModel: ViewModelType {
     private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
     private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
-    private let pushToUserPageFeedDetailViewControllerRelay = PublishRelay<(Int, OtherProfileEntity)>()
+    private let pushToUserPageFeedDetailViewControllerRelay = PublishRelay<(Int, UserProfileEntity)>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let popViewControllerRelay = PublishRelay<Void>()
@@ -60,12 +60,7 @@ final class UserPageViewModel: ViewModelType {
     
     init(userRepository: UserRepository, profileId: Int) {
         self.userRepository = userRepository
-        if profileId == 0 {
-            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-            self.profileId = userId
-        } else {
-            self.profileId = profileId
-        }
+        self.profileId = profileId
     }
     
     struct Input {
@@ -91,13 +86,13 @@ final class UserPageViewModel: ViewModelType {
     
     struct Output {
         let isProfilePrivate: BehaviorRelay<(Bool, String)>
-        let profileData: BehaviorRelay<OtherProfileEntity>
+        let profileData: BehaviorRelay<UserProfileEntity>
         let updateNavigationBar: BehaviorRelay<(Bool, String)>
         let updateStickyHeader: BehaviorRelay<(Bool)>
         
         let popViewController: PublishRelay<Void>
         let pushToLibraryViewController: PublishRelay<Int>
-        let pushToUserPageFeedDetailViewController: PublishRelay<(Int, OtherProfileEntity)>
+        let pushToUserPageFeedDetailViewController: PublishRelay<(Int, UserProfileEntity)>
         
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
@@ -133,12 +128,6 @@ final class UserPageViewModel: ViewModelType {
             }
             .flatMapLatest { [weak self]  _ -> Observable<Void> in
                 guard let self else { return .empty() }
-                guard !self.isProfilePrivateRelay.value.0 else { return .empty() }
-                if self.profileId == 0 {
-                    self.profileId =  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-                    reloadSubject.onNext(())
-                    return .just(())
-                }
                 return Observable.concat([
                     self.updateMyPageLibraryInventoryData()
                         .map { _ in Void() },
@@ -217,7 +206,7 @@ final class UserPageViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.MyPage.otherBlock)
                 let nickname = owner.profileDataRelay.value.nickname
-                NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
+                NotificationCenter.default.post(name: NotificationName.blockUser, object: nickname)
                 owner.popViewControllerRelay.accept(())
             })
             .disposed(by: disposeBag)
@@ -308,11 +297,11 @@ final class UserPageViewModel: ViewModelType {
     private func updateHeaderView() -> Observable<Void> {
         return self.getOtherProfileData(userId: self.profileId)
             .do(onNext: { profileData in
-                let data = OtherProfileEntity(nickname: profileData.nickname,
-                                              intro: profileData.intro,
-                                              genrePreferences: profileData.genrePreferences,
-                                              isProfilePublic: profileData.isProfilePublic,
-                                              avatarImageURL: profileData.avatarImageURL)
+                let data = UserProfileEntity(nickname: profileData.nickname,
+                                             intro: profileData.intro,
+                                             genrePreferences: profileData.genrePreferences,
+                                             isProfilePublic: profileData.isProfilePublic,
+                                             avatarImageURL: profileData.avatarImageURL)
                 self.profileDataRelay.accept(data)
                 self.isProfilePrivateRelay.accept((!profileData.isProfilePublic, profileData.nickname))
             })
@@ -323,11 +312,11 @@ final class UserPageViewModel: ViewModelType {
                 //현재 로직상 알 수 없는 유저 프로필을 확인하는 것은 불가능하지만
                 //서버에러에 대응하여 알 수 없음 프로필로 처리
                 if self.isUnknownUserError(error) {
-                    let data = OtherProfileEntity(nickname: "",
-                                                  intro: "",
-                                                  genrePreferences: [],
-                                                  isProfilePublic: true,
-                                                  avatarImageURL: nil)
+                    let data = UserProfileEntity(nickname: "",
+                                                 intro: "",
+                                                 genrePreferences: [],
+                                                 isProfilePublic: true,
+                                                 avatarImageURL: nil)
                     self.profileDataRelay.accept(data)
                     self.isProfilePrivateRelay.accept((false, ""))
                 }
@@ -448,7 +437,7 @@ final class UserPageViewModel: ViewModelType {
     
     // MARK: - API
     
-    private func getOtherProfileData(userId: Int) -> Observable<OtherProfileEntity> {
+    private func getOtherProfileData(userId: Int) -> Observable<UserProfileEntity> {
         return userRepository.userInfoRepository.getOtherProfile(userId: userId)
     }
     

@@ -199,24 +199,6 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Custom Method
     
-    private func updateNavigationRelay(_ error: Error) -> Bool {
-        if let networkError = error as? RxCocoaURLError {
-            switch networkError {
-            case .httpRequestFailed(_, let data):
-                if let data = data {
-                    do {
-                        let errorInfo = try JSONDecoder().decode(ServerErrorResponse.self, from: data)
-                        return errorInfo.code == "USER-018"
-                    } catch {}
-                }
-                
-            default:
-                return false
-            }
-        }
-        return false
-    }
-    
     private func updateHeaderView() -> Observable<Void> {
         return self.getProfileData()
             .do(onNext: { profileData in

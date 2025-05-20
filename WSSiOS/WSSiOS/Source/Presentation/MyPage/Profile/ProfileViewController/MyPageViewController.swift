@@ -196,7 +196,6 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 NotificationCenter.default.post(name: NotificationName.moveToLibraryTab, object: nil)
-                print("😼 서재 탭\n")
             })
             .disposed(by: disposeBag)
         
@@ -204,7 +203,6 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, pageIndex in
                 NotificationCenter.default.post(name: NotificationName.moveToLibraryTab, object: pageIndex)
-                print("😼😼특별 서재 탭\n")
             })
             .disposed(by: disposeBag)
         
