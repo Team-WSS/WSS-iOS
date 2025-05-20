@@ -10,7 +10,17 @@ import UIKit
 import SnapKit
 import Then
 
+protocol FeedDetailAddImageViewDelegate: AnyObject {
+    func addImageDidTap(_ view: FeedDetailAddImageView, didTapImageAt index: Int, imageURLs: [URL?])
+}
+
 final class FeedDetailAddImageView: UIView {
+    
+    //MARK: - Properties
+    
+    weak var delegate: FeedDetailAddImageViewDelegate?
+    
+    private var imageURLs: [URL?] = []
     
     //MARK: - UI Components
     
@@ -35,6 +45,7 @@ final class FeedDetailAddImageView: UIView {
     private func setUI() {
         scrollView.do {
             $0.showsHorizontalScrollIndicator = false
+            $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         }
         
         stackView.do {
@@ -62,19 +73,36 @@ final class FeedDetailAddImageView: UIView {
         }
     }
     
+    @objc private func imageTapped(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+        let index = tappedImageView.tag
+        delegate?.addImageDidTap(self, didTapImageAt: index, imageURLs: imageURLs)
+    }
+    
     func bindImages(imageURLs: [URL?]) {
+        self.imageURLs = imageURLs
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         let imageWidth = calculateImageWidth(for: imageURLs.count)
         
-        for imageURL in imageURLs {
+        for (index, imageURL) in imageURLs.enumerated() {
             let imageView = UIImageView().then {
                 $0.kfSetImage(url: imageURL)
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
                 $0.contentMode = .scaleAspectFill
-                $0.snp.makeConstraints { $0.width.equalTo(imageWidth) }
+                $0.isUserInteractionEnabled = true
             }
+            
+            imageView.snp.makeConstraints {
+                $0.width.equalTo(imageWidth)
+                $0.height.equalTo(imageWidth)
+            }
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+            imageView.addGestureRecognizer(tapGesture)
+            imageView.tag = index
+            
             stackView.addArrangedSubview(imageView)
         }
         
@@ -93,7 +121,7 @@ final class FeedDetailAddImageView: UIView {
         let horizontalPadding: CGFloat = 40
         let imageSpacing: CGFloat = 7
         let totalWidth = UIScreen.main.bounds.width - horizontalPadding
-
+        
         switch count {
         case 1:
             return totalWidth

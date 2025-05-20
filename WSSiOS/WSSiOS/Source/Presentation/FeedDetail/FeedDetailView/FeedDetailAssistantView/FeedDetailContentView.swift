@@ -17,7 +17,7 @@ final class FeedDetailContentView: UIView {
     private let stackView = UIStackView()
     private let contentWrapperView = UIView()
     private let contentLabel = UILabel()
-    private let addImageView = FeedDetailAddImageView()
+    let addImageView = FeedDetailAddImageView()
     private let linkNovelWrapperView = UIView()
     let linkNovelView = FeedNovelView()
     private let reactWrapperView = UIView()
