@@ -20,4 +20,5 @@ enum NotificationName {
     static let pushToDetailSearchResult = Notification.Name("pushToDetailSearchResult")
     static let changeRepresentativeAvatar = Notification.Name("changeRepresentativeAvatar")
     static let moveToLibraryTab = Notification.Name("moveToLibraryTab")
+    static let editProfile = Notification.Name("EditProfile")
 }

@@ -113,7 +113,7 @@ final class MyPageViewController: UIViewController {
                 .when(.recognized)
                 .asObservable(),
             inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
-            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable())
+            editProfileNotification: NotificationCenter.default.rx.notification(NotificationName.editProfile).asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
