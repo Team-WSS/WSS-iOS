@@ -58,6 +58,8 @@ final class FeedDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.rootView.feedContentView.addImageView.delegate = self
+        
         bindViewModel()
         registerCell()
         delegate()
@@ -603,5 +605,11 @@ extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
     
     func spoilerTextDidTap() {
         self.commentSpoilerTextDidTap.accept(())
+    }
+}
+
+extension FeedDetailViewController: FeedDetailAddImageViewDelegate {
+    func addImageDidTap(_ view: FeedDetailAddImageView, didTapImageAt index: Int, imageURLs: [URL?]) {
+        self.presentToFeedDetailAddImageViewerViewController(imageURLs: imageURLs, startIndex: index)
     }
 }
