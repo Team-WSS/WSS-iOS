@@ -49,12 +49,6 @@ final class FeedDetailAddImageViewerController: UIViewController {
         bindAction()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        rootView.pageLabel.applyWSSFont(.title2, with:  "\(startIndex + 1) / \(imageURLs.count)")
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -62,6 +56,7 @@ final class FeedDetailAddImageViewerController: UIViewController {
             let indexPath = IndexPath(item: startIndex, section: 0)
             rootView.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
             hasScrolledToInitialIndex = true
+            rootView.updatePageLabel(for: startIndex, imageCount: imageURLs.count)
         }
     }
     
@@ -103,6 +98,6 @@ extension FeedDetailAddImageViewerController: UICollectionViewDataSource, UIColl
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
-        rootView.pageLabel.applyWSSFont(.title2, with: "\(pageIndex + 1) / \(imageURLs.count)")
+        rootView.updatePageLabel(for: pageIndex, imageCount: imageURLs.count)
     }
 }

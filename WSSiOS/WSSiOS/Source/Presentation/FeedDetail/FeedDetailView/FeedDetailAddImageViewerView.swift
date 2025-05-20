@@ -82,4 +82,10 @@ final class FeedDetailAddImageViewerView: UIView {
             $0.centerX.equalToSuperview()
         }
     }
+    
+    //MARK: - Custom Methods
+    
+    func updatePageLabel(for index: Int, imageCount: Int) {
+        pageLabel.applyWSSFont(.title2, with: "\(index + 1) / \(imageCount)")
+    }
 }

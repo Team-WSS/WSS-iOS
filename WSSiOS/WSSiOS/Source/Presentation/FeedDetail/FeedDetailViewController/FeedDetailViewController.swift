@@ -58,8 +58,6 @@ final class FeedDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.rootView.feedContentView.addImageView.delegate = self
-        
         bindViewModel()
         registerCell()
         delegate()
@@ -87,6 +85,8 @@ final class FeedDetailViewController: UIViewController {
         
         rootView.replyWritingView.replyWritingTextView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
+        rootView.feedContentView.addImageView.delegate = self
     }
     
     private func bindViewModel() {

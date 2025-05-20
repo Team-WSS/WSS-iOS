@@ -117,6 +117,7 @@ final class FeedDetailAddImageView: UIView {
         }
     }
     
+    // 이미지 개수에 따른 사이즈 계산 함수
     private func calculateImageWidth(for count: Int) -> CGFloat {
         let horizontalPadding: CGFloat = 40
         let imageSpacing: CGFloat = 7
