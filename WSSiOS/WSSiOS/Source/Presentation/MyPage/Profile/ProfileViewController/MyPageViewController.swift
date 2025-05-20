@@ -65,6 +65,8 @@ final class MyPageViewController: UIViewController {
         headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
     
+    //MARK: - Bind
+    
     private func register() {
         rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.register(
             UserPageNovelPreferencesCollectionViewCell.self,
@@ -86,8 +88,6 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView.delegate = self
     }
-    
-    //MARK: - Bind
     
     private func bindViewModel() {
         let inventoryStatusButtonDidTap = Observable<Int>.merge(
@@ -228,6 +228,8 @@ final class MyPageViewController: UIViewController {
         self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
     }
 }
+
+//MARK: - UIScroll 관련 Delegate
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

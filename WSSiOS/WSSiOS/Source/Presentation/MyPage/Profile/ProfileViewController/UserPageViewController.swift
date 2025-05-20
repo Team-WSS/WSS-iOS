@@ -69,7 +69,7 @@ final class UserPageViewController: UIViewController {
         headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
     
-    //MARK: - Register
+    //MARK: - Bind
     
     private func register() {
         rootView.userPageLibraryView.novelPrefrerencesView.preferencesCollectionView
@@ -100,8 +100,6 @@ final class UserPageViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
-    
-    //MARK: - Bind
     
     private func bindViewModel() {
         let inventoryStatusButtonDidTap = Observable<Int>.merge(
@@ -360,6 +358,8 @@ final class UserPageViewController: UIViewController {
     }
 }
 
+//MARK: - UIScroll 관련 Delegate
+
 extension UserPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let keywords = viewModel.bindKeywordRelay.value
@@ -381,10 +381,9 @@ extension UserPageViewController: UICollectionViewDelegateFlowLayout, UIScrollVi
     }
 }
 
+//MARK: - UI
+
 extension UserPageViewController {
-    
-    //MARK: - UI
-    
     private func setNavigation(userNickname: String) {
         let dropdownButton = WSSDropdownButton().then {
             $0.makeDropdown(dropdownRootView: self.rootView,
@@ -403,6 +402,8 @@ extension UserPageViewController {
                             isVisibleBeforeScroll: false)
     }
 }
+
+//MARK: - FeedTableViewDelegate
 
 extension UserPageViewController: FeedTableViewDelegate {
     func profileViewDidTap(userId: Int) {

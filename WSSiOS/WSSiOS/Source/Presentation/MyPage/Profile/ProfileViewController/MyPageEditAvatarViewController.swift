@@ -43,14 +43,12 @@ final class MyPageEditAvatarViewController: UIViewController {
         bindViewModel()
     }
     
-    //MARK: - Delegate
+    //MARK: - Bind
     
     private func register() {
         self.rootView.avatarImageCollectionView
             .register(MyPageEditAvatarCollectionViewCell.self, forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
     }
-    
-    //MARK: - Bind
     
     private func bindViewModel() {
         let input = MyPageEditAvatarViewModel.Input(

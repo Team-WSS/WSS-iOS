@@ -51,8 +51,8 @@ final class MyPageEditProfileViewController: UIViewController {
         hideTabBar()
         swipeBackGesture()
         setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
-                         left: self.rootView.backButton,
-                         right: self.rootView.completeButton)
+                            left: self.rootView.backButton,
+                            right: self.rootView.completeButton)
     }
     
     //MARK: - Delegate

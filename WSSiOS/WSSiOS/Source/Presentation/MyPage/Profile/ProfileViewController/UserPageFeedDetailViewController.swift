@@ -55,6 +55,8 @@ final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDele
         swipeBackGesture()
     }
     
+    //MARK: - Bind
+    
     private func register() {
         rootView.userPageFeedDetailTableView.register(FeedListTableViewCell.self,
                                                     forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
@@ -121,6 +123,8 @@ final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDele
             .disposed(by: disposeBag)        
     }
 }
+
+//MARK: - FeedTableViewDelegate
 
 extension UserPageFeedDetailViewController: FeedTableViewDelegate {
     func profileViewDidTap(userId: Int) {
