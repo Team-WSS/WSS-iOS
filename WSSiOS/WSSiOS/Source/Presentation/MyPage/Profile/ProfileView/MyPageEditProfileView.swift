@@ -374,9 +374,9 @@ extension MyPageEditProfileView {
     }
     
     //프로필
-    func updateProfileImage(image: String) {
+    func updateProfileImage(image: URL?) {
         userImageView.do {
-            $0.kfSetImage(url: makeBucketImageURLString(path: image))
+            $0.kfSetImage(url: image)
         }
     }
     
