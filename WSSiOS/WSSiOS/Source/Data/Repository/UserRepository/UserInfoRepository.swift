@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserInfoRepository {
-    func getUserMeData() -> Observable<UserMeResult>
+    func getUserMeData() -> Observable<UserMeResponse>
     func getMyProfileData() -> Observable<MyProfileEntity>
     func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity>
     func getUserInfo() -> Observable<UserInfoEntity>
@@ -18,9 +18,9 @@ protocol UserInfoRepository {
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesResponse>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
@@ -42,7 +42,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         self.userService = userService
     }
 
-    func getUserMeData() -> Observable<UserMeResult> {
+    func getUserMeData() -> Observable<UserMeResponse> {
         return userService.getUserData()
             .asObservable()
     }
@@ -59,7 +59,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserData() -> Observable<UserMeResult> {
+    func getUserData() -> Observable<UserMeResponse> {
         return userService.getUserData()
             .asObservable()
     }
@@ -81,7 +81,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse> {
         return userService.getUserNovelStatus(userId: userId)
             .asObservable()
     }
@@ -91,7 +91,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences> {
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesResponse> {
         return userService.getUserGenrePreferences(userId: userId)
             .asObservable()
     }

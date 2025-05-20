@@ -5,11 +5,11 @@
 //  Created by 신지원 on 7/24/24.
 //
 
-import UIKit
+import Foundation
 
-struct UserNovelStatus: Codable {
+struct UserNovelStatusResponse: Decodable {
     var interestNovelCount: Int
     var watchingNovelCount: Int
     var watchedNovelCount: Int
-    var quitNovelCount: Int
+   var quitNovelCount: Int
 }

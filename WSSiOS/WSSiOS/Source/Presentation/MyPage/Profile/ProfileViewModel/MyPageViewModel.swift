@@ -27,10 +27,10 @@ final class MyPageViewModel: ViewModelType {
     private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
     
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
-    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusResponse>(value: UserNovelStatusResponse(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
     let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
-    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
+    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesResponse>(value: UserGenrePreferencesResponse(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let bindFeedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
@@ -110,8 +110,8 @@ final class MyPageViewModel: ViewModelType {
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
-        let bindGenreData: BehaviorRelay<UserGenrePreferences>
-        let bindInventoryData: BehaviorRelay<UserNovelStatus>
+        let bindGenreData: BehaviorRelay<UserGenrePreferencesResponse>
+        let bindInventoryData: BehaviorRelay<UserNovelStatusResponse>
         
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
@@ -514,12 +514,12 @@ final class MyPageViewModel: ViewModelType {
             .asObservable()
     }
     
-    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferences> {
+    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferencesResponse> {
         return userRepository.userInfoRepository.getUserGenrePreferences(userId: userId)
             .asObservable()
     }
     
-    private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
+    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusResponse> {
         return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
             .asObservable()
     }
