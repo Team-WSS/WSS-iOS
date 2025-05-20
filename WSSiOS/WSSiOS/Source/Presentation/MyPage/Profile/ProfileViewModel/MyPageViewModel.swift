@@ -30,7 +30,7 @@ final class MyPageViewModel: ViewModelType {
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusResponse>(value: UserNovelStatusResponse(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
     let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
-    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesResponse>(value: UserGenrePreferencesResponse(genrePreferences: []))
+    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let bindFeedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
@@ -110,7 +110,7 @@ final class MyPageViewModel: ViewModelType {
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
-        let bindGenreData: BehaviorRelay<UserGenrePreferencesResponse>
+        let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
         let bindInventoryData: BehaviorRelay<UserNovelStatusResponse>
         
         let showGenreOtherView: BehaviorRelay<Bool>
@@ -413,12 +413,12 @@ final class MyPageViewModel: ViewModelType {
                 //4. 둘 다 없을 때
                 //=> emptyView 처리
                 //=> 이 경우 장르 취향도 데이터가 없기 때문에 false 반환
-                let keywords = preference.keywords ?? []
+                let keywords = preference.keywords
                 if preference.attractivePoints == [] && keywords.isEmpty {
                     self.isExistPrefernecesRelay.accept(false)
                     return .just(false)
                 } else {
-                    self.bindAttractivePointsDataRelay.accept(preference.attractivePoints ?? [])
+                    self.bindAttractivePointsDataRelay.accept(preference.attractivePoints)
                     self.bindKeywordRelay.accept(keywords)
                     return .just(true)
                 }
@@ -509,19 +509,16 @@ final class MyPageViewModel: ViewModelType {
         return userRepository.userInfoRepository.getOtherProfile(userId: userId)
     }
     
-    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesResponse> {
+    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesEntity> {
         return userRepository.userInfoRepository.getUserNovelPreferences(userId: userId)
-            .asObservable()
     }
     
-    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferencesResponse> {
+    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferencesListEntity> {
         return userRepository.userInfoRepository.getUserGenrePreferences(userId: userId)
-            .asObservable()
     }
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatusResponse> {
         return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
-            .asObservable()
     }
     
     private func postBlockUser(userId: Int) -> Observable<Void> {

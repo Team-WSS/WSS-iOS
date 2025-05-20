@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct UserNovelPreferenceResponse: Decodable {
+struct UserNovelPreferencesResponse: Decodable {
     let attractivePoints: [String]
     let keywords: [KeywordResponse]
 }
 
-struct UserGenrePreferenceListResponse: Decodable {
-    let genrePreferences: [UserGenrePreferenceResponse]
+struct UserGenrePreferencesListResponse: Decodable {
+    let genrePreferences: [UserGenrePreferencesResponse]
 }
 
-struct UserGenrePreferenceResponse: Decodable {
+struct UserGenrePreferencesResponse: Decodable {
     let genreName: String
-    let genreImageURL: URL?
+    let genreImage: String
     let genreCount: Int
 }

@@ -76,5 +76,3 @@ final class MyPagePreferencesEmptyView: UIView {
         }
     }
 }
-
-

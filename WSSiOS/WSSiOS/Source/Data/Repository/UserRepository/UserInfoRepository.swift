@@ -19,8 +19,8 @@ protocol UserInfoRepository {
     func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse>
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesResponse>
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesEntity>
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
@@ -37,11 +37,11 @@ protocol UserInfoRepository {
 struct DefaultUserInfoRepository: UserInfoRepository {
     
     private let userService: UserService
-
+    
     init(userService: UserService) {
         self.userService = userService
     }
-
+    
     func getUserMeData() -> Observable<UserMeResponse> {
         return userService.getUserData()
             .asObservable()
@@ -56,11 +56,6 @@ struct DefaultUserInfoRepository: UserInfoRepository {
     func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity> {
         return userService.getOtherProfile(userId: userId)
             .map{ $0.toEntity() }
-            .asObservable()
-    }
-    
-    func getUserData() -> Observable<UserMeResponse> {
-        return userService.getUserData()
             .asObservable()
     }
     
@@ -86,13 +81,15 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse> {
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesEntity> {
         return userService.getUserNovelPreferences(userId: userId)
+            .map { $0.toEntity() }
             .asObservable()
     }
     
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesResponse> {
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity> {
         return userService.getUserGenrePreferences(userId: userId)
+            .map { $0.toEntity() }
             .asObservable()
     }
     
