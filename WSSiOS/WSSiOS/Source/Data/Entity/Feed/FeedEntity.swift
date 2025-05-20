@@ -46,7 +46,8 @@ extension FeedResponse {
         let hasLinkedNovel = self.novelId != nil
         let hasImage = self.images.count > 0
         let imageCount = self.images.count
-       // let imageURLs: [URL?] = self.images.map { KingFisherRxHelper.makeBucketImageURL(path: $0) }
+        // let imageURLs: [URL?] = self.images.map { KingFisherRxHelper.makeBucketImageURL(path: $0) }
+        // 테스트용 코드 -> 머지 시 삭제 예정
         let imageURLs: [URL?] = self.images.map { URL(string: $0)! }
         
         return FeedEntity(userId: self.userId,
