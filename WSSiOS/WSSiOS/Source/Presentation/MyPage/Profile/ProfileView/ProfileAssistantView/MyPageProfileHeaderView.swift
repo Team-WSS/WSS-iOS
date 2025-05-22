@@ -14,7 +14,7 @@ final class MyPageProfileHeaderView: UIView {
     
     //MARK: - Properties
     
-    private let profileImageSize: CGFloat = 94
+    private let profileImageSize: CGFloat = 86
     private let profileChangeImageSize: CGFloat = 25
     
     //MARK: - Components
@@ -56,8 +56,8 @@ final class MyPageProfileHeaderView: UIView {
             $0.layer.cornerRadius = profileChangeImageSize / 2
             $0.isUserInteractionEnabled = true
             $0.backgroundColor = .wssWhite
-            $0.layer.borderWidth = 1.04
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.wssGray80.cgColor
         }
         
         userNicknameLabel.do {
@@ -67,8 +67,8 @@ final class MyPageProfileHeaderView: UIView {
         
         userIntroLabel.do {
             $0.textColor = .wssGray200
-            $0.numberOfLines = 2
-            $0.textAlignment = .center
+            $0.numberOfLines = 3
+            $0.textAlignment = .justified
         }
     }
     
@@ -81,8 +81,7 @@ final class MyPageProfileHeaderView: UIView {
     
     private func setLayout() {
         userImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(25)
-            $0.centerX.equalToSuperview()
+            $0.top.leading.bottom.equalToSuperview()
             $0.size.equalTo(profileImageSize)
         }
         
@@ -93,15 +92,16 @@ final class MyPageProfileHeaderView: UIView {
         }
         
         userNicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(userImageView.snp.bottom).offset(20)
-            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.equalTo(userImageView.snp.trailing).offset(24)
+            $0.trailing.equalToSuperview().inset(19)
         }
         
         userIntroLabel.snp.makeConstraints {
-            $0.top.equalTo(userNicknameLabel.snp.bottom).offset(4)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(250)
-            $0.bottom.equalToSuperview().inset(30)
+            $0.top.equalTo(userNicknameLabel.snp.bottom).offset(2)
+            $0.leading.equalTo(userNicknameLabel.snp.leading)
+            $0.trailing.equalTo(userNicknameLabel.snp.trailing)
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -114,9 +114,6 @@ final class MyPageProfileHeaderView: UIView {
             userImageView.kfSetImage(url: data.avatarImageURL)
         }
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
-        userIntroLabel.do {
-            $0.applyWSSFont(.body2, with: data.introdution)
-            $0.textAlignment = .center
-        }
+        userIntroLabel.applyWSSFont(.body4, with: data.introdution)
     }
 }
