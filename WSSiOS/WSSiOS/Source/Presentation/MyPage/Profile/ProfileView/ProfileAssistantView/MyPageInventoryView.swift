@@ -181,7 +181,7 @@ final class MyPageInventoryView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: UserNovelStatusResponse) {
+    func bindData(data: UserNovelStatusEntity) {
         interestCountLabel.applyWSSFont(.title2, with: String(describing: data.interestNovelCount))
         watchedCountLabel.applyWSSFont(.title2, with: String(describing: data.watchedNovelCount))
         watchingCountLabel.applyWSSFont(.title2, with: String(describing: data.watchingNovelCount))

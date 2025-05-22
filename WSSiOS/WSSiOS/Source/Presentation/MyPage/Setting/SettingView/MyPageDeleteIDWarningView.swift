@@ -116,7 +116,7 @@ final class MyPageDeleteIDWarningView: UIView {
     
     //MARK: - Data
     
-    func bindData(count: UserNovelStatusResponse) {
+    func bindData(count: UserNovelStatusEntity) {
         interestView.bindData(icon: .icQuittingLike,
                               status: StringLiterals.MyPage.DeleteIDWarning.interest,
                               count: String(describing: count.interestNovelCount))

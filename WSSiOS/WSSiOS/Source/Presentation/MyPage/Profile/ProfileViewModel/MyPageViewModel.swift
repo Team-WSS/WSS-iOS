@@ -27,7 +27,10 @@ final class MyPageViewModel: ViewModelType {
     private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
     
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
-    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusResponse>(value: UserNovelStatusResponse(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
+                                                                                                           watchingNovelCount: 0,
+                                                                                                           watchedNovelCount: 0,
+                                                                                                           quitNovelCount: 0))
     let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
@@ -111,7 +114,7 @@ final class MyPageViewModel: ViewModelType {
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
-        let bindInventoryData: BehaviorRelay<UserNovelStatusResponse>
+        let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>
         
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
@@ -517,7 +520,7 @@ final class MyPageViewModel: ViewModelType {
         return userRepository.userInfoRepository.getUserGenrePreferences(userId: userId)
     }
     
-    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusResponse> {
+    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusEntity> {
         return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
     }
     

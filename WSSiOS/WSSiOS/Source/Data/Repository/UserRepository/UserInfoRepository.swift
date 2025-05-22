@@ -18,7 +18,7 @@ protocol UserInfoRepository {
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse>
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusEntity>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesEntity>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
@@ -77,8 +77,9 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse> {
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusEntity> {
         return userService.getUserNovelStatus(userId: userId)
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
