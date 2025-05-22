@@ -41,7 +41,7 @@ struct TotalFeedEntity {
     let isMyFeed: Bool
     let isPublic: Bool
 
-    let thumbnailImage: String
+    let thumbnailImageURL: URL?
     let hasImage: Bool
     let imageCount: Int
 }
@@ -56,6 +56,9 @@ extension TotalFeedResponse {
         } else {
             makeNovelRating = -1
         }
+        
+        let thumbnailImageURL = URL(string: self.thumbnailUrl ?? "")
+        let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
         
         return TotalFeedEntity(
             feedId: self.feedId,
@@ -76,10 +79,9 @@ extension TotalFeedResponse {
             isModified: self.isModified,
             isMyFeed: self.isMyFeed,
             isPublic: self.isPublic,
-            //TODO: DTO 수정
-            thumbnailImage: "",
-            hasImage: true,
-            imageCount: 20
+            thumbnailImageURL: thumbnailImageURL,
+            hasImage: hasImage,
+            imageCount: self.imageCount
         )
     }
 }
@@ -107,7 +109,7 @@ extension TotalFeedListEntity {
                                                                     isModified: false,
                                                                     isMyFeed: true,
                                                                     isPublic: true,
-                                                                    thumbnailImage: "https://i.pinimg.com/736x/ec/af/63/ecaf63a83c5a37693a25b34f528aa9ad.jpg",
+                                                                    thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: true,
                                                                     imageCount: 12),
                                                     TotalFeedEntity(feedId: 123123,
@@ -128,7 +130,7 @@ extension TotalFeedListEntity {
                                                                     isModified: false,
                                                                     isMyFeed: false,
                                                                     isPublic: true,
-                                                                    thumbnailImage: "https://i.pinimg.com/736x/1a/51/98/1a5198477634dd2e194c02f3c8094b97.jpg",
+                                                                    thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: true,
                                                                     imageCount: 3),
                                                     TotalFeedEntity(feedId: 123123,
@@ -149,7 +151,7 @@ extension TotalFeedListEntity {
                                                                     isModified: false,
                                                                     isMyFeed: false,
                                                                     isPublic: true,
-                                                                    thumbnailImage: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg",
+                                                                    thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: false,
                                                                     imageCount: 0),
                                                     TotalFeedEntity(feedId: 123123,
@@ -170,7 +172,7 @@ extension TotalFeedListEntity {
                                                                     isModified: false,
                                                                     isMyFeed: false,
                                                                     isPublic: true,
-                                                                    thumbnailImage: "https://i.pinimg.com/736x/5b/49/40/5b49408ec192cad6337b494b5ca4de38.jpg",
+                                                                    thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: false,
                                                                     imageCount: 0)
                                                    ])

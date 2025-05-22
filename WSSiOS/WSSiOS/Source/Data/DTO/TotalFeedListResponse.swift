@@ -32,6 +32,9 @@ struct TotalFeedResponse: Decodable {
     let isModified: Bool
     let isMyFeed: Bool
     let isPublic: Bool
+    
+    let thumbnailUrl: String?
+    let imageCount: Int
 }
 
 struct FeedContentRequest: Encodable {

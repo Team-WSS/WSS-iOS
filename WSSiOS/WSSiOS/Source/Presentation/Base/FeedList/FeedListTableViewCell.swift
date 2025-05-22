@@ -170,7 +170,7 @@ final class FeedListTableViewCell: UITableViewCell {
         
         // 첨부 이미지 바인딩
         if (feed.hasImage && !feed.isSpoiler) {
-            feedImageView.bindData(thumbnailImage: feed.thumbnailImage, imageCount: feed.imageCount)
+            feedImageView.bindData(thumbnailImage: feed.thumbnailImageURL, imageCount: feed.imageCount)
             stackView.insertArrangedSubview(feedImageView, at: 2)
             
             let spacingAfterImage: CGFloat = hasConnectedNovel ? 20 : 10
@@ -223,7 +223,7 @@ final class FeedListTableViewCell: UITableViewCell {
         
         // 첨부 이미지 바인딩
         if (feed.feed.hasImage && !feed.feed.isSpoiler) {
-            feedImageView.bindData(thumbnailImage: feed.feed.thumbnailImage, imageCount: feed.feed.imageCount)
+            //feedImageView.bindData(thumbnailImage: feed.feed.thumbnailImage, imageCount: feed.feed.imageCount)
             stackView.insertArrangedSubview(feedImageView, at: 2)
             
             let spacingAfterImage: CGFloat = hasConnectedNovel ? 20 : 10
