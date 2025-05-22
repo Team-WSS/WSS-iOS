@@ -78,7 +78,7 @@ final class FeedDetailAddImageViewerView: UIView {
         }
         
         pageLabel.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide).offset(11)
+            $0.centerY.equalTo(closeButton.snp.centerY)
             $0.centerX.equalToSuperview()
         }
     }
