@@ -278,16 +278,7 @@ extension UIViewController {
     }
     
     func pushToFeedDetailViewController(feedId: Int) {
-        let viewController = FeedDetailViewController(
-            viewModel: FeedDetailViewModel(
-                feedDetailRepository: DefaultFeedDetailRepository(
-                    feedDetailService: DefaultFeedDetailService()
-                ), userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
-                ),
-                feedId: feedId
-            )
-        )
+        let viewController = ModuleFactory.shared.makeFeedDetailViewController(feedId: feedId)
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -403,6 +394,12 @@ extension UIViewController {
         feedDetailUnknownFeedErrorViewController.modalTransitionStyle = .crossDissolve
         
         self.present(feedDetailUnknownFeedErrorViewController, animated: true)
+    }
+    
+    func presentToFeedDetailAddImageViewerViewController(startIndex: Int, imageURLs: [URL?]) {
+        let viewController = FeedDetailAddImageViewerController(startIndex: startIndex, imageURLs: imageURLs)
+        viewController.modalPresentationStyle = .overFullScreen
+        self.present(viewController, animated: true)
     }
     
     func topViewController() -> UIViewController {

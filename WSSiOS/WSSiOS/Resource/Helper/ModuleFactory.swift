@@ -17,8 +17,12 @@ protocol NovelDetailModuleFactory {
     func makeNovelDetailViewController(novelId: Int) -> UIViewController
 }
 
-protocol ServiceTermAgreementFactory {
+protocol ServiceTermAgreementModuleFactory {
     func makeServiceTermAgreementViewController() -> UIViewController
+}
+
+protocol FeedDetailModuleFactory {
+    func makeFeedDetailViewController(feedId: Int) -> UIViewController
 }
 
 protocol MyPageModuleFactory {
@@ -57,9 +61,17 @@ extension ModuleFactory: OnboardingModuleFactory {
     }
 }
 
-extension ModuleFactory: ServiceTermAgreementFactory {
+extension ModuleFactory: ServiceTermAgreementModuleFactory {
     func makeServiceTermAgreementViewController() -> UIViewController {
         return ServiceTermAgreementViewController(repository: DefaultUserInfoRepository(userService: DefaultUserService()))
+    }
+}
+
+extension ModuleFactory: FeedDetailModuleFactory {
+    func makeFeedDetailViewController(feedId: Int) -> UIViewController {
+        return FeedDetailViewController(viewModel: FeedDetailViewModel(feedDetailRepository: TestFeedDetailRepository(),
+                                                                       userRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                                                                       feedId: feedId))
     }
 }
 

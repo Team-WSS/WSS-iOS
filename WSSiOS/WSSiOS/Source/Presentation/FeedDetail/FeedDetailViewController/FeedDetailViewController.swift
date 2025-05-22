@@ -113,6 +113,7 @@ final class FeedDetailViewController: UIViewController {
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
             likeButtonDidTap: rootView.feedContentView.reactView.likeView.rx.tapGesture().when(.recognized).asObservable(),
             userProfileViewDidTap: rootView.profileView.userProfileImageView.rx.tapGesture().when(.recognized).asObservable(),
+            imageViewDidTap: rootView.feedContentView.addImageView.imageTapSubject.asObservable(),
             linkNovelViewDidTap: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidTap: viewDidTap,
             commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
@@ -168,6 +169,16 @@ final class FeedDetailViewController: UIViewController {
         output.replyCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.replyView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        // 첨부 이미지
+        output.presentFeedDetailAddImageViewerController
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                let startIndex = data.0
+                let imageURLs = data.1
+                owner.presentToFeedDetailAddImageViewerViewController(startIndex: startIndex, imageURLs: imageURLs)
             })
             .disposed(by: disposeBag)
         
