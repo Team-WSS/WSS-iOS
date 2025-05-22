@@ -52,7 +52,6 @@ final class FeedDetailAddImageView: UIView {
             $0.axis = .horizontal
             $0.spacing = 7
             $0.alignment = .fill
-            $0.distribution = .fillEqually
         }
     }
     
@@ -95,8 +94,7 @@ final class FeedDetailAddImageView: UIView {
             }
             
             imageView.snp.makeConstraints {
-                $0.width.equalTo(imageWidth)
-                $0.height.equalTo(imageWidth)
+                $0.size.equalTo(imageWidth)
             }
             
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
