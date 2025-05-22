@@ -14,7 +14,8 @@ final class FeedNavigationView: UIView {
     
     //MARK: - Components
     
-    private let navigationTitle = UILabel()
+    let myFeedTabButton = FeedTabButton(feedTab: .my)
+    let sosoFeedTabButton = FeedTabButton(feedTab: .soso)
     let createFeedButton = UIButton()
     
     // MARK: - Life Cycle
@@ -36,31 +37,37 @@ final class FeedNavigationView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        navigationTitle.do {
-            $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.feed)
-            $0.textColor = .wssBlack
-        }
-        
         createFeedButton.do {
-            $0.setImage(.icPencilSmall.withTintColor(.wssBlack).withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icPencilSm.withTintColor(.wssBlack).withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     
     private func setHierarchy() {
-        addSubviews(navigationTitle,
+        addSubviews(myFeedTabButton,
+                    sosoFeedTabButton,
                     createFeedButton)
     }
     
     private func setLayout() {
-        navigationTitle.snp.makeConstraints {
+        self.snp.makeConstraints {
+            $0.height.equalTo(56)
+        }
+        
+        myFeedTabButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
         
+        sosoFeedTabButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(myFeedTabButton.snp.trailing).offset(16)
+        }
+        
         createFeedButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(20)
+            $0.height.equalTo(40)
+            $0.trailing.equalToSuperview()
+            $0.width.equalTo(60)
         }
     }
 }
