@@ -69,8 +69,7 @@ extension ModuleFactory: ServiceTermAgreementModuleFactory {
 
 extension ModuleFactory: FeedDetailModuleFactory {
     func makeFeedDetailViewController(feedId: Int) -> UIViewController {
-        return FeedDetailViewController(viewModel: FeedDetailViewModel(feedDetailRepository:
-                                                                        TestFeedDetailRepository(),
+        return FeedDetailViewController(viewModel: FeedDetailViewModel(feedDetailRepository: TestFeedDetailRepository(),
                                                                        userRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
                                                                        feedId: feedId))
     }
