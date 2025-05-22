@@ -10,27 +10,15 @@ import UIKit
 import SnapKit
 import Then
 
-class CircularImageView: UIImageView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.layer.cornerRadius = self.bounds.width / 2
-        self.clipsToBounds = true
-    }
-}
-
-class CircularButton: UIButton {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.layer.cornerRadius = self.bounds.width / 2
-        self.clipsToBounds = true
-    }
-}
-
 final class UserPageProfileHeaderView: UIView {
+    
+    //MARK: - Properties
+    
+    private let profileImageSize: CGFloat = 94
     
     //MARK: - Components
     
-    private let userImageView = CircularImageView()
+    private let userImageView = UIImageView()
     private let userNicknameLabel = UILabel()
     private let userIntroLabel = UILabel()
     
@@ -52,6 +40,11 @@ final class UserPageProfileHeaderView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssPrimary20
+        
+        userImageView.do {
+            $0.layer.cornerRadius = profileImageSize / 2
+            $0.clipsToBounds = true
+        }
         
         userNicknameLabel.do {
             $0.textColor = .wssBlack
@@ -75,7 +68,7 @@ final class UserPageProfileHeaderView: UIView {
         userImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(94)
+            $0.size.equalTo(profileImageSize)
         }
         
         userNicknameLabel.snp.makeConstraints {
@@ -94,7 +87,11 @@ final class UserPageProfileHeaderView: UIView {
     //MARK: - Data
     
     func bindData(data: UserProfileEntity) {
-        userImageView.kfSetImage(url: data.avatarImageURL)
+        if data.avatarImageURL == nil {
+            userImageView.image = .imgProfile
+        } else {
+            userImageView.kfSetImage(url: data.avatarImageURL)
+        }
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
             $0.applyWSSFont(.body2, with: data.intro)

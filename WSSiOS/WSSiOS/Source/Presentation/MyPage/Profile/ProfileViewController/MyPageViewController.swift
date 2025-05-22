@@ -107,7 +107,7 @@ final class MyPageViewController: UIViewController {
             resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
-            editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
+            editButtonDidTap: rootView.headerView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
                 .when(.recognized)

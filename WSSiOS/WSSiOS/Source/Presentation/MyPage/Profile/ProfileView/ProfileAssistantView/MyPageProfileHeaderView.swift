@@ -12,11 +12,15 @@ import Then
 
 final class MyPageProfileHeaderView: UIView {
     
+    //MARK: - Properties
+    
+    private let profileImageSize: CGFloat = 94
+    private let profileChangeImageSize: CGFloat = 25
+    
     //MARK: - Components
     
-    lazy var userImageChangeButton = CircularButton()
-    private let userImageView = CircularImageView()
-    private let userImageChangeButtonView = UIImageView()
+    private let userImageView = UIImageView()
+    let userImageChangeImageView = UIImageView()
     
     private let userNicknameLabel = UILabel()
     private let userIntroLabel = UILabel()
@@ -40,17 +44,18 @@ final class MyPageProfileHeaderView: UIView {
     private func setUI() {
         self.backgroundColor = .wssPrimary20
         
-        userImageChangeButtonView.do {
-            $0.image = .icPencil
+        userImageView.do {
+            $0.layer.cornerRadius = profileImageSize / 2
+            $0.clipsToBounds = true
         }
         
-        userImageChangeButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.baseBackgroundColor = .wssWhite
-            
-            $0.configuration = configuration
-            $0.imageView?.contentMode = .scaleAspectFit
-            
+        userImageChangeImageView.do {
+            $0.image = .icPencil
+            $0.contentMode = .center
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = profileChangeImageSize / 2
+            $0.isUserInteractionEnabled = true
+            $0.backgroundColor = .wssWhite
             $0.layer.borderWidth = 1.04
             $0.layer.borderColor = UIColor.wssGray70.cgColor
         }
@@ -69,32 +74,26 @@ final class MyPageProfileHeaderView: UIView {
     
     private func setHierarchy() {
         addSubviews(userImageView,
-                    userImageChangeButton,
+                    userImageChangeImageView,
                     userNicknameLabel,
                     userIntroLabel)
-        userImageChangeButton.addSubview(userImageChangeButtonView)
     }
     
     private func setLayout() {
         userImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(94)
+            $0.size.equalTo(profileImageSize)
         }
         
-        userImageChangeButtonView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.size.equalTo(20)
-        }
-        
-        userImageChangeButton.snp.makeConstraints {
+        userImageChangeImageView.snp.makeConstraints {
             $0.trailing.equalTo(userImageView.snp.trailing)
             $0.bottom.equalTo(userImageView.snp.bottom)
-            $0.size.equalTo(25)
+            $0.size.equalTo(profileChangeImageSize)
         }
         
         userNicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(userImageChangeButton.snp.bottom).offset(20)
+            $0.top.equalTo(userImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
         }
         

@@ -57,7 +57,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
-        let profileViewDidTap: ControlEvent<Void>
+        let profileViewDidTap: Observable<UITapGestureRecognizer>
         let avatarImageNotification: Observable<Notification>
         
         let updateNicknameText: Observable<String>

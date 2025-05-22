@@ -65,7 +65,7 @@ final class MyPageViewModel: ViewModelType {
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
         let settingButtonDidTap: ControlEvent<Void>
-        let editButtonDidTap: ControlEvent<Void>
+        let editButtonDidTap: Observable<UITapGestureRecognizer>
         let genrePreferenceButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let inventorySpecificPageViewDidTap: Observable<Int>
@@ -149,7 +149,7 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.editButtonDidTap
-            .map { self.profileDataRelay.value }
+            .map { _ in self.profileDataRelay.value }
             .bind(to: pushToEditViewControllerRelay)
             .disposed(by: disposeBag)
         
