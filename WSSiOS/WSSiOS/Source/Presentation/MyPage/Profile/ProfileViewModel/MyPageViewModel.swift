@@ -24,7 +24,7 @@ final class MyPageViewModel: ViewModelType {
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
     private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
-                                                                                         intro: "",
+                                                                                         introdution: "",
                                                                                          genrePreferences: [],
                                                                                          avatarImageURL: nil))
                                                                   

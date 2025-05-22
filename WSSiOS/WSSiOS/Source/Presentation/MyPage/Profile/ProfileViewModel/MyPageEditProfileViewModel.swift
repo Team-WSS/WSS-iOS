@@ -76,7 +76,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let bindGenreCell = BehaviorRelay<[(String, Bool)]>(value: [])
         let popViewController = PublishRelay<Bool>()
         let bindProfileData = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
-                                                                                    intro: "",
+                                                                                    introdution: "",
                                                                                     genrePreferences: [],
                                                                                     avatarImageURL: nil))
         let pushToAvatarViewController = PublishRelay<String>()
@@ -103,7 +103,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             guard let profileData = self.profileData else { fatalError("프로필 데이터가 전달되지 않음") }
             
             self.userNickname.accept(profileData.nickname)
-            self.userIntro.accept(profileData.intro)
+            self.userIntro.accept(profileData.introdution)
             self.userGenre.accept(profileData.genrePreferences)
             self.userImage.accept(profileData.avatarImageURL)
             
@@ -114,7 +114,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 .subscribe(with: self, onNext: { owner, profileData in
                     owner.profileData = profileData
                     owner.userNickname.accept(profileData.nickname)
-                    owner.userIntro.accept(profileData.intro)
+                    owner.userIntro.accept(profileData.introdution)
                     owner.userGenre.accept(profileData.genrePreferences)
                     owner.userImage.accept(profileData.avatarImageURL)
                     
@@ -151,7 +151,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     updatedFields["nickname"] = self.userNickname.value
                 }
                 
-                if self.userIntro.value != self.profileData?.intro {
+                if self.userIntro.value != self.profileData?.introdution {
                     updatedFields["intro"] = self.userIntro.value
                 }
                 
@@ -328,7 +328,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func changeInfoData() {
-        if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.intro && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImageURL) {
+        if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.introdution && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImageURL) {
             self.changeCompleteButton.accept(self.checkDuplicatedButton.value)
         }
         else {

@@ -8,7 +8,7 @@
 import Foundation
 
 struct MyProfileEntity {
-    let nickname, intro: String
+    let nickname, introdution: String
     let genrePreferences: [String]
     let avatarImageURL: URL?
 }
@@ -17,7 +17,7 @@ extension MyProfileResponse {
     func toEntity() -> MyProfileEntity {
         let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         return MyProfileEntity(nickname: self.nickname,
-                               intro: self.intro,
+                               introdution: self.intro,
                                genrePreferences: self.genrePreferences,
                                avatarImageURL: avatarImageURL)
     }

@@ -474,8 +474,8 @@ extension MyPageEditProfileView {
             .applyAttribute()
         nicknameCountView.bindData(text: data.nickname)
         
-        introTextView.applyWSSFont(.body2, with: data.intro)
-        if !data.intro.isEmpty {
+        introTextView.applyWSSFont(.body2, with: data.introdution)
+        if !data.introdution.isEmpty {
             introTextViewPlaceholder.isHidden = true
         } else {
             introCountView.isHidden = false

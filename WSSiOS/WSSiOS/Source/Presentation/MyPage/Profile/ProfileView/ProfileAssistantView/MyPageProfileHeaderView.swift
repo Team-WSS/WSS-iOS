@@ -116,7 +116,7 @@ final class MyPageProfileHeaderView: UIView {
         }
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
-            $0.applyWSSFont(.body2, with: data.intro)
+            $0.applyWSSFont(.body2, with: data.introdution)
             $0.textAlignment = .center
         }
     }
