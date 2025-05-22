@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageGenrePreferencesTopView: UIView {
-
+    
     //MARK: - Components
     
     let topGenreImageView = UIImageView()
@@ -67,13 +67,10 @@ final class MyPageGenrePreferencesTopView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: GenrePreference) {
-        topGenreImageView.kfSetImage(url: makeBucketImageURLString(path: data.genreImage))
+    func bindData(data: UserGenrePreferencesEntity) {
+        topGenreImageView.kfSetImage(url: data.genreImageURL)
         let koreanGenre = NewNovelGenre(rawValue: data.genreName)?.withKorean
         topGenreTitleLabel.applyWSSFont(.title3, with: koreanGenre)
         topGenreCountLabel.applyWSSFont(.body5, with: String(data.genreCount) + "편")
     }
 }
-
-
-
