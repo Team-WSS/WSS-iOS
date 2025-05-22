@@ -16,22 +16,17 @@ final class MyPageLibraryViewModel: ViewModelType {
     
     private let userRepository: UserInfoRepository
     private let disposeBag = DisposeBag()
-    
-    /// 초기값은 내 프로필로 설정
-    private let isMyPage = BehaviorRelay<Bool>(value: true)
     private var profileId: Int
     
     private let isExistPrefernecesRelay = BehaviorRelay<Bool>(value: false)
     private let isProfilePrivate = PublishRelay<Bool>()
-    
-    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusResponse>(value: UserNovelStatusResponse(interestNovelCount: 0,
-                                                                                               watchingNovelCount: 0,
-                                                                                               watchedNovelCount: 0,
-                                                                                               quitNovelCount: 0))
+    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
+                                                                                                           watchingNovelCount: 0,
+                                                                                                           watchedNovelCount: 0,
+                                                                                                           quitNovelCount: 0))
     private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
-    
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     let bindKeywordRelay = BehaviorRelay<[KeywordEntity]>(value: [])
     private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
@@ -55,7 +50,7 @@ final class MyPageLibraryViewModel: ViewModelType {
         let isExistPreferneces: BehaviorRelay<Bool>
         let isProfilePrivate: PublishRelay<Bool>
         
-        let bindInventoryData: BehaviorRelay<UserNovelStatusResponse>
+        let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>
         let pushToLibraryViewController: PublishRelay<Int>
         let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
         let showGenreOtherView: BehaviorRelay<Bool>
@@ -211,16 +206,13 @@ final class MyPageLibraryViewModel: ViewModelType {
     
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesEntity> {
         return userRepository.getUserNovelPreferences(userId: userId)
-            .asObservable()
     }
     
     private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferencesListEntity> {
         return userRepository.getUserGenrePreferences(userId: userId)
-            .asObservable()
     }
     
-    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusResponse> {
+    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusEntity> {
         return userRepository.getUserNovelStatus(userId: userId)
-            .asObservable()
     }
 }

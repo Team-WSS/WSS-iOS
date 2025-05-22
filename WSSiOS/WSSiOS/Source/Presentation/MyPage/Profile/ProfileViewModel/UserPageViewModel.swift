@@ -33,7 +33,7 @@ final class UserPageViewModel: ViewModelType {
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
                                                                                                            quitNovelCount: 0))
-    let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
+    let bindKeywordRelay = BehaviorRelay<[KeywordEntity]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
@@ -95,7 +95,7 @@ final class UserPageViewModel: ViewModelType {
         let pushToUserPageFeedDetailViewController: PublishRelay<(Int, UserProfileEntity)>
         
         let bindAttractivePointsData: BehaviorRelay<[String]>
-        let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
+        let bindKeywordCell: BehaviorRelay<[KeywordEntity]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
         let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>

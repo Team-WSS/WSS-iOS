@@ -43,7 +43,7 @@ final class UserPageNovelPreferencesCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: KeywordResponse) {
+    func bindData(data: KeywordEntity) {
         keywordLabel.setText("\(data.keywordName) \(data.keywordCount)")
     }
 }
