@@ -7,19 +7,19 @@
 
 import Foundation
 
-struct MyFeedListEntity {
+struct UserFeedListEntity {
     let isLoadable: Bool
-    let feeds: [MyFeedEntity]
+    let feeds: [UserFeedEntity]
 }
 
-extension MyFeedListResponse {
-    func toEntity() -> MyFeedListEntity {
-        return MyFeedListEntity(isLoadable: self.isLoadable,
+extension UserFeedListResponse {
+    func toEntity() -> UserFeedListEntity {
+        return UserFeedListEntity(isLoadable: self.isLoadable,
                                 feeds: self.feeds.map { $0.toEntity()} )
     }
 }
 
-struct MyFeedEntity {
+struct UserFeedEntity {
     let feedId: Int
     let feedContent: String
     let createdDate: String
@@ -40,8 +40,8 @@ struct MyFeedEntity {
     let imageCount: Int
 }
 
-extension MyFeedResponse {
-    func toEntity() -> MyFeedEntity {
+extension UserFeedResponse {
+    func toEntity() -> UserFeedEntity {
         let makeNovelRating: Float
         if let novelRating = self.novelRating {
             makeNovelRating = round(novelRating * 10) / 10
@@ -53,7 +53,7 @@ extension MyFeedResponse {
             NewNovelGenre(rawValue: $0)?.withKorean
         }
         
-        return MyFeedEntity(feedId: self.feedId,
+        return UserFeedEntity(feedId: self.feedId,
                             feedContent: self.feedContent,
                             createdDate: self.formattedDate(),
                             isSpoiler: self.isSpoiler,
@@ -88,8 +88,8 @@ extension MyFeedResponse {
     }
 }
 
-struct MyFeedListItem {
-    let feed: MyFeedEntity
-    let avatarImage: String
+struct UserFeedListItem {
+    let feed: UserFeedEntity
+    let avatarImage: URL?
     let nickname: String
 }

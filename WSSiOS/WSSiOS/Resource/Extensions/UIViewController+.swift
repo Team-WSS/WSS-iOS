@@ -300,29 +300,20 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageViewController(userId: Int) {
-        let viewController = MyPageViewController(
-            viewModel: MyPageViewModel(
-                userRepository: DefaultUserRepository(
-                    userInfoRepository: DefaultUserInfoRepository(
-                        userService: DefaultUserService()),
-                    userBlockRepository: DefaultUserBlockRepository(
-                        blocksService: DefaultBlocksService())),
-                profileId: userId))
-        
+    func pushToMyPageViewController() {
+        let viewController = ModuleFactory.shared.makeMyPageViewController()
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToUserPageViewController(userId: Int) {
+        let viewController = ModuleFactory.shared.makeUserPageViewController(profileId: userId)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) {
-        let viewController = MyPageEditProfileViewController(
-            viewModel: MyPageEditProfileViewModel(
-                userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
-                ),
-                entryType: entryType,
-                profileData: profile))
-        
+        let viewController = ModuleFactory.shared.makeMyPageEditViewController(entryType: entryType, profile: profile)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -395,14 +386,14 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
-        let viewController = MyPageFeedDetailViewController(
-            viewModel: MyPageFeedDetailViewModel(
+    func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {
+        let viewController = UserPageFeedDetailViewController(
+            viewModel: UserPageFeedDetailViewModel(
                 userRepository: DefaultUserInfoRepository(
                     userService: DefaultUserService()
                 ),
                 profileId: userId,
-                profileData: useData))
+                profileData: userData))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

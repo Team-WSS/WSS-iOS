@@ -43,14 +43,12 @@ final class MyPageEditAvatarViewController: UIViewController {
         bindViewModel()
     }
     
-    //MARK: - Delegate
+    //MARK: - Bind
     
     private func register() {
         self.rootView.avatarImageCollectionView
             .register(MyPageEditAvatarCollectionViewCell.self, forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
     }
-    
-    //MARK: - Bind
     
     private func bindViewModel() {
         let input = MyPageEditAvatarViewModel.Input(
@@ -65,7 +63,7 @@ final class MyPageEditAvatarViewController: UIViewController {
                 cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
                     let (avatarImage, isRepresentive) = data
-                    cell.bindData(avatarImage: avatarImage, isRepresentative: isRepresentive)
+                    cell.bindData(avatarImageURL: avatarImage, isRepresentative: isRepresentive)
                 }
                 .disposed(by: disposeBag)
         

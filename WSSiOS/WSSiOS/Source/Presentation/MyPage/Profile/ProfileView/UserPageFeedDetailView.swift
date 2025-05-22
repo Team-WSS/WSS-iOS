@@ -1,5 +1,5 @@
 //
-//  MyPageFeedDetailView.swift
+//  UserPageFeedDetailView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 12/3/24.
@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageFeedDetailView: UIView {
+final class UserPageFeedDetailView: UIView {
     
     //MARK: - Components
     
-    let myPageFeedDetailTableView = UITableView(frame: .zero, style: .plain)
+    let userPageFeedDetailTableView = UITableView(frame: .zero, style: .plain)
     
     //In VC
     let backButton = UIButton()
@@ -36,7 +36,7 @@ final class MyPageFeedDetailView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        myPageFeedDetailTableView.do {
+        userPageFeedDetailTableView.do {
             $0.separatorStyle = .none
         }
         
@@ -46,11 +46,11 @@ final class MyPageFeedDetailView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(myPageFeedDetailTableView)
+        self.addSubview(userPageFeedDetailTableView)
     }
     
     private func setLayout() {
-        myPageFeedDetailTableView.snp.makeConstraints() {
+        userPageFeedDetailTableView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
         }
     }

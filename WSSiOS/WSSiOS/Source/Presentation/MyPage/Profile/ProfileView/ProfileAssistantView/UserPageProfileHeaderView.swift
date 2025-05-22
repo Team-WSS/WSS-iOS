@@ -1,8 +1,8 @@
 //
-//  MyPageProfileHeaderView.swift
+//  UserPageProfileHeaderView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 5/29/24.
+//  Created by 신지원 on 5/20/25.
 //
 
 import UIKit
@@ -10,18 +10,15 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageProfileHeaderView: UIView {
+final class UserPageProfileHeaderView: UIView {
     
     //MARK: - Properties
     
     private let profileImageSize: CGFloat = 94
-    private let profileChangeImageSize: CGFloat = 25
     
     //MARK: - Components
     
     private let userImageView = UIImageView()
-    let userImageChangeImageView = UIImageView()
-    
     private let userNicknameLabel = UILabel()
     private let userIntroLabel = UILabel()
     
@@ -49,17 +46,6 @@ final class MyPageProfileHeaderView: UIView {
             $0.clipsToBounds = true
         }
         
-        userImageChangeImageView.do {
-            $0.image = .icPencil
-            $0.contentMode = .center
-            $0.clipsToBounds = true
-            $0.layer.cornerRadius = profileChangeImageSize / 2
-            $0.isUserInteractionEnabled = true
-            $0.backgroundColor = .wssWhite
-            $0.layer.borderWidth = 1.04
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
-        }
-        
         userNicknameLabel.do {
             $0.textColor = .wssBlack
             $0.numberOfLines = 1
@@ -74,7 +60,6 @@ final class MyPageProfileHeaderView: UIView {
     
     private func setHierarchy() {
         addSubviews(userImageView,
-                    userImageChangeImageView,
                     userNicknameLabel,
                     userIntroLabel)
     }
@@ -84,12 +69,6 @@ final class MyPageProfileHeaderView: UIView {
             $0.top.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(profileImageSize)
-        }
-        
-        userImageChangeImageView.snp.makeConstraints {
-            $0.trailing.equalTo(userImageView.snp.trailing)
-            $0.bottom.equalTo(userImageView.snp.bottom)
-            $0.size.equalTo(profileChangeImageSize)
         }
         
         userNicknameLabel.snp.makeConstraints {
@@ -107,7 +86,7 @@ final class MyPageProfileHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: MyProfileEntity) {
+    func bindData(data: UserProfileEntity) {
         if data.avatarImageURL == nil {
             userImageView.image = .imgProfile
         } else {
@@ -115,7 +94,7 @@ final class MyPageProfileHeaderView: UIView {
         }
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
-            $0.applyWSSFont(.body2, with: data.introdution)
+            $0.applyWSSFont(.body2, with: data.intro)
             $0.textAlignment = .center
         }
     }

@@ -12,7 +12,7 @@ struct MyProfileResponse: Decodable {
     let genrePreferences: [String]
 }
 
-struct OtherProfileResponse: Decodable {
+struct UserProfileResponse: Decodable {
     let nickname, intro, avatarImage: String
     let genrePreferences: [String]
     let isProfilePublic: Bool

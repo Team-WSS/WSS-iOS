@@ -18,12 +18,12 @@ protocol UserService {
     func getUserProfileVisibility() -> Single<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResponse>
-    func getOtherProfile(userId: Int) -> Single<OtherProfileResponse>
+    func getOtherProfile(userId: Int) -> Single<UserProfileResponse>
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferencesListResponse>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedListResponse>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<UserFeedListResponse>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -198,7 +198,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getOtherProfile(userId: Int) -> Single<OtherProfileResponse> {
+    func getOtherProfile(userId: Int) -> Single<UserProfileResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.otherProfile(userId: userId),
@@ -209,7 +209,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: OtherProfileResponse.self) }
+                                       to: UserProfileResponse.self) }
                 .asSingle()
             
         } catch {
@@ -318,7 +318,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedListResponse> {
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<UserFeedListResponse> {
         let feedQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastFeedId", value: String(describing: lastFeedId)),
             URLQueryItem(name: "size", value: String(describing: size))
@@ -334,7 +334,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: MyFeedListResponse.self) }
+                                       to: UserFeedListResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)

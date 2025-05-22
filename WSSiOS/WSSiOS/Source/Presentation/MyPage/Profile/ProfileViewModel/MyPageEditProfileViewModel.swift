@@ -35,7 +35,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     private var userNickname = BehaviorRelay<String>(value: "")
     private let userIntro = BehaviorRelay<String>(value: "")
     private let userGenre = BehaviorRelay<[String]>(value: [])
-    private let userImage = BehaviorRelay<String>(value: "")
+    private let userImage = BehaviorRelay<URL?>(value: nil)
     
     // Action Relay
     private var changeCompleteButton = BehaviorRelay<Bool>(value: false)
@@ -57,7 +57,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
-        let profileViewDidTap: ControlEvent<Void>
+        let profileViewDidTap: Observable<UITapGestureRecognizer>
         let avatarImageNotification: Observable<Notification>
         
         let updateNicknameText: Observable<String>
@@ -76,11 +76,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let bindGenreCell = BehaviorRelay<[(String, Bool)]>(value: [])
         let popViewController = PublishRelay<Bool>()
         let bindProfileData = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
-                                                                                    intro: "",
-                                                                                    avatarImage: "",
-                                                                                    genrePreferences: []))
+                                                                                    introdution: "",
+                                                                                    genrePreferences: [],
+                                                                                    avatarImageURL: nil))
         let pushToAvatarViewController = PublishRelay<String>()
-        let updateProfileImage = PublishRelay<String>()
+        let updateProfileImage = PublishRelay<URL?>()
         
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
@@ -103,9 +103,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
             guard let profileData = self.profileData else { fatalError("프로필 데이터가 전달되지 않음") }
             
             self.userNickname.accept(profileData.nickname)
-            self.userIntro.accept(profileData.intro)
+            self.userIntro.accept(profileData.introdution)
             self.userGenre.accept(profileData.genrePreferences)
-            self.userImage.accept(profileData.avatarImage)
+            self.userImage.accept(profileData.avatarImageURL)
             
             output.bindProfileData.accept(profileData)
             
@@ -114,9 +114,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 .subscribe(with: self, onNext: { owner, profileData in
                     owner.profileData = profileData
                     owner.userNickname.accept(profileData.nickname)
-                    owner.userIntro.accept(profileData.intro)
+                    owner.userIntro.accept(profileData.introdution)
                     owner.userGenre.accept(profileData.genrePreferences)
-                    owner.userImage.accept(profileData.avatarImage)
+                    owner.userImage.accept(profileData.avatarImageURL)
                     
                     output.bindProfileData.accept(profileData)
                     
@@ -143,7 +143,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .flatMapLatest{ _ -> Observable<Void> in
                 var updatedFields: [String: Any] = [:]
                 
-                if self.userImage.value != self.profileData?.avatarImage && self.avatarId != -1  {
+                if self.userImage.value != self.profileData?.avatarImageURL && self.avatarId != -1  {
                     updatedFields["avatarId"] = self.avatarId
                 }
                 
@@ -151,7 +151,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     updatedFields["nickname"] = self.userNickname.value
                 }
                 
-                if self.userIntro.value != self.profileData?.intro {
+                if self.userIntro.value != self.profileData?.introdution {
                     updatedFields["intro"] = self.userIntro.value
                 }
                 
@@ -169,7 +169,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     UserDefaults.standard.setValue(self.userNickname.value, forKey: StringLiterals.UserDefault.userNickname)
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        NotificationCenter.default.post(name: NSNotification.Name("EditProfile"), object: nil)
+                        NotificationCenter.default.post(name: NotificationName.editProfile, object: nil)
                     }
                     
                     output.popViewController.accept(true)
@@ -203,7 +203,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.avatarImageNotification
             .subscribe(with: self, onNext: { owner, notification in
-                guard let avatarData = notification.object as? (Int, String) else { return }
+                guard let avatarData = notification.object as? (Int, URL) else { return }
                 owner.avatarId = avatarData.0
                 owner.userImage.accept(avatarData.1)
                 output.updateProfileImage.accept(avatarData.1)
@@ -328,7 +328,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func changeInfoData() {
-        if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.intro && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImage) {
+        if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.introdution && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImageURL) {
             self.changeCompleteButton.accept(self.checkDuplicatedButton.value)
         }
         else {

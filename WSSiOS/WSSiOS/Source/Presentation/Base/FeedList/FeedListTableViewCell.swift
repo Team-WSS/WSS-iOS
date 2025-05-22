@@ -148,7 +148,7 @@ final class FeedListTableViewCell: UITableViewCell {
     func bindFeedData(feed: TotalFeedEntity) {
         self.feed.accept(feed)
         
-        feedHeaderView.bindData(avatarImage: feed.avatarImage,
+        feedHeaderView.bindData(avatarImageURL: feed.avatarImage,
                                 nickname: feed.nickname,
                                 createdDate: feed.createdDate,
                                 isModified: feed.isModified)
@@ -192,9 +192,9 @@ final class FeedListTableViewCell: UITableViewCell {
         }
     }
     
-    func bindProfileFeedData(feed: MyFeedListItem) {
+    func bindProfileFeedData(feed: UserFeedListItem) {
         feedHeaderView.dropdownButtonView.isHidden = true
-        feedHeaderView.bindData(avatarImage: feed.avatarImage,
+        feedHeaderView.bindData(avatarImageURL: feed.avatarImage,
                                 nickname: feed.nickname,
                                 createdDate: feed.feed.createdDate,
                                 isModified: feed.feed.isModified)

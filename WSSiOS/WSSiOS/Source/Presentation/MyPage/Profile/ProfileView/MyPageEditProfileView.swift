@@ -12,12 +12,16 @@ import Then
 
 final class MyPageEditProfileView: UIView {
     
+    //MARK: - Properties
+    
+    private let profileImageSize: CGFloat = 94
+    private let profileChangeImageSize: CGFloat = 25
+    
     //MARK: - Components
     
     private let myPageProfileView = UIView()
-    private var userImageView = CircularImageView()
-    let userImageChangeInnerButton: UIButton = CircularButton()
-    private let userImageChangeInnerButtonView = UIImageView()
+    private var userImageView = UIImageView()
+    let userImageChangeImageView = UIImageView()
     
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
@@ -26,7 +30,7 @@ final class MyPageEditProfileView: UIView {
     lazy var nicknameClearButton = UIButton()
     lazy var nicknameDuplicatedButton = UIButton()
     private let nicknameWarningLabel = UILabel()
-    private var nicknameCountView = MyPageCountView(maxLimit: 10)
+    private var nicknameCountView = UserPageCountView(maxLimit: 10)
     
     private let divide1View = UIView()
     
@@ -34,7 +38,7 @@ final class MyPageEditProfileView: UIView {
     private let introLabel = UILabel()
     lazy var introTextView = UITextView()
     private let introTextViewPlaceholder = UILabel()
-    private var introCountView = MyPageCountView(maxLimit: 50)
+    private var introCountView = UserPageCountView(maxLimit: 50)
     
     private let divide2View = UIView()
     
@@ -70,19 +74,20 @@ final class MyPageEditProfileView: UIView {
         myPageProfileView.do {
             $0.backgroundColor = .wssWhite
             
-            userImageChangeInnerButton.do {
-                var configuration = UIButton.Configuration.filled()
-                configuration.baseBackgroundColor = .wssWhite
-                
-                $0.configuration = configuration
-                $0.imageView?.contentMode = .scaleAspectFit
-                
+            userImageView.do {
+                $0.layer.cornerRadius = profileImageSize / 2
+                $0.clipsToBounds = true
+            }
+            
+            userImageChangeImageView.do {
+                $0.image = .icPlus
+                $0.contentMode = .center
+                $0.clipsToBounds = true
+                $0.layer.cornerRadius = profileChangeImageSize / 2
+                $0.isUserInteractionEnabled = true
+                $0.backgroundColor = .wssWhite
                 $0.layer.borderWidth = 1.04
                 $0.layer.borderColor = UIColor.wssGray70.cgColor
-                
-                userImageChangeInnerButtonView.do {
-                    $0.image = .icPlus
-                }
             }
         }
         
@@ -196,8 +201,7 @@ final class MyPageEditProfileView: UIView {
                          introView,
                          genreView)
         myPageProfileView.addSubviews(userImageView,
-                                      userImageChangeInnerButton)
-        userImageChangeInnerButton.addSubview(userImageChangeInnerButtonView)
+                                      userImageChangeImageView)
         nicknameView.addSubviews(nicknameLabel,
                                  textFieldBackgroundView,
                                  nicknameDuplicatedButton,
@@ -224,21 +228,16 @@ final class MyPageEditProfileView: UIView {
                 $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(38)
             }
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(94)
+            $0.size.equalTo(profileImageSize)
             
             userImageView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
             
-            userImageChangeInnerButton.snp.makeConstraints {
+            userImageChangeImageView.snp.makeConstraints {
                 $0.trailing.equalTo(userImageView.snp.trailing)
                 $0.bottom.equalTo(userImageView.snp.bottom)
-                $0.size.equalTo(25)
-                
-                userImageChangeInnerButtonView.snp.makeConstraints {
-                    $0.center.equalToSuperview()
-                    $0.size.equalTo(20)
-                }
+                $0.size.equalTo(profileChangeImageSize)
             }
         }
         
@@ -373,15 +372,15 @@ extension MyPageEditProfileView {
     }
     
     //프로필
-    func updateProfileImage(image: String) {
+    func updateProfileImage(image: URL?) {
         userImageView.do {
-            $0.kfSetImage(url: makeBucketImageURLString(path: image))
+            $0.kfSetImage(url: image)
         }
     }
     
     //닉네임
     func updateNicknameCount(text: String) {
-        nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
+        nicknameCountView.bindData(text: text)
     }
     
     func updateNicknameTextField(isEditing: Bool, availablity: NicknameAvailablity) {
@@ -463,7 +462,7 @@ extension MyPageEditProfileView {
     }
     
     func updateIntroCount(text: String) {
-        introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
+        introCountView.bindData(text: text)
     }
     
     //MARK: - Data
@@ -472,17 +471,19 @@ extension MyPageEditProfileView {
         nicknameTextField.makeAttribute(with: data.nickname)
             .kerning(kerningPixel: -0.6)
             .applyAttribute()
-        nicknameCountView.countLabel.text = String(data.nickname.count)
+        nicknameCountView.bindData(text: data.nickname)
         
-        introTextView.applyWSSFont(.body2, with: data.intro)
-        if !data.intro.isEmpty {
+        introTextView.applyWSSFont(.body2, with: data.introdution)
+        if !data.introdution.isEmpty {
             introTextViewPlaceholder.isHidden = true
         } else {
             introCountView.isHidden = false
         }
         
-        userImageView.do {
-            $0.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
+        if data.avatarImageURL == nil {
+            userImageView.image = .imgProfile
+        } else {
+            userImageView.kfSetImage(url: data.avatarImageURL)
         }
     }
 }

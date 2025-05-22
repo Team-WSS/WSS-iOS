@@ -1,5 +1,5 @@
 //
-//  MyPagePreferencesEmptyView.swift
+//  UserPagePreferencesEmptyView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPagePreferencesEmptyView: UIView {
+final class UserPagePreferencesEmptyView: UIView {
 
     //MARK: - Components
     

@@ -1,5 +1,5 @@
 //
-//  MyPageNovelPreferencesCollectionViewCell.swift
+//  UserPageNovelPreferencesCollectionViewCell.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageNovelPreferencesCollectionViewCell: UICollectionViewCell {
+final class UserPageNovelPreferencesCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
@@ -43,7 +43,7 @@ final class MyPageNovelPreferencesCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: KeywordResponse) {
+    func bindData(data: KeywordEntity) {
         keywordLabel.setText("\(data.keywordName) \(data.keywordCount)")
     }
 }

@@ -503,7 +503,7 @@ final class FeedDetailViewController: UIViewController {
         
         output.pushToUserPageViewController
             .subscribe(with: self, onNext: { owner, userId in
-                owner.pushToMyPageViewController(userId: userId)
+                owner.pushToUserPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
 

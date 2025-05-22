@@ -9,15 +9,16 @@ import Foundation
 
 struct UserNovelPreferencesEntity {
     let attractivePoints: [String]
-    let keywords: [KeywordResponse]
+    let keywords: [KeywordEntity]
     var hasAttractivePoints: Bool { !attractivePoints.isEmpty }
     var hasKeywords: Bool { !keywords.isEmpty }
 }
 
 extension UserNovelPreferencesResponse {
     func toEntity() -> UserNovelPreferencesEntity {
+        let makeKeywordEntity = self.keywords.map{ $0.toEntity() }
         return UserNovelPreferencesEntity(attractivePoints: self.attractivePoints,
-                                          keywords: self.keywords)
+                                          keywords: makeKeywordEntity)
     }
 }
 

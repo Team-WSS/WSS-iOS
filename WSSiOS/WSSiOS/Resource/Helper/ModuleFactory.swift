@@ -21,6 +21,12 @@ protocol ServiceTermAgreementFactory {
     func makeServiceTermAgreementViewController() -> UIViewController
 }
 
+protocol MyPageModuleFactory {
+    func makeMyPageViewController() -> UIViewController
+    func makeUserPageViewController(profileId: Int) -> UIViewController
+    func makeMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) -> UIViewController
+}
+
 final class ModuleFactory {
     static let shared = ModuleFactory()
     private init() {}
@@ -54,5 +60,31 @@ extension ModuleFactory: OnboardingModuleFactory {
 extension ModuleFactory: ServiceTermAgreementFactory {
     func makeServiceTermAgreementViewController() -> UIViewController {
         return ServiceTermAgreementViewController(repository: DefaultUserInfoRepository(userService: DefaultUserService()))
+    }
+}
+
+extension ModuleFactory: MyPageModuleFactory {
+    func makeMyPageViewController() -> UIViewController {
+        return MyPageViewController(viewModel: MyPageViewModel(
+            userRepository: DefaultUserRepository(
+                userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                userBlockRepository: DefaultUserBlockRepository(blocksService: DefaultBlocksService()))))
+    }
+    
+    func makeUserPageViewController(profileId: Int) -> UIViewController {
+        return UserPageViewController(
+            viewModel: UserPageViewModel(
+                userRepository: DefaultUserRepository(
+                    userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                    userBlockRepository: DefaultUserBlockRepository(blocksService: DefaultBlocksService())),
+                profileId: profileId))
+    }
+    
+    func makeMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) -> UIViewController {
+        return MyPageEditProfileViewController(
+            viewModel: MyPageEditProfileViewModel(
+                userRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                entryType: entryType,
+                profileData: profile))
     }
 }

@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct MyFeedListResponse: Decodable {
+struct UserFeedListResponse: Decodable {
     let isLoadable: Bool
-    let feeds: [MyFeedResponse]
+    let feeds: [UserFeedResponse]
 }
 
-struct MyFeedResponse: Decodable {
+struct UserFeedResponse: Decodable {
     let feedId: Int
     let feedContent: String
     let createdDate: String

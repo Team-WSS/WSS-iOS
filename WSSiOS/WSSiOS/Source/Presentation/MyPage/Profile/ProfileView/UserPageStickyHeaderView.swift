@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageStickyHeaderView: UIView {
+final class UserPageStickyHeaderView: UIView {
     
     // MARK: - Components
     
@@ -49,6 +49,7 @@ final class MyPageStickyHeaderView: UIView {
             
             libraryButtonLabel.do {
                 $0.textColor = .wssBlack
+                $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Profile.otherProfileLibrary)
             }
         }
         
@@ -56,7 +57,10 @@ final class MyPageStickyHeaderView: UIView {
             $0.backgroundColor = .wssWhite
             $0.isSelected = false
             
-            feedButtonLabel.textColor = .wssBlack
+            feedButtonLabel.do {
+                $0.textColor = .wssBlack
+                $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Profile.otherProfileFeed)
+            }
         }
         
         libraryUnderView.do {
@@ -127,10 +131,5 @@ final class MyPageStickyHeaderView: UIView {
         
         libraryUnderView.isHidden = !isLibrarySelected
         feedUnderView.isHidden = isLibrarySelected
-    }
-    
-    func buttonLabelText(isMyPage: Bool) {
-        libraryButtonLabel.applyWSSFont(.body2, with: isMyPage ? StringLiterals.MyPage.Profile.myProfileLibrary : StringLiterals.MyPage.Profile.otherProfileLibrary)
-        feedButtonLabel.applyWSSFont(.body2, with: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed)
     }
 }

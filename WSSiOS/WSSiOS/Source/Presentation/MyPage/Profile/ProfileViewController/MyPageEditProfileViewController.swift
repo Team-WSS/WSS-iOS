@@ -51,8 +51,8 @@ final class MyPageEditProfileViewController: UIViewController {
         hideTabBar()
         swipeBackGesture()
         setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
-                         left: self.rootView.backButton,
-                         right: self.rootView.completeButton)
+                            left: self.rootView.backButton,
+                            right: self.rootView.completeButton)
     }
     
     //MARK: - Delegate
@@ -75,8 +75,8 @@ final class MyPageEditProfileViewController: UIViewController {
         let input = MyPageEditProfileViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            profileViewDidTap: rootView.userImageChangeInnerButton.rx.tap,
-            avatarImageNotification: NotificationCenter.default.rx.notification(Notification.Name("ChangRepresentativeAvatar")).asObservable(),
+            profileViewDidTap: rootView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
+            avatarImageNotification: NotificationCenter.default.rx.notification(NotificationName.changeRepresentativeAvatar).asObservable(),
             updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.nicknameClearButton.rx.tap,

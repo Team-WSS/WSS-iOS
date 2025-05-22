@@ -1,8 +1,8 @@
 //
-//  MyPagePrivateView.swift
+//  MyPageFeedEmptyView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 11/29/24.
+//  Created by 신지원 on 12/1/24.
 //
 
 import UIKit
@@ -10,12 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPagePrivateView: UIView {
+
+final class UserPageFeedEmptyView: UIView {
     
     //MARK: - Components
     
-    private let isPrivateImageView = UIImageView()
-    let isPrivateDescriptionLabel = UILabel()
+    private let isEmptyImageView = UIImageView()
+    private let isEmptyDescriptionLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -36,34 +37,36 @@ final class MyPagePrivateView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        isPrivateImageView.do {
-            $0.image = .imgEmptyCatLocked
+        isEmptyImageView.do {
+            $0.image = .imgFeedEmptyCat
             $0.contentMode = .scaleAspectFit
         }
         
-        isPrivateDescriptionLabel.do {
+        isEmptyDescriptionLabel.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Profile.emptyFeed)
+            $0.numberOfLines = 1
             $0.textColor = .wssGray200
-            $0.numberOfLines = 2
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(isPrivateImageView,
-                         isPrivateDescriptionLabel)
+        self.addSubviews(isEmptyImageView,
+                         isEmptyDescriptionLabel)
     }
     
     private func setLayout() {
-        isPrivateImageView.snp.makeConstraints {
+        isEmptyImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(58)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(166)
             $0.height.equalTo(160)
         }
         
-        isPrivateDescriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(isPrivateImageView.snp.bottom).offset(20)
+        isEmptyDescriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(isEmptyImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(70)
         }
     }
 }
+

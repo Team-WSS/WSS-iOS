@@ -244,7 +244,7 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
         
         // 취향장르 정보 수정 Notification
-        NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile"))
+        NotificationCenter.default.rx.notification(NotificationName.editProfile)
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.showToast(.editUserProfile)

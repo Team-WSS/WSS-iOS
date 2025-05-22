@@ -23,35 +23,27 @@ final class MyPageViewModel: ViewModelType {
     private let isMyPageRelay = BehaviorRelay<Bool>(value: true)
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
-    private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
-    private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
-    
+    private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
+                                                                                         introdution: "",
+                                                                                         genrePreferences: [],
+                                                                                         avatarImageURL: nil))
+                                                                  
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
                                                                                                            quitNovelCount: 0))
-    let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
+    let bindKeywordRelay = BehaviorRelay<[KeywordEntity]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
-    private let bindFeedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
-    private let isEmptyFeedRelay = PublishRelay<Bool>()
-    private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
-    
-    private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
-    private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
     private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
     private let pushToEditViewControllerRelay = PublishRelay<MyProfileEntity>()
     private let pushToSettingViewControllerRelay = PublishRelay<Void>()
     private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
-    private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileEntity)>()
-    private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let pushToNovelDetailViewController = PublishRelay<Int>()
-    private let popViewControllerRelay = PublishRelay<Void>()
-    private let pushToSpecificLibraryViewController = PublishSubject<(Int,Int)>()
+    private let pushToSpecificLibraryViewController = PublishSubject<Int>()
     
     private let showToastViewRelay = PublishRelay<Void>()
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
@@ -60,58 +52,36 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository, profileId: Int) {
+    init(userRepository: UserRepository) {
         self.userRepository = userRepository
-        if profileId == 0 {
-            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-            self.profileId = userId
-        } else {
-            self.profileId = profileId
-        }
+        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        self.profileId = userId
     }
     
     struct Input {
-        let isEntryTabbar: Observable<Bool>
         let viewWillAppearEvent: PublishSubject<Void>
         
         let headerViewHeight: Driver<Double>
-        let resizefeedTableViewHeight: Observable<CGSize?>
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
-        
         let settingButtonDidTap: ControlEvent<Void>
-        let dropdownButtonDidTap: Observable<String>
-        let editButtonDidTap: ControlEvent<Void>
-        let backButtonDidTap: ControlEvent<Void>
-        
+        let editButtonDidTap: Observable<UITapGestureRecognizer>
         let genrePreferenceButtonDidTap: Observable<Bool>
-        let libraryButtonDidTap: Observable<Bool>
-        let feedButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let inventorySpecificPageViewDidTap: Observable<Int>
-        let feedDetailButtonDidTap: ControlEvent<Void>
-        
         let editProfileNotification: Observable<Notification>
-        
-        let feedTableViewItemSelected: Observable<IndexPath>
-        let feedConnectedNovelViewDidTap: Observable<Int>
     }
     
     struct Output {
-        let isMyPage: BehaviorRelay<Bool>
-        let isProfilePrivate: BehaviorRelay<(Bool, String)>
         let profileData: BehaviorRelay<MyProfileEntity>
         let updateNavigationBar: BehaviorRelay<(Bool, String)>
-        let updateStickyHeader: BehaviorRelay<(Bool)>
         
         let pushToEditViewController: PublishRelay<MyProfileEntity>
         let pushToSettingViewController: PublishRelay<Void>
-        let popViewController: PublishRelay<Void>
         let pushToLibraryViewController: PublishRelay<Int>
-        let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileEntity)>
         
         let bindAttractivePointsData: BehaviorRelay<[String]>
-        let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
+        let bindKeywordCell: BehaviorRelay<[KeywordEntity]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
         let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>
@@ -119,47 +89,21 @@ final class MyPageViewModel: ViewModelType {
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
         
-        let bindFeedData: BehaviorRelay<[MyFeedListItem]>
-        let updateFeedTableViewHeight: PublishRelay<CGFloat>
-        let isEmptyFeed: PublishRelay<Bool>
-        let showFeedDetailButton: BehaviorSubject<Bool>
-        
         let showToastView: PublishRelay<Void>
-        let stickyHeaderAction: BehaviorRelay<Bool>
-        let updateButtonWithLibraryView: BehaviorRelay<Bool>
-        
-        let pushToFeedDetailViewController: Observable<Int>
-        let pushToNovelDetailViewController: Observable<Int>
-        let pushToSpecificLibraryViewController: PublishSubject<(Int, Int)>
+        let pushToSpecificLibraryViewController: PublishSubject<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         
-        // 진입 경로 분기처리
-        // 현재는 탭바로 진입할 때만 마이페이지!
-        input.isEntryTabbar
-            .subscribe(with: self, onNext: { owner, isMyPage in
-                owner.isMyPageRelay.accept(isMyPage)
-            })
-            .disposed(by: disposeBag)
-        
-        //본인 프로필/타인 프로필 분기처리 후 headerView 업데이트
         //서재 - 보관함 데이터 업데이트
         //서재 - 나머지뷰 업데이트 후 키워드컬렉션뷰 높이 업데이트
-        //피드 - 피드뷰 업데이트 후 피드테이블뷰 높이 업데이트
         Observable.merge(input.viewWillAppearEvent, reloadSubject)
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self else { return .empty() }
-                return self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
+                return self.updateHeaderView()
             }
             .flatMapLatest { [weak self]  _ -> Observable<Void> in
                 guard let self else { return .empty() }
-                guard !self.isProfilePrivateRelay.value.0 else { return .empty() }
-                if self.profileId == 0 {
-                    self.profileId =  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-                    reloadSubject.onNext(())
-                    return .just(())
-                }
                 return Observable.concat([
                     self.updateMyPageLibraryInventoryData()
                         .map { _ in Void() },
@@ -170,21 +114,12 @@ final class MyPageViewModel: ViewModelType {
                                 .subscribe()
                                 .disposed(by: self.disposeBag)
                         })
-                        .map { _ in Void() },
-                    self.updateMyPageFeedData()
-                        .do(onNext: { [weak self] _ in
-                            guard let self else { return }
-                            self.handleFeedTableViewHeight(resizeFeedTableViewHeight: input.resizefeedTableViewHeight)
-                                .subscribe()
-                                .disposed(by: self.disposeBag)
-                        })
                         .map { _ in Void() }
                 ])
             }
             .subscribe()
             .disposed(by: disposeBag)
         
-        // 스티키 헤더 처리
         input.headerViewHeight
             .asObservable()
             .bind(with: self, onNext: { owner, height in
@@ -196,10 +131,8 @@ final class MyPageViewModel: ViewModelType {
             .asObservable()
             .map{ $0.y }
             .subscribe(with: self, onNext: { owner, scrollHeight in
-                let navigationText = owner.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : owner.profileDataRelay.value.nickname
-                
+                let navigationText = StringLiterals.Navigation.Title.myPage
                 owner.updateNavigationRelay.accept((scrollHeight > 0, navigationText))
-                owner.updateStickyHeaderRelay.accept(scrollHeight > owner.stickyHeaderHeight)
             })
             .disposed(by: disposeBag)
         
@@ -216,51 +149,13 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.editButtonDidTap
-            .map { self.profileDataRelay.value }
+            .map { _ in self.profileDataRelay.value }
             .bind(to: pushToEditViewControllerRelay)
-            .disposed(by: disposeBag)
-        
-        input.backButtonDidTap
-            .bind(to: popViewControllerRelay)
-            .disposed(by: disposeBag)
-        
-        input.libraryButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.stickyHeaderActionRelay.accept(true)
-                owner.updateButtonWithLibraryViewRelay.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.feedButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.stickyHeaderActionRelay.accept(false)
-                owner.updateButtonWithLibraryViewRelay.accept(false)
-            })
-            .disposed(by: disposeBag)
-        
-        input.dropdownButtonDidTap
-            .filter { $0 == StringLiterals.MyPage.BlockUser.toastText }
-            .flatMapLatest { [weak self] _ -> Observable<Void> in
-                guard let self else { return .empty() }
-                return self.postBlockUser(userId: self.profileId)
-            }
-            .subscribe(with: self, onNext: { owner, _ in
-                AmplitudeManager.shared.track(AmplitudeEvent.MyPage.otherBlock)
-                let nickname = owner.profileDataRelay.value.nickname
-                NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
-                owner.popViewControllerRelay.accept(())
-            })
             .disposed(by: disposeBag)
         
         input.inventoryViewDidTap
             .bind(with: self, onNext: { owner, _ in
                 self.pushToLibraryViewControllerRelay.accept(owner.profileId)
-            })
-            .disposed(by: disposeBag)
-        
-        input.feedDetailButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                self.pushToMyPageFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
             })
             .disposed(by: disposeBag)
         
@@ -271,37 +166,19 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.feedTableViewItemSelected
-            .bind(with: self, onNext: { owner, indexPath in
-                let feedId = self.bindFeedDataRelay.value[indexPath.row].feed.feedId
-                self.pushToFeedDetailViewController.accept(feedId)
-            })
-            .disposed(by: disposeBag)
-        
-        input.feedConnectedNovelViewDidTap
-            .bind(with: self, onNext: { owner, novelId in
-                self.pushToNovelDetailViewController.accept(novelId)
-            })
-            .disposed(by: disposeBag)
-        
         input.inventorySpecificPageViewDidTap
             .bind(with: self, onNext: { owner, pageIndex in
-                self.pushToSpecificLibraryViewController.onNext((owner.profileId, pageIndex))
+                self.pushToSpecificLibraryViewController.onNext(pageIndex)
             })
             .disposed(by: disposeBag)
         
         return Output(
-            isMyPage: self.isMyPageRelay,
-            isProfilePrivate: self.isProfilePrivateRelay,
             profileData: self.profileDataRelay,
             updateNavigationBar: self.updateNavigationRelay,
-            updateStickyHeader: self.updateStickyHeaderRelay,
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
             pushToSettingViewController: self.pushToSettingViewControllerRelay,
-            popViewController: self.popViewControllerRelay,
             pushToLibraryViewController: self.pushToLibraryViewControllerRelay,
-            pushToMyPageFeedDetailViewController: self.pushToMyPageFeedDetailViewControllerRelay,
             
             bindAttractivePointsData: self.bindAttractivePointsDataRelay,
             bindKeywordCell: self.bindKeywordRelay,
@@ -311,83 +188,19 @@ final class MyPageViewModel: ViewModelType {
             showGenreOtherView: self.showGenreOtherViewRelay,
             isExistPreferneces: self.isExistPrefernecesRelay,
             
-            bindFeedData: self.bindFeedDataRelay,
-            updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
-            isEmptyFeed: self.isEmptyFeedRelay,
-            showFeedDetailButton: self.showFeedDetailButtonRelay,
-            
             showToastView: self.showToastViewRelay,
-            stickyHeaderAction: self.stickyHeaderActionRelay,
-            updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay,
-            pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
-            pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable(),
             pushToSpecificLibraryViewController: pushToSpecificLibraryViewController
         )
     }
     
     // MARK: - Custom Method
     
-    private func isUnknownUserError(_ error: Error) -> Bool {
-        if let networkError = error as? RxCocoaURLError {
-            switch networkError {
-            case .httpRequestFailed(_, let data):
-                if let data = data {
-                    do {
-                        let errorInfo = try JSONDecoder().decode(ServerErrorResponse.self, from: data)
-                        return errorInfo.code == "USER-018"
-                    } catch {}
-                }
-                
-            default:
-                return false
-            }
-        }
-        return false
-    }
-    
-    //본인프로필과 타인프로필 분기처리
-    //본인프로필일 때는 private 상태 false
-    //타인프로필일 때 private 상태 분기처리
-    //에러일 때 알 수 없음 프로필로 처리
-    private func updateHeaderView(isMyPage: Bool) -> Observable<Void> {
-        if isMyPage {
-            return self.getProfileData()
-                .do(onNext: { profileData in
-                    self.profileDataRelay.accept(profileData)
-                    self.isProfilePrivateRelay.accept((false, profileData.nickname))
-                })
-                .map { _ in }
-        } else {
-            return self.getOtherProfileData(userId: self.profileId)
-                .do(onNext: { profileData in
-                    let data = MyProfileEntity(
-                        nickname: profileData.nickname,
-                        intro: profileData.intro,
-                        avatarImage: profileData.avatarImage,
-                        genrePreferences: profileData.genrePreferences
-                    )
-                    self.profileDataRelay.accept(data)
-                    self.isProfilePrivateRelay.accept((!profileData.isProfilePublic, profileData.nickname))
-                })
-                .map { _ in }
-                .catch { [weak self] error in
-                    guard let self else { return .empty() }
-                    
-                    //현재 로직상 알 수 없는 유저 프로필을 확인하는 것은 불가능하지만
-                    //서버에러에 대응하여 아래처럼 처리
-                    if self.isUnknownUserError(error) {
-                        let data = MyProfileEntity(
-                            nickname: "",
-                            intro: "",
-                            avatarImage: "",
-                            genrePreferences: []
-                        )
-                        self.profileDataRelay.accept(data)
-                        self.isProfilePrivateRelay.accept((false, ""))
-                    }
-                    return .empty()
-                }
-        }
+    private func updateHeaderView() -> Observable<Void> {
+        return self.getProfileData()
+            .do(onNext: { profileData in
+                self.profileDataRelay.accept(profileData)
+            })
+            .map { _ in }
     }
     
     //서재 데이터 바인딩
@@ -451,48 +264,6 @@ final class MyPageViewModel: ViewModelType {
             }
     }
     
-    // 활동 데이터 바인딩
-    private func updateMyPageFeedData() -> Observable<Void> {
-        return getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
-            .map { feedResult -> [MyFeedListItem] in
-                feedResult.feeds.map { feed in
-                    MyFeedListItem(
-                        feed: feed,
-                        avatarImage: self.profileDataRelay.value.avatarImage,
-                        nickname: self.profileDataRelay.value.nickname
-                    )
-                }
-            }
-            .do(onNext: { [weak self] feedCellData in
-                guard let self else { return }
-                
-                if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(true)
-                } else {
-                    
-                    //5개까지만 활동뷰에 바인딩
-                    //5개를 초과할 경우 더보기 버튼 뜨게 함
-                    self.isEmptyFeedRelay.accept(false)
-                    let hasMoreThanFive = feedCellData.count > 5
-                    self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
-                    self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
-                }
-            })
-            .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(true)
-                return .just([])
-            }
-            .map { _ in Void() }
-    }
-    
-    private func handleFeedTableViewHeight(resizeFeedTableViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {
-        return resizeFeedTableViewHeight
-            .map { $0?.height ?? 0 }
-            .do(onNext: { [weak self] height in
-                self?.updateFeedTableViewHeightRelay.accept(height)
-            })
-    }
-    
     private func handleKeywordCollectionViewHeight(resizeKeywordCollectionViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {
         return resizeKeywordCollectionViewHeight
             .map { $0?.height ?? 0 }
@@ -508,10 +279,6 @@ final class MyPageViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func getOtherProfileData(userId: Int) -> Observable<OtherProfileEntity> {
-        return userRepository.userInfoRepository.getOtherProfile(userId: userId)
-    }
-    
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesEntity> {
         return userRepository.userInfoRepository.getUserNovelPreferences(userId: userId)
     }
@@ -522,15 +289,5 @@ final class MyPageViewModel: ViewModelType {
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatusEntity> {
         return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
-    }
-    
-    private func postBlockUser(userId: Int) -> Observable<Void> {
-        return userRepository.userBlockRepository.postBlockUser(userId: userId)
-            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-            .observe(on: MainScheduler.instance)
-    }
-    
-    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
-        return userRepository.userInfoRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
     }
 }

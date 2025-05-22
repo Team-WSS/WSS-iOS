@@ -12,7 +12,7 @@ import RxSwift
 protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeEntity>
     func getMyProfileData() -> Observable<MyProfileEntity>
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity>
+    func getOtherProfile(userId: Int) -> Observable<UserProfileEntity>
     func getUserInfo() -> Observable<UserInfoEntity>
     func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
@@ -23,7 +23,7 @@ protocol UserInfoRepository {
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -54,7 +54,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity> {
+    func getOtherProfile(userId: Int) -> Observable<UserProfileEntity> {
         return userService.getOtherProfile(userId: userId)
             .map{ $0.toEntity() }
             .asObservable()
@@ -114,7 +114,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         return userService.getNicknameisValid(nickname: nickname)
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity> {
         return userService.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
             .map { $0.toEntity() }
             .asObservable()

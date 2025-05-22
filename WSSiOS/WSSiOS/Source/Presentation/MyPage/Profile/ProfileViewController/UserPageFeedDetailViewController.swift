@@ -1,5 +1,5 @@
 //
-//  MyPageFeedDetailViewController.swift
+//  UserPageFeedDetailViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 12/3/24.
@@ -11,21 +11,21 @@ import RxSwift
 import RxRelay
 import RxGesture
 
-final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelegate {
+final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let viewModel: MyPageFeedDetailViewModel
+    private let viewModel: UserPageFeedDetailViewModel
     private let viewWillAppearRelay = PublishRelay<Void>()
  
     //MARK: - Components
     
-    private let rootView = MyPageFeedDetailView()
+    private let rootView = UserPageFeedDetailView()
     
     // MARK: - Life Cycle
     
-    init(viewModel: MyPageFeedDetailViewModel) {
+    init(viewModel: UserPageFeedDetailViewModel) {
         
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -55,13 +55,15 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         swipeBackGesture()
     }
     
+    //MARK: - Bind
+    
     private func register() {
-        rootView.myPageFeedDetailTableView.register(FeedListTableViewCell.self,
+        rootView.userPageFeedDetailTableView.register(FeedListTableViewCell.self,
                                                     forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
-        rootView.myPageFeedDetailTableView.rx
+        rootView.userPageFeedDetailTableView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -75,29 +77,29 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     }
     
     private func bindViewModel() {
-        let loadNextPageTrigger = rootView.myPageFeedDetailTableView.rx.contentOffset
+        let loadNextPageTrigger = rootView.userPageFeedDetailTableView.rx.contentOffset
             .map { [weak self] contentOffset in
                 guard let self = self else { return false }
                 let offsetY = contentOffset.y
-                let contentHeight = self.rootView.myPageFeedDetailTableView.contentSize.height
-                let frameHeight = self.rootView.myPageFeedDetailTableView.frame.height
+                let contentHeight = self.rootView.userPageFeedDetailTableView.contentSize.height
+                let frameHeight = self.rootView.userPageFeedDetailTableView.frame.height
                 return offsetY + frameHeight >= contentHeight - 10
             }
             .distinctUntilChanged()
             .filter { $0 }
             .map { _ in () }
         
-        let input = MyPageFeedDetailViewModel.Input(
+        let input = UserPageFeedDetailViewModel.Input(
             loadNextPageTrigger: loadNextPageTrigger,
             viewWillAppearEvent: viewWillAppearRelay.asObservable(),
-            feedTableViewItemSelected: rootView.myPageFeedDetailTableView.rx.itemSelected
+            feedTableViewItemSelected: rootView.userPageFeedDetailTableView.rx.itemSelected
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindFeedData
             .observe(on: MainScheduler.instance)
-            .bind(to: rootView.myPageFeedDetailTableView.rx.items(
+            .bind(to: rootView.userPageFeedDetailTableView.rx.items(
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileFeedData(feed: element)
@@ -122,7 +124,9 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     }
 }
 
-extension MyPageFeedDetailViewController: FeedTableViewDelegate {
+//MARK: - FeedTableViewDelegate
+
+extension UserPageFeedDetailViewController: FeedTableViewDelegate {
     func profileViewDidTap(userId: Int) {
         return
     }

@@ -1,5 +1,5 @@
 //
-//  MyPageInventoryView.swift
+//  UserPageInventoryView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageInventoryView: UIView {
+final class UserPageInventoryView: UIView {
     
     //MARK: - Components
     
