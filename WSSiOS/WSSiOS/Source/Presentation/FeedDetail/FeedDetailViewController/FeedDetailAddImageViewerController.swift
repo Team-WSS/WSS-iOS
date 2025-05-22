@@ -60,6 +60,8 @@ final class FeedDetailAddImageViewerController: UIViewController {
         }
     }
     
+    //MARK: - Bind
+    
     private func setupCollectionView() {
         rootView.collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
