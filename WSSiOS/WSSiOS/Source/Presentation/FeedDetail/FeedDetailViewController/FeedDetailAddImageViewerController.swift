@@ -13,8 +13,8 @@ final class FeedDetailAddImageViewerController: UIViewController {
     
     //MARK: - Properties
     
-    private let imageURLs: [URL?]
     private let startIndex: Int
+    private let imageURLs: [URL?]
     
     private let disposeBag = DisposeBag()
     
@@ -30,9 +30,9 @@ final class FeedDetailAddImageViewerController: UIViewController {
         self.view = rootView
     }
     
-    init(imageURLs: [URL?], startIndex: Int) {
-        self.imageURLs = imageURLs
+    init(startIndex: Int, imageURLs: [URL?]) {
         self.startIndex = startIndex
+        self.imageURLs = imageURLs
         
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .fullScreen

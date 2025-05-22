@@ -396,8 +396,8 @@ extension UIViewController {
         self.present(feedDetailUnknownFeedErrorViewController, animated: true)
     }
     
-    func presentToFeedDetailAddImageViewerViewController(imageURLs: [URL?], startIndex: Int) {
-        let viewController = FeedDetailAddImageViewerController(imageURLs: imageURLs, startIndex: startIndex)
+    func presentToFeedDetailAddImageViewerViewController(startIndex: Int, imageURLs: [URL?]) {
+        let viewController = FeedDetailAddImageViewerController(startIndex: startIndex, imageURLs: imageURLs)
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController, animated: true)
     }

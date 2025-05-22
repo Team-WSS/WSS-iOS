@@ -9,18 +9,14 @@ import UIKit
 
 import SnapKit
 import Then
-
-protocol FeedDetailAddImageViewDelegate: AnyObject {
-    func addImageDidTap(_ view: FeedDetailAddImageView, didTapImageAt index: Int, imageURLs: [URL?])
-}
+import RxSwift
 
 final class FeedDetailAddImageView: UIView {
     
     //MARK: - Properties
     
-    weak var delegate: FeedDetailAddImageViewDelegate?
-    
-    private var imageURLs: [URL?] = []
+    let imageTapSubject = PublishSubject<(Int)>()
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
@@ -72,14 +68,7 @@ final class FeedDetailAddImageView: UIView {
         }
     }
     
-    @objc private func imageTapped(_ sender: UITapGestureRecognizer) {
-        guard let tappedImageView = sender.view as? UIImageView else { return }
-        let index = tappedImageView.tag
-        delegate?.addImageDidTap(self, didTapImageAt: index, imageURLs: imageURLs)
-    }
-    
     func bindImages(imageURLs: [URL?]) {
-        self.imageURLs = imageURLs
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         let imageWidth = calculateImageWidth(for: imageURLs.count)
@@ -97,9 +86,15 @@ final class FeedDetailAddImageView: UIView {
                 $0.size.equalTo(imageWidth)
             }
             
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
-            imageView.addGestureRecognizer(tapGesture)
             imageView.tag = index
+            
+            let tapGesture = UITapGestureRecognizer()
+            imageView.addGestureRecognizer(tapGesture)
+            
+            tapGesture.rx.event
+                .map { _ in (index) }
+                .bind(to: imageTapSubject)
+                .disposed(by: disposeBag)
             
             stackView.addArrangedSubview(imageView)
         }

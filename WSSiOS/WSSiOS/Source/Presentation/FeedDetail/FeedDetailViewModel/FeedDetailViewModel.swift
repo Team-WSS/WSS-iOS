@@ -25,13 +25,17 @@ final class FeedDetailViewModel: ViewModelType {
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private var feedUserId: Int?
     
-    // 작품 연결
-    private var novelId: Int?
-    private let presentNovelDetailViewController = PublishRelay<Int>()
+    // 첨부 이미지
+    private var imageURLs: [URL?] = []
+    private let presentToFeedDetailAddImageViewerViewController = PublishRelay<(Int, [URL?])>()
     
     // 관심 버튼
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
+    
+    // 작품 연결
+    private var novelId: Int?
+    private let presentNovelDetailViewController = PublishRelay<Int>()
     
     // 댓글 작성
     let commentCount = BehaviorRelay<Int>(value: 0)
@@ -93,6 +97,9 @@ final class FeedDetailViewModel: ViewModelType {
         let likeButtonDidTap: Observable<UITapGestureRecognizer>
         let userProfileViewDidTap: Observable<UITapGestureRecognizer>
         
+        // 첨부 이미지
+        let imageViewDidTap: Observable<Int>
+        
         // 작품 연결
         let linkNovelViewDidTap: Observable<UITapGestureRecognizer>
         
@@ -125,6 +132,9 @@ final class FeedDetailViewModel: ViewModelType {
         let myProfileData: Observable<MyProfileEntity>
         let popViewController: Observable<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
+        
+        // 첨부 이미지
+        let presentFeedDetailAddImageViewerController: Observable<(Int, [URL?])>
         
         // 관심 버튼
         let likeCount: Driver<Int>
@@ -184,6 +194,7 @@ final class FeedDetailViewModel: ViewModelType {
                     owner.novelId = feed.novelId
                     owner.commentCount.accept(feed.commentCount)
                     owner.isMyFeed.accept(feed.isMyFeed)
+                    owner.imageURLs = feed.imageURLs
                 case .error(let error):
                     owner.handleNetworkError(error)
                 case .completed:
@@ -252,6 +263,13 @@ final class FeedDetailViewModel: ViewModelType {
                 } else if feedUserId == -1 {
                     owner.showWithdrawalUserToastView.accept(())
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        // 첨부 이미지
+        input.imageViewDidTap
+            .subscribe(with: self, onNext: { owner, index in
+                owner.presentToFeedDetailAddImageViewerViewController.accept((index, owner.imageURLs))
             })
             .disposed(by: disposeBag)
         
@@ -475,6 +493,7 @@ final class FeedDetailViewModel: ViewModelType {
                       myProfileData: myProfileData.asObservable(),
                       popViewController: popViewController.asObservable(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
+                      presentFeedDetailAddImageViewerController: presentToFeedDetailAddImageViewerViewController.asObservable(),
                       likeCount: likeCount.asDriver(),
                       likeButtonToggle: likeButtonState.asDriver(),
                       presentNovelDetailViewController: presentNovelDetailViewController.asObservable(),
