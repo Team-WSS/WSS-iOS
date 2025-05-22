@@ -301,41 +301,19 @@ extension UIViewController {
     }
     
     func pushToMyPageViewController() {
-        let viewController = MyPageViewController(
-            viewModel: MyPageViewModel(
-                userRepository: DefaultUserRepository(
-                    userInfoRepository: DefaultUserInfoRepository(
-                        userService: DefaultUserService()),
-                    userBlockRepository: DefaultUserBlockRepository(
-                        blocksService: DefaultBlocksService()))))
-        
+        let viewController = ModuleFactory.shared.makeMyPageViewController()
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToUserPageViewController(userId: Int) {
-        let viewController = UserPageViewController(
-            viewModel: UserPageViewModel(
-                userRepository: DefaultUserRepository(
-                    userInfoRepository: DefaultUserInfoRepository(
-                        userService: DefaultUserService()),
-                    userBlockRepository: DefaultUserBlockRepository(
-                        blocksService: DefaultBlocksService())),
-                profileId: userId))
-        
+        let viewController = ModuleFactory.shared.makeUserPageViewController(profileId: userId)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) {
-        let viewController = MyPageEditProfileViewController(
-            viewModel: MyPageEditProfileViewModel(
-                userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
-                ),
-                entryType: entryType,
-                profileData: profile))
-        
+        let viewController = ModuleFactory.shared.makeMyPageEditViewController(entryType: entryType, profile: profile)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
