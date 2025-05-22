@@ -169,7 +169,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     UserDefaults.standard.setValue(self.userNickname.value, forKey: StringLiterals.UserDefault.userNickname)
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        NotificationCenter.default.post(name: NSNotification.Name("EditProfile"), object: nil)
+                        NotificationCenter.default.post(name: NotificationName.editProfile, object: nil)
                     }
                     
                     output.popViewController.accept(true)
