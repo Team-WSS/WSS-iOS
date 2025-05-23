@@ -42,7 +42,7 @@ final class MyPageProfileHeaderView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssPrimary20
+        self.backgroundColor = .wssWhite
         
         userImageView.do {
             $0.layer.cornerRadius = profileImageSize / 2
@@ -101,7 +101,6 @@ final class MyPageProfileHeaderView: UIView {
             $0.top.equalTo(userNicknameLabel.snp.bottom).offset(2)
             $0.leading.equalTo(userNicknameLabel.snp.leading)
             $0.trailing.equalTo(userNicknameLabel.snp.trailing)
-            $0.bottom.equalToSuperview()
         }
     }
     
