@@ -131,7 +131,7 @@ final class FeedEditViewController: UIViewController {
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
             novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
-            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable(),
+            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(NotificationName.feedNovelConnected).asObservable(),
             novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap,
             stopEditButtonDidTap: stopEditingEvent.asObservable(),
             photoAddButtonDidTap: rootView.feedEditContentView.photoAddButton.rx.tap
