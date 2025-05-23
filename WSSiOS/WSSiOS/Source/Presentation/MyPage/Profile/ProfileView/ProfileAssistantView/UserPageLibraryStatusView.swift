@@ -10,15 +10,15 @@ import UIKit
 import SnapKit
 import Then
 
-final class UserPageInventoryView: UIView {
+final class UserPageLibraryStatusView: UIView {
     
     //MARK: - Components
     
-    private let inventoryView = UIView()
+    private let userPageLibraryStatusView = UIView()
     
     //터치영역
     let inventoryTitleView = UIView()
-    let userPageLibraryStatusView = UserLibraryStatusView()
+    let userLibraryStatusView = UserLibraryStatusView()
     
     private let titleLabel = UILabel()
     private let arrowView = UIView()
@@ -28,6 +28,7 @@ final class UserPageInventoryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setUI()
         setHierarchy()
         setLayout()
@@ -42,7 +43,7 @@ final class UserPageInventoryView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        inventoryView.do {
+        userPageLibraryStatusView.do {
             $0.backgroundColor = .wssWhite
         }
         
@@ -58,16 +59,16 @@ final class UserPageInventoryView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(inventoryView)
-        inventoryView.addSubviews(inventoryTitleView,
-                                  userPageLibraryStatusView)
+        self.addSubview(userPageLibraryStatusView)
+        userPageLibraryStatusView.addSubviews(inventoryTitleView,
+                                  userLibraryStatusView)
         inventoryTitleView.addSubviews(titleLabel,
                                        arrowView)
         arrowView.addSubview(arrowImageView)
     }
     
     private func setLayout() {
-        inventoryView.snp.makeConstraints {
+        userPageLibraryStatusView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(30)
@@ -91,7 +92,7 @@ final class UserPageInventoryView: UIView {
                 }
             }
             
-            userPageLibraryStatusView.snp.makeConstraints {
+            userLibraryStatusView.snp.makeConstraints {
                 $0.top.equalTo(inventoryTitleView.snp.bottom)
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(70)

@@ -15,7 +15,7 @@ final class UserPageLibraryView: UIView {
     // MARK: - Components
     
     let stackView = UIStackView()
-    let inventoryView = UserPageInventoryView()
+    let userPageLibraryStatusView = UserPageLibraryStatusView()
     let genrePrefrerencesView = UserPageGenrePreferencesView()
     let novelPrefrerencesView = UserPageNovelPreferencesView()
     
@@ -58,7 +58,7 @@ final class UserPageLibraryView: UIView {
     
     private func setHierarchy() {
         self.addSubview(stackView)
-        stackView.addArrangedSubviews(inventoryView,
+        stackView.addArrangedSubviews(userPageLibraryStatusView,
                                       firstDividerView,
                                       genrePrefrerencesView,
                                       secondDividerView,
@@ -73,7 +73,7 @@ final class UserPageLibraryView: UIView {
             $0.bottom.equalToSuperview()
         }
         
-        inventoryView.snp.makeConstraints {
+        userPageLibraryStatusView.snp.makeConstraints {
             $0.height.equalTo(160)
         }
         
@@ -107,7 +107,7 @@ final class UserPageLibraryView: UIView {
     
     func isPrivateUserView(isPrivate: Bool, nickname: String) {
         if isPrivate {
-            [inventoryView,
+            [userPageLibraryStatusView,
              firstDividerView,
              genrePrefrerencesView,
              secondDividerView,

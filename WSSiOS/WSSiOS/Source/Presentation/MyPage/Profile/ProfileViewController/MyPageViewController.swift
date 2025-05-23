@@ -109,7 +109,7 @@ final class MyPageViewController: UIViewController {
             settingButtonDidTap: rootView.settingButton.rx.tap,
             editButtonDidTap: rootView.myPageProfileView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
-            inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
+            inventoryViewDidTap: rootView.myPageLibraryView.userPageLibraryStatusView.inventoryTitleView.rx.tapGesture()
                 .when(.recognized)
                 .asObservable(),
             inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
