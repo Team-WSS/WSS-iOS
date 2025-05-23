@@ -70,7 +70,7 @@ final class MyPageView: UIView {
         }
         
         headerView.snp.makeConstraints {
-            $0.top.width.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview().inset(20)
         }
         
         myPageLibraryView.snp.makeConstraints {
