@@ -62,7 +62,7 @@ final class MyPageViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
+        headerViewHeightRelay.accept(rootView.myPageProfileView.layer.bounds.height)
     }
     
     //MARK: - Bind
@@ -91,7 +91,7 @@ final class MyPageViewController: UIViewController {
     
     private func bindViewModel() {
         let inventoryStatusButtonDidTap = Observable<Int>.merge(
-            rootView.myPageLibraryView.inventoryView.readStatusButtons.enumerated().map { index, button in
+            rootView.myPageLibraryStatusView.readStatusButtons.enumerated().map { index, button in
                 button.rx.tap
                     .map { index }
             })
@@ -107,7 +107,7 @@ final class MyPageViewController: UIViewController {
             resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
-            editButtonDidTap: rootView.headerView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
+            editButtonDidTap: rootView.myPageProfileView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
                 .when(.recognized)
@@ -120,7 +120,7 @@ final class MyPageViewController: UIViewController {
         output.profileData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.headerView.bindData(data: data)
+                owner.rootView.myPageProfileView.bindData(data: data)
             })
             .disposed(by: disposeBag)
         
@@ -177,7 +177,7 @@ final class MyPageViewController: UIViewController {
         output.bindInventoryData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.myPageLibraryView.inventoryView.bindData(data: data)
+                owner.rootView.myPageLibraryStatusView.bindData(data: data)
             })
             .disposed(by: disposeBag)
         

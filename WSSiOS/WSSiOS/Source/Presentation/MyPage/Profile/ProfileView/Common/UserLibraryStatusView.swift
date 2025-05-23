@@ -71,6 +71,7 @@ final class UserLibraryStatusView: UIView {
     private func setLayout() {
         userLibraryStatusStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(70)
         }
     }
     

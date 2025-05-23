@@ -17,7 +17,10 @@ final class MyPageView: UIView {
     let scrollView = UIScrollView()
     let contentView = UIView()
     let myPageProfileView = MyPageProfileView()
+    let myPageLibraryStatusView = UserLibraryStatusView()
     let myPageLibraryView = UserPageLibraryView()
+    
+    private let dividerView = UIView()
     
     //In VC
     let settingButton = UIButton()
@@ -39,7 +42,7 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssPrimary20
+        self.backgroundColor = .wssWhite
         
         scrollView.do {
             $0.backgroundColor = .wssWhite
@@ -50,12 +53,18 @@ final class MyPageView: UIView {
         settingButton.do {
             $0.setImage(UIImage(resource: .icSetting), for: .normal)
         }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(myPageProfileView,
+                                myPageLibraryStatusView,
+                                dividerView,
                                 myPageLibraryView)
     }
     
@@ -73,8 +82,19 @@ final class MyPageView: UIView {
             $0.top.leading.trailing.equalToSuperview().inset(20)
         }
         
+        myPageLibraryStatusView.snp.makeConstraints {
+            $0.top.equalTo(myPageProfileView.snp.bottom).offset(20)
+            $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.top.equalTo(myPageLibraryStatusView.snp.bottom).offset(20)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(6)
+        }
+        
         myPageLibraryView.snp.makeConstraints {
-            $0.top.equalTo(myPageProfileView.snp.bottom)
+            $0.top.equalTo(dividerView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
     }
