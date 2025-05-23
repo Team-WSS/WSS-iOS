@@ -68,11 +68,11 @@ final class MyPageViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.register(
+        rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.register(
             UserPageNovelPreferencesCollectionViewCell.self,
             forCellWithReuseIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier)
         
-        rootView.myPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView
+        rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView
             .register(UserPageGenrePreferencesOtherTableViewCell.self,
                       forCellReuseIdentifier: UserPageGenrePreferencesOtherTableViewCell.cellIdentifier)
     }
@@ -82,11 +82,11 @@ final class MyPageViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx
+        rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.myPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView.delegate = self
+        rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView.delegate = self
     }
     
     private func bindViewModel() {
@@ -97,21 +97,18 @@ final class MyPageViewController: UIViewController {
             })
         
         let genrePreferenceButtonDidTap = Observable.merge(
-            rootView.myPageLibraryView.genrePrefrerencesView.userPageGenreOpenButton.rx.tap.map { true },
-            rootView.myPageLibraryView.genrePrefrerencesView.userPageGenreCloseButton.rx.tap.map { false }
+            rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageGenreOpenButton.rx.tap.map { true },
+            rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageGenreCloseButton.rx.tap.map { false }
         )
         
         let input = MyPageViewModel.Input(
             viewWillAppearEvent: self.viewWillAppearEvent,
             headerViewHeight: headerViewHeightRelay.asDriver(),
-            resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
+            resizeKeywordCollectionViewHeight: rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
             editButtonDidTap: rootView.myPageProfileView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
-            inventoryViewDidTap: rootView.myPageLibraryView.userPageLibraryStatusView.inventoryTitleView.rx.tapGesture()
-                .when(.recognized)
-                .asObservable(),
             inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
             editProfileNotification: NotificationCenter.default.rx.notification(NotificationName.editProfile).asObservable())
         
@@ -141,10 +138,10 @@ final class MyPageViewController: UIViewController {
         output.bindGenreData
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] data in
-                self?.rootView.myPageLibraryView.genrePrefrerencesView.bindData(data: data)
+                self?.rootView.myPagePreferencesView.myPageGenrePreferencesView.bindData(data: data)
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }
-            .bind(to: rootView.myPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView.rx.items(
+            .bind(to: rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView.rx.items(
                 cellIdentifier: UserPageGenrePreferencesOtherTableViewCell.cellIdentifier,
                 cellType: UserPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                     cell.bindData(data: data)
@@ -155,21 +152,20 @@ final class MyPageViewController: UIViewController {
         output.bindAttractivePointsData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.myPageLibraryView.novelPrefrerencesView.bindPreferencesDetailData(data: data)
-                
+                owner.rootView.myPagePreferencesView.myPageNovelPreferencesView.bindPreferencesDetailData(data: data)
             })
             .disposed(by: disposeBag)
         
         output.isExistPreferneces
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isExist in
-                owner.rootView.myPageLibraryView.updatePreferencesEmptyView(isEmpty: !isExist)
+                //TODO: emptyView 채우기
             })
             .disposed(by: disposeBag)
         
         output.bindKeywordCell
             .observe(on: MainScheduler.instance)
-            .bind(to: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.items(cellIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier, cellType: UserPageNovelPreferencesCollectionViewCell.self)){ row, data, cell in
+            .bind(to: rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.rx.items(cellIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier, cellType: UserPageNovelPreferencesCollectionViewCell.self)){ row, data, cell in
                 cell.bindData(data: data)
             }
             .disposed(by: disposeBag)
@@ -184,16 +180,9 @@ final class MyPageViewController: UIViewController {
         output.showGenreOtherView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
-                owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
-                owner.rootView.layoutIfNeeded()
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToLibraryViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                NotificationCenter.default.post(name: NotificationName.moveToLibraryTab, object: nil)
+                owner.rootView.myPagePreferencesView.myPageGenrePreferencesView.updateView(showOtherGenreView: show)
+                owner.rootView.myPagePreferencesView.myPageGenrePreferencesView.updateGenreViewHeight(isExpanded: show)
+                owner.rootView.myPagePreferencesView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
         
@@ -207,7 +196,7 @@ final class MyPageViewController: UIViewController {
         output.updateKeywordCollectionViewHeight
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.myPageLibraryView.novelPrefrerencesView.updateKeywordViewHeight(height: height)
+                owner.rootView.myPagePreferencesView.myPageNovelPreferencesView.updateKeywordViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         

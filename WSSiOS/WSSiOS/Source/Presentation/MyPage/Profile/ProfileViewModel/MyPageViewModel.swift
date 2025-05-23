@@ -42,7 +42,6 @@ final class MyPageViewModel: ViewModelType {
     
     private let pushToEditViewControllerRelay = PublishRelay<MyProfileEntity>()
     private let pushToSettingViewControllerRelay = PublishRelay<Void>()
-    private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
     private let pushToSpecificLibraryViewController = PublishSubject<Int>()
     
     private let showToastViewRelay = PublishRelay<Void>()
@@ -60,14 +59,12 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: PublishSubject<Void>
-        
         let headerViewHeight: Driver<Double>
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
         let settingButtonDidTap: ControlEvent<Void>
         let editButtonDidTap: Observable<UITapGestureRecognizer>
         let genrePreferenceButtonDidTap: Observable<Bool>
-        let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let inventorySpecificPageViewDidTap: Observable<Int>
         let editProfileNotification: Observable<Notification>
     }
@@ -78,8 +75,6 @@ final class MyPageViewModel: ViewModelType {
         
         let pushToEditViewController: PublishRelay<MyProfileEntity>
         let pushToSettingViewController: PublishRelay<Void>
-        let pushToLibraryViewController: PublishRelay<Int>
-        
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordEntity]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
@@ -153,12 +148,6 @@ final class MyPageViewModel: ViewModelType {
             .bind(to: pushToEditViewControllerRelay)
             .disposed(by: disposeBag)
         
-        input.inventoryViewDidTap
-            .bind(with: self, onNext: { owner, _ in
-                self.pushToLibraryViewControllerRelay.accept(owner.profileId)
-            })
-            .disposed(by: disposeBag)
-        
         //토스트뷰를 위한 분기처리
         input.editProfileNotification
             .bind(with: self, onNext: { owner, _ in
@@ -178,8 +167,6 @@ final class MyPageViewModel: ViewModelType {
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
             pushToSettingViewController: self.pushToSettingViewControllerRelay,
-            pushToLibraryViewController: self.pushToLibraryViewControllerRelay,
-            
             bindAttractivePointsData: self.bindAttractivePointsDataRelay,
             bindKeywordCell: self.bindKeywordRelay,
             updateKeywordCollectionViewHeight: self.updateKeywordCollectionViewHeightRelay,

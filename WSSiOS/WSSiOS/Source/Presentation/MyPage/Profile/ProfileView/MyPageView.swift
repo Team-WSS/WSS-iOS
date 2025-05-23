@@ -18,7 +18,7 @@ final class MyPageView: UIView {
     let contentView = UIView()
     let myPageProfileView = MyPageProfileView()
     let myPageLibraryStatusView = UserLibraryStatusView()
-    let myPageLibraryView = UserPageLibraryView()
+    let myPagePreferencesView = MyPagePreferencesView()
     
     private let dividerView = UIView()
     
@@ -65,7 +65,7 @@ final class MyPageView: UIView {
         contentView.addSubviews(myPageProfileView,
                                 myPageLibraryStatusView,
                                 dividerView,
-                                myPageLibraryView)
+                                myPagePreferencesView)
     }
     
     private func setLayout() {
@@ -84,7 +84,7 @@ final class MyPageView: UIView {
         
         myPageLibraryStatusView.snp.makeConstraints {
             $0.top.equalTo(myPageProfileView.snp.bottom).offset(20)
-            $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         dividerView.snp.makeConstraints {
@@ -93,9 +93,9 @@ final class MyPageView: UIView {
             $0.height.equalTo(6)
         }
         
-        myPageLibraryView.snp.makeConstraints {
+        myPagePreferencesView.snp.makeConstraints {
             $0.top.equalTo(dividerView.snp.bottom)
-            $0.width.bottom.equalToSuperview()
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
 }
