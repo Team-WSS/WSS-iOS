@@ -314,3 +314,9 @@ extension FeedEditViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
+extension FeedEditViewController: FeedAddImageCollectionDelegate {
+    func cancelButtonDidTap() {
+        
+    }
+}
