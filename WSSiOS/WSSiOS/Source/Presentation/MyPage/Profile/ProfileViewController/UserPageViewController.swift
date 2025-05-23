@@ -103,7 +103,7 @@ final class UserPageViewController: UIViewController {
     
     private func bindViewModel() {
         let inventoryStatusButtonDidTap = Observable<Int>.merge(
-            rootView.userPageLibraryView.inventoryView.readStatusButtons.enumerated().map { index, button in
+            rootView.userPageLibraryView.inventoryView.userPageLibraryStatusView.readStatusButtons.enumerated().map { index, button in
                 button.rx.tap
                     .map { index }
             })
@@ -230,7 +230,7 @@ final class UserPageViewController: UIViewController {
         output.bindInventoryData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.userPageLibraryView.inventoryView.bindData(data: data)
+                owner.rootView.userPageLibraryView.inventoryView.userPageLibraryStatusView.bindData(data: data)
             })
             .disposed(by: disposeBag)
         
