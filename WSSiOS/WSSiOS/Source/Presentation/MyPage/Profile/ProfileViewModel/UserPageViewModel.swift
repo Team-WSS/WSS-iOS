@@ -35,7 +35,7 @@ final class UserPageViewModel: ViewModelType {
                                                                                                            quitNovelCount: 0))
     let bindKeywordRelay = BehaviorRelay<[KeywordEntity]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
-    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
+    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: [], genreTotalCount: 0))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let bindFeedDataRelay = BehaviorRelay<[UserFeedListItem]>(value: [])

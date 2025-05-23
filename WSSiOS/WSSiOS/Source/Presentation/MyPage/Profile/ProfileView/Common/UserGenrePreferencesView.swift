@@ -123,7 +123,7 @@ final class UserGenrePreferencesView: UIView {
     
     func updateGenreViewHeight(isExpanded: Bool) {
         genreStackView.snp.updateConstraints {
-            $0.height.equalTo(isExpanded ? 514 : 224.5)
+            $0.height.equalTo(isExpanded ? 429 : 145)
         }
     }
     

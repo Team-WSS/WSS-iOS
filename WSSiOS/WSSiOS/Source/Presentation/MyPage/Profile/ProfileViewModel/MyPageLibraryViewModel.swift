@@ -25,7 +25,7 @@ final class MyPageLibraryViewModel: ViewModelType {
                                                                                                            watchedNovelCount: 0,
                                                                                                            quitNovelCount: 0))
     private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
-    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: []))
+    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferencesListEntity>(value: UserGenrePreferencesListEntity(genrePreferences: [], genreTotalCount: 0))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     let bindKeywordRelay = BehaviorRelay<[KeywordEntity]>(value: [])

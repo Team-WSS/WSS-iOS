@@ -138,6 +138,7 @@ final class MyPageViewController: UIViewController {
         output.bindGenreData
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] data in
+                self?.rootView.myPagePreferencesView.bindData(genreTotalCountText: data.genreTotalCount)
                 self?.rootView.myPagePreferencesView.myPageGenrePreferencesView.bindData(data: data)
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }

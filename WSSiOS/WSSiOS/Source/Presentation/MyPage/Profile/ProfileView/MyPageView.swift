@@ -94,7 +94,7 @@ final class MyPageView: UIView {
         }
         
         myPagePreferencesView.snp.makeConstraints {
-            $0.top.equalTo(dividerView.snp.bottom)
+            $0.top.equalTo(dividerView.snp.bottom).offset(20)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }

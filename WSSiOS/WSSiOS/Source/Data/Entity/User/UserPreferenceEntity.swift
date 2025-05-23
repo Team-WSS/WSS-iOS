@@ -24,11 +24,15 @@ extension UserNovelPreferencesResponse {
 
 struct UserGenrePreferencesListEntity {
     let genrePreferences: [UserGenrePreferencesEntity]
+    let genreTotalCount: Int
 }
 
 extension UserGenrePreferencesListResponse {
     func toEntity() -> UserGenrePreferencesListEntity {
-        return UserGenrePreferencesListEntity(genrePreferences: self.genrePreferences.map { $0.toEntity() })
+        let genreEntities = self.genrePreferences.map { $0.toEntity() }
+        let genreTotalCount = genreEntities.reduce(0) { $0 + $1.genreCount }
+        return UserGenrePreferencesListEntity(genrePreferences: genreEntities,
+                                              genreTotalCount: genreTotalCount)
     }
 }
 

@@ -15,6 +15,7 @@ final class MyPagePreferencesView: UIView {
     //MARK: - Components
     
     private let stackView = UIStackView()
+    private let myPageGenrePreferencesCountLabel = UILabel()
     let myPageGenrePreferencesView = UserGenrePreferencesView()
     let myPageNovelPreferencesView = UserPageNovelPreferencesView()
     private let preferencesEmptyView = UserPagePreferencesEmptyView()
@@ -45,11 +46,17 @@ final class MyPagePreferencesView: UIView {
         }
         
         //preferencesEmptyView.isHidden = true
+        
+        myPageGenrePreferencesCountLabel.do {
+            $0.textAlignment = .center
+            $0.textColor = .wssGray300
+        }
     }
     
     private func setHierarchy() {
         addSubview(stackView)
-        stackView.addArrangedSubviews(myPageGenrePreferencesView,
+        stackView.addArrangedSubviews(myPageGenrePreferencesCountLabel,
+                                      myPageGenrePreferencesView,
                                       myPageNovelPreferencesView)
     }
     
@@ -58,8 +65,18 @@ final class MyPagePreferencesView: UIView {
             $0.edges.equalToSuperview()
         }
         
+        stackView.do {
+            $0.setCustomSpacing(9, after: myPageGenrePreferencesCountLabel)
+            $0.setCustomSpacing(20, after: myPageGenrePreferencesView)
+        }
+        
+        myPageGenrePreferencesCountLabel.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.height.equalTo(42)
+        }
+        
         myPageGenrePreferencesView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
     }
     
@@ -69,5 +86,16 @@ final class MyPagePreferencesView: UIView {
         myPageGenrePreferencesView.snp.updateConstraints {
             $0.height.equalTo(isExpanded ? 514 : 224.5)
         }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(genreTotalCountText: Int) {
+        let rangeText = String(genreTotalCountText)
+        let fullText = rangeText + StringLiterals.MyPage.Profile.genreTotalCount
+        myPageGenrePreferencesCountLabel.applyWSSFontPartialColor(.title2,
+                                                                  with: fullText,
+                                                                  rangeText: rangeText,
+                                                                  color: .wssPrimary100)
     }
 }
