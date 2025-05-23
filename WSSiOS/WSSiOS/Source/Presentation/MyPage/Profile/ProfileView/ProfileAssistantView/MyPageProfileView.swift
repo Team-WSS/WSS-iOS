@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageProfileHeaderView: UIView {
+final class MyPageProfileView: UIView {
     
     //MARK: - Properties
     

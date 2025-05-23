@@ -16,7 +16,7 @@ final class MyPageView: UIView {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
-    let headerView = MyPageProfileHeaderView()
+    let myPageProfileView = MyPageProfileView()
     let myPageLibraryView = UserPageLibraryView()
     
     //In VC
@@ -55,7 +55,7 @@ final class MyPageView: UIView {
     private func setHierarchy() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(headerView,
+        contentView.addSubviews(myPageProfileView,
                                 myPageLibraryView)
     }
     
@@ -69,12 +69,12 @@ final class MyPageView: UIView {
             $0.edges.width.equalToSuperview()
         }
         
-        headerView.snp.makeConstraints {
+        myPageProfileView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(20)
         }
         
         myPageLibraryView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
+            $0.top.equalTo(myPageProfileView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
     }
