@@ -58,7 +58,12 @@ final class FeedEditViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], novelId: Int? = nil, novelTitle: String? = nil) {
+    init(feedRepository: FeedRepository,
+         feedDetailRepository: FeedDetailRepository,
+         feedId: Int? = nil,
+         relevantCategories: [NewNovelGenre] = [],
+         novelId: Int? = nil,
+         novelTitle: String? = nil) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
         
@@ -160,7 +165,7 @@ final class FeedEditViewModel: ViewModelType {
                 }
             }
             .subscribe(with: self, onNext: { owner, _ in
-                NotificationCenter.default.post(name: NSNotification.Name("FeedEdited"), object: nil)
+                NotificationCenter.default.post(name: NotificationName.feedEdited, object: nil)
                 owner.popViewController.accept(())
             }, onError: { owner, error  in
                 print(error)

@@ -239,10 +239,17 @@ final class FeedEditViewController: UIViewController {
         output.presentPhotoPicker
             .subscribe(with: self, onNext: { owner, _ in
                 owner.photoPickerManager = PhotoPickerManager(presentingViewController: owner)
-                owner.photoPickerManager?.didSelectImages = { images in
-                    owner.feedEditViewModel.selectedImages.accept(images)
+                owner.photoPickerManager?.didSelectImages = { newImages in
+                    var currentImages = owner.feedEditViewModel.selectedImages.value
+                    if currentImages.count + newImages.count > 20 {
+                        owner.showToast(.limitAddImage)
+                        return
+                    }
+                    currentImages.append(contentsOf: newImages)
+                    owner.feedEditViewModel.selectedImages.accept(currentImages)
+
                     owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
-                    owner.rootView.showAddImages(hasImage: images.count > 0)
+                    owner.rootView.showAddImages(hasImage: currentImages.count > 0)
                 }
                 owner.photoPickerManager?.presentPicker()
             })
