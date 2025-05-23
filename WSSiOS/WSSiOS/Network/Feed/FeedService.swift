@@ -5,14 +5,14 @@
 //  Created by 신지원 on 6/3/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 
 protocol FeedService {
     func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse>
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void>
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void>
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
 }
 
 final class DefaultFeedService: NSObject, Networking, FeedService {
@@ -25,7 +25,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
             URLQueryItem(name: "size", value: String(describing: size)),
         ]
     }
-
+    
     func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
@@ -35,35 +35,49 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
                                                                             size: size),
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: TotalFeedListResponse.self) }
                 .asSingle()
-
+            
         } catch {
             return Single.error(error)
         }
     }
     
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void> {
-        guard let feedContentData = try? JSONEncoder().encode(
-            FeedContentRequest(relevantCategories: relevantCategories,
-                               feedContent: feedContent,
-                               novelId: novelId,
-                               isSpoiler: isSpoiler,
-                               isPublic: isPublic))
-        else {
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void> {
+        let feed = FeedContentRequest(relevantCategories: relevantCategories,
+                                      feedContent: feedContent,
+                                      novelId: novelId,
+                                      isSpoiler: isSpoiler,
+                                      isPublic: isPublic)
+        
+        guard let jsonData = try? JSONEncoder().encode(feed) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
+        
+        let compressedImages = compressImages(images)
+        
+        let boundary = MultipartConstants.makeBoundary()
+        
+        let body = makeMultipartBodyWithJSONAndImages(
+            jsonPartName: MultipartConstants.jsonPartName,
+            jsonData: jsonData,
+            imageKeyName: MultipartConstants.imageKeyName,
+            images: compressedImages,
+            boundary: boundary
+        )
+        
+        let headers: [String: String] = MultipartConstants.headers(boundary: boundary)
         
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postFeed,
-                                              headers: APIConstants.accessTokenHeader,
-                                              body: feedContentData)
+                                              headers: headers,
+                                              body: body)
             
             NetworkLogger.log(request: request)
             
@@ -75,22 +89,37 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         }
     }
     
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Single<Void> {
-        guard let feedContentData = try? JSONEncoder().encode(
-            FeedContentRequest(relevantCategories: relevantCategories,
-                               feedContent: feedContent,
-                               novelId: novelId,
-                               isSpoiler: isSpoiler,
-                               isPublic: isPublic))
-        else {
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void> {
+        
+        let feed = FeedContentRequest(relevantCategories: relevantCategories,
+                                      feedContent: feedContent,
+                                      novelId: novelId,
+                                      isSpoiler: isSpoiler,
+                                      isPublic: isPublic)
+        
+        guard let jsonData = try? JSONEncoder().encode(feed) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
+        
+        let compressedImages = compressImages(images)
+        
+        let boundary = MultipartConstants.makeBoundary()
+        
+        let body = makeMultipartBodyWithJSONAndImages(
+            jsonPartName: MultipartConstants.jsonPartName,
+            jsonData: jsonData,
+            imageKeyName: MultipartConstants.imageKeyName,
+            images: compressedImages,
+            boundary: boundary
+        )
+        
+        let headers: [String: String] = MultipartConstants.headers(boundary: boundary)
         
         do {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.Feed.putFeed(feedId: feedId),
-                                              headers: APIConstants.accessTokenHeader,
-                                              body: feedContentData)
+                                              headers: headers,
+                                              body: body)
             
             NetworkLogger.log(request: request)
             

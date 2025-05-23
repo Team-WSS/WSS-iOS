@@ -20,10 +20,11 @@ protocol Networking {
         headers: [String: String]?,
         body: Data?) throws -> URLRequest
     
-    func makeMultipartFormImageBody(keyName: String,
-                                    images: [Data],
-                                    fileName: String,
-                                    mimeType: String) -> Data
+    func makeMultipartBody(keyName: String,
+                           images: [Data],
+                           boundary: String,
+                           fileName: String,
+                           mimeType: String) -> Data
     
     func validataDataResponse<T: Decodable> (_ data: Data, response: URLResponse, to target: T.Type) throws -> T
 }
@@ -72,24 +73,6 @@ extension Networking {
         }
         
         return request
-    }
-    
-    func makeMultipartFormImageBody(keyName: String,
-                                    images: [Data],
-                                    fileName: String = "image.jpg",
-                                    mimeType: String = "image/jpeg") -> Data {
-        
-        let lineBreak = "\r\n"
-        var body = Data()
-        
-        for image in images {
-            body.append("Content-Disposition: form-data; name=\"\(keyName)\"; filename=\"\(fileName)\"\(lineBreak)")
-            body.append("Content-Type: \(mimeType)\(lineBreak + lineBreak)")
-            body.append(image)
-            body.append(lineBreak)
-        }
-        
-        return body
     }
     
     func validataDataResponse<T: Decodable> (_ data: Data, response: URLResponse, to target: T.Type) throws -> T {

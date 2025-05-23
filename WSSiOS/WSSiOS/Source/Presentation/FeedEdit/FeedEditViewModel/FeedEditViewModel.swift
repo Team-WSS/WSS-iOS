@@ -151,12 +151,12 @@ final class FeedEditViewModel: ViewModelType {
             .do(onNext: { _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
-            .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic))
-            .flatMapLatest { (isSpoiler, isPublic) in
+            .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic, selectedImages))
+            .flatMapLatest { (isSpoiler, isPublic, selectedImages) in
                 if let feedId = self.feedId {
-                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic)
+                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
                 } else {
-                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic)
+                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
                 }
             }
             .subscribe(with: self, onNext: { owner, _ in
@@ -306,13 +306,13 @@ final class FeedEditViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void> {
-        feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic)
+    private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
             .observe(on: MainScheduler.instance)
     }
     
-    private func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void> {
-        feedRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic)
+    private func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        feedRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
             .observe(on: MainScheduler.instance)
     }
 }
