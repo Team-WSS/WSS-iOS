@@ -15,7 +15,7 @@ final class MyPageView: UIView {
     //MARK: - Components
     
     let scrollView = UIScrollView()
-    let contentView = UIView()
+    private let contentView = UIView()
     let myPageProfileView = MyPageProfileView()
     let myPageLibraryStatusView = UserLibraryStatusView()
     let myPagePreferencesView = MyPagePreferencesView()

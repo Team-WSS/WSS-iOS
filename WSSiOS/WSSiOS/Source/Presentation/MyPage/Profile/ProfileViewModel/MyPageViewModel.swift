@@ -28,7 +28,7 @@ final class MyPageViewModel: ViewModelType {
                                                                                          genrePreferences: [],
                                                                                          avatarImageURL: nil))
                                                                   
-    private let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let isPrefernecesEmptyRelay = PublishRelay<Bool>()
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
@@ -82,7 +82,7 @@ final class MyPageViewModel: ViewModelType {
         let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>
         
         let showGenreOtherView: BehaviorRelay<Bool>
-        let isExistPreferneces: PublishRelay<Bool>
+        let isPrefernecesEmpty: PublishRelay<Bool>
         
         let showToastView: PublishRelay<Void>
         let pushToSpecificLibraryViewController: PublishSubject<Int>
@@ -173,7 +173,7 @@ final class MyPageViewModel: ViewModelType {
             bindGenreData: self.bindGenreDataRelay,
             bindInventoryData: self.bindInventoryDataRelay,
             showGenreOtherView: self.showGenreOtherViewRelay,
-            isExistPreferneces: self.isExistPrefernecesRelay,
+            isPrefernecesEmpty: self.isPrefernecesEmptyRelay,
             
             showToastView: self.showToastViewRelay,
             pushToSpecificLibraryViewController: pushToSpecificLibraryViewController
@@ -218,7 +218,7 @@ final class MyPageViewModel: ViewModelType {
                 //=> 이 경우 장르 취향도 데이터가 없기 때문에 false 반환
                 let keywords = preference.keywords
                 if preference.attractivePoints == [] && keywords.isEmpty {
-                    self.isExistPrefernecesRelay.accept(false)
+                    self.isPrefernecesEmptyRelay.accept(true)
                     return .just(false)
                 } else {
                     self.bindAttractivePointsDataRelay.accept(preference.attractivePoints)
@@ -230,7 +230,7 @@ final class MyPageViewModel: ViewModelType {
         //회원가입후 처음 접속시 서버연결 에러가 나서 분기처리가 제대로 안된 에러 발생
         //=> 해결 위하여 서버연결 실패시 emptyView 처리
             .catch { [weak self] error in
-                self?.isExistPrefernecesRelay.accept(false)
+                self?.isPrefernecesEmptyRelay.accept(true)
                 return .just(false)
             }
         

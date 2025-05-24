@@ -22,7 +22,9 @@ final class MyPagePreferencesView: UIView {
     private let myPageNovelPreferencesTitleLabel = UILabel()
     let myPageNovelPreferencesView = UserNovelPreferencesView()
     
-    private let preferencesEmptyView = UserPagePreferencesEmptyView()
+    private let myPagePreferencesEmptyTitleLabel = UILabel()
+    private let preferencesEmptyView = UserPreferencesEmptyView()
+    
     private let dividerView = UIView()
     
     // MARK: - Life Cycle
@@ -50,8 +52,6 @@ final class MyPagePreferencesView: UIView {
             $0.distribution = .fill
         }
         
-        //preferencesEmptyView.isHidden = true
-        
         myPageGenrePreferencesCountLabel.do {
             $0.textAlignment = .center
             $0.textColor = .wssGray300
@@ -62,6 +62,8 @@ final class MyPagePreferencesView: UIView {
             $0.textColor = .wssGray300
             $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Profile.myNovelPreferenceTitle)
         }
+
+        preferencesEmptyView.isHidden = true
         
         dividerView.do {
             $0.backgroundColor = .wssGray50
@@ -74,7 +76,8 @@ final class MyPagePreferencesView: UIView {
                                       myPageGenrePreferencesView,
                                       dividerView,
                                       myPageNovelPreferencesTitleLabel,
-                                      myPageNovelPreferencesView)
+                                      myPageNovelPreferencesView,
+                                      preferencesEmptyView)
     }
     
     private func setLayout() {
@@ -112,6 +115,10 @@ final class MyPagePreferencesView: UIView {
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
         }
+        
+        preferencesEmptyView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
     }
     
     //MARK: - Custom Method
@@ -119,6 +126,22 @@ final class MyPagePreferencesView: UIView {
     func updateGenreViewHeight(isExpanded: Bool) {
         myPageGenrePreferencesView.snp.updateConstraints {
             $0.height.equalTo(isExpanded ? 514 : 224.5)
+        }
+    }
+    
+    func isPreferencesEmpty(isEmpty: Bool) {
+        [myPageGenrePreferencesCountLabel,
+         myPageGenrePreferencesView,
+         dividerView,
+         myPageNovelPreferencesView].forEach {
+            $0.isHidden = isEmpty
+        }
+        preferencesEmptyView.isHidden = !isEmpty
+        preferencesEmptyView.snp.remakeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            if !isEmpty {
+                $0.bottom.equalToSuperview().inset(97.72)
+            }
         }
     }
     
