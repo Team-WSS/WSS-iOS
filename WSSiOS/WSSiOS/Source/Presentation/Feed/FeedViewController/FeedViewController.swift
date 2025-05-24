@@ -18,10 +18,12 @@ final class FeedViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let selectedTab = BehaviorRelay<FeedTab>(value: .my)
+    private let selectedSosoFeedTab = BehaviorRelay<SosoFeedTab>(value: .all)
     
     //MARK: - Components
     
-    private let headerView = FeedHeaderView()
+    private let feedHeaderView = FeedHeaderView()
+    private let sosoFeedHeaderView = SosoFeedHeaderView()
     private let pageViewController = UIPageViewController(transitionStyle: .scroll,
                                                           navigationOrientation: .horizontal,
                                                           options: nil)
@@ -62,13 +64,20 @@ final class FeedViewController: UIViewController {
     private func bindOutput() {
         selectedTab.asDriver()
             .drive(with: self, onNext: { owner, selectedTab in
-                owner.headerView.updateButtons(selectedTab: selectedTab)
+                owner.feedHeaderView.updateButtons(selectedTab: selectedTab)
+                owner.setSosoFeedHeaderViewHidden(isHidden: selectedTab == .my)
+            })
+            .disposed(by: disposeBag)
+        
+        selectedSosoFeedTab.asDriver()
+            .drive(with: self, onNext: { owner, selectedTab in
+                owner.sosoFeedHeaderView.updateButtons(selectedTab: selectedTab)
             })
             .disposed(by: disposeBag)
     }
     
     private func bindAction() {
-        [headerView.myFeedTabButton, headerView.sosoFeedTabButton].forEach { button in
+        [feedHeaderView.myFeedTabButton, feedHeaderView.sosoFeedTabButton].forEach { button in
             button.rx.tap
                 .bind(with: self, onNext: { owner, _ in
                     owner.selectedTab.accept(button.tab)
@@ -76,7 +85,19 @@ final class FeedViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
         
-        headerView.createFeedButton.rx.tap
+        sosoFeedHeaderView.allTabButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedSosoFeedTab.accept(.all)
+            })
+            .disposed(by: disposeBag)
+        
+        sosoFeedHeaderView.recommendedTabButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedSosoFeedTab.accept(.recommended)
+            })
+            .disposed(by: disposeBag)
+        
+        feedHeaderView.createFeedButton.rx.tap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedWriteFloatingButton)
@@ -148,20 +169,26 @@ extension FeedViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(headerView)
+        self.view.addSubviews(feedHeaderView,
+                              sosoFeedHeaderView)
         self.addChild(pageViewController)
         self.view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
     }
     
     private func setLayout() {
-        headerView.snp.makeConstraints {
+        feedHeaderView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.equalToSuperview()
         }
         
+        sosoFeedHeaderView.snp.makeConstraints {
+            $0.top.equalTo(feedHeaderView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
         pageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
+            $0.top.equalTo(sosoFeedHeaderView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
     }
@@ -191,5 +218,25 @@ extension FeedViewController {
                                               direction: .forward,
                                               animated: false,
                                               completion: nil)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func setSosoFeedHeaderViewHidden(isHidden: Bool) {
+        if isHidden {
+            sosoFeedHeaderView.isHidden = true
+            
+            pageViewController.view.snp.remakeConstraints {
+                $0.top.equalTo(feedHeaderView.snp.bottom)
+                $0.width.bottom.equalToSuperview()
+            }
+        } else {
+            sosoFeedHeaderView.isHidden = false
+            
+            pageViewController.view.snp.remakeConstraints {
+                $0.top.equalTo(sosoFeedHeaderView.snp.bottom)
+                $0.width.bottom.equalToSuperview()
+            }
+        }
     }
 }
