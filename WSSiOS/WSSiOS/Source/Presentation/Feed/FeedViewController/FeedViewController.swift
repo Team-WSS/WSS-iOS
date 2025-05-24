@@ -17,11 +17,11 @@ final class FeedViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private var categoryList = BehaviorRelay<[NewNovelGenre]>(value: [])
+    private let selectedTab = BehaviorRelay<FeedTab>(value: .my)
     
     //MARK: - Components
     
-    private let navigationBar = FeedNavigationView()
+    private let headerView = FeedHeaderView()
     private let pageViewController = UIPageViewController(transitionStyle: .scroll,
                                                           navigationOrientation: .horizontal,
                                                           options: nil)
@@ -37,51 +37,46 @@ final class FeedViewController: UIViewController {
         setLayout()
         
         delegate()
-
+        
         setupPageViewController()
         
         bindAction()
+        bindOutput()
         
         AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedAll)
     }
     
-    //MARK: - Bind
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
     
+    //MARK: - Bind
     
     private func delegate() {
         pageViewController.delegate = self
         pageViewController.dataSource = self
     }
     
-    private func setupPageViewController() {
-        for pageIndex in 0..<3 {
-            let viewController = FeedGenreViewController(
-                viewModel: FeedGenreViewModel(
-                    feedRepository: DefaultFeedRepository(
-                        feedService: DefaultFeedService()
-                    ),
-                    feedDetailRepository: DefaultFeedDetailRepository(
-                        feedDetailService: DefaultFeedDetailService()
-                    ),
-                    category: NewNovelGenre.fantasy.rawValue
-                )
-            )
-            
-            pages.append(viewController)
-        }
-        
-        for (index, viewController) in pages.enumerated() {
-            viewController.view.tag = index
-        }
-        
-        pageViewController.setViewControllers([pages[0]],
-                                              direction: .forward,
-                                              animated: false,
-                                              completion: nil)
+    private func bindOutput() {
+        selectedTab.asDriver()
+            .drive(with: self, onNext: { owner, selectedTab in
+                owner.headerView.updateButtons(selectedTab: selectedTab)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction() {
-        navigationBar.createFeedButton.rx.tap
+        [headerView.myFeedTabButton, headerView.sosoFeedTabButton].forEach { button in
+            button.rx.tap
+                .bind(with: self, onNext: { owner, _ in
+                    owner.selectedTab.accept(button.tab)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        headerView.createFeedButton.rx.tap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedWriteFloatingButton)
@@ -122,10 +117,10 @@ extension FeedViewController : UIPageViewControllerDelegate {
         if completed,
            let currentViewController = pageViewController.viewControllers?.first,
            let index = pages.firstIndex(of: currentViewController as! FeedGenreViewController) {
-//            pageBar.feedPageBarCollectionView
-//                .selectItem(at: IndexPath(item: index, section: 0),
-//                            animated: true,
-//                            scrollPosition: .centeredHorizontally)
+            //            pageBar.feedPageBarCollectionView
+            //                .selectItem(at: IndexPath(item: index, section: 0),
+            //                            animated: true,
+            //                            scrollPosition: .centeredHorizontally)
         }
     }
 }
@@ -153,21 +148,48 @@ extension FeedViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(navigationBar)
+        self.view.addSubviews(headerView)
         self.addChild(pageViewController)
         self.view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
     }
     
     private func setLayout() {
-        navigationBar.snp.makeConstraints {
+        headerView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.equalToSuperview()
         }
         
         pageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.top.equalTo(headerView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
+    }
+    
+    private func setupPageViewController() {
+        for pageIndex in 0..<3 {
+            let viewController = FeedGenreViewController(
+                viewModel: FeedGenreViewModel(
+                    feedRepository: DefaultFeedRepository(
+                        feedService: DefaultFeedService()
+                    ),
+                    feedDetailRepository: DefaultFeedDetailRepository(
+                        feedDetailService: DefaultFeedDetailService()
+                    ),
+                    category: NewNovelGenre.fantasy.rawValue
+                )
+            )
+            
+            pages.append(viewController)
+        }
+        
+        for (index, viewController) in pages.enumerated() {
+            viewController.view.tag = index
+        }
+        
+        pageViewController.setViewControllers([pages[0]],
+                                              direction: .forward,
+                                              animated: false,
+                                              completion: nil)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedNavigationView: UIView {
+final class FeedHeaderView: UIView {
     
     //MARK: - Components
     
@@ -69,6 +69,11 @@ final class FeedNavigationView: UIView {
             $0.trailing.equalToSuperview()
             $0.width.equalTo(60)
         }
+    }
+    
+    func updateButtons(selectedTab: FeedTab) {
+        myFeedTabButton.updateButton(selectedTab: selectedTab)
+        sosoFeedTabButton.updateButton(selectedTab: selectedTab)
     }
 }
 

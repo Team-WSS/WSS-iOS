@@ -54,7 +54,6 @@ final class FeedGenreViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         reloadFeed.accept(())
         showTabBar()
-        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     //MARK: - Bind

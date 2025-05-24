@@ -77,7 +77,7 @@ final class FeedTabButton: UIButton {
     
     //MARK: - Custom Method
     
-    private func updateButton(selectedTab: FeedTab) {
+    func updateButton(selectedTab: FeedTab) {
         tabLabel.do {
             $0.textColor = selectedTab == tab ? .wssBlack : .wssGray100
         }
