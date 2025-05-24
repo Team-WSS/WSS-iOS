@@ -48,8 +48,10 @@ final class UserPageGenrePreferencesTopView: UIView {
     }
     
     private func setLayout() {
+        //TODO: 이미지 크기 조절하여 소수점 제거
         topGenreImageView.snp.makeConstraints {
-            $0.top.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(6.55)
+            $0.centerX.equalToSuperview()
             $0.size.equalTo(37.09)
         }
         
@@ -60,7 +62,7 @@ final class UserPageGenrePreferencesTopView: UIView {
         
         topGenreCountLabel.snp.makeConstraints {
             $0.top.equalTo(topGenreTitleLabel.snp.bottom).offset(2)
-            $0.centerX.equalToSuperview()
+            $0.centerX.bottom.equalToSuperview()
         }
     }
     

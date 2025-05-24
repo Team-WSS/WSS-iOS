@@ -32,6 +32,7 @@ extension StringLiterals {
             static let activityButton = "활동기록 더보기"
             static let emptyFeed = "작성한 글이 없어요"
             static let genreTotalCount = "개의 장르 뱃지"
+            static let myNovelPreferenceTitle = "주로 보는 작품은..."
         }
         
         enum Setting: String, CaseIterable {

@@ -72,11 +72,11 @@ final class UserPageViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.userPageLibraryView.novelPrefrerencesView.preferencesCollectionView
+        rootView.userPageLibraryView.userPageNovelPrefrerencesView.novelPreferenceView.preferencesCollectionView
             .register(UserPageNovelPreferencesCollectionViewCell.self,
                       forCellWithReuseIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier)
         
-        rootView.userPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView
+        rootView.userPageLibraryView.userPageGenrePrefrerencesView.userPageOtherGenreView.genreTableView
             .register(UserPageGenrePreferencesOtherTableViewCell.self,
                       forCellReuseIdentifier: UserPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
@@ -90,11 +90,11 @@ final class UserPageViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.userPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx
+        rootView.userPageLibraryView.userPageNovelPrefrerencesView.novelPreferenceView.preferencesCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.userPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView.delegate = self
+        rootView.userPageLibraryView.userPageGenrePrefrerencesView.userPageOtherGenreView.genreTableView.delegate = self
         
         rootView.userPageFeedView.userPageFeedTableView.feedTableView.rx
             .setDelegate(self)
@@ -109,8 +109,8 @@ final class UserPageViewController: UIViewController {
             })
         
         let genrePreferenceButtonDidTap = Observable.merge(
-            rootView.userPageLibraryView.genrePrefrerencesView.userPageGenreOpenButton.rx.tap.map { true },
-            rootView.userPageLibraryView.genrePrefrerencesView.userPageGenreCloseButton.rx.tap.map { false }
+            rootView.userPageLibraryView.userPageGenrePrefrerencesView.userPageGenreOpenButton.rx.tap.map { true },
+            rootView.userPageLibraryView.userPageGenrePrefrerencesView.userPageGenreCloseButton.rx.tap.map { false }
         )
         
         let libraryButtonDidTap = Observable.merge(
@@ -127,7 +127,7 @@ final class UserPageViewController: UIViewController {
             viewWillAppearEvent: self.viewWillAppearEvent,
             headerViewHeight: headerViewHeightRelay.asDriver(),
             resizefeedTableViewHeight: rootView.userPageFeedView.userPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
-            resizeKeywordCollectionViewHeight: rootView.userPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
+            resizeKeywordCollectionViewHeight: rootView.userPageLibraryView.userPageNovelPrefrerencesView.novelPreferenceView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             dropdownButtonDidTap: dropDownCellTap,
             backButtonDidTap: rootView.backButton.rx.tap,
@@ -190,10 +190,10 @@ final class UserPageViewController: UIViewController {
         output.bindGenreData
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] data in
-                self?.rootView.userPageLibraryView.genrePrefrerencesView.bindData(data: data)
+                self?.rootView.userPageLibraryView.userPageGenrePrefrerencesView.bindData(data: data)
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }
-            .bind(to: rootView.userPageLibraryView.genrePrefrerencesView.userPageOtherGenreView.genreTableView.rx.items(
+            .bind(to: rootView.userPageLibraryView.userPageGenrePrefrerencesView.userPageOtherGenreView.genreTableView.rx.items(
                 cellIdentifier: UserPageGenrePreferencesOtherTableViewCell.cellIdentifier,
                 cellType: UserPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                 cell.bindData(data: data)
@@ -204,7 +204,7 @@ final class UserPageViewController: UIViewController {
         output.bindAttractivePointsData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.userPageLibraryView.novelPrefrerencesView.bindPreferencesDetailData(data: data)
+                owner.rootView.userPageLibraryView.userPageNovelPrefrerencesView.novelPreferenceView.bindPreferencesDetailData(data: data)
                 
             })
             .disposed(by: disposeBag)
@@ -220,7 +220,7 @@ final class UserPageViewController: UIViewController {
         
         output.bindKeywordCell
             .observe(on: MainScheduler.instance)
-            .bind(to: rootView.userPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.items(
+            .bind(to: rootView.userPageLibraryView.userPageNovelPrefrerencesView.novelPreferenceView.preferencesCollectionView.rx.items(
                 cellIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier,
                 cellType: UserPageNovelPreferencesCollectionViewCell.self)){ row, data, cell in
                 cell.bindData(data: data)
@@ -237,7 +237,7 @@ final class UserPageViewController: UIViewController {
         output.showGenreOtherView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                owner.rootView.userPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
+                owner.rootView.userPageLibraryView.userPageGenrePrefrerencesView.updateView(showOtherGenreView: show)
                 owner.rootView.userPageLibraryView.updateGenreViewHeight(isExpanded: show)
                 owner.rootView.layoutIfNeeded()
             })
@@ -324,7 +324,7 @@ final class UserPageViewController: UIViewController {
         output.updateKeywordCollectionViewHeight
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.userPageLibraryView.novelPrefrerencesView.updateKeywordViewHeight(height: height)
+                owner.rootView.userPageLibraryView.userPageNovelPrefrerencesView.novelPreferenceView.updateKeywordViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         

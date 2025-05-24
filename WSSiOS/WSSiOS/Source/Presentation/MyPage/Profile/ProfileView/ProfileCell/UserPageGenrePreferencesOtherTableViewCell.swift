@@ -46,9 +46,10 @@ final class UserPageGenrePreferencesOtherTableViewCell: UITableViewCell {
     }
     
     private func setLayout() {
+        
+        //TODO: 이미지 크기 조절하여 소수점 제거
         genreImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(40)
+            $0.verticalEdges.leading.equalToSuperview().inset(6.36)
             $0.size.equalTo(27.27)
         }
         
@@ -59,7 +60,7 @@ final class UserPageGenrePreferencesOtherTableViewCell: UITableViewCell {
         
         countLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(60)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
     

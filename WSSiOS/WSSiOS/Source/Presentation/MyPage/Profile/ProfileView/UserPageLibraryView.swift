@@ -16,8 +16,8 @@ final class UserPageLibraryView: UIView {
     
     let stackView = UIStackView()
     let userPageLibraryStatusView = UserPageLibraryStatusView()
-    let genrePrefrerencesView = UserPageGenrePreferencesView()
-    let novelPrefrerencesView = UserPageNovelPreferencesView()
+    let userPageGenrePrefrerencesView = UserPageGenrePreferencesView()
+    let userPageNovelPrefrerencesView = UserPageNovelPreferencesView()
     
     private let preferencesEmptyView = UserPagePreferencesEmptyView()
     private let userPagePrivateView = UserPagePrivateView()
@@ -60,9 +60,9 @@ final class UserPageLibraryView: UIView {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(userPageLibraryStatusView,
                                       firstDividerView,
-                                      genrePrefrerencesView,
+                                      userPageGenrePrefrerencesView,
                                       secondDividerView,
-                                      novelPrefrerencesView,
+                                      userPageNovelPrefrerencesView,
                                       userPagePrivateView,
                                       preferencesEmptyView)
     }
@@ -70,14 +70,14 @@ final class UserPageLibraryView: UIView {
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(20)
         }
         
         userPageLibraryStatusView.snp.makeConstraints {
             $0.height.equalTo(160)
         }
         
-        genrePrefrerencesView.snp.makeConstraints {
+        userPageGenrePrefrerencesView.snp.makeConstraints {
             $0.height.equalTo(221.5)
         }
         
@@ -98,7 +98,7 @@ final class UserPageLibraryView: UIView {
     }
     
     func updateGenreViewHeight(isExpanded: Bool) {
-        genrePrefrerencesView.snp.updateConstraints {
+        userPageGenrePrefrerencesView.snp.updateConstraints {
             $0.height.equalTo(isExpanded ? 514 : 224.5)
         }
     }
@@ -109,9 +109,9 @@ final class UserPageLibraryView: UIView {
         if isPrivate {
             [userPageLibraryStatusView,
              firstDividerView,
-             genrePrefrerencesView,
+             userPageGenrePrefrerencesView,
              secondDividerView,
-             novelPrefrerencesView] .forEach { view in
+             userPageNovelPrefrerencesView] .forEach { view in
                 view.do {
                     $0.isHidden = true
                 }
@@ -125,9 +125,9 @@ final class UserPageLibraryView: UIView {
     }
     
     func updatePreferencesEmptyView(isEmpty: Bool) {
-        [genrePrefrerencesView,
+        [userPageGenrePrefrerencesView,
          secondDividerView,
-         novelPrefrerencesView] .forEach { view in
+         userPageNovelPrefrerencesView] .forEach { view in
             view.do {
                 $0.isHidden = isEmpty
             }

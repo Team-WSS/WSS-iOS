@@ -15,10 +15,15 @@ final class MyPagePreferencesView: UIView {
     //MARK: - Components
     
     private let stackView = UIStackView()
+    
     private let myPageGenrePreferencesCountLabel = UILabel()
     let myPageGenrePreferencesView = UserGenrePreferencesView()
-    let myPageNovelPreferencesView = UserPageNovelPreferencesView()
+    
+    private let myPageNovelPreferencesTitleLabel = UILabel()
+    let myPageNovelPreferencesView = UserNovelPreferencesView()
+    
     private let preferencesEmptyView = UserPagePreferencesEmptyView()
+    private let dividerView = UIView()
     
     // MARK: - Life Cycle
     
@@ -41,7 +46,7 @@ final class MyPagePreferencesView: UIView {
         
         stackView.do {
             $0.axis = .vertical
-            $0.alignment = .fill
+            $0.alignment = .center
             $0.distribution = .fill
         }
         
@@ -51,12 +56,24 @@ final class MyPagePreferencesView: UIView {
             $0.textAlignment = .center
             $0.textColor = .wssGray300
         }
+        
+        myPageNovelPreferencesTitleLabel.do {
+            $0.textAlignment = .center
+            $0.textColor = .wssGray300
+            $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Profile.myNovelPreferenceTitle)
+        }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
         addSubview(stackView)
         stackView.addArrangedSubviews(myPageGenrePreferencesCountLabel,
                                       myPageGenrePreferencesView,
+                                      dividerView,
+                                      myPageNovelPreferencesTitleLabel,
                                       myPageNovelPreferencesView)
     }
     
@@ -68,6 +85,8 @@ final class MyPagePreferencesView: UIView {
         stackView.do {
             $0.setCustomSpacing(9, after: myPageGenrePreferencesCountLabel)
             $0.setCustomSpacing(20, after: myPageGenrePreferencesView)
+            $0.setCustomSpacing(20, after: dividerView)
+            $0.setCustomSpacing(20, after: myPageNovelPreferencesTitleLabel)
         }
         
         myPageGenrePreferencesCountLabel.snp.makeConstraints {
@@ -77,6 +96,21 @@ final class MyPagePreferencesView: UIView {
         
         myPageGenrePreferencesView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(3)
+        }
+        
+        myPageNovelPreferencesTitleLabel.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.height.equalTo(42)
+        }
+        
+        myPageNovelPreferencesView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
         }
     }
     
