@@ -98,42 +98,35 @@ final class UserPageOverviewView: UIView {
         }
     }
     
+    //MARK: - Custom Method
+    
     func updateGenreViewHeight(isExpanded: Bool) {
         userPageGenrePrefrerencesView.snp.updateConstraints {
             $0.height.equalTo(isExpanded ? 514 : 224.5)
         }
     }
     
-    //MARK: - Data
-    
-    func isPrivateUserView(isPrivate: Bool, nickname: String) {
-        if isPrivate {
-            [userPageLibraryStatusView,
-             firstDividerView,
-             userPageGenrePrefrerencesView,
-             secondDividerView,
-             userPageNovelPrefrerencesView] .forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
-            }
-            
-            userPagePrivateView.isHidden = false
-            
-            let text = nickname + StringLiterals.MyPage.Profile.privateLabel
-            userPagePrivateView.bindData(nickname: text)
+    func isPrivateUserPage(nickname: String) {
+        [userPageLibraryStatusView,
+         firstDividerView,
+         userPageGenrePrefrerencesView,
+         secondDividerView,
+         userPageNovelPrefrerencesView].forEach { view in
+            view.isHidden = true
         }
+        
+        let text = nickname + StringLiterals.MyPage.Profile.privateLabel
+        userPagePrivateView.bindData(nickname: text)
+        userPagePrivateView.isHidden = false
     }
     
-    func updatePreferencesEmptyView(isEmpty: Bool) {
+    func isPreferencesEmpty() {
         [userPageGenrePrefrerencesView,
          secondDividerView,
          userPageNovelPrefrerencesView] .forEach { view in
-            view.do {
-                $0.isHidden = isEmpty
-            }
-            
-            preferencesEmptyView.isHidden = !isEmpty
+            view.isHidden = true
         }
+        
+        preferencesEmptyView.isHidden = false
     }
 }

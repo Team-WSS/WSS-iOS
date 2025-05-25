@@ -178,12 +178,9 @@ final class UserPageViewController: UIViewController {
         
         output.isProfilePrivate
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                let (isPrivate, nickname) = data
-                if isPrivate {
-                    owner.rootView.userPageOverviewView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-                    owner.rootView.userPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-                }
+            .bind(with: self, onNext: { owner, nickname in
+                owner.rootView.userPageOverviewView.isPrivateUserPage(nickname: nickname)
+                owner.rootView.userPageFeedView.isPrivateUserPage(nickname: nickname)
             })
             .disposed(by: disposeBag)
         

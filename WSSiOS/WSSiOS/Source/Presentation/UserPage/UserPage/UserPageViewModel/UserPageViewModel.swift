@@ -22,7 +22,7 @@ final class UserPageViewModel: ViewModelType {
     
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
-    private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let isProfilePrivateRelay = BehaviorRelay<String>(value: "")
     private let profileDataRelay = BehaviorRelay<UserProfileEntity>(value: UserProfileEntity(nickname: "",
                                                                                              intro: "",
                                                                                              genrePreferences: [],
@@ -85,7 +85,7 @@ final class UserPageViewModel: ViewModelType {
     }
     
     struct Output {
-        let isProfilePrivate: BehaviorRelay<(Bool, String)>
+        let isProfilePrivate: BehaviorRelay<(String)>
         let profileData: BehaviorRelay<UserProfileEntity>
         let updateNavigationBar: BehaviorRelay<(Bool, String)>
         let updateStickyHeader: BehaviorRelay<(Bool)>
@@ -303,7 +303,9 @@ final class UserPageViewModel: ViewModelType {
                                              isProfilePublic: profileData.isProfilePublic,
                                              avatarImageURL: profileData.avatarImageURL)
                 self.profileDataRelay.accept(data)
-                self.isProfilePrivateRelay.accept((!profileData.isProfilePublic, profileData.nickname))
+                if !profileData.isProfilePublic {
+                    self.isProfilePrivateRelay.accept(profileData.nickname)
+                }
             })
             .map { _ in }
             .catch { [weak self] error in
@@ -318,7 +320,7 @@ final class UserPageViewModel: ViewModelType {
                                                  isProfilePublic: true,
                                                  avatarImageURL: nil)
                     self.profileDataRelay.accept(data)
-                    self.isProfilePrivateRelay.accept((false, ""))
+                    self.isProfilePrivateRelay.accept("")
                 }
                 return .empty()
             }
