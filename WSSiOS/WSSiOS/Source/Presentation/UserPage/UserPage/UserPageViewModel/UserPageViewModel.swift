@@ -22,13 +22,13 @@ final class UserPageViewModel: ViewModelType {
     
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
-    private let isProfilePrivateRelay = BehaviorRelay<String>(value: "")
+    private let isProfilePrivateRelay = PublishRelay<String>()
     private let profileDataRelay = BehaviorRelay<UserProfileEntity>(value: UserProfileEntity(nickname: "",
                                                                                              intro: "",
                                                                                              genrePreferences: [],
                                                                                              isProfilePublic: true,
                                                                                              avatarImageURL: nil))
-    private let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let isEmptyPrefernecesRelay = PublishRelay<Void>()
     private let bindLibraryStatusDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
@@ -39,7 +39,7 @@ final class UserPageViewModel: ViewModelType {
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let bindFeedDataRelay = BehaviorRelay<[UserFeedListItem]>(value: [])
-    private let isEmptyFeedRelay = PublishRelay<Bool>()
+    private let isEmptyFeedRelay = PublishRelay<Void>()
     private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
     private let updateButtonWithOverviewViewRelay = BehaviorRelay<Bool>(value: true)
@@ -85,7 +85,7 @@ final class UserPageViewModel: ViewModelType {
     }
     
     struct Output {
-        let isProfilePrivate: BehaviorRelay<(String)>
+        let isProfilePrivate: PublishRelay<String>
         let profileData: BehaviorRelay<UserProfileEntity>
         let updateNavigationBar: BehaviorRelay<(Bool, String)>
         let updateStickyHeader: BehaviorRelay<(Bool)>
@@ -101,11 +101,11 @@ final class UserPageViewModel: ViewModelType {
         let bindLibraryStatusData: BehaviorRelay<UserNovelStatusEntity>
         
         let showGenreOtherView: BehaviorRelay<Bool>
-        let isExistPreferneces: PublishRelay<Bool>
+        let isEmptyPreferneces: PublishRelay<Void>
         
         let bindFeedData: BehaviorRelay<[UserFeedListItem]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
-        let isEmptyFeed: PublishRelay<Bool>
+        let isEmptyFeed: PublishRelay<Void>
         let showFeedDetailButton: BehaviorSubject<Bool>
         
         let stickyHeaderAction: BehaviorRelay<Bool>
@@ -259,7 +259,7 @@ final class UserPageViewModel: ViewModelType {
             bindLibraryStatusData: self.bindLibraryStatusDataRelay,
             
             showGenreOtherView: self.showGenreOtherViewRelay,
-            isExistPreferneces: self.isExistPrefernecesRelay,
+            isEmptyPreferneces: self.isEmptyPrefernecesRelay,
             
             bindFeedData: self.bindFeedDataRelay,
             updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
@@ -354,7 +354,7 @@ final class UserPageViewModel: ViewModelType {
                 //=> 이 경우 장르 취향도 데이터가 없기 때문에 false 반환
                 let keywords = preference.keywords
                 if preference.attractivePoints == [] && keywords.isEmpty {
-                    self.isExistPrefernecesRelay.accept(false)
+                    self.isEmptyPrefernecesRelay.accept(())
                     return .just(false)
                 } else {
                     self.bindAttractivePointsDataRelay.accept(preference.attractivePoints)
@@ -366,7 +366,7 @@ final class UserPageViewModel: ViewModelType {
         //회원가입후 처음 접속시 서버연결 에러가 나서 분기처리가 제대로 안된 에러 발생
         //=> 해결 위하여 서버연결 실패시 emptyView 처리
             .catch { [weak self] error in
-                self?.isExistPrefernecesRelay.accept(false)
+                self?.isEmptyPrefernecesRelay.accept(())
                 return .just(false)
             }
         
@@ -403,19 +403,18 @@ final class UserPageViewModel: ViewModelType {
                 guard let self else { return }
                 
                 if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(true)
+                    self.isEmptyFeedRelay.accept(())
                 } else {
                     
                     //5개까지만 활동뷰에 바인딩
                     //5개를 초과할 경우 더보기 버튼 뜨게 함
-                    self.isEmptyFeedRelay.accept(false)
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
                     self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(true)
+                self?.isEmptyFeedRelay.accept(())
                 return .just([])
             }
             .map { _ in Void() }

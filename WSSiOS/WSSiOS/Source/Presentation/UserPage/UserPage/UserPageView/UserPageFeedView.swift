@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class UserPageFeedView: UIView {
-
+    
     // MARK: - Components
     
     private let stackView = UIStackView()
@@ -122,15 +122,13 @@ final class UserPageFeedView: UIView {
         userPagePrivateView.bindData(nickname: text)
     }
     
-    func isEmptyView(isEmpty: Bool) {
-        userPageFeedEmptyView.isHidden = !isEmpty
+    func isEmptyFeed() {
+        userPageFeedEmptyView.isHidden = false
         
         [userPageFeedTableView,
          showMoreActivityButtonView,
          paddingViewAfterButton].forEach { view in
-            view.do {
-                $0.isHidden = isEmpty
-            }
+            view.isHidden = true
         }
     }
     

@@ -206,12 +206,10 @@ final class UserPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isExistPreferneces
+        output.isEmptyPreferneces
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isExist in
-                if !isExist {
-                    owner.rootView.userPageOverviewView.updatePreferencesEmptyView(isEmpty: !isExist)
-                }
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.userPageOverviewView.isPreferencesEmpty()
             })
             .disposed(by: disposeBag)
         
@@ -278,8 +276,8 @@ final class UserPageViewController: UIViewController {
         
         output.isEmptyFeed
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isEmpty in
-                owner.rootView.userPageFeedView.isEmptyView(isEmpty: isEmpty)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.userPageFeedView.isEmptyFeed()
             })
             .disposed(by: disposeBag)
         
