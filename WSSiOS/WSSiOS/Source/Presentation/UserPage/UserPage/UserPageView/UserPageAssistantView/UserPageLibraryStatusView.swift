@@ -1,5 +1,5 @@
 //
-//  UserPageInventoryView.swift
+//  UserPageLibraryStatusView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -17,7 +17,7 @@ final class UserPageLibraryStatusView: UIView {
     private let userPageLibraryStatusView = UIView()
     
     //터치영역
-    let inventoryTitleView = UIView()
+    let libraryStatusTitleView = UIView()
     let userLibraryStatusView = UserLibraryStatusView()
     
     private let titleLabel = UILabel()
@@ -48,7 +48,7 @@ final class UserPageLibraryStatusView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Profile.inventoryTitle)
+            $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Profile.libraryStatusTitle)
             $0.textColor = .wssBlack
         }
         
@@ -60,9 +60,9 @@ final class UserPageLibraryStatusView: UIView {
     
     private func setHierarchy() {
         self.addSubview(userPageLibraryStatusView)
-        userPageLibraryStatusView.addSubviews(inventoryTitleView,
+        userPageLibraryStatusView.addSubviews(libraryStatusTitleView,
                                   userLibraryStatusView)
-        inventoryTitleView.addSubviews(titleLabel,
+        libraryStatusTitleView.addSubviews(titleLabel,
                                        arrowView)
         arrowView.addSubview(arrowImageView)
     }
@@ -73,7 +73,7 @@ final class UserPageLibraryStatusView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(30)
             
-            inventoryTitleView.snp.makeConstraints {
+            libraryStatusTitleView.snp.makeConstraints {
                 $0.top.width.equalToSuperview()
                 
                 arrowView.snp.makeConstraints {
@@ -93,7 +93,7 @@ final class UserPageLibraryStatusView: UIView {
             }
             
             userLibraryStatusView.snp.makeConstraints {
-                $0.top.equalTo(inventoryTitleView.snp.bottom)
+                $0.top.equalTo(libraryStatusTitleView.snp.bottom)
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(70)
             }

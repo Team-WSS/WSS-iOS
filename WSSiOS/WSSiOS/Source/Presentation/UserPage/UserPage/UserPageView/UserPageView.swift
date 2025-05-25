@@ -77,7 +77,7 @@ final class UserPageView: UIView {
     private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
-            $0.left.right.bottom.equalToSuperview()
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -85,25 +85,25 @@ final class UserPageView: UIView {
         }
         
         headerView.snp.makeConstraints {
-            $0.top.width.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
         }
         
         mainStickyHeaderView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
-            $0.width.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(47)
         }
         
         scrolledStickyHeaderView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
-            $0.width.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(47)
         }
         
         [userPageOverviewView, userPageFeedView].forEach { view in
             view.snp.makeConstraints {
                 $0.top.equalTo(headerView.snp.bottom).offset(47)
-                $0.width.equalToSuperview()
+                $0.horizontalEdges.equalToSuperview()
             }
         }
     }

@@ -102,7 +102,7 @@ final class UserPageViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let inventoryStatusButtonDidTap = Observable<Int>.merge(
+        let libraryStatusButtonDidTap = Observable<Int>.merge(
             rootView.userPageOverviewView.userPageLibraryStatusView.userLibraryStatusView.readStatusButtons.enumerated().map { index, button in
                 button.rx.tap
                     .map { index }
@@ -134,10 +134,10 @@ final class UserPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             overviewButtonDidTap: overviewButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            inventoryViewDidTap: rootView.userPageOverviewView.userPageLibraryStatusView.inventoryTitleView.rx.tapGesture()
+            libraryStatusViewDidTap: rootView.userPageOverviewView.userPageLibraryStatusView.libraryStatusTitleView.rx.tapGesture()
                 .when(.recognized)
                 .asObservable(),
-            inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
+            libraryStatusSpecificPageViewDidTap: libraryStatusButtonDidTap,
             feedDetailButtonDidTap: rootView.userPageFeedView.userPageFeedDetailButton.rx.tap,
             feedTableViewItemSelected: rootView.userPageFeedView.userPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable())
@@ -227,7 +227,7 @@ final class UserPageViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.bindInventoryData
+        output.bindLibraryStatusData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.userPageOverviewView.userPageLibraryStatusView.userLibraryStatusView.bindData(data: data)
@@ -307,7 +307,7 @@ final class UserPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateButtonWithLibraryView
+        output.updateButtonWithOverviewView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, showLibraryView in
                 owner.rootView.showContentView(showLibraryView: showLibraryView)

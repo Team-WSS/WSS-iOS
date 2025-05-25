@@ -54,7 +54,7 @@ final class UserLibraryStatusView: UIView {
         ]
         
         readStatusButtons = StringLiterals.ReviewerStatus.allCases.enumerated().map { index, status in
-            createInventorySectionView (
+            createLibraryStatusSectionView (
                 countLabel: countLabels[index],
                 text: status.rawValue,
                 addLine: index == 0)
@@ -77,7 +77,7 @@ final class UserLibraryStatusView: UIView {
     
     //MARK: - Custom Method
     
-    private func createInventorySectionView(countLabel: UILabel, text: String, addLine: Bool = false) -> UIButton {
+    private func createLibraryStatusSectionView(countLabel: UILabel, text: String, addLine: Bool = false) -> UIButton {
         let statusButton = UIButton()
         let textLabel = UILabel()
         

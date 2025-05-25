@@ -29,7 +29,7 @@ final class UserPageViewModel: ViewModelType {
                                                                                              isProfilePublic: true,
                                                                                              avatarImageURL: nil))
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
-    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
+    private let bindLibraryStatusDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
                                                                                                            quitNovelCount: 0))
@@ -42,7 +42,7 @@ final class UserPageViewModel: ViewModelType {
     private let isEmptyFeedRelay = PublishRelay<Bool>()
     private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
-    private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
+    private let updateButtonWithOverviewViewRelay = BehaviorRelay<Bool>(value: true)
     private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
     private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
@@ -77,8 +77,8 @@ final class UserPageViewModel: ViewModelType {
         let genrePreferenceButtonDidTap: Observable<Bool>
         let overviewButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
-        let inventoryViewDidTap: Observable<UITapGestureRecognizer>
-        let inventorySpecificPageViewDidTap: Observable<Int>
+        let libraryStatusViewDidTap: Observable<UITapGestureRecognizer>
+        let libraryStatusSpecificPageViewDidTap: Observable<Int>
         let feedDetailButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedConnectedNovelViewDidTap: Observable<Int>
@@ -98,7 +98,7 @@ final class UserPageViewModel: ViewModelType {
         let bindKeywordCell: BehaviorRelay<[KeywordEntity]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
-        let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>
+        let bindLibraryStatusData: BehaviorRelay<UserNovelStatusEntity>
         
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
@@ -109,7 +109,7 @@ final class UserPageViewModel: ViewModelType {
         let showFeedDetailButton: BehaviorSubject<Bool>
         
         let stickyHeaderAction: BehaviorRelay<Bool>
-        let updateButtonWithLibraryView: BehaviorRelay<Bool>
+        let updateButtonWithOverviewView: BehaviorRelay<Bool>
         
         let pushToFeedDetailViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
@@ -129,7 +129,7 @@ final class UserPageViewModel: ViewModelType {
             .flatMapLatest { [weak self]  _ -> Observable<Void> in
                 guard let self else { return .empty() }
                 return Observable.concat([
-                    self.updateMyPageLibraryInventoryData()
+                    self.updateMyPageLibraryStatusData()
                         .map { _ in Void() },
                     self.updateMyPageLibraryPreferenceData()
                         .do(onNext: { [weak self] _ in
@@ -186,14 +186,14 @@ final class UserPageViewModel: ViewModelType {
         input.overviewButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.stickyHeaderActionRelay.accept(true)
-                owner.updateButtonWithLibraryViewRelay.accept(true)
+                owner.updateButtonWithOverviewViewRelay.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.feedButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.stickyHeaderActionRelay.accept(false)
-                owner.updateButtonWithLibraryViewRelay.accept(false)
+                owner.updateButtonWithOverviewViewRelay.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -211,7 +211,7 @@ final class UserPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.inventoryViewDidTap
+        input.libraryStatusViewDidTap
             .bind(with: self, onNext: { owner, _ in
                 self.pushToLibraryViewControllerRelay.accept(owner.profileId)
             })
@@ -236,7 +236,7 @@ final class UserPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.inventorySpecificPageViewDidTap
+        input.libraryStatusSpecificPageViewDidTap
             .bind(with: self, onNext: { owner, pageIndex in
                 self.pushToSpecificLibraryViewController.onNext((owner.profileId, pageIndex))
             })
@@ -256,7 +256,7 @@ final class UserPageViewModel: ViewModelType {
             bindKeywordCell: self.bindKeywordRelay,
             updateKeywordCollectionViewHeight: self.updateKeywordCollectionViewHeightRelay,
             bindGenreData: self.bindGenreDataRelay,
-            bindInventoryData: self.bindInventoryDataRelay,
+            bindLibraryStatusData: self.bindLibraryStatusDataRelay,
             
             showGenreOtherView: self.showGenreOtherViewRelay,
             isExistPreferneces: self.isExistPrefernecesRelay,
@@ -267,7 +267,7 @@ final class UserPageViewModel: ViewModelType {
             showFeedDetailButton: self.showFeedDetailButtonRelay,
             
             stickyHeaderAction: self.stickyHeaderActionRelay,
-            updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay,
+            updateButtonWithOverviewView: self.updateButtonWithOverviewViewRelay,
             pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
             pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable(),
             pushToSpecificLibraryViewController: pushToSpecificLibraryViewController
@@ -326,11 +326,11 @@ final class UserPageViewModel: ViewModelType {
     
     //서재 데이터 바인딩
     //보관함-장르취향-작품취향 서버연결
-    private func updateMyPageLibraryInventoryData() -> Observable<Void> {
-        return getInventoryData(userId: self.profileId)
-            .do(onNext: { [weak self] inventory in
+    private func updateMyPageLibraryStatusData() -> Observable<Void> {
+        return getLibraryStatusData(userId: self.profileId)
+            .do(onNext: { [weak self] libraryStatus in
                 guard let self else { return }
-                self.bindInventoryDataRelay.accept(inventory)
+                self.bindLibraryStatusDataRelay.accept(libraryStatus)
             })
             .map { _ in Void() }
     }
@@ -449,7 +449,7 @@ final class UserPageViewModel: ViewModelType {
         return userRepository.userInfoRepository.getUserGenrePreferences(userId: userId)
     }
     
-    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusEntity> {
+    private func getLibraryStatusData(userId: Int) -> Observable<UserNovelStatusEntity> {
         return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
     }
     
