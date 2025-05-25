@@ -69,12 +69,12 @@ final class MyPageViewController: UIViewController {
     
     private func register() {
         rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.register(
-            UserPageNovelPreferencesCollectionViewCell.self,
-            forCellWithReuseIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier)
+            UserNovelPreferencesCollectionViewCell.self,
+            forCellWithReuseIdentifier: UserNovelPreferencesCollectionViewCell.cellIdentifier)
         
         rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView
-            .register(UserPageGenrePreferencesOtherTableViewCell.self,
-                      forCellReuseIdentifier: UserPageGenrePreferencesOtherTableViewCell.cellIdentifier)
+            .register(UserGenrePreferencesOtherTableViewCell.self,
+                      forCellReuseIdentifier: UserGenrePreferencesOtherTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -144,8 +144,8 @@ final class MyPageViewController: UIViewController {
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }
             .bind(to: rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView.rx.items(
-                cellIdentifier: UserPageGenrePreferencesOtherTableViewCell.cellIdentifier,
-                cellType: UserPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
+                cellIdentifier: UserGenrePreferencesOtherTableViewCell.cellIdentifier,
+                cellType: UserGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                     cell.bindData(data: data)
                     cell.selectionStyle = .none
                 }
@@ -167,7 +167,7 @@ final class MyPageViewController: UIViewController {
         
         output.bindKeywordCell
             .observe(on: MainScheduler.instance)
-            .bind(to: rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.rx.items(cellIdentifier: UserPageNovelPreferencesCollectionViewCell.cellIdentifier, cellType: UserPageNovelPreferencesCollectionViewCell.self)){ row, data, cell in
+            .bind(to: rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.rx.items(cellIdentifier: UserNovelPreferencesCollectionViewCell.cellIdentifier, cellType: UserNovelPreferencesCollectionViewCell.self)){ row, data, cell in
                 cell.bindData(data: data)
             }
             .disposed(by: disposeBag)

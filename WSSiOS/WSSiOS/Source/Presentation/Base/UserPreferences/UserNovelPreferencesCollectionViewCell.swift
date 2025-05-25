@@ -1,5 +1,5 @@
 //
-//  UserPageNovelPreferencesCollectionViewCell.swift
+//  UserNovelPreferencesCollectionViewCell.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class UserPageNovelPreferencesCollectionViewCell: UICollectionViewCell {
+final class UserNovelPreferencesCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
