@@ -7,13 +7,15 @@
 
 import UIKit
 
+import UniformTypeIdentifiers
+
 // multipart에 사용되는 값에 대한 열거형
 enum MultipartConstants {
     static let jsonPartName = "feed"
     static let imageKeyName = "images"
     static let defaultFileName = "image.jpg"
     static let mimeType = "image/jpeg"
-    static let maxImageSize: Int = 5 * 1024 * 1024 // 5MB
+    static let maxImageSize: Int = 512 * 512 // 0.25MB
     
     static func makeBoundary() -> String {
         return "Boundary-\(UUID().uuidString)"
@@ -78,36 +80,54 @@ extension Networking {
         return String(format: "%.2fMB", Double(bytes) / (1024.0 * 1024.0))
     }
     
-    // 이미지 사이즈 압축 함수
     func compressImages(_ images: [UIImage],
                         maxImageSize: Int = MultipartConstants.maxImageSize) -> [Data] {
+        // 압축된 이미지 파일 배열
         var compressedDatas: [Data] = []
         
         for (index, image) in images.enumerated() {
-            var quality: CGFloat = 0.5
-            var data = image.jpegData(compressionQuality: quality)
-            print("🖼️ 이미지 \(index) 초기 크기: \(formatBytesToMB(data?.count ?? 0))")
             
-            while let compressedData = data, compressedData.count > maxImageSize, quality > 0.1 {
-                quality -= 0.1
-                data = image.jpegData(compressionQuality: quality)
-                print("↘️ 이미지 \(index) 압축률 \(String(format: "%.1f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
+            // 이미지 압축 품질 설정
+            var quality: CGFloat = 1.0
+            
+            // 이미지 기본 해상도 설정
+            var scale: CGFloat = 0.7
+            
+            // HEIC 파일 타입 기본 해상도 설정 - 0.5
+            if let cgImageSource = CGImageSourceCreateWithData(image.pngData()! as CFData, nil),
+               let utiString = CGImageSourceGetType(cgImageSource) as String?,
+               let utType = UTType(utiString),
+               utType.conforms(to: .heic) {
+                scale = 0.5
+                print("🧾 이미지 \(index) HEIC 포맷으로 감지 → 초기 해상도 0.5 적용")
             }
             
-            if let compressedData = data {
-                if compressedData.count <= maxImageSize {
-                    print("✅ 이미지 \(index) 최종 크기: \(formatBytesToMB(compressedData.count)) (업로드 가능)")
-                    compressedDatas.append(compressedData)
+            var data: Data? = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
+            print("🖼️ 이미지 \(index) 초기 해상도 \(String(format: "%.2f", scale)) 적용 → 크기: \(formatBytesToMB(data?.count ?? 0))")
+            
+            while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
+                if quality > 0.2 {
+                    quality -= 0.1
                 } else {
-                    print("❌ 이미지 \(index) 최종 크기: \(formatBytesToMB(compressedData.count)) (5MB 초과로 제외됨)")
+                    scale -= 0.1
+                    if let resizedImage = image.resizedImage(to: scale) {
+                        data = resizedImage.jpegData(compressionQuality: quality)
+                    }
+                    continue
                 }
+                data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
+                print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
+            }
+            
+            if let data = data, data.count <= maxImageSize {
+                print("✅ 이미지 \(index) 최종 해상도 \(String(format: "%.2f", scale)), 품질 \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data.count))")
+                compressedDatas.append(data)
             } else {
-                print("⚠️ 이미지 \(index) 압축 실패")
+                print("❌ 이미지 \(index) 압축 실패 또는 제한 초과, 빈 데이터 추가")
+                compressedDatas.append(Data())
             }
         }
         
-        let totalBytes = compressedDatas.reduce(0) { $0 + $1.count }
-        print("📦 업로드 대상 이미지 총 용량: \(formatBytesToMB(totalBytes))")
         return compressedDatas
     }
 }
