@@ -35,8 +35,8 @@ extension Networking {
     func makeMultipartBody(keyName: String,
                            images: [Data],
                            boundary: String,
-                           fileName: String = "image.jpg",
-                           mimeType: String = "image/jpeg") -> Data {
+                           fileName: String = MultipartConstants.defaultFileName,
+                           mimeType: String = MultipartConstants.mimeType) -> Data {
         
         let lineBreak = "\r\n"
         var body = Data()
