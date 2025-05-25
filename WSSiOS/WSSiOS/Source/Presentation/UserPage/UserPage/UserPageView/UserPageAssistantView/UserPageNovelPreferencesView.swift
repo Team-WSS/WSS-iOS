@@ -55,7 +55,8 @@ final class UserPageNovelPreferencesView: UIView {
         
         novelPreferenceView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-            $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(40)
         }
     }
 }

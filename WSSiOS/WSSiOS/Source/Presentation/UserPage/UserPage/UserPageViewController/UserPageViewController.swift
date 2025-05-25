@@ -238,8 +238,9 @@ final class UserPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
                 owner.rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.updateView(showOtherGenreView: show)
+                owner.rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.updateGenreViewHeight(isExpanded: show)
                 owner.rootView.userPageOverviewView.updateGenreViewHeight(isExpanded: show)
-                owner.rootView.layoutIfNeeded()
+                owner.rootView.userPageOverviewView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
         

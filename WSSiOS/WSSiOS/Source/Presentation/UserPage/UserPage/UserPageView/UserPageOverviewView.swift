@@ -79,7 +79,7 @@ final class UserPageOverviewView: UIView {
         }
         
         userPageGenrePrefrerencesView.snp.makeConstraints {
-            $0.height.equalTo(221.5)
+            $0.height.equalTo(224.5)
         }
         
         [firstDividerView, secondDividerView].forEach {
