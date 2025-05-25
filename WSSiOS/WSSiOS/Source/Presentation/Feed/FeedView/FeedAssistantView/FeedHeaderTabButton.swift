@@ -69,7 +69,7 @@ final class FeedHeaderTabButton: UIButton {
         }
         
         bottomLineView.snp.makeConstraints {
-            $0.centerY.equalTo(tabLabel.snp.bottom)
+            $0.centerY.equalTo(self.snp.bottom)
             $0.horizontalEdges.equalToSuperview().offset(1)    // 피그마 상으로 프레임보다 양쪽으로 1칸만큼 더 튀어나와 있음.
             $0.height.equalTo(bottomLineHeight)
         }
