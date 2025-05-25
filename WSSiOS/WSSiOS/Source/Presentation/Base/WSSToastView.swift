@@ -61,7 +61,7 @@ enum ToastStatus {
         case .editUserProfile:
             "프로필 정보가 수정되었어요"
         case .limitAddImage:
-            "20장까지 업로드 가능해요"
+            "5장까지 업로드 가능해요"
         }
     }
 }

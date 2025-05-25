@@ -10,14 +10,15 @@ import PhotosUI
 final class PhotoPickerManager: NSObject {
     private weak var presentingViewController: UIViewController?
     var didSelectImages: (([UIImage]) -> Void)?
-
+    private let maximumImageCount = 5
+    
     init(presentingViewController: UIViewController) {
         self.presentingViewController = presentingViewController
     }
 
     func presentPicker() {
         var config = PHPickerConfiguration()
-        config.selectionLimit = 20
+        config.selectionLimit = self.maximumImageCount
         config.filter = .images
 
         let picker = PHPickerViewController(configuration: config)
