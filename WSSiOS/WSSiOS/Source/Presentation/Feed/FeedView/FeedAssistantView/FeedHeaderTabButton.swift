@@ -1,5 +1,5 @@
 //
-//  FeedTabButton.swift
+//  FeedHeaderTabButton.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 5/22/25.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedTabButton: UIButton {
+final class FeedHeaderTabButton: UIButton {
     
     //MARK: - Properties
     

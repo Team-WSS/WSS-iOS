@@ -14,8 +14,8 @@ final class FeedHeaderView: UIView {
     
     //MARK: - Components
     
-    let myFeedTabButton = FeedTabButton(feedTab: .my)
-    let sosoFeedTabButton = FeedTabButton(feedTab: .soso)
+    let myFeedTabButton = FeedHeaderTabButton(feedTab: .my)
+    let sosoFeedTabButton = FeedHeaderTabButton(feedTab: .soso)
     let createFeedButton = UIButton()
     
     // MARK: - Life Cycle
