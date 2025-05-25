@@ -1,5 +1,5 @@
 //
-//  UserPageLibraryView.swift
+//  UserPageOverviewView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 11/16/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class UserPageLibraryView: UIView {
+final class UserPageOverviewView: UIView {
     
     // MARK: - Components
     

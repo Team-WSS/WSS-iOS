@@ -16,13 +16,13 @@ final class UserPageStickyHeaderView: UIView {
     
     private let underLineView = UIView()
     
-    let libraryButton = UIButton()
-    let libraryUnderView = UIView()
-    let libraryButtonLabel = UILabel()
+    let overviewButton = UIButton()
+    private let overviewUnderView = UIView()
+    private let overviewButtonLabel = UILabel()
     
     let feedButton = UIButton()
-    let feedButtonLabel = UILabel()
-    let feedUnderView = UIView()
+    private let feedButtonLabel = UILabel()
+    private let feedUnderView = UIView()
     
     // MARK: - Life Cycle
     
@@ -43,11 +43,11 @@ final class UserPageStickyHeaderView: UIView {
             $0.backgroundColor = .wssGray70
         }
         
-        libraryButton.do {
+        overviewButton.do {
             $0.backgroundColor = .wssWhite
             $0.isSelected = true
             
-            libraryButtonLabel.do {
+            overviewButtonLabel.do {
                 $0.textColor = .wssBlack
                 $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Profile.otherProfileLibrary)
             }
@@ -63,7 +63,7 @@ final class UserPageStickyHeaderView: UIView {
             }
         }
         
-        libraryUnderView.do {
+        overviewUnderView.do {
             $0.backgroundColor = .wssBlack
             $0.isHidden = false
         }
@@ -75,12 +75,12 @@ final class UserPageStickyHeaderView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(libraryButton,
+        self.addSubviews(overviewButton,
                          feedButton,
                          underLineView,
-                         libraryUnderView,
+                         overviewUnderView,
                          feedUnderView)
-        libraryButton.addSubview(libraryButtonLabel)
+        overviewButton.addSubview(overviewButtonLabel)
         feedButton.addSubview(feedButtonLabel)
     }
     
@@ -91,16 +91,16 @@ final class UserPageStickyHeaderView: UIView {
             $0.height.equalTo(1)
         }
         
-        libraryButton.snp.makeConstraints {
+        overviewButton.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
             $0.trailing.equalTo(super.snp.centerX)
             
-            libraryButtonLabel.snp.makeConstraints {
+            overviewButtonLabel.snp.makeConstraints {
                 $0.center.equalToSuperview()
             }
         }
         
-        libraryUnderView.snp.makeConstraints {
+        overviewUnderView.snp.makeConstraints {
             $0.leading.bottom.equalToSuperview()
             $0.height.equalTo(2)
             $0.trailing.equalTo(super.snp.centerX)
@@ -122,14 +122,14 @@ final class UserPageStickyHeaderView: UIView {
         }
     }
     
-    func updateSelection(isLibrarySelected: Bool) {
-        libraryButton.isSelected = isLibrarySelected
-        feedButton.isSelected = !isLibrarySelected
+    func updateSelection(isOverviewSelected: Bool) {
+        overviewButton.isSelected = isOverviewSelected
+        feedButton.isSelected = !isOverviewSelected
         
-        libraryButtonLabel.textColor = isLibrarySelected ? .wssBlack : .wssGray100
-        feedButtonLabel.textColor = isLibrarySelected ? .wssGray100 : .wssBlack
+        overviewButtonLabel.textColor = isOverviewSelected ? .wssBlack : .wssGray100
+        feedButtonLabel.textColor = isOverviewSelected ? .wssGray100 : .wssBlack
         
-        libraryUnderView.isHidden = !isLibrarySelected
-        feedUnderView.isHidden = isLibrarySelected
+        overviewUnderView.isHidden = !isOverviewSelected
+        feedUnderView.isHidden = isOverviewSelected
     }
 }

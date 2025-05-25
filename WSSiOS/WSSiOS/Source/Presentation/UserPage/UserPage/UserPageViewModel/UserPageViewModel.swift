@@ -75,7 +75,7 @@ final class UserPageViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         
         let genrePreferenceButtonDidTap: Observable<Bool>
-        let libraryButtonDidTap: Observable<Bool>
+        let overviewButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let inventorySpecificPageViewDidTap: Observable<Int>
@@ -183,7 +183,7 @@ final class UserPageViewModel: ViewModelType {
             .bind(to: popViewControllerRelay)
             .disposed(by: disposeBag)
         
-        input.libraryButtonDidTap
+        input.overviewButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.stickyHeaderActionRelay.accept(true)
                 owner.updateButtonWithLibraryViewRelay.accept(true)

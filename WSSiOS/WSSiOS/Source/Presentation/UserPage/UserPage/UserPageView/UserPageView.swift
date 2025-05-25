@@ -21,7 +21,7 @@ final class UserPageView: UIView {
     let mainStickyHeaderView = UserPageStickyHeaderView()
     let scrolledStickyHeaderView = UserPageStickyHeaderView()
     
-    let userPageLibraryView = UserPageLibraryView()
+    let userPageOverviewView = UserPageOverviewView()
     let userPageFeedView = UserPageFeedView()
     
     //In VC
@@ -70,7 +70,7 @@ final class UserPageView: UIView {
         scrollView.addSubview(contentView)
         contentView.addSubviews(headerView,
                                 mainStickyHeaderView,
-                                userPageLibraryView,
+                                userPageOverviewView,
                                 userPageFeedView)
     }
     
@@ -100,7 +100,7 @@ final class UserPageView: UIView {
             $0.height.equalTo(47)
         }
         
-        [userPageLibraryView, userPageFeedView].forEach { view in
+        [userPageOverviewView, userPageFeedView].forEach { view in
             view.snp.makeConstraints {
                 $0.top.equalTo(headerView.snp.bottom).offset(47)
                 $0.width.equalToSuperview()
@@ -111,7 +111,7 @@ final class UserPageView: UIView {
     //MARK: - Data
     
     func showContentView(showLibraryView: Bool) {
-        userPageLibraryView.isHidden = !showLibraryView
+        userPageOverviewView.isHidden = !showLibraryView
         userPageFeedView.isHidden = showLibraryView
     }
 }
