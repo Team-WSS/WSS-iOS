@@ -19,6 +19,7 @@ final class FeedViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let selectedTab = BehaviorRelay<FeedTab>(value: .my)
     private let selectedSosoFeedTab = BehaviorRelay<SosoFeedTab>(value: .all)
+    private let selectedPageIndex = BehaviorRelay<Int>(value: 0)
     
     //MARK: - Components
     
@@ -72,6 +73,31 @@ final class FeedViewController: UIViewController {
         selectedSosoFeedTab.asDriver()
             .drive(with: self, onNext: { owner, selectedTab in
                 owner.sosoFeedHeaderView.updateButtons(selectedTab: selectedTab)
+            })
+            .disposed(by: disposeBag)
+        
+        Observable
+            .combineLatest(selectedTab, selectedSosoFeedTab)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                let (sosoTab, feedTab) = data
+            
+                switch data {
+                case (.my, _ ): owner.selectedPageIndex.accept(0)
+                case (.soso, .all): owner.selectedPageIndex.accept(1)
+                case (.soso, .recommended): owner.selectedPageIndex.accept(2)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        selectedPageIndex.asDriver()
+            .drive(with: self, onNext: { owner, index in
+                owner.pageViewController.setViewControllers(
+                    [owner.pages[index]],
+                    direction: .forward,
+                    animated: false,
+                    completion: nil
+                )
             })
             .disposed(by: disposeBag)
     }
