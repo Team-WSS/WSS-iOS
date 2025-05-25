@@ -16,20 +16,16 @@ final class MyPageViewModel: ViewModelType {
     
     private var profileId: Int
     private let userRepository: UserRepository
-    private var stickyHeaderHeight: CGFloat = 0
-    
     private let disposeBag = DisposeBag()
-    
-    private let isMyPageRelay = BehaviorRelay<Bool>(value: true)
+
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
-    private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
     private let profileDataRelay = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
                                                                                          introdution: "",
                                                                                          genrePreferences: [],
                                                                                          avatarImageURL: nil))
                                                                   
     private let isPrefernecesEmptyRelay = PublishRelay<Bool>()
-    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
+    private let bindLibraryStatusDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
                                                                                                            quitNovelCount: 0))
@@ -45,8 +41,6 @@ final class MyPageViewModel: ViewModelType {
     private let pushToSpecificLibraryViewController = PublishSubject<Int>()
     
     private let showToastViewRelay = PublishRelay<Void>()
-    private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
-    
     private let reloadSubject = PublishSubject<Void>()
     
     // MARK: - Life Cycle
@@ -59,13 +53,12 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: PublishSubject<Void>
-        let headerViewHeight: Driver<Double>
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
         let settingButtonDidTap: ControlEvent<Void>
         let editButtonDidTap: Observable<UITapGestureRecognizer>
         let genrePreferenceButtonDidTap: Observable<Bool>
-        let inventorySpecificPageViewDidTap: Observable<Int>
+        let libraryStatusSpecificPageViewDidTap: Observable<Int>
         let editProfileNotification: Observable<Notification>
     }
     
@@ -79,7 +72,7 @@ final class MyPageViewModel: ViewModelType {
         let bindKeywordCell: BehaviorRelay<[KeywordEntity]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferencesListEntity>
-        let bindInventoryData: BehaviorRelay<UserNovelStatusEntity>
+        let bindLibraryStatusData: BehaviorRelay<UserNovelStatusEntity>
         
         let showGenreOtherView: BehaviorRelay<Bool>
         let isPrefernecesEmpty: PublishRelay<Bool>
@@ -114,14 +107,7 @@ final class MyPageViewModel: ViewModelType {
             }
             .subscribe()
             .disposed(by: disposeBag)
-        
-        input.headerViewHeight
-            .asObservable()
-            .bind(with: self, onNext: { owner, height in
-                owner.stickyHeaderHeight = height
-            })
-            .disposed(by: disposeBag)
-        
+ 
         input.scrollOffset
             .asObservable()
             .map{ $0.y }
@@ -155,7 +141,7 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.inventorySpecificPageViewDidTap
+        input.libraryStatusSpecificPageViewDidTap
             .bind(with: self, onNext: { owner, pageIndex in
                 self.pushToSpecificLibraryViewController.onNext(pageIndex)
             })
@@ -171,7 +157,7 @@ final class MyPageViewModel: ViewModelType {
             bindKeywordCell: self.bindKeywordRelay,
             updateKeywordCollectionViewHeight: self.updateKeywordCollectionViewHeightRelay,
             bindGenreData: self.bindGenreDataRelay,
-            bindInventoryData: self.bindInventoryDataRelay,
+            bindLibraryStatusData: self.bindLibraryStatusDataRelay,
             showGenreOtherView: self.showGenreOtherViewRelay,
             isPrefernecesEmpty: self.isPrefernecesEmptyRelay,
             
@@ -196,7 +182,7 @@ final class MyPageViewModel: ViewModelType {
         return getInventoryData(userId: self.profileId)
             .do(onNext: { [weak self] inventory in
                 guard let self else { return }
-                self.bindInventoryDataRelay.accept(inventory)
+                self.bindLibraryStatusDataRelay.accept(inventory)
             })
             .map { _ in Void() }
     }

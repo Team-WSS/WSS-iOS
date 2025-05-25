@@ -17,7 +17,6 @@ final class MyPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
     private let viewWillAppearEvent = PublishSubject<Void>()
-    private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
     
@@ -59,12 +58,6 @@ final class MyPageViewController: UIViewController {
                             isVisibleBeforeScroll: false)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        headerViewHeightRelay.accept(rootView.myPageProfileView.layer.bounds.height)
-    }
-    
     //MARK: - Bind
     
     private func register() {
@@ -90,7 +83,7 @@ final class MyPageViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let inventoryStatusButtonDidTap = Observable<Int>.merge(
+        let libraryStatusButtonDidTap = Observable<Int>.merge(
             rootView.myPageLibraryStatusView.readStatusButtons.enumerated().map { index, button in
                 button.rx.tap
                     .map { index }
@@ -103,13 +96,12 @@ final class MyPageViewController: UIViewController {
         
         let input = MyPageViewModel.Input(
             viewWillAppearEvent: self.viewWillAppearEvent,
-            headerViewHeight: headerViewHeightRelay.asDriver(),
             resizeKeywordCollectionViewHeight: rootView.myPagePreferencesView.myPageNovelPreferencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
             editButtonDidTap: rootView.myPageProfileView.userImageChangeImageView.rx.tapGesture().when(.recognized).asObservable(),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
-            inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
+            libraryStatusSpecificPageViewDidTap: libraryStatusButtonDidTap,
             editProfileNotification: NotificationCenter.default.rx.notification(NotificationName.editProfile).asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -172,7 +164,7 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.bindInventoryData
+        output.bindLibraryStatusData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.myPageLibraryStatusView.bindData(data: data)
