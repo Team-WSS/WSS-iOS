@@ -59,7 +59,7 @@ final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDele
     
     private func register() {
         rootView.userPageFeedDetailTableView.register(FeedListTableViewCell.self,
-                                                    forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
+                                                      forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -107,20 +107,12 @@ final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDele
                 }
                 .disposed(by: disposeBag)
         
-        output.isMyPage
-            .bind(with: self, onNext: { owner, isMyPage in
-                owner.setWSSNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed,
-                                       left: self.rootView.backButton,
-                                       right: nil)
-            })
-            .disposed(by: disposeBag)
-        
         output.pushToFeedDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, feedId in
                 owner.pushToFeedDetailViewController(feedId: feedId)
             })
-            .disposed(by: disposeBag)        
+            .disposed(by: disposeBag)
     }
 }
 

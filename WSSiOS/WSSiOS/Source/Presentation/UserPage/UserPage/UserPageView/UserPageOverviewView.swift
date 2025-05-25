@@ -14,8 +14,9 @@ final class UserPageOverviewView: UIView {
     
     // MARK: - Components
     
-    let stackView = UIStackView()
+    private let stackView = UIStackView()
     let userPageLibraryStatusView = UserPageLibraryStatusView()
+    
     let userPageGenrePrefrerencesView = UserPageGenrePreferencesView()
     let userPageNovelPrefrerencesView = UserPageNovelPreferencesView()
     

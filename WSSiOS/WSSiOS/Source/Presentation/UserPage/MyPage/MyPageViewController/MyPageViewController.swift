@@ -65,7 +65,7 @@ final class MyPageViewController: UIViewController {
             UserNovelPreferencesCollectionViewCell.self,
             forCellWithReuseIdentifier: UserNovelPreferencesCollectionViewCell.cellIdentifier)
         
-        rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView
+        rootView.myPagePreferencesView.myPageGenrePreferencesView.userOtherGenreView.genreTableView
             .register(UserGenrePreferencesOtherTableViewCell.self,
                       forCellReuseIdentifier: UserGenrePreferencesOtherTableViewCell.cellIdentifier)
     }
@@ -79,7 +79,7 @@ final class MyPageViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView.delegate = self
+        rootView.myPagePreferencesView.myPageGenrePreferencesView.userOtherGenreView.genreTableView.delegate = self
     }
     
     private func bindViewModel() {
@@ -90,8 +90,8 @@ final class MyPageViewController: UIViewController {
             })
         
         let genrePreferenceButtonDidTap = Observable.merge(
-            rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageGenreOpenButton.rx.tap.map { true },
-            rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageGenreCloseButton.rx.tap.map { false }
+            rootView.myPagePreferencesView.myPageGenrePreferencesView.userGenreOpenButton.rx.tap.map { true },
+            rootView.myPagePreferencesView.myPageGenrePreferencesView.userGenreCloseButton.rx.tap.map { false }
         )
         
         let input = MyPageViewModel.Input(
@@ -135,7 +135,7 @@ final class MyPageViewController: UIViewController {
                 self?.rootView.myPagePreferencesView.myPageGenrePreferencesView.bindData(data: data)
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }
-            .bind(to: rootView.myPagePreferencesView.myPageGenrePreferencesView.userPageOtherGenreView.genreTableView.rx.items(
+            .bind(to: rootView.myPagePreferencesView.myPageGenrePreferencesView.userOtherGenreView.genreTableView.rx.items(
                 cellIdentifier: UserGenrePreferencesOtherTableViewCell.cellIdentifier,
                 cellType: UserGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                     cell.bindData(data: data)

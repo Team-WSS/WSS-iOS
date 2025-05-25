@@ -1,8 +1,8 @@
 //
-//  UserPageFeedDetailView.swift
+//  UserPageGenrePreferencesOtherView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 12/3/24.
+//  Created by 신지원 on 11/16/24.
 //
 
 import UIKit
@@ -10,15 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-final class UserPageFeedDetailView: UIView {
-    
-    //MARK: - Components
-    
-    let userPageFeedDetailTableView = UITableView(frame: .zero, style: .plain)
-    
-    //In VC
-    let backButton = UIButton()
+final class UserGenrePreferencesOtherView: UIView {
 
+    //MARK: - Components
+
+    let genreTableView = UITableView(frame: .zero, style: .plain)
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -36,22 +33,24 @@ final class UserPageFeedDetailView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        userPageFeedDetailTableView.do {
-            $0.separatorStyle = .none
-        }
+        self.backgroundColor = .wssWhite
         
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        genreTableView.do {
+            $0.rowHeight = 40
+            $0.isScrollEnabled = false
+            $0.separatorStyle = .none
+            $0.delaysContentTouches = false
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(userPageFeedDetailTableView)
+        self.addSubview(genreTableView)
     }
     
     private func setLayout() {
-        userPageFeedDetailTableView.snp.makeConstraints() {
+        genreTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

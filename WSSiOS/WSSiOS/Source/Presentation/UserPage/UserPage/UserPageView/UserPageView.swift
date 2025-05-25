@@ -85,7 +85,7 @@ final class UserPageView: UIView {
         }
         
         headerView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
+            $0.top.horizontalEdges.equalToSuperview()
         }
         
         mainStickyHeaderView.snp.makeConstraints {

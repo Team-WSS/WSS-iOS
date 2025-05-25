@@ -76,7 +76,7 @@ final class UserPageViewController: UIViewController {
             .register(UserNovelPreferencesCollectionViewCell.self,
                       forCellWithReuseIdentifier: UserNovelPreferencesCollectionViewCell.cellIdentifier)
         
-        rootView.userPageOverviewView.userPageGenrePrefrerencesView.userPageOtherGenreView.genreTableView
+        rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.userOtherGenreView.genreTableView
             .register(UserGenrePreferencesOtherTableViewCell.self,
                       forCellReuseIdentifier: UserGenrePreferencesOtherTableViewCell.cellIdentifier)
         
@@ -94,7 +94,7 @@ final class UserPageViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.userPageOverviewView.userPageGenrePrefrerencesView.userPageOtherGenreView.genreTableView.delegate = self
+        rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.userOtherGenreView.genreTableView.delegate = self
         
         rootView.userPageFeedView.userPageFeedTableView.feedTableView.rx
             .setDelegate(self)
@@ -109,8 +109,8 @@ final class UserPageViewController: UIViewController {
             })
         
         let genrePreferenceButtonDidTap = Observable.merge(
-            rootView.userPageOverviewView.userPageGenrePrefrerencesView.userPageGenreOpenButton.rx.tap.map { true },
-            rootView.userPageOverviewView.userPageGenrePrefrerencesView.userPageGenreCloseButton.rx.tap.map { false }
+            rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.userGenreOpenButton.rx.tap.map { true },
+            rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.userGenreCloseButton.rx.tap.map { false }
         )
         
         let overviewButtonDidTap = Observable.merge(
@@ -190,10 +190,10 @@ final class UserPageViewController: UIViewController {
         output.bindGenreData
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] data in
-                self?.rootView.userPageOverviewView.userPageGenrePrefrerencesView.bindData(data: data)
+                self?.rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.bindData(data: data)
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }
-            .bind(to: rootView.userPageOverviewView.userPageGenrePrefrerencesView.userPageOtherGenreView.genreTableView.rx.items(
+            .bind(to: rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.userOtherGenreView.genreTableView.rx.items(
                 cellIdentifier: UserGenrePreferencesOtherTableViewCell.cellIdentifier,
                 cellType: UserGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                     cell.bindData(data: data)
@@ -237,7 +237,7 @@ final class UserPageViewController: UIViewController {
         output.showGenreOtherView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                owner.rootView.userPageOverviewView.userPageGenrePrefrerencesView.updateView(showOtherGenreView: show)
+                owner.rootView.userPageOverviewView.userPageGenrePrefrerencesView.userGenrePreferencesView.updateView(showOtherGenreView: show)
                 owner.rootView.userPageOverviewView.updateGenreViewHeight(isExpanded: show)
                 owner.rootView.layoutIfNeeded()
             })

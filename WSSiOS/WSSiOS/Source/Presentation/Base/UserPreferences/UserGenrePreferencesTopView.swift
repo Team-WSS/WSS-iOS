@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class UserPageGenrePreferencesTopView: UIView {
+final class UserGenrePreferencesTopView: UIView {
     
     //MARK: - Components
     

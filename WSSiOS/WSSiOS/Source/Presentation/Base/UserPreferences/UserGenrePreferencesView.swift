@@ -17,13 +17,13 @@ final class UserGenrePreferencesView: UIView {
     var genreStackView = UIStackView()
     
     private let genreTopThreeView = UIView()
-    private let firstTopGenreView = UserPageGenrePreferencesTopView()
-    private let secondTopGenreView = UserPageGenrePreferencesTopView()
-    private let thirdTopGenreView = UserPageGenrePreferencesTopView()
+    private let firstTopGenreView = UserGenrePreferencesTopView()
+    private let secondTopGenreView = UserGenrePreferencesTopView()
+    private let thirdTopGenreView = UserGenrePreferencesTopView()
     
-    let userPageGenreOpenButton = UIButton()
-    let userPageOtherGenreView = UserPageGenrePreferencesOtherView()
-    let userPageGenreCloseButton = UIButton()
+    let userGenreOpenButton = UIButton()
+    let userOtherGenreView = UserGenrePreferencesOtherView()
+    let userGenreCloseButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -50,14 +50,14 @@ final class UserGenrePreferencesView: UIView {
             $0.distribution = .fill
         }
         
-        userPageGenreOpenButton.do {
+        userGenreOpenButton.do {
             $0.backgroundColor = .wssWhite
             $0.setImage(.icChevronDown, for: .normal)
         }
         
-        userPageOtherGenreView.isHidden = true
+        userOtherGenreView.isHidden = true
         
-        userPageGenreCloseButton.do {
+        userGenreCloseButton.do {
             $0.backgroundColor = .wssWhite
             $0.setImage(.icChevronUp, for: .normal)
         }
@@ -66,9 +66,9 @@ final class UserGenrePreferencesView: UIView {
     private func setHierarchy() {
         self.addSubview(genreStackView)
         genreStackView.addArrangedSubviews(genreTopThreeView,
-                                           userPageGenreOpenButton,
-                                           userPageOtherGenreView,
-                                           userPageGenreCloseButton)
+                                           userGenreOpenButton,
+                                           userOtherGenreView,
+                                           userGenreCloseButton)
         genreTopThreeView.addSubviews(firstTopGenreView,
                             secondTopGenreView,
                             thirdTopGenreView)
@@ -104,12 +104,12 @@ final class UserGenrePreferencesView: UIView {
             $0.height.equalTo(95)
         }
         
-        userPageGenreOpenButton.snp.makeConstraints {
+        userGenreOpenButton.snp.makeConstraints {
             $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(44)
         }
         
-        userPageOtherGenreView.snp.makeConstraints {
+        userOtherGenreView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(13)
             $0.height.equalTo(0)
         }
@@ -124,25 +124,25 @@ final class UserGenrePreferencesView: UIView {
     }
     
     func updateView(showOtherGenreView: Bool) {
-        userPageGenreOpenButton.isHidden = showOtherGenreView
-        userPageOtherGenreView.isHidden = !showOtherGenreView
-        userPageGenreCloseButton.isHidden = !showOtherGenreView
+        userGenreOpenButton.isHidden = showOtherGenreView
+        userOtherGenreView.isHidden = !showOtherGenreView
+        userGenreCloseButton.isHidden = !showOtherGenreView
         
         genreStackView.setCustomSpacing(showOtherGenreView ? 20 : 6, after: genreTopThreeView)
-        genreStackView.setCustomSpacing(showOtherGenreView ? 20 : 0, after: userPageOtherGenreView)
+        genreStackView.setCustomSpacing(showOtherGenreView ? 20 : 0, after: userOtherGenreView)
         
-        userPageGenreOpenButton.snp.remakeConstraints {
+        userGenreOpenButton.snp.remakeConstraints {
             $0.height.equalTo(showOtherGenreView ? 0 : 44)
             if !showOtherGenreView {
                 $0.horizontalEdges.bottom.equalToSuperview()
             }
         }
         
-        userPageOtherGenreView.snp.updateConstraints {
+        userOtherGenreView.snp.updateConstraints {
             $0.height.equalTo(showOtherGenreView ? 240 : 0)
         }
         
-        userPageGenreCloseButton.snp.remakeConstraints {
+        userGenreCloseButton.snp.remakeConstraints {
             $0.height.equalTo(showOtherGenreView ? 44 : 0)
             if showOtherGenreView {
                 $0.horizontalEdges.bottom.equalToSuperview()

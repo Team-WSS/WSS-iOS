@@ -20,9 +20,7 @@ final class UserPageFeedDetailViewModel: ViewModelType {
     private let profileId: Int
     
     //피드 정보 관련 데이터
-    private let isMyPage = PublishRelay<Bool>()
     private var feedId: Int = 0
-    private var isMyFeed: Bool = false
     
     //무한스크롤 기능
     private let feedDataRelay = BehaviorRelay<[UserFeedListItem]>(value: [])
@@ -52,7 +50,6 @@ final class UserPageFeedDetailViewModel: ViewModelType {
     
     struct Output {
         let bindFeedData: BehaviorRelay<[UserFeedListItem]>
-        let isMyPage: PublishRelay<Bool>
         let pushToFeedDetailViewController: Observable<Int>
     }
     
@@ -82,8 +79,6 @@ final class UserPageFeedDetailViewModel: ViewModelType {
         input.viewWillAppearEvent
             .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-                self.isMyPage.accept(userId == self.profileId)
                 
                 self.feedDataRelay.accept([])
                 self.lastFeedIdRelay.accept(0)
@@ -112,7 +107,6 @@ final class UserPageFeedDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(bindFeedData: self.feedDataRelay,
-                      isMyPage: self.isMyPage,
                       pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable())
     }
     
