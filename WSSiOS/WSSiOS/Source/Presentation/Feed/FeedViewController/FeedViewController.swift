@@ -159,20 +159,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension FeedViewController : UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed,
-           let currentViewController = pageViewController.viewControllers?.first,
-           let index = pages.firstIndex(of: currentViewController as! FeedGenreViewController) {
-            //            pageBar.feedPageBarCollectionView
-            //                .selectItem(at: IndexPath(item: index, section: 0),
-            //                            animated: true,
-            //                            scrollPosition: .centeredHorizontally)
-        }
-    }
-}
-
-extension FeedViewController: UIPageViewControllerDataSource {
+extension FeedViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         if let currentIndex = pages.firstIndex(of: viewController as! FeedGenreViewController),
            currentIndex > 0 { return pages[currentIndex - 1] }
@@ -236,9 +223,9 @@ extension FeedViewController {
             pages.append(viewController)
         }
         
-        for (index, viewController) in pages.enumerated() {
-            viewController.view.tag = index
-        }
+        // UIPageViewController 스크롤로 VC 전환되는 것 막기.
+        let scrollView =  pageViewController.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        scrollView?.isScrollEnabled = false
         
         pageViewController.setViewControllers([pages[0]],
                                               direction: .forward,
