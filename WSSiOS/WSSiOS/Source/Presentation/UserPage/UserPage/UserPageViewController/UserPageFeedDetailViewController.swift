@@ -18,7 +18,7 @@ final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDele
     private let disposeBag = DisposeBag()
     private let viewModel: UserPageFeedDetailViewModel
     private let viewWillAppearRelay = PublishRelay<Void>()
- 
+    
     //MARK: - Components
     
     private let rootView = UserPageFeedDetailView()
@@ -53,6 +53,10 @@ final class UserPageFeedDetailViewController: UIViewController, UIScrollViewDele
         
         viewWillAppearRelay.accept(())
         swipeBackGesture()
+        
+        setWSSNavigationBar(title: StringLiterals.MyPage.Profile.otherProfileFeed,
+                            left: self.rootView.backButton,
+                            right: nil)
     }
     
     //MARK: - Bind
