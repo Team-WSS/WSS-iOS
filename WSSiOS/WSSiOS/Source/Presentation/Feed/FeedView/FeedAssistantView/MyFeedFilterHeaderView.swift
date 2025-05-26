@@ -93,8 +93,8 @@ final class MyFeedFilterHeaderView: UIView {
         }
     }
     
-    func updateButtons(selectedTab: SosoFeedTab) {
-
+    func updateSortButton(sortType: SortType) {
+        sortButtonLabel.applyWSSFont(.body3, with: sortType.text)
     }
 }
 

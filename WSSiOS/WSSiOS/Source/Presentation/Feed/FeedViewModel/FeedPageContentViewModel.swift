@@ -26,6 +26,7 @@ final class FeedPageContentViewModel: ViewModelType {
     private var isMyFeed: Bool = false
     
     // output
+    private let sortType = BehaviorRelay<SortType>(value: .newest)
     
     private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
     private let pushToFeedDetailViewController = PublishRelay<Int>()
@@ -51,6 +52,7 @@ final class FeedPageContentViewModel: ViewModelType {
     
     struct Input {
         let reloadFeed: Observable<Void>
+        let sortButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
         let feedDropdownButtonDidTap: Observable<(Int, Bool)>
@@ -63,6 +65,7 @@ final class FeedPageContentViewModel: ViewModelType {
     }
     
     struct Output {
+        let sortType: Driver<SortType>
         let feedList: Observable<[TotalFeedEntity]>
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
@@ -98,6 +101,12 @@ final class FeedPageContentViewModel: ViewModelType {
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
+            .disposed(by: disposeBag)
+        
+        input.sortButtonDidTap
+            .withLatestFrom(sortType)
+            .map { $0.toggle() }
+            .bind(to: sortType)
             .disposed(by: disposeBag)
         
         input.feedTableViewItemSelected
@@ -246,6 +255,7 @@ final class FeedPageContentViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
+            sortType: sortType.asDriver(),
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
             pushToUserViewController: pushToUserViewController.asObservable(),

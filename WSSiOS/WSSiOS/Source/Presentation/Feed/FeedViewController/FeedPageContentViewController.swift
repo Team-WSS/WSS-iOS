@@ -74,6 +74,7 @@ final class FeedPageContentViewController: UIViewController {
         
         let input = FeedPageContentViewModel.Input(
             reloadFeed: reloadFeed.asObservable(),
+            sortButtonDidTap: rootView.myFeedFilterHeaderView.sortButton.rx.tap,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
             feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
@@ -86,6 +87,12 @@ final class FeedPageContentViewController: UIViewController {
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.sortType
+            .drive(with: self, onNext: { owner, sortType in
+                owner.rootView.myFeedFilterHeaderView.updateSortButton(sortType: sortType)
+            })
+            .disposed(by: disposeBag)
         
         output.feedList
             .bind(to: rootView.feedTableView.rx.items(
