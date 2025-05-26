@@ -1,5 +1,5 @@
 //
-//  FeedFilterGenreView.swift
+//  FeedFilterVisiblityView.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 5/26/25.
@@ -10,12 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedFilterGenreView: UIView {
+final class FeedFilterVisiblityView: UIView {
     
     //MARK: - UI Components
     
     private let titleLabel = UILabel()
-    let genreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let publicOptionView = FeedFilterVisibilityOptionView()
+    let privateOptionView = FeedFilterVisibilityOptionView()
     
     //MARK: - Life Cycle
     
@@ -34,26 +35,17 @@ final class FeedFilterGenreView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Feed.Filter.genre)
+            $0.applyWSSFont(.title2, with: StringLiterals.Feed.Filter.visibliltyOption)
             $0.textColor = .wssBlack
         }
-        
-        genreCollectionView.do {
-            let layout = LeftAlignedCollectionViewFlowLayout()
-            layout.scrollDirection = .vertical
-            layout.minimumLineSpacing = 12
-            layout.minimumInteritemSpacing = 6
-            
-            $0.collectionViewLayout = layout
-            $0.isScrollEnabled = false
-            $0.backgroundColor = .clear
-            $0.allowsMultipleSelection = true
-        }
+       
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         genreCollectionView)
+                         publicOptionView,
+                         privateOptionView)
+        
     }
     
     private func setLayout() {
@@ -62,11 +54,19 @@ final class FeedFilterGenreView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        genreCollectionView.snp.makeConstraints {
+        publicOptionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-            $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.height.equalTo(86)
-            $0.bottom.equalToSuperview().inset(36)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        privateOptionView.snp.makeConstraints {
+            $0.top.equalTo(publicOptionView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
+    
+    //MARK: - Custom Method
+    
+    private func updateOptionButtons(Fil)
 }

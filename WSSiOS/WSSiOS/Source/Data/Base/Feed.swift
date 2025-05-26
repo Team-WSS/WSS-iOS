@@ -1,9 +1,11 @@
 //
-//  FeedTab.swift
+//  Feed.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 5/22/25.
 //
+
+import UIKit
 
 enum FeedTab: CaseIterable {
     case my
@@ -46,6 +48,24 @@ enum FeedPageType: Int, CaseIterable {
         case .sosoAll: return .all
         case .sosoRecommended: return .recommended
         default: return nil
+        }
+    }
+}
+
+enum FeedVisibilityOption {
+    case `public`, `private`
+    
+    var optionText: String {
+        switch self {
+        case .public: return "공개글"
+        case .private: return "비공개글"
+        }
+    }
+    
+    var optionImage: UIImage {
+        switch self {
+        case .public: return .icEye.withTintColor(.wssGray200, renderingMode: .alwaysTemplate)
+        case .private: return .icLock.withTintColor(.wssGray200, renderingMode: .alwaysTemplate)
         }
     }
 }
