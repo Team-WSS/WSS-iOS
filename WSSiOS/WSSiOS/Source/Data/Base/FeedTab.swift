@@ -9,7 +9,7 @@ enum FeedTab: CaseIterable {
     case my
     case soso
     
-    var name: String {
+    var text: String {
         switch self {
         case .my: "내 피드"
         case .soso: "소소피드"
@@ -20,6 +20,13 @@ enum FeedTab: CaseIterable {
 enum SosoFeedTab {
     case all
     case recommended
+    
+    var text: String {
+        switch self {
+        case .all: "전체글"
+        case .recommended: "추천글"
+        }
+    }
 }
 
 enum FeedPageType: Int, CaseIterable {

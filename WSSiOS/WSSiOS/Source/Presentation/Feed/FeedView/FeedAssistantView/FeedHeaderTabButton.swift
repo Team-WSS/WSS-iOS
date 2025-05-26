@@ -44,7 +44,7 @@ final class FeedHeaderTabButton: UIButton {
         self.backgroundColor = .wssWhite
         
         tabLabel.do {
-            $0.applyWSSFont(.headline1, with: tab.name)
+            $0.applyWSSFont(.headline1, with: tab.text)
         }
         
         bottomLineView.do {

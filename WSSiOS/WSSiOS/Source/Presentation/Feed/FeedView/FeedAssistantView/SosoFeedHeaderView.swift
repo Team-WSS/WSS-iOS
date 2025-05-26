@@ -50,7 +50,7 @@ final class SosoFeedHeaderView: UIView {
         }
         
         allTabLabel.do {
-            $0.applyWSSFont(.body4, with: "전체글")
+            $0.applyWSSFont(.body4, with: SosoFeedTab.all.text)
             $0.isUserInteractionEnabled = false
         }
         
@@ -60,7 +60,7 @@ final class SosoFeedHeaderView: UIView {
         }
         
         recommendedTabLabel.do {
-            $0.applyWSSFont(.body4, with: "추천글")
+            $0.applyWSSFont(.body4, with: SosoFeedTab.recommended.text)
             $0.isUserInteractionEnabled = false
         }
         
