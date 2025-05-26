@@ -15,8 +15,7 @@ final class FeedGenreViewController: UIViewController {
     
     //MARK: - Properties
     
-    let feedTab: FeedTab?
-    let sosoFeedTab: SosoFeedTab?
+    let pageType: FeedPageType
     private var viewModel: FeedGenreViewModel
     private let disposeBag = DisposeBag()
     
@@ -32,10 +31,9 @@ final class FeedGenreViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedGenreViewModel, feedTab: FeedTab?, sosoFeedTab: SosoFeedTab?) {
+    init(viewModel: FeedGenreViewModel, pageType: FeedPageType) {
         self.viewModel = viewModel
-        self.feedTab = feedTab
-        self.sosoFeedTab = sosoFeedTab
+        self.pageType = pageType
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -45,7 +43,7 @@ final class FeedGenreViewController: UIViewController {
     }
     
     override func loadView() {
-        rootView.setFeedGenreView(feedTab: feedTab)
+        rootView.setFeedGenreView(pageType: pageType)
         self.view = rootView
     }
     

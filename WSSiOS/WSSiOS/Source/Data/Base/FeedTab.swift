@@ -23,7 +23,7 @@ enum SosoFeedTab {
 }
 
 enum FeedPageType: Int, CaseIterable {
-    case my
+    case my = 0
     case sosoAll
     case sosoRecommended
 

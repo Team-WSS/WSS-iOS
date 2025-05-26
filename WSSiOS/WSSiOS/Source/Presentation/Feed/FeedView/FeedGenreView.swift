@@ -115,8 +115,8 @@ final class FeedGenreView: UIView {
         }
     }
     
-    func setFeedGenreView(feedTab: FeedTab?) {
-        if feedTab == .my {
+    func setFeedGenreView(pageType: FeedPageType) {
+        if pageType == .my {
             addFilterHeaderView()
         }
     }

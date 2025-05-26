@@ -19,7 +19,7 @@ final class FeedViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let selectedTab = BehaviorRelay<FeedTab>(value: .my)
     private let selectedSosoFeedTab = BehaviorRelay<SosoFeedTab>(value: .all)
-    private let selectedPageIndex = BehaviorRelay<Int>(value: 0)
+    private let selectedPageType = BehaviorRelay<FeedPageType>(value: .my)
     
     //MARK: - Components
     
@@ -38,10 +38,9 @@ final class FeedViewController: UIViewController {
         setUI()
         setHierarchy()
         setLayout()
+        setupPageViewController()
         
         delegate()
-        
-        setupPageViewController()
         
         bindAction()
         bindOutput()
@@ -80,20 +79,18 @@ final class FeedViewController: UIViewController {
             .combineLatest(selectedTab, selectedSosoFeedTab)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                let (sosoTab, feedTab) = data
-            
                 switch data {
-                case (.my, _ ): owner.selectedPageIndex.accept(0)
-                case (.soso, .all): owner.selectedPageIndex.accept(1)
-                case (.soso, .recommended): owner.selectedPageIndex.accept(2)
+                case (.my, _ ): owner.selectedPageType.accept(.my)
+                case (.soso, .all): owner.selectedPageType.accept(.sosoAll)
+                case (.soso, .recommended): owner.selectedPageType.accept(.sosoRecommended)
                 }
             })
             .disposed(by: disposeBag)
         
-        selectedPageIndex.asDriver()
-            .drive(with: self, onNext: { owner, index in
+        selectedPageType.asDriver()
+            .drive(with: self, onNext: { owner, pageType in
                 owner.pageViewController.setViewControllers(
-                    [owner.pages[index]],
+                    [owner.pages[pageType.rawValue]],
                     direction: .forward,
                     animated: false,
                     completion: nil
@@ -203,8 +200,10 @@ extension FeedViewController {
         }
     }
     
+    //MARK: - Custom Method
+    
     private func setupPageViewController() {
-        [(FeedTab.my, nil), (FeedTab.soso, SosoFeedTab.all), (FeedTab.soso, SosoFeedTab.recommended)].forEach { tab, sosoTab in
+        FeedPageType.allCases.forEach { pageType in
             let viewController = FeedGenreViewController(
                 viewModel: FeedGenreViewModel(
                     feedRepository: DefaultFeedRepository(
@@ -215,22 +214,14 @@ extension FeedViewController {
                     ),
                     category: NewNovelGenre.fantasy.rawValue
                 ),
-                feedTab: tab,
-                sosoFeedTab: sosoTab)
+                pageType: pageType)
             pages.append(viewController)
         }
         
         // UIPageViewController 스크롤로 VC 전환되는 것 막기.
         let scrollView =  pageViewController.view.subviews.first { $0 is UIScrollView } as? UIScrollView
         scrollView?.isScrollEnabled = false
-        
-        pageViewController.setViewControllers([pages[0]],
-                                              direction: .forward,
-                                              animated: false,
-                                              completion: nil)
     }
-    
-    //MARK: - Custom Method
     
     private func setSosoFeedHeaderViewHidden(isHidden: Bool) {
         if isHidden {
