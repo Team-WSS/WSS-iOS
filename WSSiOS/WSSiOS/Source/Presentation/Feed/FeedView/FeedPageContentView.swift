@@ -1,5 +1,5 @@
 //
-//  FeedGenreView.swift
+//  FeedPageContentView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 5/14/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedGenreView: UIView {
+final class FeedPageContentView: UIView {
     
     //MARK: - Components
     
@@ -115,7 +115,7 @@ final class FeedGenreView: UIView {
         }
     }
     
-    func setFeedGenreView(pageType: FeedPageType) {
+    func setFeedPageContentView(pageType: FeedPageType) {
         if pageType == .my {
             addFilterHeaderView()
         }

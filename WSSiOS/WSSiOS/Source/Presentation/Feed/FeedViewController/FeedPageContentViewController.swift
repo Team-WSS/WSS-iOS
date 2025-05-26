@@ -27,7 +27,7 @@ final class FeedPageContentViewController: UIViewController {
     
     //MARK: - Components
     
-    private var rootView = FeedGenreView()
+    private var rootView = FeedPageContentView()
     
     // MARK: - Life Cycle
     
@@ -43,7 +43,7 @@ final class FeedPageContentViewController: UIViewController {
     }
     
     override func loadView() {
-        rootView.setFeedGenreView(pageType: pageType)
+        rootView.setFeedPageContentView(pageType: pageType)
         self.view = rootView
     }
     
