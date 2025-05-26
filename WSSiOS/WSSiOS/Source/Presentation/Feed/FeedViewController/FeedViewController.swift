@@ -38,9 +38,9 @@ final class FeedViewController: UIViewController {
         setUI()
         setHierarchy()
         setLayout()
-        setupPageViewController()
-        
+       
         delegate()
+        setupPageViewController()
         
         bindAction()
         bindOutput()
@@ -221,10 +221,6 @@ extension FeedViewController {
         }
         
         // UIPageViewController 스크롤로 VC 전환되는 것 막기.
-        pageViewController.view.subviews.forEach {
-            print("Subview: \($0), type: \(type(of: $0))")
-        }
-        
         let scrollView = pageViewController.view.subviews.first { $0 is UIScrollView } as? UIScrollView
         scrollView?.isScrollEnabled = false
     }
