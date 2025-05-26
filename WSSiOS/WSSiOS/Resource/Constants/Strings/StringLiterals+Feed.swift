@@ -44,6 +44,9 @@ extension StringLiterals {
     }
     
     enum Feed {
+        static func novelCountText(_ count: Int) -> String {
+            return "\(count)개의 기록"
+        }
         static let spoilerText = "스포일러가 포함된 글 보기"
         static let modifiedText = "(수정됨)"
         static let isPrivate = "나만 보는 기록이에요."

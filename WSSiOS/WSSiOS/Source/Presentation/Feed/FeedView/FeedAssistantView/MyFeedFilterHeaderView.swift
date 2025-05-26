@@ -41,12 +41,11 @@ final class MyFeedFilterHeaderView: UIView {
         
         filterButton.do {
             $0.setImageHidden(isHidden: false)
-            $0.setButtonText("1255개의 기록")
+            $0.setButtonText(StringLiterals.Feed.novelCountText(1028))
             $0.updateButton(isSelected: true)
         }
         
         sortButtonLabel.do {
-            $0.applyWSSFont(.body3, with: "최신 순")
             $0.textColor = .wssGray300
             $0.isUserInteractionEnabled = false
         }
