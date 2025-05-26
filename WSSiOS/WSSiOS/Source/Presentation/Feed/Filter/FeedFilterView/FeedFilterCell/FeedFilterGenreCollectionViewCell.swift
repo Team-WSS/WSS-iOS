@@ -46,7 +46,6 @@ final class FeedFilterGenreCollectionViewCell: UICollectionViewCell {
     private func setLayout() {
         genreKeywordView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(35)
         }
     }
 
