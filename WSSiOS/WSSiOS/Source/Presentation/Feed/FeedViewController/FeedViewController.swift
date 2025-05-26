@@ -77,7 +77,6 @@ final class FeedViewController: UIViewController {
         
         Observable
             .combineLatest(selectedTab, selectedSosoFeedTab)
-            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 switch data {
                 case (.my, _ ): owner.selectedPageType.accept(.my)
@@ -100,13 +99,16 @@ final class FeedViewController: UIViewController {
     }
     
     private func bindAction() {
-        [feedHeaderView.myFeedTabButton, feedHeaderView.sosoFeedTabButton].forEach { button in
-            button.rx.tap
-                .map { button.tab }
-                .bind(to: selectedTab)
-                .disposed(by: disposeBag)
-        }
+        feedHeaderView.myFeedTabButton.rx.tap
+            .map { FeedTab.my }
+            .bind(to: selectedTab)
+            .disposed(by: disposeBag)
         
+        feedHeaderView.sosoFeedTabButton.rx.tap
+            .map { FeedTab.soso }
+            .bind(to: selectedTab)
+            .disposed(by: disposeBag)
+
         sosoFeedHeaderView.allTabButton.rx.tap
             .map { SosoFeedTab.all }
             .bind(to: selectedSosoFeedTab)
@@ -219,7 +221,11 @@ extension FeedViewController {
         }
         
         // UIPageViewController 스크롤로 VC 전환되는 것 막기.
-        let scrollView =  pageViewController.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        pageViewController.view.subviews.forEach {
+            print("Subview: \($0), type: \(type(of: $0))")
+        }
+        
+        let scrollView = pageViewController.view.subviews.first { $0 is UIScrollView } as? UIScrollView
         scrollView?.isScrollEnabled = false
     }
     
