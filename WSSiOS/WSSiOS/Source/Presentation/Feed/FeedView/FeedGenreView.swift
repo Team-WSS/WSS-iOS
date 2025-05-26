@@ -54,8 +54,7 @@ final class FeedGenreView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(myFeedFilterHeaderView,
-                         emptyView,
+        self.addSubviews(emptyView,
                          feedTableView,
                          dropdownView)
     }
@@ -65,13 +64,8 @@ final class FeedGenreView: UIView {
             $0.center.equalToSuperview()
         }
         
-        myFeedFilterHeaderView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview()
-        }
-        
         feedTableView.snp.makeConstraints() {
-            $0.top.equalTo(myFeedFilterHeaderView.snp.bottom)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         dropdownView.snp.makeConstraints {
@@ -120,4 +114,24 @@ final class FeedGenreView: UIView {
             feedTableView.isHidden = false
         }
     }
+    
+    func setFeedGenreView(feedTab: FeedTab?) {
+        if feedTab == .my {
+            addFilterHeaderView()
+        }
+    }
+    
+    func addFilterHeaderView() {
+        self.insertSubview(myFeedFilterHeaderView, at: 0)
+        
+        myFeedFilterHeaderView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+        }
+        
+        feedTableView.snp.remakeConstraints {
+            $0.top.equalTo(myFeedFilterHeaderView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
+        }
+    }
+    
 }

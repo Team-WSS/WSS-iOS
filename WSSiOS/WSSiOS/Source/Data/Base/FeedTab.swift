@@ -22,3 +22,23 @@ enum SosoFeedTab {
     case recommended
 }
 
+enum FeedPageType: Int, CaseIterable {
+    case my
+    case sosoAll
+    case sosoRecommended
+
+    var feedTab: FeedTab {
+        switch self {
+        case .my: return .my
+        default: return .soso
+        }
+    }
+
+    var sosoFeedTab: SosoFeedTab? {
+        switch self {
+        case .sosoAll: return .all
+        case .sosoRecommended: return .recommended
+        default: return nil
+        }
+    }
+}

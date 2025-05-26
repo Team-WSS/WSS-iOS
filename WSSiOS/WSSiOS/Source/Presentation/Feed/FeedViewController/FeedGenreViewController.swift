@@ -15,6 +15,8 @@ final class FeedGenreViewController: UIViewController {
     
     //MARK: - Properties
     
+    let feedTab: FeedTab?
+    let sosoFeedTab: SosoFeedTab?
     private var viewModel: FeedGenreViewModel
     private let disposeBag = DisposeBag()
     
@@ -30,8 +32,10 @@ final class FeedGenreViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedGenreViewModel) {
+    init(viewModel: FeedGenreViewModel, feedTab: FeedTab?, sosoFeedTab: SosoFeedTab?) {
         self.viewModel = viewModel
+        self.feedTab = feedTab
+        self.sosoFeedTab = sosoFeedTab
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,6 +45,7 @@ final class FeedGenreViewController: UIViewController {
     }
     
     override func loadView() {
+        rootView.setFeedGenreView(feedTab: feedTab)
         self.view = rootView
     }
     
@@ -49,10 +54,10 @@ final class FeedGenreViewController: UIViewController {
         
         register()
         bindViewModel()
+        reloadFeed.accept(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        reloadFeed.accept(())
         showTabBar()
     }
     

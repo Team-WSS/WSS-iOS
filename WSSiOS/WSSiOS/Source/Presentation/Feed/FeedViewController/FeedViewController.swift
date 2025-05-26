@@ -105,22 +105,19 @@ final class FeedViewController: UIViewController {
     private func bindAction() {
         [feedHeaderView.myFeedTabButton, feedHeaderView.sosoFeedTabButton].forEach { button in
             button.rx.tap
-                .bind(with: self, onNext: { owner, _ in
-                    owner.selectedTab.accept(button.tab)
-                })
+                .map { button.tab }
+                .bind(to: selectedTab)
                 .disposed(by: disposeBag)
         }
         
         sosoFeedHeaderView.allTabButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedSosoFeedTab.accept(.all)
-            })
+            .map { SosoFeedTab.all }
+            .bind(to: selectedSosoFeedTab)
             .disposed(by: disposeBag)
         
         sosoFeedHeaderView.recommendedTabButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedSosoFeedTab.accept(.recommended)
-            })
+            .map { SosoFeedTab.recommended }
+            .bind(to: selectedSosoFeedTab)
             .disposed(by: disposeBag)
         
         feedHeaderView.createFeedButton.rx.tap
@@ -207,7 +204,7 @@ extension FeedViewController {
     }
     
     private func setupPageViewController() {
-        for pageIndex in 0..<3 {
+        [(FeedTab.my, nil), (FeedTab.soso, SosoFeedTab.all), (FeedTab.soso, SosoFeedTab.recommended)].forEach { tab, sosoTab in
             let viewController = FeedGenreViewController(
                 viewModel: FeedGenreViewModel(
                     feedRepository: DefaultFeedRepository(
@@ -217,9 +214,9 @@ extension FeedViewController {
                         feedDetailService: DefaultFeedDetailService()
                     ),
                     category: NewNovelGenre.fantasy.rawValue
-                )
-            )
-            
+                ),
+                feedTab: tab,
+                sosoFeedTab: sosoTab)
             pages.append(viewController)
         }
         
