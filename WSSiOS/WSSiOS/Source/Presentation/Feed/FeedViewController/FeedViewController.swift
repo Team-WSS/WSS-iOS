@@ -28,7 +28,7 @@ final class FeedViewController: UIViewController {
     private let pageViewController = UIPageViewController(transitionStyle: .scroll,
                                                           navigationOrientation: .horizontal,
                                                           options: nil)
-    private lazy var pages = [FeedGenreViewController]()
+    private lazy var pages = [FeedPageContentViewController]()
     
     // MARK: - Life Cycle
     
@@ -155,13 +155,13 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension FeedViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = pages.firstIndex(of: viewController as! FeedGenreViewController),
+        if let currentIndex = pages.firstIndex(of: viewController as! FeedPageContentViewController),
            currentIndex > 0 { return pages[currentIndex - 1] }
         return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = pages.firstIndex(of: viewController as! FeedGenreViewController),
+        if let currentIndex = pages.firstIndex(of: viewController as! FeedPageContentViewController),
            currentIndex < pages.count - 1 { return pages[currentIndex + 1] }
         return nil
     }
@@ -204,8 +204,8 @@ extension FeedViewController {
     
     private func setupPageViewController() {
         FeedPageType.allCases.forEach { pageType in
-            let viewController = FeedGenreViewController(
-                viewModel: FeedGenreViewModel(
+            let viewController = FeedPageContentViewController(
+                viewModel: FeedPageContentViewModel(
                     feedRepository: DefaultFeedRepository(
                         feedService: DefaultFeedService()
                     ),

@@ -1,5 +1,5 @@
 //
-//  FeedGenreViewModel.swift
+//  FeedPageContentViewModel.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 9/28/24.
@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class FeedGenreViewModel: ViewModelType {
+final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - Properties
     

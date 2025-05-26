@@ -1,5 +1,5 @@
 //
-//  FeedGenreViewController.swift
+//  FeedPageContentViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 5/19/24.
@@ -11,12 +11,12 @@ import RxSwift
 import RxRelay
 import RxGesture
 
-final class FeedGenreViewController: UIViewController {
+final class FeedPageContentViewController: UIViewController {
     
     //MARK: - Properties
     
     let pageType: FeedPageType
-    private var viewModel: FeedGenreViewModel
+    private var viewModel: FeedPageContentViewModel
     private let disposeBag = DisposeBag()
     
     private let feedProfileViewDidTap = PublishRelay<Int>()
@@ -31,7 +31,7 @@ final class FeedGenreViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedGenreViewModel, pageType: FeedPageType) {
+    init(viewModel: FeedPageContentViewModel, pageType: FeedPageType) {
         self.viewModel = viewModel
         self.pageType = pageType
         
@@ -72,7 +72,7 @@ final class FeedGenreViewController: UIViewController {
             rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
         )
         
-        let input = FeedGenreViewModel.Input(
+        let input = FeedPageContentViewModel.Input(
             reloadFeed: reloadFeed.asObservable(),
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
@@ -275,7 +275,7 @@ final class FeedGenreViewController: UIViewController {
     }
 }
 
-extension FeedGenreViewController: FeedTableViewDelegate {
+extension FeedPageContentViewController: FeedTableViewDelegate {
     func profileViewDidTap(userId: Int) {
         self.feedProfileViewDidTap.accept(userId)
     }
