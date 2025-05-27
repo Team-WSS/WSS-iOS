@@ -22,7 +22,7 @@ final class FeedEditViewController: UIViewController {
     private let stopEditingEvent = PublishRelay<Void>()
     
     private var photoPickerManager: PhotoPickerManager?
-    private let maximumImageCount = 5
+    private let maximumImageCount = StringLiterals.FeedEdit.imageLimitCount
     
     //MARK: - Components
     
@@ -244,7 +244,7 @@ final class FeedEditViewController: UIViewController {
                 owner.photoPickerManager?.didSelectImages = { newImages in
                     var currentImages = owner.feedEditViewModel.selectedImages.value
                     if currentImages.count + newImages.count > owner.maximumImageCount {
-                        owner.showToast(.limitAddImage(limitCount: StringLiterals.FeedEdit.imageLimitCount))
+                        owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
                         return
                     }
                     currentImages.append(contentsOf: newImages)
