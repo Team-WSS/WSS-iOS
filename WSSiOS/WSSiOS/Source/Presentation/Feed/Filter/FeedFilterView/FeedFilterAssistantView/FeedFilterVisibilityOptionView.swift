@@ -12,6 +12,8 @@ import Then
 
 final class FeedFilterVisibilityOptionView: UIView {
     
+    let visibilityOption: FeedVisibilityOption
+    
     //MARK: - UI Components
 
     private let optionimageView = UIImageView()
@@ -21,8 +23,10 @@ final class FeedFilterVisibilityOptionView: UIView {
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ visibilityOption: FeedVisibilityOption) {
+        self.visibilityOption = visibilityOption
+        
+        super.init(frame: .zero)
         
         setUI()
         setHierarchy()
@@ -35,9 +39,16 @@ final class FeedFilterVisibilityOptionView: UIView {
     }
     
     private func setUI() {
+        optionLabel.do {
+            $0.textColor = .wssGray200
+            $0.applyWSSFont(.body2, with: visibilityOption.optionText)
+        }
+        
+        optionimageView.image = visibilityOption.optionImage
+        
         optionButton.setImage(.icSelectNovelSelected, for: .normal)
+        
         dividerView.backgroundColor = .wssGray50
-        optionLabel.textColor = .wssGray200
     }
     
     private func setHierarchy() {
@@ -78,12 +89,9 @@ final class FeedFilterVisibilityOptionView: UIView {
     
     //MARK: - Custom Method
     
-    func setOptionView(option: FeedVisibilityOption) {
-        optionLabel.applyWSSFont(.body2, with: option.optionText)
-        optionimageView.image = option.optionImage
-    }
-    
-    func updateButton(isSelected: Bool) {
-        optionButton.setImage(isSelected ? .icSelectNovelSelected : .icSelectNovelDefault2, for: .normal)
+    func updateButton(selectedOptions: [FeedVisibilityOption]) {
+        let optionSelected = selectedOptions.contains(self.visibilityOption)
+        optionButton.setImage(optionSelected ? .icSelectNovelSelected : .icSelectNovelDefault2,
+                              for: .normal)
     }
 }

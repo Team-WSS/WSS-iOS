@@ -15,8 +15,8 @@ final class FeedFilterVisiblityView: UIView {
     //MARK: - UI Components
     
     private let titleLabel = UILabel()
-    let publicOptionView = FeedFilterVisibilityOptionView()
-    let privateOptionView = FeedFilterVisibilityOptionView()
+    let publicOptionView = FeedFilterVisibilityOptionView(.public)
+    let privateOptionView = FeedFilterVisibilityOptionView(.private)
     
     //MARK: - Life Cycle
     
@@ -38,9 +38,6 @@ final class FeedFilterVisiblityView: UIView {
             $0.applyWSSFont(.title2, with: StringLiterals.Feed.Filter.visibliltyOption)
             $0.textColor = .wssBlack
         }
-        
-        publicOptionView.setOptionView(option: .public)
-        privateOptionView.setOptionView(option: .private)
     }
     
     private func setHierarchy() {
@@ -70,4 +67,8 @@ final class FeedFilterVisiblityView: UIView {
     
     //MARK: - Custom Method
     
+    func updateVisibilityOptionButtons(selectedOptions: [FeedVisibilityOption]) {
+        publicOptionView.updateButton(selectedOptions: selectedOptions)
+        privateOptionView.updateButton(selectedOptions: selectedOptions)
+    }
 }

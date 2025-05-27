@@ -112,8 +112,4 @@ final class FeedFilterView: UIView {
             }
         }
     }
-    
-    //MARK: - Custom Method
-    
-    
 }
