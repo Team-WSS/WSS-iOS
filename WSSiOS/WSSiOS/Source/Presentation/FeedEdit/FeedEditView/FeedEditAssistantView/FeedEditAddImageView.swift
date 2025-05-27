@@ -32,6 +32,8 @@ final class FeedEditAddImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - UI
+    
     private func setUI() {
         self.backgroundColor = .wssSecondary50
         

@@ -82,6 +82,8 @@ final class FeedEditViewController: UIViewController {
                                                object: nil)
     }
     
+    //MARK: - Bind
+    
     private func register() {
         rootView.feedEditCategoryView.categoryCollectionView
             .register(FeedCategoryCollectionViewCell.self,
@@ -105,8 +107,6 @@ final class FeedEditViewController: UIViewController {
             .setDataSource(self)
             .disposed(by: disposeBag)
     }
-    
-    //MARK: - Bind
     
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
