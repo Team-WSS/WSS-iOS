@@ -12,6 +12,7 @@ extension StringLiterals {
         static let complete = "완료"
         static let edit = "수정"
         static let setPrivate = "나만 보는 기록"
+        static let imageLimitCount: Int = 5
         
         enum Category {
             static let category = "기록 작성"
