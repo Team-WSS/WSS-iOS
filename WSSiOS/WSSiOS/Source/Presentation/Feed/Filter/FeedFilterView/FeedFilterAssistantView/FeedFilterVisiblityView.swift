@@ -38,7 +38,9 @@ final class FeedFilterVisiblityView: UIView {
             $0.applyWSSFont(.title2, with: StringLiterals.Feed.Filter.visibliltyOption)
             $0.textColor = .wssBlack
         }
-       
+        
+        publicOptionView.setOptionView(option: .public)
+        privateOptionView.setOptionView(option: .private)
     }
     
     private func setHierarchy() {
@@ -68,5 +70,4 @@ final class FeedFilterVisiblityView: UIView {
     
     //MARK: - Custom Method
     
-    private func updateOptionButtons(Fil)
 }

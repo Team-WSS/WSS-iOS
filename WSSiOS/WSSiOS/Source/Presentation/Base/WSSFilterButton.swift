@@ -56,11 +56,6 @@ final class WSSFilterButton: UIButton {
         self.snp.makeConstraints {
             $0.height.equalTo(buttonHeight)
         }
-        
-        filterLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(20)
-        }
     }
     
     //MARK: - Custom Method
@@ -75,19 +70,19 @@ final class WSSFilterButton: UIButton {
         if isHidden {
             filterLabel.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.horizontalEdges.equalToSuperview().inset(14)
+                $0.horizontalEdges.equalToSuperview().inset(13)
             }
         } else {
             self.addSubview(filterImageView)
             
             filterLabel.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.leading.equalToSuperview().inset(14)
+                $0.leading.equalToSuperview().inset(13)
             }
             filterImageView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalTo(filterLabel.snp.trailing).offset(4)
-                $0.trailing.equalToSuperview().inset(12)
+                $0.trailing.equalToSuperview().inset(13)
                 $0.size.equalTo(14)
             }
         }

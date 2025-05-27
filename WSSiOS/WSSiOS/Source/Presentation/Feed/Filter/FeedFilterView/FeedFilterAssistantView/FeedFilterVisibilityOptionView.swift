@@ -37,6 +37,7 @@ final class FeedFilterVisibilityOptionView: UIView {
     private func setUI() {
         optionButton.setImage(.icSelectNovelSelected, for: .normal)
         dividerView.backgroundColor = .wssGray50
+        optionLabel.textColor = .wssGray200
     }
     
     private func setHierarchy() {

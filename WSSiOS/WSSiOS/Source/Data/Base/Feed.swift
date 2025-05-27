@@ -64,8 +64,8 @@ enum FeedVisibilityOption {
     
     var optionImage: UIImage {
         switch self {
-        case .public: return .icEye.withTintColor(.wssGray200, renderingMode: .alwaysTemplate)
-        case .private: return .icLock.withTintColor(.wssGray200, renderingMode: .alwaysTemplate)
+        case .public: return .icEye.withTintColor(.wssGray200)
+        case .private: return .icLock.withTintColor(.wssGray200)
         }
     }
 }

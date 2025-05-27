@@ -52,8 +52,10 @@ extension StringLiterals {
         static let isPrivate = "나만 보는 기록이에요."
         
         enum Filter {
+            static let title = "글 찾기 필터"
             static let genre = "장르"
             static let visibliltyOption = "공개범위"
+            static let bottomButton = "해당하는 글 보기"
         }
     }
     

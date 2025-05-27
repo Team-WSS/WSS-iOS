@@ -66,7 +66,7 @@ final class FeedFilterGenreView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(86)
-            $0.bottom.equalToSuperview().inset(36)
+            $0.bottom.equalToSuperview()
         }
     }
 }
