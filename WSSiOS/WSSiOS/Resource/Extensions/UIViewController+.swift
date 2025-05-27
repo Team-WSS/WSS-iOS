@@ -375,6 +375,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func presentFeedFilterViewController() {
+        let viewController = FeedFilterViewController()
+        self.presentModalViewController(viewController)
+    }
+    
     func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {
         let viewController = UserPageFeedDetailViewController(
             viewModel: UserPageFeedDetailViewModel(

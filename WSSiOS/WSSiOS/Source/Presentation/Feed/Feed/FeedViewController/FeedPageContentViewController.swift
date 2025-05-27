@@ -52,6 +52,7 @@ final class FeedPageContentViewController: UIViewController {
         
         register()
         bindViewModel()
+        bindAction()
         reloadFeed.accept(())
     }
     
@@ -263,6 +264,15 @@ final class FeedPageContentViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.unknownUser)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.myFeedFilterHeaderView.filterButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.presentFeedFilterViewController()
             })
             .disposed(by: disposeBag)
     }
