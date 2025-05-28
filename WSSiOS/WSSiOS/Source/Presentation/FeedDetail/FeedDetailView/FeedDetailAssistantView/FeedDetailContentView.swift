@@ -19,7 +19,7 @@ final class FeedDetailContentView: UIView {
     private let contentLabel = UILabel()
     let addImageView = FeedDetailAddImageView()
     private let linkNovelWrapperView = UIView()
-    let linkNovelView = FeedNovelView()
+    let linkNovelView = FeedDetailNovelView()
     private let reactWrapperView = UIView()
     let reactView = FeedReactView()
     private let dividerView = UIView()
@@ -86,7 +86,7 @@ final class FeedDetailContentView: UIView {
         }
     }
     
-    func bindData(data: FeedEntity) {
+    func bindData(data: TestFeedEntity) {
         contentLabel.do {
             $0.applyWSSFont(.body2, with: data.feedContent)
             $0.numberOfLines = 0
@@ -96,9 +96,7 @@ final class FeedDetailContentView: UIView {
         
         if data.hasLinkedNovel {
             stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
-            linkNovelView.bindData(title: data.novelTitle ?? "",
-                                   rating: data.novelRating ?? 0,
-                                   participants: data.novelRatingCount ?? 0)
+            linkNovelView.bindData(novelData: data)
         } else {
             linkNovelWrapperView.removeFromSuperview()
         }
