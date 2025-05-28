@@ -156,7 +156,7 @@ final class FeedDetailView: UIView {
     
     //MARK: - Custom Methods
     
-    func bindData(_ data: TestFeedEntity) {
+    func bindData(_ data: FeedEntity) {
         profileView.bindData(data: data)
         feedContentView.bindData(data: data)
     }
