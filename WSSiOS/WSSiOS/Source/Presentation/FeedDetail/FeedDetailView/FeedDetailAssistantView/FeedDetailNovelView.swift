@@ -125,12 +125,12 @@ final class FeedDetailNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(novelData: FeedEntity) {
+    func bindData(novelData: FeedDetailNovelEntity) {
         novelImageView.kfSetImage(url: novelData.novelThumbnailURL)
         novelMarkImageView.image = novelData.novelGenreImage
         novelTitleLabel.applyWSSFont(.title2, with: novelData.novelTitle)
         novelAuthorLabel.applyWSSFont(.body5, with: novelData.novelAuthor)
-        novelStarView.bindData(hasUserCount: novelData.hasLinkedNovel,
+        novelStarView.bindData(hasUserCount: novelData.hasUserRating ?? false,
                                userCount: novelData.novelUserRating,
                                totalCount: novelData.novelRating)
         novelSummaryLabel.applyWSSFont(.body5, with: novelData.novelDescription)

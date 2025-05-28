@@ -24,15 +24,7 @@ struct FeedEntity {
     
     // 피드 연결 작품 관련
     let hasLinkedNovel: Bool
-    let novelId: Int?
-    let novelTitle: String?
-    let novelRating: Float?
-    let hasUserRating: Bool?
-    let novelUserRating: Float?
-    let novelAuthor: String?
-    let novelGenreImage: UIImage?
-    let novelDescription: String?
-    let novelThumbnailURL: URL?
+    let novelData: FeedDetailNovelEntity?
     
     let isSpoiler: Bool
     let isModified: Bool
@@ -58,7 +50,17 @@ extension FeedResponse {
         let hasUserRating = self.userNovelRating != nil
         let novelGenreImage = NewNovelGenre(rawValue: self.novelGenre ?? "")?.markImage
         let novelThumbnailImageURL = KingFisherRxHelper.makeImageURLString(path: self.novelThumbnailImage ?? "")
-        
+        let novelData = hasLinkedNovel ? FeedDetailNovelEntity(
+            novelId: self.novelId,
+            novelTitle: self.title,
+            novelRating: self.novelRating,
+            hasUserRating: self.userNovelRating != nil,
+            novelUserRating: self.userNovelRating,
+            novelAuthor: self.novelAuthor,
+            novelGenreImage: NewNovelGenre(rawValue: self.novelGenre ?? "")?.markImage,
+            novelDescription: self.novelDescription,
+            novelThumbnailURL: KingFisherRxHelper.makeImageURLString(path: self.novelThumbnailImage ?? "")
+        ) : nil
         return FeedEntity(userId: self.userId,
                           userNickname: self.nickname,
                           userProfileImageURL: userProfileImageURL,
@@ -70,15 +72,7 @@ extension FeedResponse {
                           commentCount: self.commentCount,
                           genreCategories: self.relevantCategories,
                           hasLinkedNovel: hasLinkedNovel,
-                          novelId: self.novelId,
-                          novelTitle: self.title,
-                          novelRating: self.novelRating,
-                          hasUserRating: hasUserRating,
-                          novelUserRating: self.userNovelRating,
-                          novelAuthor: self.novelAuthor,
-                          novelGenreImage: novelGenreImage,
-                          novelDescription: self.novelDescription,
-                          novelThumbnailURL: novelThumbnailImageURL,
+                          novelData: novelData,
                           isSpoiler: self.isSpoiler,
                           isModified: self.isModified,
                           isMyFeed: self.isMyFeed,
@@ -87,4 +81,16 @@ extension FeedResponse {
                           imageCount: imageCount,
                           imageURLs: imageURLs)
     }
+}
+
+struct FeedDetailNovelEntity {
+    let novelId: Int?
+    let novelTitle: String?
+    let novelRating: Float?
+    let hasUserRating: Bool?
+    let novelUserRating: Float?
+    let novelAuthor: String?
+    let novelGenreImage: UIImage?
+    let novelDescription: String?
+    let novelThumbnailURL: URL?
 }
