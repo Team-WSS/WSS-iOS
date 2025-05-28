@@ -19,7 +19,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     
     let feedId: Int
-    private let feedData = PublishSubject<FeedEntity>()
+    private let feedData = PublishSubject<TestFeedEntity>()
     let commentsData = BehaviorRelay<[FeedCommentEntity]>(value: [])
     private let myProfileData = PublishRelay<MyProfileEntity>()
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -127,7 +127,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let feedData: Observable<FeedEntity>
+        let feedData: Observable<TestFeedEntity>
         let commentsData: Driver<[FeedCommentEntity]>
         let myProfileData: Observable<MyProfileEntity>
         let popViewController: Observable<Void>
@@ -180,7 +180,7 @@ final class FeedDetailViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
             .flatMapLatest {
-                self.getSingleFeed(self.feedId)
+                self.testGetSingleFeed(self.feedId)
                     .asObservable()
                     .materialize()
             }
@@ -637,6 +637,48 @@ final class FeedDetailViewModel: ViewModelType {
             showNetworkErrorView.accept(())
         }
     }
+    
+    private func testGetSingleFeed(_ feedId: Int) -> Observable<TestFeedEntity> {
+        return Single.just(
+            TestFeedEntity(
+                userId: 1,
+                userNickname: "테스트유저",
+                userProfileImageURL: URL(string: "https://example.com/profile.jpg"),
+                
+                feedId: feedId,
+                createdDate: "2025-05-29",
+                feedContent: "이건 테스트 피드 내용입니다.",
+                likeCount: 42,
+                isLiked: true,
+                commentCount: 10,
+                genreCategories: ["로맨스", "판타지"],
+                
+                hasLinkedNovel: true,
+                novelId: 101,
+                novelTitle: "더미 소설 제목더미 소설 ",
+                novelRating: 4.3,
+                hasUserRating: true,
+                novelUserRating: 4.5,
+                novelAuthor: "홍길동",
+                novelGenre: "로맨스",
+                novelDescription: "이 소설은 테스트용으로 작성된 더미 설명입니다.이 소설은 테스트용으로 작성된 더미 설명입니다.이 소설은 테스트용으로 작성된 더미 설명입니다.이 소설은 테스트용으로 작성된 더미 설명입니다.이 소설은 테스트용으로 작성된 더미 설명입니다.이 소설은 테스트용으로 작성된 더미 설명입니다.",
+                novelThumbnailURL: URL(string: "https://example.com/novel.jpg"),
+                
+                isSpoiler: false,
+                isModified: false,
+                isMyFeed: true,
+                isPublic: true,
+                
+                hasImage: true,
+                imageCount: 2,
+                imageURLs: [
+                    URL(string: "https://example.com/image1.jpg"),
+                    URL(string: "https://example.com/image2.jpg")
+                ]
+            )
+        ).asObservable()
+    }
+
 }
 
 enum DropdownButtonType {
