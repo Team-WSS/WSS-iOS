@@ -114,9 +114,9 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.initialFeedContent.accept(data.feedContent)
                 
-                owner.initialNovelId = data.novelId
-                owner.newNovelId = data.novelId
-                owner.connectedNovelTitle.accept(data.novelTitle)
+                owner.initialNovelId = data.novelData?.novelId
+                owner.newNovelId = data.novelData?.novelId
+                owner.connectedNovelTitle.accept(data.novelData?.novelTitle)
                 
                 owner.initialIsSpoiler = data.isSpoiler
                 owner.isSpoiler.accept(data.isSpoiler)

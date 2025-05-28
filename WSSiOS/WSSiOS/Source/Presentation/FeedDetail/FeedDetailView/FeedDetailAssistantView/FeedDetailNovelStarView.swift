@@ -101,8 +101,16 @@ final class FeedDetailNovelStarView: UIView {
     
     //MARK: - Data
     
-    func bindData(hasUserCount:Bool, userCount: Float?, totalCount: Float?) {
-        novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(userCount ?? 0))
+    func bindData(hasUserCount: Bool, userCount: Float?, totalCount: Float?) {
+        if hasUserCount {
+            novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(userCount ?? 0.0))
+        } else {
+            [novelUserStarImageView,
+             novelUserStarCountLabel].forEach {
+                stackView.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+        }
         novelTotalStarCountLabel.applyWSSFont(.body5_2, with: String(totalCount ?? 0.0))
     }
 }

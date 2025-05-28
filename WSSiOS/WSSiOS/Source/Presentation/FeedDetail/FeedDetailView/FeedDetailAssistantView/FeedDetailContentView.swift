@@ -96,7 +96,8 @@ final class FeedDetailContentView: UIView {
         
         if data.hasLinkedNovel {
             stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
-            linkNovelView.bindData(novelData: data)
+            guard let novelData = data.novelData else { return }
+            linkNovelView.bindData(novelData: novelData)
         } else {
             linkNovelWrapperView.removeFromSuperview()
         }
