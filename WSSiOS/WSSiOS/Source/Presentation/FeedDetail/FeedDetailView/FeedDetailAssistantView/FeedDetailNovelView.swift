@@ -16,6 +16,7 @@ final class FeedDetailNovelView: UIView {
     
     private let contentView = UIView()
     private let novelImageView = UIImageView()
+    private let novelMarkImageView = UIImageView()
     
     private let novelInfoContentView = UIView()
     private let novelTitleLabel = UILabel()
@@ -64,6 +65,7 @@ final class FeedDetailNovelView: UIView {
     private func setHierarchy() {
         addSubview(contentView)
         contentView.addSubviews(novelImageView,
+                                novelMarkImageView,
                                 novelInfoContentView)
         novelInfoContentView.addSubviews(novelTitleLabel,
                                          novelStarView,
@@ -79,6 +81,12 @@ final class FeedDetailNovelView: UIView {
         novelImageView.snp.makeConstraints {
             $0.verticalEdges.leading.equalToSuperview()
             $0.width.equalTo(86)
+        }
+        
+        novelMarkImageView.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.trailing.equalTo(novelTitleLabel)
+            $0.size.equalTo(50)
         }
         
         novelInfoContentView.snp.makeConstraints {
@@ -107,6 +115,7 @@ final class FeedDetailNovelView: UIView {
     
     func bindData(novelData: TestFeedEntity) {
         novelImageView.image = .imgDummyProfile
+        novelMarkImageView.image = novelData.novelGenreImage
         novelTitleLabel.applyWSSFont(.title2, with: novelData.novelTitle)
         novelStarView.bindData(userCount: novelData.novelUserRating, totalCount: novelData.novelRating)
         novelSummaryLabel.applyWSSFont(.body5, with: novelData.novelDescription)

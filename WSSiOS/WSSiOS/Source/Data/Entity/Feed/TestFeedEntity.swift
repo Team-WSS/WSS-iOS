@@ -5,7 +5,7 @@
 //  Created by 신지원 on 5/29/25.
 //
 
-import Foundation
+import UIKit
 
 struct TestFeedEntity {
     // 피드 작성 유저 관련
@@ -30,7 +30,7 @@ struct TestFeedEntity {
     let hasUserRating: Bool
     let novelUserRating: Float
     let novelAuthor: String
-    let novelGenre: String
+    let novelGenreImage: UIImage
     let novelDescription: String
     let novelThumbnailURL: URL?
     

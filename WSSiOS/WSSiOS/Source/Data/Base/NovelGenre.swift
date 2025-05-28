@@ -131,6 +131,31 @@ enum NewNovelGenre: String, CaseIterable {
         }
     }
     
+    var markImage: UIImage {
+        switch self {
+        case .fantasy:
+            return .icGenremarkF
+        case .modernFantasy:
+            return .icGenremarkHF
+        case .wuxia:
+            return .icGenremarkMH
+        case .drama:
+            return .icGenremarkD
+        case .mystery:
+            return .icGenremarkMT
+        case .lightNovel:
+            return .icGenremarkLN
+        case .romance:
+            return .icGenremarkR
+        case .romanceFantasy:
+            return .icGenremarkRF
+        case .bl:
+            return .icGenremarkBL
+        default :
+            return .icGenremarkRF
+        }
+    }
+    
     var amplitudeEvent: AmplitudeEvent.Feed? {
         switch self {
         case .all:
