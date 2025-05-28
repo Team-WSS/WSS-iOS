@@ -63,8 +63,6 @@ final class FeedDetailNovelView: UIView {
         novelSummaryLabel.do {
             $0.textColor = .wssGray300
             $0.numberOfLines = 2
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -112,8 +110,8 @@ final class FeedDetailNovelView: UIView {
         }
         
         novelStarView.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
             $0.leading.equalTo(novelAuthorLabel.snp.trailing).offset(2)
+            $0.centerY.equalTo(novelAuthorLabel.snp.centerY)
         }
         
         novelSummaryLabel.snp.makeConstraints {
@@ -128,11 +126,19 @@ final class FeedDetailNovelView: UIView {
     func bindData(novelData: FeedDetailNovelEntity) {
         novelImageView.kfSetImage(url: novelData.novelThumbnailURL)
         novelMarkImageView.image = novelData.novelGenreImage
-        novelTitleLabel.applyWSSFont(.title2, with: novelData.novelTitle)
+        novelTitleLabel.do {
+            $0.applyWSSFont(.title2, with: novelData.novelTitle)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
         novelAuthorLabel.applyWSSFont(.body5, with: novelData.novelAuthor)
         novelStarView.bindData(hasUserCount: novelData.hasUserRating ?? false,
                                userCount: novelData.novelUserRating,
                                totalCount: novelData.novelRating)
-        novelSummaryLabel.applyWSSFont(.body5, with: novelData.novelDescription)
+        novelSummaryLabel.do {
+            $0.applyWSSFont(.body5, with: novelData.novelDescription)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
     }
 }
