@@ -47,8 +47,6 @@ final class DetailSearchView: UIView {
     }
     
     private func setUI() {
-        self.backgroundColor = .black.withAlphaComponent(0.6)
-        
         backgroundView.do {
             $0.backgroundColor = .wssWhite
         }
