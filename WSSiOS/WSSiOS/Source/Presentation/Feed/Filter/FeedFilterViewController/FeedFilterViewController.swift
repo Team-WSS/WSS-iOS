@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxCocoa
 import RxSwift
 import RxRelay
 import SnapKit
@@ -17,13 +18,28 @@ final class FeedFilterViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    
+    let initialFilterOption: FeedFilterOption
+    let filterOption = PublishSubject<FeedFilterOption>()
+    let genreOptions = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedFilterGenres)
+    let visibilityOptions = BehaviorRelay<[FeedVisibilityOption]>(value: FeedVisibilityOption.allCases)
     
     //MARK: - Components
     
     let rootView = FeedFilterView()
     
     // MARK: - Life Cycle
+    
+    init(feedFilterOption: FeedFilterOption) {
+        self.initialFilterOption = feedFilterOption
+        genreOptions.accept(feedFilterOption.genres)
+        visibilityOptions.accept(feedFilterOption.visibilityOptions)
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         view = rootView
@@ -35,6 +51,7 @@ final class FeedFilterViewController: UIViewController {
         register()
         delegate()
         
+        bindInput()
         bindAction()
         bindOutput()
         
@@ -49,7 +66,6 @@ final class FeedFilterViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        //정보뷰
         rootView.genreView.genreCollectionView
             .register(FeedFilterGenreCollectionViewCell.self,
                       forCellWithReuseIdentifier: FeedFilterGenreCollectionViewCell.cellIdentifier)
@@ -62,24 +78,98 @@ final class FeedFilterViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func bindInput() {
+        Observable.merge(
+            rootView.visibilityView.publicOptionView.optionButton.rx.tap.map { FeedVisibilityOption.public },
+            rootView.visibilityView.privateOptionView.optionButton.rx.tap.map { FeedVisibilityOption.private }
+        )
+        .withLatestFrom(visibilityOptions) { tapped, current in
+            (tapped, current)
+        }
+        .map { tapped, current in
+            var updated = Set(current)
+            
+            if current.contains(tapped) {
+                updated.remove(tapped)
+            } else {
+                updated.insert(tapped)
+            }
+            
+            if updated.isEmpty {
+                updated.insert(tapped.opposite)
+            }
+            
+            return Array(updated)
+        }
+        .bind(to: visibilityOptions)
+        .disposed(by: disposeBag)
+        
+        Observable.merge(
+            rootView.genreView.genreCollectionView.rx.itemSelected.asObservable(),
+            rootView.genreView.genreCollectionView.rx.itemDeselected.asObservable()
+        )
+        .subscribe(with: self, onNext: { owner, _ in
+            let selectedIndexPaths = owner.rootView.genreView.genreCollectionView.indexPathsForSelectedItems ?? []
+            let selectedGenres = selectedIndexPaths.map { indexPath in
+                NewNovelGenre.feedFilterGenres[indexPath.row]
+            }
+            
+            owner.genreOptions.accept(selectedGenres)
+        })
+        .disposed(by: disposeBag)
+    }
+    
     private func bindOutput() {
         Observable<[NewNovelGenre]>.just(NewNovelGenre.feedFilterGenres)
             .bind(to: rootView.genreView.genreCollectionView.rx.items(
                 cellIdentifier: FeedFilterGenreCollectionViewCell.cellIdentifier,
                 cellType: FeedFilterGenreCollectionViewCell .self)) { item, element, cell in
+                    
+                    let isSelected = self.genreOptions.value.contains(element)
                     let indexPath = IndexPath(item: item, section: 0)
-                    self.rootView.genreView.genreCollectionView.selectItem(at: indexPath,
-                                                                           animated: false,
-                                                                           scrollPosition: [])
+                    
+                    if isSelected {
+                        self.rootView.genreView.genreCollectionView.selectItem(
+                            at: indexPath,
+                            animated: false,
+                            scrollPosition: []
+                        )
+                    }
+                    
                     cell.bindData(genre: element.withKorean)
                 }
                 .disposed(by: disposeBag)
+        
+        visibilityOptions
+            .asDriver()
+            .drive(with: self, onNext: { owner, options in
+                owner.rootView.visibilityView.updateVisibilityOptionButtons(selectedOptions: options)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction() {
         rootView.dismissButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: { owner, _ in
+                owner.filterOption.onNext(owner.initialFilterOption)
+                owner.filterOption.onCompleted()
+                owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        let filterOption = Observable.combineLatest(genreOptions, visibilityOptions)
+            .map { genres, visibilities in
+                FeedFilterOption(genres: genres, visibilityOptions: Array(visibilities))
+            }
+        
+        rootView.bottomButton.rx.tap
+            .withLatestFrom(filterOption)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, filterOption in
+                owner.filterOption.onNext(filterOption)
+                print(filterOption)
+                owner.filterOption.onCompleted()
                 owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)

@@ -375,9 +375,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func presentFeedFilterViewController() {
-        let viewController = FeedFilterViewController()
+    func presentFeedFilterViewController(_ selectedFilterOption: FeedFilterOption) -> Observable<FeedFilterOption> {
+        let viewController = FeedFilterViewController(feedFilterOption: selectedFilterOption)
         self.presentModalViewController(viewController)
+        
+        return viewController.filterOption.asObservable()
     }
     
     func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {

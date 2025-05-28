@@ -19,6 +19,7 @@ final class FeedPageContentViewController: UIViewController {
     private var viewModel: FeedPageContentViewModel
     private let disposeBag = DisposeBag()
     
+    private let selectedFilterOption = BehaviorRelay<FeedFilterOption>(value: FeedFilterOption())
     private let feedProfileViewDidTap = PublishRelay<Int>()
     private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
@@ -270,10 +271,13 @@ final class FeedPageContentViewController: UIViewController {
     
     private func bindAction() {
         rootView.myFeedFilterHeaderView.filterButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                owner.presentFeedFilterViewController()
-            })
+            .withLatestFrom(selectedFilterOption)
+            .observe(on: MainScheduler.instance)
+            .flatMap { filterOption in
+                self.presentFeedFilterViewController(filterOption)
+            }
+            .distinctUntilChanged()
+            .bind(to: selectedFilterOption)
             .disposed(by: disposeBag)
     }
     
