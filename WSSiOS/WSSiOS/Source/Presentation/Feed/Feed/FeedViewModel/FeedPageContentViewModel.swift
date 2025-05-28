@@ -26,6 +26,7 @@ final class FeedPageContentViewModel: ViewModelType {
     private var isMyFeed: Bool = false
     
     // output
+    private let filterOption = PublishRelay<FeedFilterOption>()
     private let sortType = BehaviorRelay<SortType>(value: .newest)
     
     private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
@@ -52,6 +53,7 @@ final class FeedPageContentViewModel: ViewModelType {
     
     struct Input {
         let reloadFeed: Observable<Void>
+        let feedFilterOptionDidChanged: Observable<FeedFilterOption>
         let sortButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
@@ -103,10 +105,21 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.feedFilterOptionDidChanged
+            .bind(to: filterOption)
+            .disposed(by: disposeBag)
+        
         input.sortButtonDidTap
             .withLatestFrom(sortType)
             .map { $0.toggle() }
             .bind(to: sortType)
+            .disposed(by: disposeBag)
+        
+        Observable.combineLatest(filterOption, sortType)
+            .subscribe(with: self, onNext: { owner, query in
+                // Todo Reload FeedData with filter&sort query
+                
+            })
             .disposed(by: disposeBag)
         
         input.feedTableViewItemSelected

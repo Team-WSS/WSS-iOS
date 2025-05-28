@@ -76,6 +76,7 @@ final class FeedPageContentViewController: UIViewController {
         
         let input = FeedPageContentViewModel.Input(
             reloadFeed: reloadFeed.asObservable(),
+            feedFilterOptionDidChanged: selectedFilterOption.asObservable(),
             sortButtonDidTap: rootView.myFeedFilterHeaderView.sortButton.rx.tap,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
