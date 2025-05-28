@@ -16,7 +16,6 @@ final class FeedDetailNovelStarView: UIView {
     
     private let stackView = UIStackView()
     
-    private let novelUserStarTitleLabel = UILabel()
     private let novelUserStarImageView = UIImageView()
     private let novelUserStarCountLabel = UILabel()
     
@@ -46,11 +45,6 @@ final class FeedDetailNovelStarView: UIView {
             $0.alignment = .center
         }
         
-        novelUserStarTitleLabel.do {
-            $0.textColor = .wssGray300
-            $0.applyWSSFont(.body5, with: StringLiterals.FeedDetail.userStarTitle)
-        }
-        
         novelUserStarImageView.do {
             $0.tintColor = .wssSecondary100
             $0.image = .icStar.withTintColor(.wssSecondary100, renderingMode: .alwaysTemplate)
@@ -77,8 +71,7 @@ final class FeedDetailNovelStarView: UIView {
     
     private func setHierarchy() {
         addSubview(stackView)
-        stackView.addArrangedSubviews(novelUserStarTitleLabel,
-                                      novelUserStarImageView,
+        stackView.addArrangedSubviews(novelUserStarImageView,
                                       novelUserStarCountLabel,
                                       novelTotalStarTitleLabel,
                                       novelTotalStarImageView,
@@ -91,17 +84,12 @@ final class FeedDetailNovelStarView: UIView {
         }
         
         stackView.do {
-            $0.setCustomSpacing(2, after: novelUserStarTitleLabel)
             $0.setCustomSpacing(2, after: novelUserStarImageView)
             $0.setCustomSpacing(8, after: novelUserStarCountLabel)
             $0.setCustomSpacing(2, after: novelTotalStarTitleLabel)
             $0.setCustomSpacing(2, after: novelTotalStarImageView)
         }
-        
-        novelUserStarTitleLabel.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
-        }
-        
+
         novelUserStarImageView.snp.makeConstraints {
             $0.size.equalTo(12)
         }
@@ -113,8 +101,8 @@ final class FeedDetailNovelStarView: UIView {
     
     //MARK: - Data
     
-    func bindData(userCount: Float, totalCount: Float) {
-        novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(userCount))
-        novelTotalStarCountLabel.applyWSSFont(.body5_2, with: String(totalCount))
+    func bindData(hasUserCount:Bool, userCount: Float?, totalCount: Float?) {
+        novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(userCount ?? 0))
+        novelTotalStarCountLabel.applyWSSFont(.body5_2, with: String(totalCount ?? 0.0))
     }
 }

@@ -33,6 +33,12 @@ struct FeedResponse: Decodable {
     var isPublic: Bool
     
     var images: [String]
+    
+    var novelThumbnailImage: String?
+    var novelGenre: String?
+    var novelAuthor: String?
+    var userNovelRating: Float?
+    var novelDescription: String?
 }
 
 /// 소소피드 댓글 전체 조회

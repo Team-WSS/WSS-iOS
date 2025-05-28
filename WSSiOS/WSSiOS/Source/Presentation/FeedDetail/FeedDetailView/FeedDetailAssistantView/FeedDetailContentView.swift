@@ -86,7 +86,7 @@ final class FeedDetailContentView: UIView {
         }
     }
     
-    func bindData(data: TestFeedEntity) {
+    func bindData(data: FeedEntity) {
         contentLabel.do {
             $0.applyWSSFont(.body2, with: data.feedContent)
             $0.numberOfLines = 0

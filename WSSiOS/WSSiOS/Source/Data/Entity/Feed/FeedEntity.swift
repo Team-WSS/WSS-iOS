@@ -5,7 +5,7 @@
 //  Created by Seoyeon Choi on 3/22/25.
 //
 
-import Foundation
+import UIKit
 
 struct FeedEntity {
     // 피드 작성 유저 관련
@@ -26,8 +26,13 @@ struct FeedEntity {
     let hasLinkedNovel: Bool
     let novelId: Int?
     let novelTitle: String?
-    let novelRatingCount: Int?
     let novelRating: Float?
+    let hasUserRating: Bool?
+    let novelUserRating: Float?
+    let novelAuthor: String?
+    let novelGenreImage: UIImage?
+    let novelDescription: String?
+    let novelThumbnailURL: URL?
     
     let isSpoiler: Bool
     let isModified: Bool
@@ -50,6 +55,10 @@ extension FeedResponse {
         // 테스트용 코드 -> 머지 시 삭제 예정
         let imageURLs: [URL?] = self.images.map { URL(string: $0)! }
         
+        let hasUserRating = self.userNovelRating != nil
+        let novelGenreImage = NewNovelGenre(rawValue: self.novelGenre ?? "")?.markImage
+        let novelThumbnailImageURL = KingFisherRxHelper.makeImageURLString(path: self.novelThumbnailImage ?? "")
+        
         return FeedEntity(userId: self.userId,
                           userNickname: self.nickname,
                           userProfileImageURL: userProfileImageURL,
@@ -63,8 +72,13 @@ extension FeedResponse {
                           hasLinkedNovel: hasLinkedNovel,
                           novelId: self.novelId,
                           novelTitle: self.title,
-                          novelRatingCount: self.novelRatingCount,
                           novelRating: self.novelRating,
+                          hasUserRating: hasUserRating,
+                          novelUserRating: self.userNovelRating,
+                          novelAuthor: self.novelAuthor,
+                          novelGenreImage: novelGenreImage,
+                          novelDescription: self.novelDescription,
+                          novelThumbnailURL: novelThumbnailImageURL,
                           isSpoiler: self.isSpoiler,
                           isModified: self.isModified,
                           isMyFeed: self.isMyFeed,

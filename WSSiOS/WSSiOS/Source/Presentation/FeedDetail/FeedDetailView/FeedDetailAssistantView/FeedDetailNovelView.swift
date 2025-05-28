@@ -20,6 +20,7 @@ final class FeedDetailNovelView: UIView {
     
     private let novelInfoContentView = UIView()
     private let novelTitleLabel = UILabel()
+    private let novelAuthorLabel = UILabel()
     private let novelStarView = FeedDetailNovelStarView()
     private let novelSummaryLabel = UILabel()
     
@@ -45,6 +46,7 @@ final class FeedDetailNovelView: UIView {
             $0.layer.cornerRadius = 14
             $0.layer.borderColor = UIColor.wssGray80.cgColor
             $0.layer.borderWidth = 1
+            $0.clipsToBounds = true
         }
         
         novelTitleLabel.do {
@@ -52,6 +54,10 @@ final class FeedDetailNovelView: UIView {
             $0.numberOfLines = 2
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
+        }
+        
+        novelAuthorLabel.do {
+            $0.textColor = .wssGray300
         }
         
         novelSummaryLabel.do {
@@ -68,6 +74,7 @@ final class FeedDetailNovelView: UIView {
                                 novelMarkImageView,
                                 novelInfoContentView)
         novelInfoContentView.addSubviews(novelTitleLabel,
+                                         novelAuthorLabel,
                                          novelStarView,
                                          novelSummaryLabel)
     }
@@ -85,7 +92,7 @@ final class FeedDetailNovelView: UIView {
         
         novelMarkImageView.snp.makeConstraints {
             $0.bottom.equalToSuperview()
-            $0.trailing.equalTo(novelTitleLabel)
+            $0.trailing.equalTo(novelImageView)
             $0.size.equalTo(50)
         }
         
@@ -99,9 +106,14 @@ final class FeedDetailNovelView: UIView {
             $0.trailing.equalToSuperview().inset(37)
         }
         
-        novelStarView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+        novelAuthorLabel.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
+            $0.leading.equalToSuperview()
+        }
+        
+        novelStarView.snp.makeConstraints {
+            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
+            $0.leading.equalTo(novelAuthorLabel.snp.trailing).offset(2)
         }
         
         novelSummaryLabel.snp.makeConstraints {
@@ -113,11 +125,14 @@ final class FeedDetailNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(novelData: TestFeedEntity) {
-        novelImageView.image = .imgDummyProfile
+    func bindData(novelData: FeedEntity) {
+        novelImageView.kfSetImage(url: novelData.novelThumbnailURL)
         novelMarkImageView.image = novelData.novelGenreImage
         novelTitleLabel.applyWSSFont(.title2, with: novelData.novelTitle)
-        novelStarView.bindData(userCount: novelData.novelUserRating, totalCount: novelData.novelRating)
+        novelAuthorLabel.applyWSSFont(.body5, with: novelData.novelAuthor)
+        novelStarView.bindData(hasUserCount: novelData.hasLinkedNovel,
+                               userCount: novelData.novelUserRating,
+                               totalCount: novelData.novelRating)
         novelSummaryLabel.applyWSSFont(.body5, with: novelData.novelDescription)
     }
 }
