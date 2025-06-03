@@ -226,20 +226,11 @@ extension FeedViewController {
     }
     
     private func setSosoFeedHeaderViewHidden(isHidden: Bool) {
-        if isHidden {
-            sosoFeedHeaderView.isHidden = true
-            
-            pageViewController.view.snp.remakeConstraints {
-                $0.top.equalTo(feedHeaderView.snp.bottom)
-                $0.width.bottom.equalToSuperview()
-            }
-        } else {
-            sosoFeedHeaderView.isHidden = false
-            
-            pageViewController.view.snp.remakeConstraints {
-                $0.top.equalTo(sosoFeedHeaderView.snp.bottom)
-                $0.width.bottom.equalToSuperview()
-            }
+        sosoFeedHeaderView.isHidden = isHidden
+        
+        pageViewController.view.snp.remakeConstraints {
+            $0.top.equalTo(isHidden ? feedHeaderView.snp.bottom : sosoFeedHeaderView.snp.bottom)
+            $0.width.bottom.equalToSuperview()
         }
     }
 }
