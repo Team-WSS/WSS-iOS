@@ -39,7 +39,7 @@ final class WSSFilterButton: UIButton {
     
     private func setUI() {
         self.do {
-            $0.layer.cornerRadius = buttonHeight/2
+            $0.layer.cornerRadius = buttonHeight / 2
             $0.layer.borderWidth = 1
         }
         
