@@ -72,8 +72,7 @@ final class FeedFilterViewController: UIViewController {
     }
     
     private func delegate() {
-        rootView.genreView
-            .genreCollectionView.rx
+        rootView.genreView.genreCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
