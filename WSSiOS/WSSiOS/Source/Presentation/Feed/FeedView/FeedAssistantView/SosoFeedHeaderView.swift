@@ -80,7 +80,7 @@ final class SosoFeedHeaderView: UIView {
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(55)
+            $0.height.equalTo(57)
         }
         
         allTabButton.snp.makeConstraints {
