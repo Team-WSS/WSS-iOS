@@ -207,8 +207,6 @@ extension UIViewController {
         
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController, animated: true)
-        
-        
     }
     
     func dismissModalViewController() {
