@@ -111,6 +111,8 @@ final class SosoFeedHeaderView: UIView {
         }
     }
     
+    //MARK: - Custom Method
+    
     func updateButtons(selectedTab: SosoFeedTab) {
         allTabButton.do {
             $0.layer.borderColor = selectedTab == .all ? UIColor.wssBlack.cgColor : UIColor.wssGray80.cgColor

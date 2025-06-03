@@ -92,6 +92,8 @@ final class MyFeedFilterHeaderView: UIView {
         }
     }
     
+    //MARK: - Custom Method
+    
     func updateSortButton(sortType: SortType) {
         sortButtonLabel.applyWSSFont(.body3, with: sortType.text)
     }
