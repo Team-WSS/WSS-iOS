@@ -17,7 +17,7 @@ extension StringLiterals {
         enum Profile {
             static let registerNovel = "등록 작품"
             static let record = "기록"
-            static let inventoryTitle = "서재"
+            static let libraryStatusTitle = "서재"
             static let preferenceEmpty = "취향 분석"
             static let preferenceEmptyLabel = "작품 취향을 파악할 수 없어요"
             static let genrePreferenceTitle = "장르 취향"
@@ -25,12 +25,12 @@ extension StringLiterals {
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
             static let unknownAlertButtonTitle = "확인"
-            static let myProfileLibrary = "내 통계"
             static let otherProfileLibrary = "통계"
-            static let myProfileFeed = "내 활동"
             static let otherProfileFeed = "활동"
             static let activityButton = "활동기록 더보기"
             static let emptyFeed = "작성한 글이 없어요"
+            static let genreTotalCount = "개의 장르 뱃지"
+            static let myNovelPreferenceTitle = "주로 보는 작품은..."
         }
         
         enum Setting: String, CaseIterable {

@@ -43,6 +43,17 @@ extension UILabel {
                 .applyAttribute()
         }
     }
+    
+    func applyWSSFontPartialColor(_ font: WSSFont, with text: String?, rangeText: String, color: UIColor) {
+        self.do {
+            $0.font = font.font
+            $0.makeAttribute(with: text)?
+                .lineHeight(font.lineHeightMultiple)
+                .kerning(kerningPixel: font.kerningPixel)
+                .partialColor(color: color, rangeString: rangeText)
+                .applyAttribute()
+        }
+    }
 }
 
 extension UILabel {
