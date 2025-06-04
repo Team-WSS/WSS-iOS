@@ -22,7 +22,7 @@ final class FeedEditViewController: UIViewController {
     private let stopEditingEvent = PublishRelay<Void>()
     
     private var photoPickerManager: PhotoPickerManager?
-    private let maximumImageCount = StringLiterals.FeedEdit.imageLimitCount
+    private let maximumImageCount = FeedEdit.imageMaxCount
     
     //MARK: - Components
     

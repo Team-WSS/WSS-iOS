@@ -10,7 +10,7 @@ import PhotosUI
 final class PhotoPickerManager: NSObject {
     private weak var presentingViewController: UIViewController?
     var didSelectImages: (([UIImage]) -> Void)?
-    let maximumImageCount = StringLiterals.FeedEdit.imageLimitCount
+    let maximumImageCount = FeedEdit.imageMaxCount
     
     init(presentingViewController: UIViewController) {
         self.presentingViewController = presentingViewController
