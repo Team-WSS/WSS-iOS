@@ -14,15 +14,25 @@ extension UIImage {
               let clampFilter = CIFilter(name: "CIAffineClamp"),
               let blurFilter = CIFilter(name: "CIGaussianBlur") else {
             return self
-
+            
         }
         clampFilter.setValue(ciImage, forKey: kCIInputImageKey)
         blurFilter.setValue(clampFilter.outputImage, forKey: kCIInputImageKey)
         blurFilter.setValue(radius, forKey: kCIInputRadiusKey)
         guard let output = blurFilter.outputImage,
-                let cgimg = context.createCGImage(output, from: ciImage.extent) else {
+              let cgimg = context.createCGImage(output, from: ciImage.extent) else {
             return self
         }
         return UIImage(cgImage: cgimg)
+    }
+    
+    // 이미지 해상도 조절 함수
+    func resizedImage(to scale: CGFloat) -> UIImage? {
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, scale)
+        draw(in: CGRect(origin: .zero, size: newSize))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return resizedImage
     }
 }

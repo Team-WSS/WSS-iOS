@@ -132,7 +132,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         input.connectNovelButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 guard let selectedNovel = owner.selectedNovel.value else { return }
-                NotificationCenter.default.post(name: NSNotification.Name("FeedNovelConnected"), object: selectedNovel)
+                NotificationCenter.default.post(name: NotificationName.feedNovelConnected, object: selectedNovel)
                 owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)

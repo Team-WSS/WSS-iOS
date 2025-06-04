@@ -53,10 +53,17 @@ final class FeedEditViewModel: ViewModelType {
     private let connectedNovelTitle = BehaviorRelay<String?>(value: nil)
     private let showAlreadyConnectedToast = PublishRelay<Void>()
     private let showStopEditingAlert = PublishRelay<Void>()
+    private let presentPhotoPicker = PublishRelay<Void>()
+    var selectedImages = BehaviorRelay<[UIImage]>(value: [])
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], novelId: Int? = nil, novelTitle: String? = nil) {
+    init(feedRepository: FeedRepository,
+         feedDetailRepository: FeedDetailRepository,
+         feedId: Int? = nil,
+         relevantCategories: [NewNovelGenre] = [],
+         novelId: Int? = nil,
+         novelTitle: String? = nil) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
         
@@ -83,6 +90,7 @@ final class FeedEditViewModel: ViewModelType {
         let feedNovelConnectedNotification: Observable<Notification>
         let novelRemoveButtonDidTap: ControlEvent<Void>
         let stopEditButtonDidTap: Observable<Void>
+        let photoAddButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -99,6 +107,8 @@ final class FeedEditViewModel: ViewModelType {
         let connectedNovelTitle: Observable<String?>
         let showAlreadyConnectedToast: Observable<Void>
         let showStopEditingAlert: Observable<Void>
+        let presentPhotoPicker: Observable<Void>
+        let selectedImages: Observable<[UIImage]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -146,16 +156,16 @@ final class FeedEditViewModel: ViewModelType {
             .do(onNext: { _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
-            .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic))
-            .flatMapLatest { (isSpoiler, isPublic) in
+            .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic, selectedImages))
+            .flatMapLatest { (isSpoiler, isPublic, selectedImages) in
                 if let feedId = self.feedId {
-                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic)
+                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
                 } else {
-                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic)
+                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
                 }
             }
             .subscribe(with: self, onNext: { owner, _ in
-                NotificationCenter.default.post(name: NSNotification.Name("FeedEdited"), object: nil)
+                NotificationCenter.default.post(name: NotificationName.feedEdited, object: nil)
                 owner.popViewController.accept(())
             }, onError: { owner, error  in
                 print(error)
@@ -261,6 +271,12 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.photoAddButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentPhotoPicker.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
@@ -273,7 +289,9 @@ final class FeedEditViewModel: ViewModelType {
                       presentFeedEditNovelConnectModalViewController: presentFeedEditNovelConnectModalViewController.asObservable(),
                       connectedNovelTitle: connectedNovelTitle.asObservable(),
                       showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
-                      showStopEditingAlert: showStopEditingAlert.asObservable())
+                      showStopEditingAlert: showStopEditingAlert.asObservable(),
+                      presentPhotoPicker: presentPhotoPicker.asObservable(),
+                      selectedImages: selectedImages.asObservable())
     }
     
     // MARK: - Custom Method
@@ -293,13 +311,13 @@ final class FeedEditViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void> {
-        feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic)
+    private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
             .observe(on: MainScheduler.instance)
     }
     
-    private func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool) -> Observable<Void> {
-        feedRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic)
+    private func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        feedRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
             .observe(on: MainScheduler.instance)
     }
 }

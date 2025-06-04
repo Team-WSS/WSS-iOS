@@ -24,6 +24,8 @@ final class FeedEditView: UIView {
     let feedEditCategoryView = FeedEditCategoryView()
     // 작품 피드 작성
     let feedEditContentView = FeedEditContentView()
+    // 작품 이미지 첨부
+    let feedEditAddImageView = FeedEditAddImageView()
     // 작품 연결
     private let novelConnectStackView = UIStackView()
     let feedEditNovelConnectView = FeedEditNovelConnectView()
@@ -87,6 +89,7 @@ final class FeedEditView: UIView {
         scrollView.addSubview(stackView)
         stackView.addArrangedSubviews(feedEditCategoryView,
                                       feedEditContentView,
+                                      feedEditAddImageView,
                                       novelConnectStackView)
         novelConnectStackView.addArrangedSubviews(feedEditNovelConnectView,
                                                   feedEditConnectedNovelView)
@@ -113,6 +116,16 @@ final class FeedEditView: UIView {
     }
     
     //MARK: - Custom Method
+    
+    func showAddImages(hasImage: Bool) {
+        if hasImage {
+            stackView.insertArrangedSubview(feedEditAddImageView, at: 2)
+            stackView.setCustomSpacing(14, after: feedEditContentView)
+        } else {
+            feedEditAddImageView.removeFromSuperview()
+            stackView.setCustomSpacing(36, after: feedEditContentView)
+        }
+    }
     
     func enableCompleteButton(isAbled: Bool) {
         completeButton.do {

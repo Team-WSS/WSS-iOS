@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum FeedEdit {
+    static let imageMaxCount = 5;
+}
+
 extension StringLiterals {
     enum FeedEdit {
         static let complete = "완료"
