@@ -48,6 +48,11 @@ final class FeedDetailNovelView: UIView {
             $0.clipsToBounds = true
         }
         
+        [novelImageView,
+         novelMarkImageView].forEach {
+            $0.contentMode = .scaleAspectFill
+        }
+        
         novelTitleLabel.do {
             $0.textColor = .wssBlack
             $0.numberOfLines = 2
