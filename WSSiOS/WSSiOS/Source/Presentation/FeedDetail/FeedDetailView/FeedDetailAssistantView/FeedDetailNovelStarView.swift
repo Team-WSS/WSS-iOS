@@ -108,10 +108,11 @@ final class FeedDetailNovelStarView: UIView {
     
     //MARK: - Data
     
-    func bindData(hasUserCount: Bool, userName:String?, userCount: Float?, totalCount: Float?) {
-        if hasUserCount {
-            novelFeedAuthorLabel.applyWSSFont(.body5, with: userName)
-            novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(userCount ?? 0.0))
+    func bindData(hasFeedAuthor: Bool, feedAuthorData: FeedDetailNovelFeedAuthorEntity?, totalRating: Float) {
+        if hasFeedAuthor {
+            guard let feedAuthorData = feedAuthorData else { return }
+            novelFeedAuthorLabel.applyWSSFont(.body5, with: feedAuthorData.feedAuthor)
+            novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(feedAuthorData.feedAuthorRating))
         } else {
             [novelFeedAuthorLabel,
              novelUserStarImageView,
@@ -120,6 +121,6 @@ final class FeedDetailNovelStarView: UIView {
                 $0.removeFromSuperview()
             }
         }
-        novelTotalStarCountLabel.applyWSSFont(.body5_2, with: String(totalCount ?? 0.0))
+        novelTotalStarCountLabel.applyWSSFont(.body5_2, with: String(totalRating))
     }
 }
