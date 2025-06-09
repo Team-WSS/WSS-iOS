@@ -20,7 +20,6 @@ final class FeedDetailNovelView: UIView {
     
     private let novelInfoContentView = UIView()
     private let novelTitleLabel = UILabel()
-    private let novelAuthorLabel = UILabel()
     private let novelStarView = FeedDetailNovelStarView()
     private let novelSummaryLabel = UILabel()
     
@@ -56,10 +55,6 @@ final class FeedDetailNovelView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        novelAuthorLabel.do {
-            $0.textColor = .wssGray300
-        }
-        
         novelSummaryLabel.do {
             $0.textColor = .wssGray300
             $0.numberOfLines = 2
@@ -72,7 +67,6 @@ final class FeedDetailNovelView: UIView {
                                 novelMarkImageView,
                                 novelInfoContentView)
         novelInfoContentView.addSubviews(novelTitleLabel,
-                                         novelAuthorLabel,
                                          novelStarView,
                                          novelSummaryLabel)
     }
@@ -103,15 +97,10 @@ final class FeedDetailNovelView: UIView {
             $0.top.leading.equalToSuperview()
             $0.trailing.equalToSuperview().inset(37)
         }
-        
-        novelAuthorLabel.snp.makeConstraints {
+    
+        novelStarView.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
             $0.leading.equalToSuperview()
-        }
-        
-        novelStarView.snp.makeConstraints {
-            $0.leading.equalTo(novelAuthorLabel.snp.trailing).offset(2)
-            $0.centerY.equalTo(novelAuthorLabel.snp.centerY)
         }
         
         novelSummaryLabel.snp.makeConstraints {
@@ -131,9 +120,9 @@ final class FeedDetailNovelView: UIView {
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
         }
-        novelAuthorLabel.applyWSSFont(.body5, with: novelData.novelAuthor)
         novelStarView.bindData(hasUserCount: novelData.hasUserRating ?? false,
-                               userCount: novelData.novelUserRating,
+                               userName: novelData.feedAuthor,
+                               userCount: novelData.feedAuthorRating,
                                totalCount: novelData.novelRating)
         novelSummaryLabel.do {
             $0.applyWSSFont(.body5, with: novelData.novelDescription)

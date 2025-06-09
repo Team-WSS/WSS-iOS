@@ -36,6 +36,8 @@ struct FeedResponse: Decodable {
     
     var novelThumbnailImage: String?
     var novelGenre: String?
+    
+    //TODO: 서버 반영 후 삭제될 프로퍼티
     var novelAuthor: String?
     var userNovelRating: Float?
     var novelDescription: String?
