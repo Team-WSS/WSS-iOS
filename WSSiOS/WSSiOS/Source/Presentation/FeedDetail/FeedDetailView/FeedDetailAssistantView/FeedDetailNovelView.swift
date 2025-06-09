@@ -51,6 +51,7 @@ final class FeedDetailNovelView: UIView {
         [novelImageView,
          novelMarkImageView].forEach {
             $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
         }
         
         novelTitleLabel.do {
