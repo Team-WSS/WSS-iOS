@@ -51,8 +51,8 @@ extension FeedResponse {
             novelTitle: self.title,
             novelRating: self.novelRating,
             hasUserRating: self.userNovelRating != nil,
-            novelUserRating: self.userNovelRating,
-            novelAuthor: self.novelAuthor,
+            feedAuthor: self.nickname,
+            feedAuthorRating: self.userNovelRating,
             novelGenreImage: NewNovelGenre(rawValue: self.novelGenre ?? "")?.markImage,
             novelDescription: self.novelDescription,
             novelThumbnailURL: KingFisherRxHelper.makeImageURLString(path: self.novelThumbnailImage ?? "")
@@ -84,8 +84,8 @@ struct FeedDetailNovelEntity {
     let novelTitle: String?
     let novelRating: Float?
     let hasUserRating: Bool?
-    let novelUserRating: Float?
-    let novelAuthor: String?
+    let feedAuthor: String?
+    let feedAuthorRating: Float?
     let novelGenreImage: UIImage?
     let novelDescription: String?
     let novelThumbnailURL: URL?

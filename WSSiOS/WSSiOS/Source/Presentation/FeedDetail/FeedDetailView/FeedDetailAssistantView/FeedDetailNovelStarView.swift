@@ -16,6 +16,7 @@ final class FeedDetailNovelStarView: UIView {
     
     private let stackView = UIStackView()
     
+    private let novelFeedAuthorLabel = UILabel()
     private let novelUserStarImageView = UIImageView()
     private let novelUserStarCountLabel = UILabel()
     
@@ -45,6 +46,10 @@ final class FeedDetailNovelStarView: UIView {
             $0.alignment = .center
         }
         
+        novelFeedAuthorLabel.do {
+            $0.textColor = .wssGray300
+        }
+        
         novelUserStarImageView.do {
             $0.tintColor = .wssSecondary100
             $0.image = .icStar.withTintColor(.wssSecondary100, renderingMode: .alwaysTemplate)
@@ -71,7 +76,8 @@ final class FeedDetailNovelStarView: UIView {
     
     private func setHierarchy() {
         addSubview(stackView)
-        stackView.addArrangedSubviews(novelUserStarImageView,
+        stackView.addArrangedSubviews(novelFeedAuthorLabel,
+                                      novelUserStarImageView,
                                       novelUserStarCountLabel,
                                       novelTotalStarTitleLabel,
                                       novelTotalStarImageView,
@@ -84,6 +90,7 @@ final class FeedDetailNovelStarView: UIView {
         }
         
         stackView.do {
+            $0.setCustomSpacing(2, after: novelFeedAuthorLabel)
             $0.setCustomSpacing(2, after: novelUserStarImageView)
             $0.setCustomSpacing(8, after: novelUserStarCountLabel)
             $0.setCustomSpacing(2, after: novelTotalStarTitleLabel)
@@ -101,11 +108,13 @@ final class FeedDetailNovelStarView: UIView {
     
     //MARK: - Data
     
-    func bindData(hasUserCount: Bool, userCount: Float?, totalCount: Float?) {
+    func bindData(hasUserCount: Bool, userName:String?, userCount: Float?, totalCount: Float?) {
         if hasUserCount {
+            novelFeedAuthorLabel.applyWSSFont(.body5, with: userName)
             novelUserStarCountLabel.applyWSSFont(.body5_2, with: String(userCount ?? 0.0))
         } else {
-            [novelUserStarImageView,
+            [novelFeedAuthorLabel,
+             novelUserStarImageView,
              novelUserStarCountLabel].forEach {
                 stackView.removeArrangedSubview($0)
                 $0.removeFromSuperview()
