@@ -1,5 +1,5 @@
 //
-//  FeedGenreViewModel.swift
+//  FeedPageContentViewModel.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 9/28/24.
@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class FeedGenreViewModel: ViewModelType {
+final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - Properties
     
@@ -26,6 +26,7 @@ final class FeedGenreViewModel: ViewModelType {
     private var isMyFeed: Bool = false
     
     // output
+    private let sortType = BehaviorRelay<SortType>(value: .newest)
     
     private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
     private let pushToFeedDetailViewController = PublishRelay<Int>()
@@ -51,6 +52,7 @@ final class FeedGenreViewModel: ViewModelType {
     
     struct Input {
         let reloadFeed: Observable<Void>
+        let sortButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
         let feedDropdownButtonDidTap: Observable<(Int, Bool)>
@@ -63,6 +65,7 @@ final class FeedGenreViewModel: ViewModelType {
     }
     
     struct Output {
+        let sortType: Driver<SortType>
         let feedList: Observable<[TotalFeedEntity]>
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
@@ -98,6 +101,12 @@ final class FeedGenreViewModel: ViewModelType {
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
+            .disposed(by: disposeBag)
+        
+        input.sortButtonDidTap
+            .withLatestFrom(sortType)
+            .map { $0.toggle() }
+            .bind(to: sortType)
             .disposed(by: disposeBag)
         
         input.feedTableViewItemSelected
@@ -246,6 +255,7 @@ final class FeedGenreViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
+            sortType: sortType.asDriver(),
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
             pushToUserViewController: pushToUserViewController.asObservable(),

@@ -1,5 +1,5 @@
 //
-//  FeedGenreView.swift
+//  FeedPageContentView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 5/14/24.
@@ -10,10 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedGenreView: UIView {
+final class FeedPageContentView: UIView {
     
     //MARK: - Components
     
+    let myFeedFilterHeaderView = MyFeedFilterHeaderView()
     private let emptyView = NovelDetailFeedEmptyView()
     let feedTableView = UITableView(frame: .zero, style: .plain)
     let dropdownView = FeedDetailDropdownView()
@@ -113,4 +114,24 @@ final class FeedGenreView: UIView {
             feedTableView.isHidden = false
         }
     }
+    
+    func setFeedPageContentView(pageType: FeedPageType) {
+        if pageType == .my {
+            addFilterHeaderView()
+        }
+    }
+    
+    func addFilterHeaderView() {
+        self.insertSubview(myFeedFilterHeaderView, at: 0)
+        
+        myFeedFilterHeaderView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+        }
+        
+        feedTableView.snp.remakeConstraints {
+            $0.top.equalTo(myFeedFilterHeaderView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
+        }
+    }
+    
 }

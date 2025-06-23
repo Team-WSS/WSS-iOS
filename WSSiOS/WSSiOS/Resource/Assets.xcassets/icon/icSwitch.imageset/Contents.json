@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icSwitch.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

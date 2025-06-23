@@ -17,16 +17,18 @@ final class FeedViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private var categoryList = BehaviorRelay<[NewNovelGenre]>(value: [])
+    private let selectedTab = BehaviorRelay<FeedTab>(value: .my)
+    private let selectedSosoFeedTab = BehaviorRelay<SosoFeedTab>(value: .all)
+    private let selectedPageType = BehaviorRelay<FeedPageType>(value: .my)
     
     //MARK: - Components
     
-    private let navigationBar = FeedNavigationView()
+    private let feedHeaderView = FeedHeaderView()
+    private let sosoFeedHeaderView = SosoFeedHeaderView()
     private let pageViewController = UIPageViewController(transitionStyle: .scroll,
                                                           navigationOrientation: .horizontal,
                                                           options: nil)
-    private let pageBar = FeedPageBar()
-    private lazy var pages = [FeedGenreViewController]()
+    private lazy var pages = [FeedPageContentViewController]()
     
     // MARK: - Life Cycle
     
@@ -36,106 +38,88 @@ final class FeedViewController: UIViewController {
         setUI()
         setHierarchy()
         setLayout()
-        
-        register()
+       
         delegate()
-
-        setupPageBar()
         setupPageViewController()
         
         bindAction()
+        bindOutput()
         
         AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedAll)
     }
     
-    //MARK: - Bind
-    
-    private func register() {
-        pageBar.feedPageBarCollectionView.register(FeedPageBarCollectionViewCell.self,
-                                                   forCellWithReuseIdentifier: FeedPageBarCollectionViewCell.cellIdentifier)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
+    
+    //MARK: - Bind
     
     private func delegate() {
         pageViewController.delegate = self
         pageViewController.dataSource = self
-        
-        pageBar.feedPageBarCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
     }
     
-    private func setupPageBar() {
-        let gender = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userGender)
-        let category = gender == "M" ? NewNovelGenre.feedMaleGenres : NewNovelGenre.feedFemaleGenres
-        self.categoryList.accept(category)
-        
-        categoryList
-            .bind(to: pageBar.feedPageBarCollectionView.rx.items(
-                cellIdentifier: FeedPageBarCollectionViewCell.cellIdentifier,
-                cellType: FeedPageBarCollectionViewCell.self)) { (row, element, cell) in
-                    cell.bindData(text: element)
-                }
-                .disposed(by: disposeBag)
-        
-        DispatchQueue.main.async {
-            self.pageBar.feedPageBarCollectionView
-                .selectItem(at: IndexPath(item: 0, section: 0),
-                            animated: true,
-                            scrollPosition: [])
-        }
-    }
-    
-    private func setupPageViewController() {
-        for pageIndex in 0..<categoryList.value.count {
-            let category = categoryList.value[pageIndex]
-            let viewController = FeedGenreViewController(
-                viewModel: FeedGenreViewModel(
-                    feedRepository: DefaultFeedRepository(
-                        feedService: DefaultFeedService()
-                    ),
-                    feedDetailRepository: DefaultFeedDetailRepository(
-                        feedDetailService: DefaultFeedDetailService()
-                    ),
-                    category: category.rawValue
-                )
-            )
-            
-            pages.append(viewController)
-        }
-        
-        for (index, viewController) in pages.enumerated() {
-            viewController.view.tag = index
-        }
-        
-        pageViewController.setViewControllers([pages[0]],
-                                              direction: .forward,
-                                              animated: false,
-                                              completion: nil)
-    }
-    
-    private func bindAction() {
-        pageBar.feedPageBarCollectionView.rx.itemSelected
-            .map{$0.row}
-            .subscribe(with: self, onNext: { owner, index in
-                if let event = owner.categoryList.value[index].amplitudeEvent {
-                    AmplitudeManager.shared.track(event)
-                }
-                
-                owner.pageBar.feedPageBarCollectionView.scrollToItem(
-                    at: IndexPath(item: index, section: 0),
-                    at: .centeredHorizontally,
-                    animated: true
-                )
-                
-                let direction: UIPageViewController.NavigationDirection = index > (owner.pageViewController.viewControllers?.first?.view.tag ?? 0) ? .forward : .reverse
-                owner.pageViewController.setViewControllers([owner.pages[index]],
-                                                            direction: direction,
-                                                            animated: true,
-                                                            completion: nil)
+    private func bindOutput() {
+        selectedTab.asDriver()
+            .drive(with: self, onNext: { owner, selectedTab in
+                owner.feedHeaderView.updateButtons(selectedTab: selectedTab)
+                owner.setSosoFeedHeaderViewHidden(isHidden: selectedTab == .my)
             })
             .disposed(by: disposeBag)
         
-        navigationBar.createFeedButton.rx.tap
+        selectedSosoFeedTab.asDriver()
+            .drive(with: self, onNext: { owner, selectedTab in
+                owner.sosoFeedHeaderView.updateButtons(selectedTab: selectedTab)
+            })
+            .disposed(by: disposeBag)
+        
+        Observable
+            .combineLatest(selectedTab, selectedSosoFeedTab)
+            .subscribe(with: self, onNext: { owner, data in
+                switch data {
+                case (.my, _ ): owner.selectedPageType.accept(.my)
+                case (.soso, .all): owner.selectedPageType.accept(.sosoAll)
+                case (.soso, .recommended): owner.selectedPageType.accept(.sosoRecommended)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        selectedPageType.asDriver()
+            .drive(with: self, onNext: { owner, pageType in
+                owner.pageViewController.setViewControllers(
+                    [owner.pages[pageType.rawValue]],
+                    direction: .forward,
+                    animated: false,
+                    completion: nil
+                )
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        feedHeaderView.myFeedTabButton.rx.tap
+            .map { FeedTab.my }
+            .bind(to: selectedTab)
+            .disposed(by: disposeBag)
+        
+        feedHeaderView.sosoFeedTabButton.rx.tap
+            .map { FeedTab.soso }
+            .bind(to: selectedTab)
+            .disposed(by: disposeBag)
+
+        sosoFeedHeaderView.allTabButton.rx.tap
+            .map { SosoFeedTab.all }
+            .bind(to: selectedSosoFeedTab)
+            .disposed(by: disposeBag)
+        
+        sosoFeedHeaderView.recommendedTabButton.rx.tap
+            .map { SosoFeedTab.recommended }
+            .bind(to: selectedSosoFeedTab)
+            .disposed(by: disposeBag)
+        
+        feedHeaderView.createFeedButton.rx.tap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedWriteFloatingButton)
@@ -161,30 +145,6 @@ final class FeedViewController: UIViewController {
 }
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        switch collectionView {
-        case pageBar.feedPageBarCollectionView:
-            guard indexPath.item < categoryList.value.count else { return CGSize(width: 0, height: 0) }
-            
-            let text = categoryList.value[indexPath.row]
-            let height: CGFloat = 41
-            
-            let pageTitleLabel = UILabel()
-            pageTitleLabel.text = text.withKorean
-            pageTitleLabel.font = .Title3
-            
-            let maxSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
-            let requiredSize = pageTitleLabel.sizeThatFits(maxSize)
-            let finalWidth = max(requiredSize.width + 24, 24)
-            
-            return CGSize(width: finalWidth, height: height)
-            
-        default:
-            return CGSize()
-        }
-    }
-    
     func scrollToTop() {
         guard let pageViewController = self.children.first as? UIPageViewController,
               let currentVC = pageViewController.viewControllers?.first else { return }
@@ -195,28 +155,15 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension FeedViewController : UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed,
-           let currentViewController = pageViewController.viewControllers?.first,
-           let index = pages.firstIndex(of: currentViewController as! FeedGenreViewController) {
-            pageBar.feedPageBarCollectionView
-                .selectItem(at: IndexPath(item: index, section: 0),
-                            animated: true,
-                            scrollPosition: .centeredHorizontally)
-        }
-    }
-}
-
-extension FeedViewController: UIPageViewControllerDataSource {
+extension FeedViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = pages.firstIndex(of: viewController as! FeedGenreViewController),
+        if let currentIndex = pages.firstIndex(of: viewController as! FeedPageContentViewController),
            currentIndex > 0 { return pages[currentIndex - 1] }
         return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = pages.firstIndex(of: viewController as! FeedGenreViewController),
+        if let currentIndex = pages.firstIndex(of: viewController as! FeedPageContentViewController),
            currentIndex < pages.count - 1 { return pages[currentIndex + 1] }
         return nil
     }
@@ -231,28 +178,58 @@ extension FeedViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(navigationBar,
-                              pageBar)
+        self.view.addSubviews(feedHeaderView,
+                              sosoFeedHeaderView)
         self.addChild(pageViewController)
         self.view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
     }
     
     private func setLayout() {
-        navigationBar.snp.makeConstraints {
+        feedHeaderView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(52)
+            $0.horizontalEdges.equalToSuperview()
         }
         
-        pageBar.snp.makeConstraints {
-            $0.top.equalTo(navigationBar.snp.bottom)
+        sosoFeedHeaderView.snp.makeConstraints {
+            $0.top.equalTo(feedHeaderView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(41)
         }
         
         pageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(pageBar.snp.bottom).offset(18)
+            $0.top.equalTo(sosoFeedHeaderView.snp.bottom)
+            $0.width.bottom.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    private func setupPageViewController() {
+        FeedPageType.allCases.forEach { pageType in
+            let viewController = FeedPageContentViewController(
+                viewModel: FeedPageContentViewModel(
+                    feedRepository: DefaultFeedRepository(
+                        feedService: DefaultFeedService()
+                    ),
+                    feedDetailRepository: DefaultFeedDetailRepository(
+                        feedDetailService: DefaultFeedDetailService()
+                    ),
+                    category: NewNovelGenre.fantasy.rawValue
+                ),
+                pageType: pageType)
+            pages.append(viewController)
+        }
+        
+        // UIPageViewController 스크롤로 VC 전환되는 것 막기.
+        let scrollView = pageViewController.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        scrollView?.isScrollEnabled = false
+    }
+    
+    private func setSosoFeedHeaderViewHidden(isHidden: Bool) {
+        sosoFeedHeaderView.isHidden = isHidden
+        
+        pageViewController.view.snp.remakeConstraints {
+            $0.top.equalTo(isHidden ? feedHeaderView.snp.bottom : sosoFeedHeaderView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
     }

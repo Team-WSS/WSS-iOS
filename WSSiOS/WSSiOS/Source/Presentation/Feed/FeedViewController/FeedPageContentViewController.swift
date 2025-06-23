@@ -1,5 +1,5 @@
 //
-//  FeedGenreViewController.swift
+//  FeedPageContentViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 5/19/24.
@@ -11,11 +11,12 @@ import RxSwift
 import RxRelay
 import RxGesture
 
-final class FeedGenreViewController: UIViewController {
+final class FeedPageContentViewController: UIViewController {
     
     //MARK: - Properties
     
-    private var viewModel: FeedGenreViewModel
+    let pageType: FeedPageType
+    private var viewModel: FeedPageContentViewModel
     private let disposeBag = DisposeBag()
     
     private let feedProfileViewDidTap = PublishRelay<Int>()
@@ -26,12 +27,13 @@ final class FeedGenreViewController: UIViewController {
     
     //MARK: - Components
     
-    private var rootView = FeedGenreView()
+    private var rootView = FeedPageContentView()
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedGenreViewModel) {
+    init(viewModel: FeedPageContentViewModel, pageType: FeedPageType) {
         self.viewModel = viewModel
+        self.pageType = pageType
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,6 +43,7 @@ final class FeedGenreViewController: UIViewController {
     }
     
     override func loadView() {
+        rootView.setFeedPageContentView(pageType: pageType)
         self.view = rootView
     }
     
@@ -49,12 +52,11 @@ final class FeedGenreViewController: UIViewController {
         
         register()
         bindViewModel()
+        reloadFeed.accept(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        reloadFeed.accept(())
         showTabBar()
-        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     //MARK: - Bind
@@ -70,8 +72,9 @@ final class FeedGenreViewController: UIViewController {
             rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
         )
         
-        let input = FeedGenreViewModel.Input(
+        let input = FeedPageContentViewModel.Input(
             reloadFeed: reloadFeed.asObservable(),
+            sortButtonDidTap: rootView.myFeedFilterHeaderView.sortButton.rx.tap,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
             feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
@@ -84,6 +87,12 @@ final class FeedGenreViewController: UIViewController {
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.sortType
+            .drive(with: self, onNext: { owner, sortType in
+                owner.rootView.myFeedFilterHeaderView.updateSortButton(sortType: sortType)
+            })
+            .disposed(by: disposeBag)
         
         output.feedList
             .bind(to: rootView.feedTableView.rx.items(
@@ -273,7 +282,7 @@ final class FeedGenreViewController: UIViewController {
     }
 }
 
-extension FeedGenreViewController: FeedTableViewDelegate {
+extension FeedPageContentViewController: FeedTableViewDelegate {
     func profileViewDidTap(userId: Int) {
         self.feedProfileViewDidTap.accept(userId)
     }
