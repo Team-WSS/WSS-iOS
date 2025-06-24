@@ -86,19 +86,19 @@ final class FeedFilterViewController: UIViewController {
             (tapped, current)
         }
         .map { tapped, current in
-            var updated = Set(current)
+            var updated = current
             
-            if current.contains(tapped) {
-                updated.remove(tapped)
+            if let index = updated.firstIndex(of: tapped) {
+                updated.remove(at: index)
             } else {
-                updated.insert(tapped)
+                updated.append(tapped)
             }
-            
+
             if updated.isEmpty {
-                updated.insert(tapped.opposite)
+                updated.append(tapped.opposite)
             }
-            
-            return Array(updated)
+
+            return updated
         }
         .bind(to: visibilityOptions)
         .disposed(by: disposeBag)
