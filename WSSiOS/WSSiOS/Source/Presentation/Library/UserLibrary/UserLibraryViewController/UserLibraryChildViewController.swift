@@ -1,5 +1,5 @@
 //
-//  LibraryChildViewController.swift
+//  UserLibraryChildViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/14/24.
@@ -10,21 +10,21 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class LibraryChildViewController: UIViewController {
+final class UserLibraryChildViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let libraryViewModel: LibraryChildViewModel
+    private let libraryViewModel: UserLibraryChildViewModel
     private let disposeBag = DisposeBag()
     private let viewWillAppearEventRelay = PublishRelay<Void>()
     
     //MARK: - Components
     
-    private let rootView = LibraryChildView()
+    private let rootView = UserLibraryChildView()
     
     // MARK: - Life Cycle
     
-    init(libraryViewModel: LibraryChildViewModel) {
+    init(libraryViewModel: UserLibraryChildViewModel) {
         self.libraryViewModel = libraryViewModel
     
         super.init(nibName: nil, bundle: nil)
@@ -71,7 +71,7 @@ final class LibraryChildViewController: UIViewController {
             .filter { $0 }
             .map { _ in () }
         
-        let input = LibraryChildViewModel.Input(
+        let input = UserLibraryChildViewModel.Input(
             viewWillAppear: viewWillAppearEventRelay.asObservable(),
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
             cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,

@@ -1,5 +1,5 @@
 //
-//  LibraryEmptyView.swift
+//  UserLibraryEmptyView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/18/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryEmptyView: UIView {
+final class UserLibraryEmptyView: UIView {
     
     //MARK: - Components
     

@@ -89,7 +89,7 @@ final class WSSTabBarController: UITabBarController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, notification in
                 if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
-                   let libraryVC = libraryNavigationVC.topViewController as? LibraryViewController {
+                   let libraryVC = libraryNavigationVC.topViewController as? UserLibraryViewController {
                     
                     owner.selectedIndex = WSSTabBarItem.library.rawValue
                     

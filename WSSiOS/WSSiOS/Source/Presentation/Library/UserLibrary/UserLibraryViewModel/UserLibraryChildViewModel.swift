@@ -1,5 +1,5 @@
 //
-//  LibraryChildViewModel.swift
+//  UserLibraryChildViewModel.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 12/1/24.
@@ -14,7 +14,7 @@ protocol NovelDelegate: AnyObject {
     func sendNovelCount(data: Int)
 }
 
-final class LibraryChildViewModel: ViewModelType {
+final class UserLibraryChildViewModel: ViewModelType {
     
     // MARK: - Properties
     
