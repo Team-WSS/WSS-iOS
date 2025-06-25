@@ -19,6 +19,7 @@ final class MyLibraryHeaderView: UIView {
     let countLabel = UILabel()
     let sortButton = WSSSortButton()
     let layoutToggleButton = UIButton()
+    let dividerView = UIView()
     
     // MARK: - Life Cycle
     
@@ -51,6 +52,10 @@ final class MyLibraryHeaderView: UIView {
         layoutToggleButton.do {
             $0.setImage(.layoutList, for: .normal)
         }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
@@ -58,7 +63,8 @@ final class MyLibraryHeaderView: UIView {
                          bottomContentView)
         bottomContentView.addSubviews(countLabel,
                                       sortButton,
-                                      layoutToggleButton)
+                                      layoutToggleButton,
+                                      dividerView)
     }
     
     private func setLayout() {
@@ -87,6 +93,11 @@ final class MyLibraryHeaderView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(9.5)
             $0.size.equalTo(33)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
 }
