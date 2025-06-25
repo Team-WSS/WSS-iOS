@@ -50,7 +50,7 @@ final class MyLibraryHeaderView: UIView {
         }
         
         layoutToggleButton.do {
-            $0.setImage(.layoutList, for: .normal)
+            $0.setImage(.layoutList.withTintColor(.wssGray100), for: .normal)
         }
         
         dividerView.do {
@@ -86,7 +86,7 @@ final class MyLibraryHeaderView: UIView {
         
         sortButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(layoutToggleButton.snp.leading).offset(20.5)
+            $0.trailing.equalTo(layoutToggleButton.snp.leading).offset(-20.5)
         }
         
         layoutToggleButton.snp.makeConstraints {
