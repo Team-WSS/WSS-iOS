@@ -5,6 +5,8 @@
 //  Created by YunhakLee on 5/22/25.
 //
 
+import UIKit
+
 enum FeedTab: CaseIterable {
     case my
     case soso

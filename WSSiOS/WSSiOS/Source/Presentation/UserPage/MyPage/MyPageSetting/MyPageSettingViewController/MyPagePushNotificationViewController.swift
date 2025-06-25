@@ -42,12 +42,13 @@ final class MyPagePushNotificationViewController: UIViewController {
         super.viewDidLoad()
         
         bindAction()
+        bindViewModelAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        bindViewModelAction()
+        
     }
     
     //MARK: - Bind
