@@ -1,5 +1,5 @@
 //
-//  LibraryDescriptionView.swift
+//  UserLibraryDescriptionView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/15/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryDescriptionView: UIView {
+final class UserLibraryDescriptionView: UIView {
     
     //MARK: - Components
     

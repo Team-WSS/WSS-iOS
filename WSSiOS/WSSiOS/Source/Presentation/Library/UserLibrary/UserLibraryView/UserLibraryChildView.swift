@@ -1,5 +1,5 @@
 //
-//  LibraryChildView.swift
+//  UserLibraryChildView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/14/24.
@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryChildView: UIView {
+final class UserLibraryChildView: UIView {
     
     //MARK: - Components
     
-    let descriptionView = LibraryDescriptionView()
-    let libraryDropdownView = LibraryListView()
+    let descriptionView = UserLibraryDescriptionView()
+    let libraryDropdownView = UserLibraryListView()
     lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    let libraryEmptyView = LibraryEmptyView()
+    let libraryEmptyView = UserLibraryEmptyView()
     
     // MARK: - Life Cycle
     

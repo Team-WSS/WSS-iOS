@@ -1,5 +1,5 @@
 //
-//  LibraryPageBar.swift
+//  UserLibraryPageBar.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/15/24.
@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-final class LibraryPageBar: UIView {
+final class UserLibraryPageBar: UIView {
     
     //MARK: - Properties
     

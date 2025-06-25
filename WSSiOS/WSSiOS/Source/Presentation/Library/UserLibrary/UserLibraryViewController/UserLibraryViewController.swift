@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-final class LibraryViewController: UIViewController {
+final class UserLibraryViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -30,9 +30,9 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - UI Components
     
-    private let libraryNavigationView = LibraryNavigationView()
-    private let libraryPageBar = LibraryPageBar()
-    private var libraryPages = [LibraryChildViewController]()
+    private let libraryNavigationView = UserLibraryNavigationView()
+    private let libraryPageBar = UserLibraryPageBar()
+    private var libraryPages = [UserLibraryChildViewController]()
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
@@ -172,35 +172,35 @@ final class LibraryViewController: UIViewController {
 
 //MARK: - Set PageController
 
-extension LibraryViewController : UIPageViewControllerDelegate {
+extension UserLibraryViewController : UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryChildViewController) {
+        if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! UserLibraryChildViewController) {
             libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
             pageIndex = index
         }
     }
 }
 
-extension LibraryViewController: UIPageViewControllerDataSource {
+extension UserLibraryViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryChildViewController) else { return nil }
+        guard let currentIndex = libraryPages.firstIndex(of: viewController as! UserLibraryChildViewController) else { return nil }
         guard currentIndex > 0 else { return nil }
         
         return libraryPages[currentIndex - 1]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryChildViewController), currentIndex < libraryPages.count - 1 {
+        if let currentIndex = libraryPages.firstIndex(of: viewController as! UserLibraryChildViewController), currentIndex < libraryPages.count - 1 {
             return libraryPages[currentIndex + 1]
         }
         return nil
     }
 }
 
-extension LibraryViewController {
-    private func setLibraryChildViewController(userId: Int, data: UserNovelNovelStatus) -> LibraryChildViewController {
-        return LibraryChildViewController(
-            libraryViewModel: LibraryChildViewModel(
+extension UserLibraryViewController {
+    private func setLibraryChildViewController(userId: Int, data: UserNovelNovelStatus) -> UserLibraryChildViewController {
+        return UserLibraryChildViewController(
+            libraryViewModel: UserLibraryChildViewModel(
                 userRepository: DefaultUserInfoRepository(
                     userService: DefaultUserService()
                 ),
@@ -211,7 +211,7 @@ extension LibraryViewController {
 
 //MARK: - UI
 
-extension LibraryViewController {
+extension UserLibraryViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
