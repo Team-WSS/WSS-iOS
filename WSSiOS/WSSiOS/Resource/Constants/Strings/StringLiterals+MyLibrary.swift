@@ -13,5 +13,9 @@ extension StringLiterals {
             static let starRating = "별점"
             static let attractivePoint = "매력포인트"
         }
+        
+        static func novelCountText(_ count: Int) -> String {
+            return "\(count)개의 기록"
+        }
     }
 }
