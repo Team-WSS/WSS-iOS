@@ -78,7 +78,7 @@ enum WSSTabBarItem: Int, CaseIterable {
             return FeedViewController()
             
         case .library:
-            return UserLibraryViewController(userId: UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId))
+            return MyLibraryViewController()
             
         case .myPage:
             let myPageVC = MyPageViewController(
