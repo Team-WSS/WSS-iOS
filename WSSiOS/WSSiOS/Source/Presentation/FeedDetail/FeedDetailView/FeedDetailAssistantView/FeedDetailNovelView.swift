@@ -126,8 +126,8 @@ final class FeedDetailNovelView: UIView {
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
         }
-        novelStarView.bindData(hasFeedAuthor: novelData.hasFeedAuthorRating,
-                               feedAuthorData: novelData.feedAuthorData,
+        novelStarView.bindData(hasFeedAuthorReview: novelData.hasFeedAuthorRating,
+                               feedAuthorReviewData: novelData.feedAuthorData,
                                totalRating: novelData.novelRating)
         novelSummaryLabel.do {
             $0.applyWSSFont(.body5, with: novelData.novelDescription)
