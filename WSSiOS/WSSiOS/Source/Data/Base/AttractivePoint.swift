@@ -5,7 +5,7 @@
 //  Created by Hyowon Jeon on 9/24/24.
 //
 
-import Foundation
+import UIKit
 
 enum AttractivePoint: String, CaseIterable {
     case worldview = "worldview"
@@ -21,6 +21,16 @@ enum AttractivePoint: String, CaseIterable {
         case .character: "캐릭터"
         case .relationship: "관계"
         case .vibe: "분위기"
+        }
+    }
+    
+    var image: UIImage {
+        switch self {
+        case .worldview: .icAttractiveWorldview
+        case .material: .icAttractiveMaterial
+        case .character: .icAttractiveCharacter
+        case .relationship: .icAttractiveRelationship
+        case .vibe: .icAttractiveVibe
         }
     }
 }
