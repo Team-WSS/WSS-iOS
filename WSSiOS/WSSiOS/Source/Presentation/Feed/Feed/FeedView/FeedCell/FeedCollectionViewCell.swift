@@ -208,7 +208,9 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             novelView.bindData(
                 title: data.title,
                 rating: data.novelRating,
-                participants: data.novelRatingCount
+                participants: data.novelRatingCount,
+                novelColor: data.novelGenreColor,
+                novelLinkImage: data.novelGenreImage
             )
         }
         
