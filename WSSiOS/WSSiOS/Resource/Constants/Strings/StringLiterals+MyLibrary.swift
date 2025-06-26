@@ -21,6 +21,7 @@ extension StringLiterals {
         enum Filter {
             static let title = "작품 찾기 필터"
             static let readStatus = "읽기 상태"
+            static let attractivePoint = "매력포인트"
         }
     }
 }
