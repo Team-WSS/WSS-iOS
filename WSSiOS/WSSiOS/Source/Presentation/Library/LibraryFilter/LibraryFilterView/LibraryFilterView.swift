@@ -63,7 +63,7 @@ final class LibraryFilterView: UIView {
     
     private func setLayout() {
         contentView.snp.makeConstraints {
-            $0.bottom.leading.trailing.equalToSuperview()
+            $0.bottom.horizontalEdges.equalToSuperview()
             $0.height.equalTo(UIScreen.isSE ? 487 : 522)
         }
         
@@ -84,7 +84,7 @@ final class LibraryFilterView: UIView {
         
         bottomActionView.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
         }
     }
 }
