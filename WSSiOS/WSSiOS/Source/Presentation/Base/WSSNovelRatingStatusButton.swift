@@ -1,5 +1,5 @@
 //
-//  DetailSearchNovelRatingStatusButton.swift
+//  WSSNovelRatingStatusButton.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 10/23/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class DetailSearchNovelRatingStatusButton: UIButton {
+final class WSSNovelRatingStatusButton: UIButton {
     
     //MARK: - Properties
     
@@ -56,6 +56,10 @@ final class DetailSearchNovelRatingStatusButton: UIButton {
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(43)
+        }
+        
         buttonLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
