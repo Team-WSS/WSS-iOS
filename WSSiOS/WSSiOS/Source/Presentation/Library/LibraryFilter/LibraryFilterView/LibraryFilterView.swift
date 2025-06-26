@@ -20,7 +20,7 @@ final class LibraryFilterView: UIView {
     let readStatusView = LibraryFilterReadStatusView()
     let attractivePointView = LibraryFilterAttractivePointView()
     let ratingView = LibraryFilterRatingView()
-    private let bottomActionView = WSSSearchBottomActionView()
+    let bottomActionView = WSSSearchBottomActionView()
     
     //MARK: - Life Cycle
     

@@ -383,7 +383,7 @@ extension UIViewController {
     }
     
     func presentLibraryFilterViewController() {
-        let viewController = LibraryFilterViewController()
+        let viewController = LibraryFilterViewController(libraryFilterOption: LibraryFilterOption(readStatusOptions: [.quit]))
         self.presentModalViewController(viewController)
     }
     

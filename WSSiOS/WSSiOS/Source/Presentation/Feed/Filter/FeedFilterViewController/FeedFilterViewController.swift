@@ -167,7 +167,6 @@ final class FeedFilterViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, filterOption in
                 owner.filterOption.onNext(filterOption)
-                print(filterOption)
                 owner.filterOption.onCompleted()
                 owner.dismissModalViewController()
             })
