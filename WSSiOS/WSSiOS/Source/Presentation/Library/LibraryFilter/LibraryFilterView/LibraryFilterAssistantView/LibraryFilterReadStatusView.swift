@@ -15,7 +15,7 @@ final class LibraryFilterReadStatusView: UIView {
     //MARK: - UI Components
     
     private let titleLabel = UILabel()
-    private let readStatusOptionstackView = UIStackView()
+    private let readStatusOptionStackView = UIStackView()
     private let readStatusOptionButtons = ReadStatus.allCases.map {
         LibraryFilterReadStatusOptionButton($0)
     }
@@ -42,7 +42,7 @@ final class LibraryFilterReadStatusView: UIView {
             $0.textColor = .wssBlack
         }
         
-        readStatusOptionstackView.do {
+        readStatusOptionStackView.do {
             $0.axis = .horizontal
             $0.spacing = 0
             $0.alignment = .center
@@ -56,12 +56,12 @@ final class LibraryFilterReadStatusView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         readStatusOptionstackView)
+                         readStatusOptionStackView)
         dividerViews.forEach {
             self.addSubview($0)
         }
         readStatusOptionButtons.forEach {
-            readStatusOptionstackView.addArrangedSubview($0)
+            readStatusOptionStackView.addArrangedSubview($0)
         }
     }
     
@@ -71,17 +71,18 @@ final class LibraryFilterReadStatusView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        readStatusOptionstackView.snp.makeConstraints {
+        readStatusOptionStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(54)
+            $0.bottom.equalToSuperview()
         }
         
         dividerViews.enumerated().forEach { index, dividerView in
             dividerView.snp.makeConstraints {
                 $0.height.equalTo(32)
                 $0.width.equalTo(1)
-                $0.centerY.equalTo(readStatusOptionstackView.snp.centerY)
+                $0.centerY.equalTo(readStatusOptionStackView.snp.centerY)
                 $0.centerX.equalTo(readStatusOptionButtons[index].snp.trailing)
             }
         }
