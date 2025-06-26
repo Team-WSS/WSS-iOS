@@ -1,5 +1,5 @@
 //
-//  DetailSearchBottomView.swift
+//  WSSSearchBottomActionView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 7/19/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class DetailSearchBottomView: UIView {
+final class WSSSearchBottomActionView: UIView {
     
     //MARK: - UI Components
     
@@ -42,6 +42,8 @@ final class DetailSearchBottomView: UIView {
         bottomStackView.do {
             $0.axis = .horizontal
             $0.spacing = 0
+            $0.alignment = .fill
+            $0.distribution = .fill
         }
         
         resetButton.do {
@@ -86,23 +88,19 @@ final class DetailSearchBottomView: UIView {
                 $0.width.equalTo(133)
                 
                 resetImageView.snp.makeConstraints {
-                    $0.top.equalToSuperview().inset(24)
+                    $0.centerY.equalToSuperview()
                     $0.leading.equalToSuperview().inset(37)
                     $0.size.equalTo(14)
                 }
                 
                 resetButtonLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview().inset(20)
+                    $0.centerY.equalToSuperview()
                     $0.leading.equalTo(resetImageView.snp.trailing).offset(4)
                 }
             }
             
-            searchButton.snp.makeConstraints {
-                $0.width.equalTo(UIScreen.main.bounds.width - 133)
-                
-                searchButtonLabel.snp.makeConstraints {
-                    $0.center.equalToSuperview()
-                }
+            searchButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
             }
         }
     }
