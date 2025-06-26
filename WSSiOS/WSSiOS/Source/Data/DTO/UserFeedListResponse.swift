@@ -28,4 +28,5 @@ struct UserFeedResponse: Decodable {
     let novelRatingCount: Int?
     let relevantCategories: [String]
     let isPublic: Bool
+    let genre: String?
 }

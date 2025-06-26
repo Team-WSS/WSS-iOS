@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct UserFeedListEntity {
     let isLoadable: Bool
@@ -30,8 +31,12 @@ struct UserFeedEntity {
     let commentCount: Int
     let novelId: Int
     let title: String
+    
     let novelRating: Float
     let novelRatingCount: Int
+    let novelGenreColor: UIColor
+    let novelGenreImage: UIImage
+    
     let relevantCategories: [String]
     let isPublic: Bool
     
@@ -53,6 +58,10 @@ extension UserFeedResponse {
             NewNovelGenre(rawValue: $0)?.withKorean
         }
         
+        let genre = NewNovelGenre(rawValue: self.genre ?? "")
+        let novelGenreColor = genre?.linkColor ?? .genreColorR
+        let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
+        
         return UserFeedEntity(feedId: self.feedId,
                             feedContent: self.feedContent,
                             createdDate: self.formattedDate(),
@@ -65,6 +74,8 @@ extension UserFeedResponse {
                             title: self.title ?? "",
                             novelRating: makeNovelRating,
                             novelRatingCount: self.novelRatingCount ?? -1,
+                              novelGenreColor: novelGenreColor,
+                              novelGenreImage: novelGenreImage,
                             relevantCategories: translatedGenres,
                             isPublic: isPublic,
                             thumbnailImage: "",
