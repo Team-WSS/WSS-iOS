@@ -19,9 +19,9 @@ final class MyLibraryFilterHeaderView: UIView {
     private let stackView = UIStackView()
     private let interestFilterButton = WSSFilterButton()
     private let dividerView = UIView()
-    private let readStatusFilterButton = WSSFilterButton()
-    private let starRatingFilterButton = WSSFilterButton()
-    private let attractivePointFilterButton = WSSFilterButton()
+    let readStatusFilterButton = WSSFilterButton()
+    let starRatingFilterButton = WSSFilterButton()
+    let attractivePointFilterButton = WSSFilterButton()
     
     // MARK: - Life Cycle
     
