@@ -17,6 +17,7 @@ final class LibraryFilterView: UIView {
     private let contentView = UIView()
     private let titleLabel = UILabel()
     let dismissButton = UIButton()
+    let readStatusView = LibraryFilterReadStatusView()
     
     let bottomActionView = WSSSearchBottomActionView()
     
@@ -56,6 +57,7 @@ final class LibraryFilterView: UIView {
         self.addSubviews(contentView)
         contentView.addSubviews(titleLabel,
                                 dismissButton,
+                                readStatusView,
                                 bottomActionView)
     }
     
@@ -73,6 +75,11 @@ final class LibraryFilterView: UIView {
         dismissButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview()
             $0.size.equalTo(65)
+        }
+        
+        readStatusView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(22)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         bottomActionView.snp.makeConstraints {
