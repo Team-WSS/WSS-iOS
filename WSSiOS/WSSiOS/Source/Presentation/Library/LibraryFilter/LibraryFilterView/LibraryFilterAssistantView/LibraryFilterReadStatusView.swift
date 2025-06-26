@@ -16,7 +16,7 @@ final class LibraryFilterReadStatusView: UIView {
     
     private let titleLabel = UILabel()
     private let readStatusOptionStackView = UIStackView()
-    private let readStatusOptionButtons = ReadStatus.allCases.map {
+    let readStatusOptionButtons = ReadStatus.allCases.map {
         LibraryFilterReadStatusOptionButton($0)
     }
     private let dividerViews = [UIView(), UIView()]

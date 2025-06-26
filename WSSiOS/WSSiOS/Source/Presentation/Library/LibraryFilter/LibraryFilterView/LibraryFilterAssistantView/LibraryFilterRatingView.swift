@@ -18,8 +18,7 @@ final class LibraryFilterRatingView: UIView {
     private let ratingTopStackView = UIStackView()
     private let ratingBottomStackView = UIStackView()
     
-    private let novelRatingStatusButtons = NovelRatingStatus.allCases.map { WSSNovelRatingStatusButton(status: $0)
-    }
+    let novelRatingStatusButtons = NovelRatingStatus.allCases.map { WSSNovelRatingStatusButton(status: $0) }
     
     //MARK: - Life Cycle
     

@@ -16,7 +16,7 @@ final class LibraryFilterAttractivePointView: UIView {
     
     private let titleLabel = UILabel()
     private let attractivePointOptionStackView = UIStackView()
-    private let attractivePointOptionButtons = AttractivePoint.allCases.map {
+    let attractivePointOptionButtons = AttractivePoint.allCases.map {
         LibraryFilterAttractivePointOptionButton($0)
     }
     

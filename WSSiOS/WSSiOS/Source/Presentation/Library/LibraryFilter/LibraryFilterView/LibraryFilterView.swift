@@ -17,9 +17,9 @@ final class LibraryFilterView: UIView {
     private let contentView = UIView()
     private let titleLabel = UILabel()
     let dismissButton = UIButton()
-    private let readStatusView = LibraryFilterReadStatusView()
-    private let attractivePointView = LibraryFilterAttractivePointView()
-    private let ratingView = LibraryFilterRatingView()
+    let readStatusView = LibraryFilterReadStatusView()
+    let attractivePointView = LibraryFilterAttractivePointView()
+    let ratingView = LibraryFilterRatingView()
     private let bottomActionView = WSSSearchBottomActionView()
     
     //MARK: - Life Cycle
