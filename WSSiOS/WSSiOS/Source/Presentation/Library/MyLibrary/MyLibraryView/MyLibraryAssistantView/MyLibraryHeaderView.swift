@@ -51,6 +51,8 @@ final class MyLibraryHeaderView: UIView {
         
         layoutToggleButton.do {
             $0.setImage(.layoutList.withTintColor(.wssGray100), for: .normal)
+            $0.configuration = .plain()
+            $0.configuration?.background.backgroundColor = .white
         }
         
         dividerView.do {
