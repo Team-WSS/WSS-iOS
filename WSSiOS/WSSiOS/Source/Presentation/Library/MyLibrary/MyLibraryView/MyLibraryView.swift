@@ -14,9 +14,9 @@ final class MyLibraryView: UIView {
     
     //MARK: - Components
     
-    let navigationView = MyLibraryNavigationView()
-    let headerView = MyLibraryHeaderView()
-    let libraryEmptyView = MyLibraryEmptyView()
+    private let navigationView = MyLibraryNavigationView()
+    private let headerView = MyLibraryHeaderView()
+    private let libraryEmptyView = MyLibraryEmptyView()
     
     // MARK: - Life Cycle
     

@@ -18,7 +18,7 @@ final class MyLibraryViewController: UIViewController {
     
     //MARK: - Components
     
-    let rootView = MyLibraryView()
+    private let rootView = MyLibraryView()
     
     // MARK: - Life Cycle
     
