@@ -16,6 +16,8 @@ final class MyLibraryViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let disposeBag = DisposeBag()
+    
     //MARK: - Components
     
     private let rootView = MyLibraryView()
@@ -28,9 +30,26 @@ final class MyLibraryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    //MARK: - Bint
+    
+    private func bindAction() {
+        Observable.merge(
+            rootView.headerView.filterHeaderView.readStatusFilterButton.rx.tap.asObservable(),
+            rootView.headerView.filterHeaderView.starRatingFilterButton.rx.tap.asObservable(),
+            rootView.headerView.filterHeaderView.attractivePointFilterButton.rx.tap.asObservable()
+        )
+        .observe(on: MainScheduler.instance)
+        .bind(with: self, onNext: { owner, _ in
+            owner.presentLibraryFilterViewController()
+        })
+        .disposed(by: disposeBag)
     }
 }

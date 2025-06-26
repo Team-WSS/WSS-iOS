@@ -382,6 +382,11 @@ extension UIViewController {
         return viewController.filterOption.asObservable()
     }
     
+    func presentLibraryFilterViewController() {
+        let viewController = LibraryFilterViewController()
+        self.presentModalViewController(viewController)
+    }
+    
     func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {
         let viewController = UserPageFeedDetailViewController(
             viewModel: UserPageFeedDetailViewModel(

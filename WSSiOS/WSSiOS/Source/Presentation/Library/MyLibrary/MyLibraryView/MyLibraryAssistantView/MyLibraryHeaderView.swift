@@ -14,7 +14,7 @@ final class MyLibraryHeaderView: UIView {
     
     //MARK: - Components
     
-    private let filterHeaderView = MyLibraryFilterHeaderView()
+    let filterHeaderView = MyLibraryFilterHeaderView()
     private let bottomContentView = UIView()
     private let countLabel = UILabel()
     private let sortButton = WSSSortButton()
