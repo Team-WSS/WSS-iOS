@@ -83,4 +83,12 @@ final class LibraryFilterRatingView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateButtons(selectedOption: NovelRatingStatus?) {
+        novelRatingStatusButtons.forEach {
+            $0.updateButton(selectedNovelRatingStatus: selectedOption)
+        }
+    }
 }

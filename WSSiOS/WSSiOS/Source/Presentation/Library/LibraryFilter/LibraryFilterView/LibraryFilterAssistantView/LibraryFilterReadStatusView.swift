@@ -87,4 +87,12 @@ final class LibraryFilterReadStatusView: UIView {
             }
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateButtons(selectedOptions: [ReadStatus]) {
+        readStatusOptionButtons.forEach {
+            $0.updateButton(selectedOptions: selectedOptions)
+        }
+    }
 }

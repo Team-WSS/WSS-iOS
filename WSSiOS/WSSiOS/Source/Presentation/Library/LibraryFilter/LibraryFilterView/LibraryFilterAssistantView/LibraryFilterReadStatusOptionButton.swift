@@ -76,4 +76,13 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
             $0.size.equalTo(24)
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateButton(selectedOptions: [ReadStatus]) {
+        let isSelected = selectedOptions.contains(where: {$0 == self.readStatus})
+        
+        statusImageView.tintColor = isSelected ? .wssPrimary100 : .wssGray100
+        statusLabel.textColor = isSelected ? .wssPrimary100 : .wssGray300
+    }
 }

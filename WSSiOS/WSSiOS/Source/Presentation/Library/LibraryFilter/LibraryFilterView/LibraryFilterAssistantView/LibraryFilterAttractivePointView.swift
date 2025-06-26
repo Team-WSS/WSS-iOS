@@ -69,4 +69,12 @@ final class LibraryFilterAttractivePointView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateButtons(selectedOptions: [AttractivePoint]) {
+        attractivePointOptionButtons.forEach {
+            $0.updateButton(selectedOptions: selectedOptions)
+        }
+    }
 }

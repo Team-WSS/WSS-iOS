@@ -80,4 +80,13 @@ final class LibraryFilterAttractivePointOptionButton: UIButton {
             $0.size.equalTo(36)
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateButton(selectedOptions: [AttractivePoint]) {
+        let isSelected = selectedOptions.contains(where: {$0 == self.attractivePoint})
+        
+        statusImageView.tintColor = isSelected ? .wssPrimary100 : .wssGray100
+        statusLabel.textColor = isSelected ? .wssPrimary100 : .wssGray300
+    }
 }

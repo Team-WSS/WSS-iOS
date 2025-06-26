@@ -35,7 +35,7 @@ final class LibraryFilterViewController: UIViewController {
         super.viewDidLoad()
         
         bindInput()
-        
+        bindOutput()
         bindAction()
     }
     
@@ -93,9 +93,22 @@ final class LibraryFilterViewController: UIViewController {
     
     private func bindOutput() {
         readStatusOptions.asDriver()
-            .drive(with: self, onNext: { owner, readStatusOptions in
-                rootView
+            .drive(with: self, onNext: { owner, selectedOptions in
+                owner.rootView.readStatusView.updateButtons(selectedOptions: selectedOptions)
             })
+            .disposed(by: disposeBag)
+        
+        attractivePointOptions.asDriver()
+            .drive(with: self, onNext: { owner, selectedOptions in
+                owner.rootView.attractivePointView.updateButtons(selectedOptions: selectedOptions)
+            })
+            .disposed(by: disposeBag)
+        
+        ratingOption.asDriver()
+            .drive(with: self, onNext: { owner, selectedOption in
+                owner.rootView.ratingView.updateButtons(selectedOption: selectedOption)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction() {
@@ -105,6 +118,5 @@ final class LibraryFilterViewController: UIViewController {
                 owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)
-        
     }
 }
