@@ -81,7 +81,7 @@ final class LibraryFilterReadStatusView: UIView {
             dividerView.snp.makeConstraints {
                 $0.height.equalTo(32)
                 $0.width.equalTo(1)
-                $0.centerY.equalTo(readStatusOptionstackView.snp.center)
+                $0.centerY.equalTo(readStatusOptionstackView.snp.centerY)
                 $0.centerX.equalTo(readStatusOptionButtons[index].snp.trailing)
             }
         }

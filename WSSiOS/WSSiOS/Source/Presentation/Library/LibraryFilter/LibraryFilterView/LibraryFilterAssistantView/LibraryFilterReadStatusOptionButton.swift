@@ -49,7 +49,7 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
         
         statusLabel.do {
             $0.applyWSSFont(.body4, with: readStatus.statusName)
-            $0.textColor = .wssBlack
+            $0.textColor = .wssGray300
             $0.isUserInteractionEnabled = false
         }
         
@@ -68,6 +68,10 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
     }
     
     private func setLayout() {
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         statusImage.snp.makeConstraints {
             $0.size.equalTo(24)
         }
