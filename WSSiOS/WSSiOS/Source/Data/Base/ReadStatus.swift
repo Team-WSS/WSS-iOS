@@ -51,4 +51,20 @@ enum ReadStatus: String, CaseIterable {
         case .quit: return StringLiterals.NovelDetail.Info.ReadStatus.quit
         }
     }
+    
+    var tagText: String {
+        switch self {
+        case .watching: return "보는중"
+        case .watched: return "봤어요"
+        case .quit: return "하차"
+        }
+    }
+    
+    var tagBackgroundColor: UIColor {
+        switch self {
+        case .watching: return .wssPrimary100
+        case .watched: return .wssBlack
+        case .quit: return .wssGray200
+        }
+    }
 }
