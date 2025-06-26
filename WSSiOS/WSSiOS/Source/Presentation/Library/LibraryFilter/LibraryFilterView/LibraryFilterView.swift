@@ -17,9 +17,9 @@ final class LibraryFilterView: UIView {
     private let contentView = UIView()
     private let titleLabel = UILabel()
     let dismissButton = UIButton()
-    let readStatusView = LibraryFilterReadStatusView()
-    
-    let bottomActionView = WSSSearchBottomActionView()
+    private let readStatusView = LibraryFilterReadStatusView()
+    private let attractivePointView = LibraryFilterAttractivePointView()
+    private let bottomActionView = WSSSearchBottomActionView()
     
     //MARK: - Life Cycle
     
@@ -58,13 +58,14 @@ final class LibraryFilterView: UIView {
         contentView.addSubviews(titleLabel,
                                 dismissButton,
                                 readStatusView,
+                                attractivePointView,
                                 bottomActionView)
     }
     
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(UIScreen.isSE ? 487 : 522)
+            $0.height.equalTo(UIScreen.isSE ? 596 : 631)
         }
         
         titleLabel.snp.makeConstraints {
@@ -79,6 +80,11 @@ final class LibraryFilterView: UIView {
         
         readStatusView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(22)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        attractivePointView.snp.makeConstraints {
+            $0.top.equalTo(readStatusView.snp.bottom).offset(32)
             $0.horizontalEdges.equalToSuperview()
         }
         
