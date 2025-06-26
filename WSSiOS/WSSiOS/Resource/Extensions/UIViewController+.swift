@@ -382,9 +382,11 @@ extension UIViewController {
         return viewController.filterOption.asObservable()
     }
     
-    func presentLibraryFilterViewController() {
-        let viewController = LibraryFilterViewController(libraryFilterOption: LibraryFilterOption(readStatusOptions: [.quit]))
+    func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption) -> Observable<LibraryFilterOption> {
+        let viewController = LibraryFilterViewController(libraryFilterOption: selectedFilterOption)
         self.presentModalViewController(viewController)
+        
+        return viewController.filterOption.asObservable()
     }
     
     func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {

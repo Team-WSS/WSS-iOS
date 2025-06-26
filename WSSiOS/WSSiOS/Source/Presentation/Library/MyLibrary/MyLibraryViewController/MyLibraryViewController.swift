@@ -17,6 +17,7 @@ final class MyLibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private let selectedFilterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
     
     //MARK: - Components
     
@@ -46,10 +47,13 @@ final class MyLibraryViewController: UIViewController {
             rootView.headerView.filterHeaderView.starRatingFilterButton.rx.tap.asObservable(),
             rootView.headerView.filterHeaderView.attractivePointFilterButton.rx.tap.asObservable()
         )
+        .withLatestFrom(selectedFilterOption)
         .observe(on: MainScheduler.instance)
-        .bind(with: self, onNext: { owner, _ in
-            owner.presentLibraryFilterViewController()
-        })
+        .flatMap { filterOption in
+            self.presentLibraryFilterViewController(filterOption)
+        }
+        .distinctUntilChanged()
+        .bind(to: selectedFilterOption)
         .disposed(by: disposeBag)
     }
 }
