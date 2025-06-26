@@ -44,7 +44,6 @@ final class MyLibraryFilterHeaderView: UIView {
         
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
-            $0.alwaysBounceHorizontal = true
             $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         }
         
