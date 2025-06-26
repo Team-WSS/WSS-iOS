@@ -19,6 +19,7 @@ final class LibraryFilterView: UIView {
     let dismissButton = UIButton()
     private let readStatusView = LibraryFilterReadStatusView()
     private let attractivePointView = LibraryFilterAttractivePointView()
+    private let ratingView = LibraryFilterRatingView()
     private let bottomActionView = WSSSearchBottomActionView()
     
     //MARK: - Life Cycle
@@ -59,6 +60,7 @@ final class LibraryFilterView: UIView {
                                 dismissButton,
                                 readStatusView,
                                 attractivePointView,
+                                ratingView,
                                 bottomActionView)
     }
     
@@ -85,6 +87,11 @@ final class LibraryFilterView: UIView {
         
         attractivePointView.snp.makeConstraints {
             $0.top.equalTo(readStatusView.snp.bottom).offset(32)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        ratingView.snp.makeConstraints {
+            $0.top.equalTo(attractivePointView.snp.bottom).offset(32)
             $0.horizontalEdges.equalToSuperview()
         }
         
