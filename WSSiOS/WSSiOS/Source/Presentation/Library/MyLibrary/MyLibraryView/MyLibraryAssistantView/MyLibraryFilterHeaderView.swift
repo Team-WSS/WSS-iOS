@@ -15,13 +15,13 @@ final class MyLibraryFilterHeaderView: UIView {
     
     //MARK: - Components
     
-    let scrollView = UIScrollView()
-    let stackView = UIStackView()
-    let interestFilterButton = WSSFilterButton()
-    let dividerView = UIView()
-    let readStatusFilterButton = WSSFilterButton()
-    let starRatingFilterButton = WSSFilterButton()
-    let attractivePointFilterButton = WSSFilterButton()
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView()
+    private let interestFilterButton = WSSFilterButton()
+    private let dividerView = UIView()
+    private let readStatusFilterButton = WSSFilterButton()
+    private let starRatingFilterButton = WSSFilterButton()
+    private let attractivePointFilterButton = WSSFilterButton()
     
     // MARK: - Life Cycle
     

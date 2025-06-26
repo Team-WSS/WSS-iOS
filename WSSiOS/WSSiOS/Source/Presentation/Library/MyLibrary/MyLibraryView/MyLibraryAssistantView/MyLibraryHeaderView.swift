@@ -14,12 +14,12 @@ final class MyLibraryHeaderView: UIView {
     
     //MARK: - Components
     
-    let filterHeaderView = MyLibraryFilterHeaderView()
-    let bottomContentView = UIView()
-    let countLabel = UILabel()
-    let sortButton = WSSSortButton()
-    let layoutToggleButton = UIButton()
-    let dividerView = UIView()
+    private let filterHeaderView = MyLibraryFilterHeaderView()
+    private let bottomContentView = UIView()
+    private let countLabel = UILabel()
+    private let sortButton = WSSSortButton()
+    private let layoutToggleButton = UIButton()
+    private let dividerView = UIView()
     
     // MARK: - Life Cycle
     
