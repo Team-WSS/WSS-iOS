@@ -39,14 +39,9 @@ final class FeedNovelView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .wssPrimary20
             $0.layer.cornerRadius = 14
         }
-        
-        novelLinkIcon.do {
-            $0.image = UIImage(resource: .icNovelLink)
-        }
-        
+         
         novelTitleLabel.do {
             $0.textColor = .wssBlack
         }
@@ -113,7 +108,11 @@ final class FeedNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(title: String, rating: Float, participants: Int) {
+    func bindData(title: String, rating: Float, participants: Int, novelColor: UIColor, novelLinkImage: UIImage) {
+        print("🥹")
+        backgroundColor = novelColor
+        novelLinkIcon.image = novelLinkImage
+        
         novelTitleLabel.do {
             $0.text = title.truncateText(maxLength: 13)
             $0.applyWSSFont(.title3, with: $0.text)
