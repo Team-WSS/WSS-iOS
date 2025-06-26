@@ -47,12 +47,8 @@ final class FeedFilterVisibilityOptionView: UIView {
         optionimageView.image = visibilityOption.optionImage
         
         optionButton.do {
-            var config = UIButton.Configuration.filled()
-            config.baseBackgroundColor = .white
-            config.showsActivityIndicator = false
-            $0.configuration = config
-            
-            $0.configuration?.background.backgroundColorTransformer = UIConfigurationColorTransformer { _ in .white }
+            $0.configuration = .plain()
+            $0.configuration?.background.backgroundColor = .white
         }
         
         dividerView.backgroundColor = .wssGray50
