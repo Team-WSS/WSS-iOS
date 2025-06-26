@@ -107,7 +107,10 @@ final class FeedListConnectedNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(title: String, novelRatingCount: Int, novelRating: Float) {
+    func bindData(title: String, novelRatingCount: Int, novelRating: Float, novelColor: UIColor, novelLinkImage: UIImage) {
+        backgroundColor = novelColor
+        linkImageView.image = novelLinkImage
+        
         titleLabel.do {
             $0.applyWSSFont(.title3, with: title)
             $0.lineBreakMode = .byTruncatingTail
