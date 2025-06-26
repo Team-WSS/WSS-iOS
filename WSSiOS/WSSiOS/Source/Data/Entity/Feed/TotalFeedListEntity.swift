@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct TotalFeedListEntity {
     let category: String
@@ -31,10 +32,14 @@ struct TotalFeedEntity {
     let likeCount: Int
     let isLiked: Bool
     let commentCount: Int
+    
     let novelId: Int
     let title: String
     let novelRatingCount: Int
     let novelRating: Float
+    let novelGenreColor: UIColor
+    let novelGenreImage: UIImage
+    
     let relevantCategories: String
     let isSpoiler: Bool
     let isModified: Bool
@@ -60,6 +65,10 @@ extension TotalFeedResponse {
         let thumbnailImageURL = URL(string: self.thumbnailUrl ?? "")
         let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
         
+        let genre = NewNovelGenre(rawValue: self.genreName ?? "")
+        let novelGenreColor = genre?.linkColor ?? .genreColorR
+        let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
+        
         return TotalFeedEntity(
             feedId: self.feedId,
             userId: self.userId,
@@ -74,6 +83,8 @@ extension TotalFeedResponse {
             title: self.title ?? "",
             novelRatingCount: self.novelRatingCount ?? -1,
             novelRating: makeNovelRating,
+            novelGenreColor: novelGenreColor,
+            novelGenreImage: novelGenreImage,
             relevantCategories: categoryText,
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
@@ -104,6 +115,8 @@ extension TotalFeedListEntity {
                                                                     title: "바보야",
                                                                     novelRatingCount: 23,
                                                                     novelRating: 3.33,
+                                                                    novelGenreColor: .genreColorBL,
+                                                                    novelGenreImage: .icGenreLinkBL,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -125,6 +138,8 @@ extension TotalFeedListEntity {
                                                                     title: "",
                                                                     novelRatingCount: -1,
                                                                     novelRating: -1,
+                                                                    novelGenreColor: .genreColorBL,
+                                                                    novelGenreImage: .icGenreLinkBL,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -146,6 +161,8 @@ extension TotalFeedListEntity {
                                                                     title: "바보야",
                                                                     novelRatingCount: 23,
                                                                     novelRating: 3.33,
+                                                                    novelGenreColor: .genreColorBL,
+                                                                    novelGenreImage: .icGenreLinkBL,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -167,6 +184,8 @@ extension TotalFeedListEntity {
                                                                     title: "",
                                                                     novelRatingCount: -1,
                                                                     novelRating: -1,
+                                                                    novelGenreColor: .genreColorBL,
+                                                                    novelGenreImage: .icGenreLinkBL,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
