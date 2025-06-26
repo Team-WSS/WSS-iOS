@@ -19,7 +19,7 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
     //MARK: - UI Components
     
     private let stackView = UIStackView()
-    private let statusImage = UIImageView()
+    private let statusImageView = UIImageView()
     private let statusLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -53,7 +53,7 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
             $0.isUserInteractionEnabled = false
         }
         
-        statusImage.do {
+        statusImageView.do {
             $0.image = readStatus.fillImage.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .wssGray100
             $0.contentMode = .scaleAspectFit
@@ -63,7 +63,7 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
     
     private func setHierarchy() {
         self.addSubviews(stackView)
-        stackView.addArrangedSubviews(statusImage,
+        stackView.addArrangedSubviews(statusImageView,
                                       statusLabel)
     }
     
@@ -72,7 +72,7 @@ final class LibraryFilterReadStatusOptionButton: UIButton {
             $0.edges.equalToSuperview()
         }
         
-        statusImage.snp.makeConstraints {
+        statusImageView.snp.makeConstraints {
             $0.size.equalTo(24)
         }
     }
