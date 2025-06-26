@@ -216,8 +216,8 @@ final class FeedListTableViewCell: UITableViewCell {
             feedConnectedNovelView.bindData(title: feed.feed.title,
                                             novelRatingCount: feed.feed.novelRatingCount,
                                             novelRating: feed.feed.novelRating,
-                                            novelColor: .black,
-                                            novelLinkImage: .icAlertCheck)
+                                            novelColor: feed.feed.novelGenreColor,
+                                            novelLinkImage: feed.feed.novelGenreImage)
             
             stackView.insertArrangedSubview(feedConnectedNovelView, at: 3)
             stackView.setCustomSpacing(10, after: feedConnectedNovelView)
