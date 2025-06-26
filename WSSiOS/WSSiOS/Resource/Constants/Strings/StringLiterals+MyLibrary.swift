@@ -17,5 +17,9 @@ extension StringLiterals {
         static func novelCountText(_ count: Int) -> String {
             return "\(count)개의 기록"
         }
+        
+        enum Filter {
+            static let title = "작품 찾기 필터"
+        }
     }
 }
