@@ -19,9 +19,9 @@ enum FeedTab: CaseIterable {
     }
 }
 
-enum SosoFeedTab {
-    case all
-    case recommended
+enum SosoFeedTab: String {
+    case all = "ALL"
+    case recommended = "RECOMMENDED"
     
     var text: String {
         switch self {

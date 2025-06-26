@@ -21,6 +21,7 @@ final class FeedPageContentViewModel: ViewModelType {
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
+    private var feedsOption: String = SosoFeedTab.all.rawValue
     
     private var feedId: Int = 0
     private var isMyFeed: Bool = false
@@ -92,7 +93,8 @@ final class FeedPageContentViewModel: ViewModelType {
             .flatMapLatest { _ in
                 self.getFeedData(category: self.category,
                                  lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
+                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count,
+                                 feedsOption: self.feedsOption)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -199,7 +201,8 @@ final class FeedPageContentViewModel: ViewModelType {
             .flatMapLatest { _ in
                 self.getFeedData(category: self.category,
                                  lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
+                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count,
+                                 feedsOption: self.feedsOption)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -228,7 +231,8 @@ final class FeedPageContentViewModel: ViewModelType {
             .flatMapLatest {_ in
                 self.getFeedData(category: self.category,
                                  lastFeedId: self.lastFeedId,
-                                 size: nil)
+                                 size: nil,
+                                 feedsOption: self.feedsOption)
                 .do(onNext: { _ in
                         self.isFetching = false
                     })
@@ -253,7 +257,8 @@ final class FeedPageContentViewModel: ViewModelType {
             .flatMapLatest { _ in
                 self.getFeedData(category: self.category,
                                  lastFeedId: self.lastFeedId,
-                                 size: nil)
+                                 size: nil,
+                                 feedsOption: self.feedsOption)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -287,8 +292,8 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
-        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId, size: size)
+    private func getFeedData(category: String, lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
+        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId, size: size, feedsOption: feedsOption)
     }
     
     private func postFeedLike(_ feedId: Int) -> Observable<Void> {
