@@ -106,6 +106,12 @@ final class MyLibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.novelCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.headerView.updateCountLabel(count: count)
+            })
+            .disposed(by: disposeBag)
+        
         output.libraryNovelList
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.libraryCollectionView.rx.items(

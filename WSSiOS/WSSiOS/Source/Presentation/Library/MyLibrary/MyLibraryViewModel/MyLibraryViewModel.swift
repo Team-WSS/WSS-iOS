@@ -57,6 +57,7 @@ final class MyLibraryViewModel: ViewModelType {
         let selectedFilterOption: Driver<LibraryFilterOption>
         let selectedSortType: Driver<SortType>
         let selectedLayoutType: Driver<LayoutType>
+        let novelCount: Driver<Int>
         let libraryNovelList: Observable<[MyLibraryEntity]>
         let showEmptyLibraryView: Observable<Bool>
     }
@@ -106,7 +107,6 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, _ in
                 owner.libraryNovelList.accept([])
                 owner.isLoadable.accept(true)
-                owner.novelCount.accept(0)
                 owner.lastUserNovelId.accept(0)
                 owner.updateData.accept(())
             })
@@ -139,6 +139,7 @@ final class MyLibraryViewModel: ViewModelType {
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
             selectedLayoutType: layoutType.asDriver(),
+            novelCount: novelCount.asDriver(),
             libraryNovelList: libraryNovelList.asObservable(),
             showEmptyLibraryView: showEmptyLibraryView.asObservable()
         )
