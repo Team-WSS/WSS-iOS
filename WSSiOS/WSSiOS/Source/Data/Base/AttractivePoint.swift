@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum AttractivePoint: String, CaseIterable {
     case worldview = "worldview"
@@ -21,6 +22,16 @@ enum AttractivePoint: String, CaseIterable {
         case .character: "캐릭터"
         case .relationship: "관계"
         case .vibe: "분위기"
+        }
+    }
+    
+    var icon: UIImage {
+        switch self {
+        case .worldview: .icWorldview
+        case .material: .icMaterial
+        case .character: .icCharacter
+        case .relationship: .icRelationship
+        case .vibe: .icVibe
         }
     }
 }
