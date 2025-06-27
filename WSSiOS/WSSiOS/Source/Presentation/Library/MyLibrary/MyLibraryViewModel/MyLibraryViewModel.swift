@@ -26,6 +26,8 @@ final class MyLibraryViewModel: ViewModelType {
     struct Input {
         let interestFilterButtonDidTap: ControlEvent<Void>
         let sortButtonDidTap: ControlEvent<Void>
+        let libraryCollectionViewContentSize: Observable<CGSize?>
+        let libraryTableViewContentSize: Observable<CGSize?>
     }
     
     struct Output {

@@ -45,7 +45,7 @@ final class MyLibraryView: UIView {
                          headerView,
                          libraryCollectionView,
                          libraryTableView,
-                         libraryEmptyView,)
+                         libraryEmptyView)
     }
     
     private func setLayout() {
