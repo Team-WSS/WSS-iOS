@@ -97,14 +97,11 @@ final class MyLibraryView: UIView {
         }
     }
     
-    func showEmptyLibraryView() {
-        libraryEmptyView.isHidden = false
-        libraryCollectionView.isHidden = true
-        libraryTableView.isHidden = true
+    func showEmptyLibraryView(isShowing: Bool) {
+        libraryEmptyView.isHidden = !isShowing
     }
     
     func showLibraryListView(selectedType: LayoutType) {
-        libraryEmptyView.isHidden = true
         libraryCollectionView.isHidden = selectedType == .list
         libraryTableView.isHidden = selectedType == .grid
     }
