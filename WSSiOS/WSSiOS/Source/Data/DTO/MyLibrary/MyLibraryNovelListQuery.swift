@@ -30,14 +30,10 @@ extension MyLibraryNovelListQuery {
             items.append(URLQueryItem(name: "isInterest", value: String(isInterest)))
         }
         if let readStatus = readStatus {
-            for status in readStatus {
-                items.append(URLQueryItem(name: "readStatus", value: status))
-            }
+            items.append(URLQueryItem(name: "readStatuses", value: readStatus.joined(separator: ",")))
         }
         if let attractivePoints = attractivePoints {
-            for point in attractivePoints {
-                items.append(URLQueryItem(name: "attractivePoints", value: point))
-            }
+            items.append(URLQueryItem(name: "attractivePoints", value: attractivePoints.joined(separator: ",")))
         }
         if let novelRating = novelRating {
             items.append(URLQueryItem(name: "novelRating", value: String(novelRating)))
