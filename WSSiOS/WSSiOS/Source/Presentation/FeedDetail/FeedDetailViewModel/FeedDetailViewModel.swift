@@ -191,7 +191,7 @@ final class FeedDetailViewModel: ViewModelType {
                     owner.likeButtonState.accept(feed.isLiked)
                     owner.likeCount.accept(feed.likeCount)
                     owner.feedUserId = feed.userId
-                    owner.novelId = feed.novelId
+                    owner.novelId = feed.novelData?.novelId
                     owner.commentCount.accept(feed.commentCount)
                     owner.isMyFeed.accept(feed.isMyFeed)
                     owner.imageURLs = feed.imageURLs

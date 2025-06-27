@@ -19,7 +19,7 @@ final class FeedDetailContentView: UIView {
     private let contentLabel = UILabel()
     let addImageView = FeedDetailAddImageView()
     private let linkNovelWrapperView = UIView()
-    let linkNovelView = FeedNovelView()
+    let linkNovelView = FeedDetailNovelView()
     private let reactWrapperView = UIView()
     let reactView = FeedReactView()
     private let dividerView = UIView()
@@ -96,9 +96,8 @@ final class FeedDetailContentView: UIView {
         
         if data.hasLinkedNovel {
             stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
-            linkNovelView.bindData(title: data.novelTitle ?? "",
-                                   rating: data.novelRating ?? 0,
-                                   participants: data.novelRatingCount ?? 0)
+            guard let novelData = data.novelData else { return }
+            linkNovelView.bindData(novelData: novelData)
         } else {
             linkNovelWrapperView.removeFromSuperview()
         }
