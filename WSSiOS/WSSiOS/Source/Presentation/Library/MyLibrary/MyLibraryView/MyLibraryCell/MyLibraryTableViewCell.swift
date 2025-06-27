@@ -332,7 +332,8 @@ final class MyLibraryTableViewCell: UITableViewCell {
                 attractivePointView.alignment = .center
                 
                 let attractivePointImageView = UIImageView()
-                attractivePointImageView.image = point.image
+                attractivePointImageView.image = point.image.withRenderingMode(.alwaysTemplate)
+                attractivePointImageView.tintColor = .wssPrimary100
                 attractivePointImageView.snp.makeConstraints {
                     $0.size.equalTo(12)
                 }
