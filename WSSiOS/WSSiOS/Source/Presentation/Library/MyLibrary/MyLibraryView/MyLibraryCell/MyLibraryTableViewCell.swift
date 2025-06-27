@@ -111,7 +111,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         myRatingImageView.do {
-            $0.image = .icStar
+            $0.image = .icSmallStarFilled
         }
         
         myRatingNumberLabel.do {
@@ -129,7 +129,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         totalRatingImageView.do {
-            $0.image = .icStar.withTintColor(.wssGray200)
+            $0.image = .icSmallStarFilled.withTintColor(.wssGray200)
         }
         
         totalRatingNumberLabel.do {
@@ -250,17 +250,17 @@ final class MyLibraryTableViewCell: UITableViewCell {
         textStackView.setCustomSpacing(6, after: ratingStackView)
         
         myRatingImageView.snp.makeConstraints() {
-            $0.size.equalTo(12)
+            $0.size.equalTo(9)
         }
         
-        myRatingStackView.setCustomSpacing(2, after: myRatingImageView)
+        myRatingStackView.setCustomSpacing(3.5, after: myRatingImageView)
         myRatingStackView.setCustomSpacing(5, after: myRatingNumberLabel)
         
         totalRatingImageView.snp.makeConstraints {
-            $0.size.equalTo(12)
+            $0.size.equalTo(9)
         }
         
-        totalRatingStackView.setCustomSpacing(2, after: totalRatingImageView)
+        totalRatingStackView.setCustomSpacing(3.5, after: totalRatingImageView)
         totalRatingStackView.setCustomSpacing(5, after: totalRatingNumberLabel)
         
         keywordScrollView.snp.makeConstraints {
