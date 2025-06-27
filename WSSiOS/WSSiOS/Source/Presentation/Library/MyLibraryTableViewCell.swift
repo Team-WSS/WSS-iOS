@@ -1,5 +1,5 @@
 //
-//  LibraryTableViewCell.swift
+//  MyLibraryTableViewCell.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/27/25.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryTableViewCell: UITableViewCell {
+final class MyLibraryTableViewCell: UITableViewCell {
     
     //MARK: - Components
     
@@ -278,7 +278,7 @@ final class LibraryTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: UserNovelEntity) {
+    func bindData(_ data: MyLibraryEntity) {
         if let readStatus = data.readStatus {
             readStatusTagView.isHidden = false
             readStatusTagView.bindData(readStatus: readStatus)

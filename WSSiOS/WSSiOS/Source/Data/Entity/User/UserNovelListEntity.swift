@@ -9,6 +9,7 @@ import Foundation
 
 struct UserNovelListEntity {
     let userNovelCount: Int
+    let userNovelRating: Float
     let isLoadable: Bool
     let userNovels: [UserNovelEntity]
 }
@@ -16,6 +17,7 @@ struct UserNovelListEntity {
 extension UserNovelListResponse {
     func toEntity() -> UserNovelListEntity {
         return UserNovelListEntity(userNovelCount: self.userNovelCount,
+                                   userNovelRating: self.userNovelRating,
                                    isLoadable: self.isLoadable,
                                    userNovels: self.userNovels.map { $0.toEntity() })
     }
@@ -24,39 +26,25 @@ extension UserNovelListResponse {
 struct UserNovelEntity {
     let userNovelId: Int
     let novelId: Int
-    let title: String
+    let author: String
     let novelImage: String
-    let novelRating: Float
-    let readStatus: ReadStatus?
-    let isInterest: Bool
-    let userNovelRating: Float
-    let attractivePoints: [AttractivePoint?]
-    let startDate: String?
-    let endDate: String?
-    let keywords: [String]
-    let myFeeds: [String]
+    let title: String
+    let novelRating: String
+    let hasNovelRating: Bool
 }
 
 extension UserNovelResponse {
     func toEntity() -> UserNovelEntity {
-        let readStatus = ReadStatus(rawValue: self.readStatus ?? "")
-        let attractivePoints = attractivePoints.map { AttractivePoint(rawValue: $0) }
+        let novelRatingText = String(round(self.novelRating * 10) / 10)
+        let hasNovelRating = self.novelRating != 0.0
         
-        return UserNovelEntity(
-            userNovelId: self.userNovelId,
+        return UserNovelEntity(userNovelId: self.userNovelId,
                                novelId: self.novelId,
+                               author: self.author,
+                               novelImage: self.novelImage,
                                title: self.title,
-            novelImage: self.novelImage,
-            novelRating: self.novelRating,
-            readStatus: readStatus,
-            isInterest: self.isInterest,
-            userNovelRating: self.userNovelRating,
-            attractivePoints: attractivePoints,
-            startDate: self.startDate,
-            endDate: self.endDate,
-            keywords: self.keywords,
-            myFeeds: self.myFeeds
-        )
+                               novelRating: novelRatingText,
+                               hasNovelRating: hasNovelRating)
     }
 }
 

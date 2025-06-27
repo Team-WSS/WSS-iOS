@@ -1,5 +1,5 @@
 //
-//  LibraryTableView.swift
+//  MyLibraryTableView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/27/25.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryTableView: UIView {
+final class MyLibraryTableView: UIView {
     
     //MARK: - Components
     

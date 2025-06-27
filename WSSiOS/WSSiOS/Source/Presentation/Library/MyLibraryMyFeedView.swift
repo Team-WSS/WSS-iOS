@@ -1,5 +1,5 @@
 //
-//  LibraryMyFeedView.swift
+//  MyLibraryMyFeedView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/27/25.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryMyFeedView: UIView {
+final class MyLibraryMyFeedView: UIView {
     
     //MARK: - Components
     
