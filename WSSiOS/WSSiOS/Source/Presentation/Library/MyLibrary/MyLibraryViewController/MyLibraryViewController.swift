@@ -62,9 +62,14 @@ final class MyLibraryViewController: UIViewController {
     
     private func bindViewModelOutput(_ output: MyLibraryViewModel.Output) {
         output.selectedFilterOption
-            .asDriver()
             .drive(with: self, onNext: { owner, option in
                 owner.rootView.headerView.filterHeaderView.updateFilterButtons(selectedOption: option)
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedSortType
+            .drive(with: self, onNext: { owner, sortType in
+                owner.rootView.headerView.sortButton.updateSortButton(sortType: sortType)
             })
             .disposed(by: disposeBag)
     }
