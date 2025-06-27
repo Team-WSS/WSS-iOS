@@ -77,10 +77,10 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelImageView,
-                         readStatusTagView,
-                         interestImageView,
-                         stackView)
+        contentView.addSubviews(novelImageView,
+                                readStatusTagView,
+                                interestImageView,
+                                stackView)
         stackView.addArrangedSubviews(novelTitleLabel,
                                       starStackView,
                                       dateLabel)

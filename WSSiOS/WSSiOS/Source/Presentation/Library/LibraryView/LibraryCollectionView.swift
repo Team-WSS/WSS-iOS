@@ -14,7 +14,7 @@ final class LibraryCollectionView: UIView {
     
     //MARK: - Components
     
-    lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     
