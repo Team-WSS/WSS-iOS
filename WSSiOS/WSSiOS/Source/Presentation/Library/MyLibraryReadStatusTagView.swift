@@ -1,5 +1,5 @@
 //
-//  LibraryReadStatusTagView.swift
+//  MyLibraryReadStatusTagView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/26/25.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryReadStatusTagView: UIView {
+final class MyLibraryReadStatusTagView: UIView {
     
     //MARK: - Components
     
