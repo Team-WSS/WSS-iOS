@@ -34,10 +34,14 @@ struct DefaultMyLibraryRepository: MyLibraryRepository {
             size: size,
             sortType: sortType.queryText)
         queryItem.isInterest = filterOption.interestedOption ? true : nil
-        queryItem.readStatus = filterOption.readStatusOptions.map { $0.rawValue }
         queryItem.novelRating = filterOption.starRatingOption.map { $0.toFloat }
-        queryItem.attractivePoints = filterOption.attractivePointOptions.map { $0.rawValue }
-            
+        if !filterOption.readStatusOptions.isEmpty {
+            queryItem.readStatus = filterOption.readStatusOptions.map { $0.rawValue }
+        }
+        if !filterOption.attractivePointOptions.isEmpty {
+            queryItem.attractivePoints = filterOption.attractivePointOptions.map { $0.rawValue }
+        }
+       
         return myLibraryService.getNovelList(userId: userId, queryItem: queryItem).map { $0.toEntity() }
     }
 }
