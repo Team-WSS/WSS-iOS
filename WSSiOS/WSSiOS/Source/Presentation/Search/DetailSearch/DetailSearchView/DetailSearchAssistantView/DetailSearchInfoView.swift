@@ -31,7 +31,7 @@ final class DetailSearchInfoView: UIView {
     private let ratingTopStackView = UIStackView()
     private let ratingBottomStackView = UIStackView()
     
-    let novelRatingStatusButtons = NovelRatingStatus.allCases.map { DetailSearchNovelRatingStatusButton(status: $0) }
+    let novelRatingStatusButtons = NovelRatingStatus.allCases.map { WSSNovelRatingStatusButton(status: $0) }
     
     //MARK: - Life Cycle
     

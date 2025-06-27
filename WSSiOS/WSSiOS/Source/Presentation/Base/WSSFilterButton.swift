@@ -39,8 +39,14 @@ final class WSSFilterButton: UIButton {
     
     private func setUI() {
         self.do {
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = buttonHeight / 2
             $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.wssGray80.cgColor
+        }
+        
+        filterLabel.do {
+            $0.textColor = .wssGray300
         }
         
         filterImageView.do {
@@ -60,7 +66,7 @@ final class WSSFilterButton: UIButton {
     
     //MARK: - Custom Method
     
-    func setButtonText(_ text: String) {
+    func setButtonText(_ text: String?) {
         filterLabel.do {
             $0.applyWSSFont(.body4, with: text)
         }

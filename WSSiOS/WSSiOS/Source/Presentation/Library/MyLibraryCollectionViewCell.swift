@@ -15,7 +15,7 @@ final class MyLibraryCollectionViewCell: UICollectionViewCell {
     //MARK: - Components
     
     private let novelImageView = UIImageView()
-    private let readStatusTagView = LibraryReadStatusTagView()
+    private let readStatusTagView = MyLibraryReadStatusTagView()
     private let interestImageView = UIImageView()
     private let stackView = UIStackView()
     private let novelTitleLabel = UILabel()

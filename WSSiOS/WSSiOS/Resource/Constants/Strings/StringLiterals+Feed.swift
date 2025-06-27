@@ -92,5 +92,6 @@ extension StringLiterals {
         static let blockedComment = "차단한 유저의 댓글"
         
         static let notFoundFeed = "해당 글을 찾을 수 없어요"
+        static let totalStarTitle = "전체"
     }
 }

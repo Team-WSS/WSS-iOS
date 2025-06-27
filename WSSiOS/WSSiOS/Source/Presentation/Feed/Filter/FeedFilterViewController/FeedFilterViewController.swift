@@ -18,14 +18,14 @@ final class FeedFilterViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    let initialFilterOption: FeedFilterOption
+    private let initialFilterOption: FeedFilterOption
     let filterOption = PublishSubject<FeedFilterOption>()
-    let genreOptions = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedFilterGenres)
-    let visibilityOptions = BehaviorRelay<[FeedVisibilityOption]>(value: FeedVisibilityOption.allCases)
+    private let genreOptions = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedFilterGenres)
+    private let visibilityOptions = BehaviorRelay<[FeedVisibilityOption]>(value: FeedVisibilityOption.allCases)
     
     //MARK: - Components
     
-    let rootView = FeedFilterView()
+    private let rootView = FeedFilterView()
     
     // MARK: - Life Cycle
     
@@ -167,7 +167,6 @@ final class FeedFilterViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, filterOption in
                 owner.filterOption.onNext(filterOption)
-                print(filterOption)
                 owner.filterOption.onCompleted()
                 owner.dismissModalViewController()
             })

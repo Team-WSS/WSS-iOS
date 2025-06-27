@@ -18,7 +18,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
     
     private let novelInfoContentView = UIView()
     private let novelImageStackView = UIStackView()
-    private let readStatusTagView = LibraryReadStatusTagView()
+    private let readStatusTagView = MyLibraryReadStatusTagView()
     private let novelImageView = UIImageView()
     private let interestImageView = UIImageView()
     private let dateLabel = UILabel()
@@ -332,7 +332,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
                 attractivePointView.alignment = .center
                 
                 let attractivePointImageView = UIImageView()
-                attractivePointImageView.image = point.icon
+                attractivePointImageView.image = point.image
                 attractivePointImageView.snp.makeConstraints {
                     $0.size.equalTo(12)
                 }
@@ -392,7 +392,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         } else {
             feedScrollView.isHidden = false
             data.myFeeds.forEach { feed in
-                let feedView = LibraryMyFeedView()
+                let feedView = MyLibraryMyFeedView()
                 feedView.bindData(feed: feed)
                 feedView.snp.makeConstraints {
                     $0.height.equalTo(54)

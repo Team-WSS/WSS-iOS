@@ -5,7 +5,6 @@
 //  Created by Hyowon Jeon on 9/24/24.
 //
 
-import Foundation
 import UIKit
 
 enum AttractivePoint: String, CaseIterable {
@@ -25,13 +24,13 @@ enum AttractivePoint: String, CaseIterable {
         }
     }
     
-    var icon: UIImage {
+    var image: UIImage {
         switch self {
-        case .worldview: .icWorldview
-        case .material: .icMaterial
-        case .character: .icCharacter
-        case .relationship: .icRelationship
-        case .vibe: .icVibe
+        case .worldview: .icAttractiveWorldview
+        case .material: .icAttractiveMaterial
+        case .character: .icAttractiveCharacter
+        case .relationship: .icAttractiveRelationship
+        case .vibe: .icAttractiveVibe
         }
     }
 }
