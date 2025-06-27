@@ -19,8 +19,7 @@ final class MyLibraryViewModel: ViewModelType {
     
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
-    private let libraryCollectionViewHeight = PublishRelay<CGFloat>()
-    private let libraryTableViewHeight = PublishRelay<CGFloat>()
+    private let layoutType = BehaviorRelay<LayoutType>(value: .grid)
     private let libraryNovelList = BehaviorRelay<[MyLibraryListEntity]>(value: [])
     private let loadData = PublishRelay<Void>()
     private let lastFeedId = BehaviorRelay<Int>(value: 0)
@@ -38,15 +37,12 @@ final class MyLibraryViewModel: ViewModelType {
     struct Input {
         let interestFilterButtonDidTap: ControlEvent<Void>
         let sortButtonDidTap: ControlEvent<Void>
-        let libraryCollectionViewContentSize: Observable<CGSize?>
-        let libraryTableViewContentSize: Observable<CGSize?>
     }
     
     struct Output {
         let selectedFilterOption: Driver<LibraryFilterOption>
         let selectedSortType: Driver<SortType>
-        let libraryCollectionViewHeight: Observable<CGFloat>
-        let libraryTableViewHeight: Observable<CGFloat>
+        let selectedLayoutType: Driver<LayoutType>
         let libraryNovelList: Driver<[MyLibraryListEntity]>
     }
     
@@ -68,21 +64,11 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: sortType)
             .disposed(by: disposeBag)
         
-        input.libraryCollectionViewContentSize
-            .map { $0?.height ?? 0 }
-            .bind(to: libraryCollectionViewHeight)
-            .disposed(by: disposeBag)
-        
-        input.libraryTableViewContentSize
-            .map { $0?.height ?? 0 }
-            .bind(to: libraryTableViewHeight)
-            .disposed(by: disposeBag)
         
         return Output(
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
-            libraryCollectionViewHeight: libraryCollectionViewHeight.asObservable(),
-            libraryTableViewHeight: libraryTableViewHeight.asObservable(),
+            selectedLayoutType: layoutType.asDriver(),
             libraryNovelList: libraryNovelList.asDriver()
         )
     }
