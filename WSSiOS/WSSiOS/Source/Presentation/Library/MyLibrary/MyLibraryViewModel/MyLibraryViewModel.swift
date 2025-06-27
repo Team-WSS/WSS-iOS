@@ -19,6 +19,11 @@ final class MyLibraryViewModel: ViewModelType {
     private let sortType = BehaviorRelay<SortType>(value: .newest)
     private let libraryCollectionViewHeight = PublishRelay<CGFloat>()
     private let libraryTableViewHeight = PublishRelay<CGFloat>()
+    private let libraryNovelList = BehaviorRelay<[MyLibraryListEntity]>(value: [])
+    private let loadData = PublishRelay<Void>()
+    private let lastFeedId = BehaviorRelay<Int>(value: 0)
+    private let isFetching = BehaviorRelay<Bool>(value: false)
+    private let isLoadable = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Life Cycle
     
@@ -37,6 +42,7 @@ final class MyLibraryViewModel: ViewModelType {
         let selectedSortType: Driver<SortType>
         let libraryCollectionViewHeight: Observable<CGFloat>
         let libraryTableViewHeight: Observable<CGFloat>
+        let libraryNovelList: Driver<[MyLibraryListEntity]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -71,12 +77,16 @@ final class MyLibraryViewModel: ViewModelType {
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
             libraryCollectionViewHeight: libraryCollectionViewHeight.asObservable(),
-            libraryTableViewHeight: libraryTableViewHeight.asObservable()
+            libraryTableViewHeight: libraryTableViewHeight.asObservable(),
+            libraryNovelList: libraryNovelList.asDriver()
         )
     }
     
     //MARK: - API
     
+    private func getNovelListData(disposeBag: DisposeBag) {
+        
+    }
     
     //MARK: - Custom Method
     
