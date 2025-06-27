@@ -17,9 +17,6 @@ final class MyLibraryViewModel: ViewModelType {
     
     let myLibraryRepository: MyLibraryRepository
     
-    //Constant
-    let size = 10
-    
     //Rx
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
@@ -28,10 +25,11 @@ final class MyLibraryViewModel: ViewModelType {
     
     private let libraryNovelList = BehaviorRelay<[MyLibraryEntity]>(value: [])
     private let lastUserNovelId = BehaviorRelay<Int>(value: 0)
-    private let updateData = PublishRelay<Void>()
-    private let reloadData = PublishRelay<Void>()
     private let isFetching = BehaviorRelay<Bool>(value: false)
     private let isLoadable = BehaviorRelay<Bool>(value: true)
+    private let fetchNovelList = PublishRelay<Void>()
+    private let reloadNovelList = PublishRelay<Void>()
+    private let refreshNovelList = PublishRelay<Void>()
     
     private let showEmptyLibraryView = PublishRelay<Bool>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
@@ -92,19 +90,19 @@ final class MyLibraryViewModel: ViewModelType {
         Observable.combineLatest(filterOption, sortType)
             .observe(on: MainScheduler.asyncInstance)  // raceCondition을 방지하기 위해 한사이클 다음에 스트림이 작동하도록 하는 역할.
             .map { _ in }
-            .bind(to: reloadData)
+            .bind(to: reloadNovelList)
             .disposed(by: disposeBag)
         
         input.viewWillAppear
-            .bind(to: reloadData)
+            .bind(to: refreshNovelList)
             .disposed(by: disposeBag)
         
-        reloadData
+        reloadNovelList
             .bind(with: self, onNext: { owner, _ in
                 owner.libraryNovelList.accept([])
                 owner.isLoadable.accept(true)
                 owner.lastUserNovelId.accept(0)
-                owner.updateData.accept(())
+                owner.fetchNovelList.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -112,10 +110,10 @@ final class MyLibraryViewModel: ViewModelType {
             input.collectionViewDidReachBottom,
             input.tableViewDidReachBottom
         )
-        .bind(to: updateData)
+        .bind(to: fetchNovelList)
         .disposed(by: disposeBag)
         
-        updateData
+        fetchNovelList
             .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
             .filter { !($0.0) && $0.1 }
             .do(onNext: { [weak self] _ in self?.isFetching.accept(true) })
@@ -135,6 +133,27 @@ final class MyLibraryViewModel: ViewModelType {
                 owner.lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
                 owner.isFetching.accept(false)
                 owner.showEmptyLibraryView.accept(newList.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        refreshNovelList
+            .withLatestFrom(isFetching)
+            .filter { !$0 }
+            .do(onNext: { [weak self] _ in self?.isFetching.accept(true) })
+            .withLatestFrom(Observable.combineLatest(filterOption, sortType, libraryNovelList))
+            .flatMapLatest { (filterOption, sortType, novelList) in
+                self.getNovelListData(filterOption: filterOption,
+                                      lastUserNovelId: 0,
+                                      size: novelList.count,
+                                      sortType: sortType)
+            }
+            .bind(with: self, onNext: { owner, entity in
+                owner.libraryNovelList.accept(entity.userNovels)
+                owner.isLoadable.accept(entity.isLoadable)
+                owner.novelCount.accept(entity.userNovelCount)
+                owner.lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
+                owner.isFetching.accept(false)
+                owner.showEmptyLibraryView.accept(entity.userNovels.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -159,11 +178,11 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, sortType: SortType) -> Observable<MyLibraryListEntity> {
+    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, size: Int = 12, sortType: SortType) -> Observable<MyLibraryListEntity> {
         return self.myLibraryRepository.getNovelList(
             filterOption: filterOption,
             lastUserNovelId: lastUserNovelId,
-            size: self.size,
+            size: size,
             sortType: sortType
         )
         .asObservable()
