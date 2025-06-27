@@ -19,6 +19,7 @@ final class MyLibraryViewController: UIViewController {
     private let viewModel: MyLibraryViewModel
     
     private let disposeBag = DisposeBag()
+    private let viewWillAppear = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -51,6 +52,7 @@ final class MyLibraryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewWillAppear.accept(())
         //        DefaultMyLibraryService().getMyLibraryList(userId:  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId), query: MyLibraryNovelListQuery(lastUserNovelId: 0, size: 20, sortType: "NEWEST"))
         //            .subscribe({ data in
         //                print(data)
@@ -107,6 +109,7 @@ final class MyLibraryViewController: UIViewController {
     
     private func createViewModelInput() -> MyLibraryViewModel.Input {
         return MyLibraryViewModel.Input(
+            viewWillAppear: viewWillAppear.asObservable(),
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
             sortButtonDidTap: rootView.headerView.sortButton.rx.tap, layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap
         )
