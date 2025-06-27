@@ -42,6 +42,7 @@ final class MyLibraryView: UIView {
         libraryTableView.do {
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
+            $0.estimatedRowHeight = 220
         }
         
         libraryCollectionView.do {

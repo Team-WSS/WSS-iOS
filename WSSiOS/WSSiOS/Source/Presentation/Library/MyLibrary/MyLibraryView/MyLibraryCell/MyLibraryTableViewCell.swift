@@ -66,7 +66,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         
         stackView.do {
             $0.axis = .vertical
-            $0.distribution = .fill
+            $0.alignment = .fill
         }
         
         novelImageStackView.do {
@@ -74,7 +74,6 @@ final class MyLibraryTableViewCell: UITableViewCell {
             $0.spacing = 0
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
-            $0.distribution = .fill
         }
         
         novelImageView.do {
@@ -112,7 +111,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         myRatingImageView.do {
-            $0.image = .icStarFill
+            $0.image = .icStar
         }
         
         myRatingNumberLabel.do {
@@ -130,7 +129,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         totalRatingImageView.do {
-            $0.image = .icStarEmpty
+            $0.image = .icStar.withTintColor(.wssGray200)
         }
         
         totalRatingNumberLabel.do {
@@ -202,8 +201,8 @@ final class MyLibraryTableViewCell: UITableViewCell {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.lessThanOrEqualToSuperview().inset(16)
+            $0.horizontalEdges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview().inset(16)
             
             stackView.setCustomSpacing(8, after: novelInfoContentView)
             stackView.setCustomSpacing(12, after: keywordScrollView)
@@ -215,8 +214,10 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         novelImageStackView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
+            $0.width.equalTo(60)
             
             readStatusTagView.snp.makeConstraints() {
                 $0.width.equalTo(60)
@@ -230,16 +231,17 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         interestImageView.snp.makeConstraints() {
-            $0.right.equalTo(novelImageStackView.snp.right).offset(-9)
-            $0.bottom.equalTo(novelImageStackView.snp.bottom).offset(-9)
+            $0.trailing.equalTo(novelImageStackView.snp.trailing).offset(-7)
+            $0.bottom.equalTo(novelImageStackView.snp.bottom).offset(-7)
         }
         
         dateLabel.snp.makeConstraints() {
-            $0.top.trailing.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         textStackView.snp.makeConstraints() {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(5)
+            $0.top.equalTo(novelImageView.snp.top).offset(5)
             $0.leading.equalTo(novelImageStackView.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().inset(20)
         }
@@ -248,17 +250,17 @@ final class MyLibraryTableViewCell: UITableViewCell {
         textStackView.setCustomSpacing(6, after: ratingStackView)
         
         myRatingImageView.snp.makeConstraints() {
-            $0.size.equalTo(9)
+            $0.size.equalTo(12)
         }
         
-        myRatingStackView.setCustomSpacing(3.5, after: myRatingImageView)
+        myRatingStackView.setCustomSpacing(2, after: myRatingImageView)
         myRatingStackView.setCustomSpacing(5, after: myRatingNumberLabel)
         
         totalRatingImageView.snp.makeConstraints {
-            $0.size.equalTo(9)
+            $0.size.equalTo(12)
         }
         
-        totalRatingStackView.setCustomSpacing(3.5, after: totalRatingImageView)
+        totalRatingStackView.setCustomSpacing(2, after: totalRatingImageView)
         totalRatingStackView.setCustomSpacing(5, after: totalRatingNumberLabel)
         
         keywordScrollView.snp.makeConstraints {
