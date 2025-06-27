@@ -51,7 +51,7 @@ final class MyLibraryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //        DefaultMyLibraryService().getMyLibraryList(userId:  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId), query: MyLibraryListQuery(lastUserNovelId: 0, size: 20, sortType: "NEWEST"))
+        //        DefaultMyLibraryService().getMyLibraryList(userId:  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId), query: MyLibraryNovelListQuery(lastUserNovelId: 0, size: 20, sortType: "NEWEST"))
         //            .subscribe({ data in
         //                print(data)
         //            })
