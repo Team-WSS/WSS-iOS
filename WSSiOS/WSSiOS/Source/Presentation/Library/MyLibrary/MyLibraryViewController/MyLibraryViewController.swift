@@ -97,17 +97,9 @@ final class MyLibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.libraryCollectionViewHeight
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, height in
-                owner.rootView.libraryCollectionView.updateCollectionViewHeight(height: height)
-            })
-            .disposed(by: disposeBag)
-        
-        output.libraryTableViewHeight
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, height in
-                owner.rootView.libraryTableView.updateTableViewHeight(height: height)
+        output.selectedLayoutType
+            .drive(with: self, onNext: { owner, layoutType in
+                owner.rootView.showLibraryListView(layout: layoutType)
             })
             .disposed(by: disposeBag)
     }
@@ -115,9 +107,7 @@ final class MyLibraryViewController: UIViewController {
     private func createViewModelInput() -> MyLibraryViewModel.Input {
         return MyLibraryViewModel.Input(
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
-            sortButtonDidTap: rootView.headerView.sortButton.rx.tap,
-            libraryCollectionViewContentSize: rootView.libraryCollectionView.rx.observe(CGSize.self, "contentSize"),
-            libraryTableViewContentSize: rootView.libraryTableView.rx.observe(CGSize.self, "contentSize")
+            sortButtonDidTap: rootView.headerView.sortButton.rx.tap
         )
     }
     

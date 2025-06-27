@@ -48,10 +48,4 @@ final class MyLibraryTableView: UIView {
             $0.edges.equalToSuperview()
         }
     }
-    
-    func updateTableViewHeight(height: CGFloat) {
-        libraryTableView.snp.updateConstraints {
-            $0.height.equalTo(height)
-        }
-    }
 }
