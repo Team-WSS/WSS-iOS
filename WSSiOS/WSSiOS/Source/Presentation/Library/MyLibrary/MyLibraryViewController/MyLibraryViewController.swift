@@ -43,15 +43,39 @@ final class MyLibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerCell()
+        delegate()
         bindAction()
         bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //        DefaultMyLibraryService().getMyLibraryList(userId:  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId), query: MyLibraryListQuery(lastUserNovelId: 0, size: 20, sortType: "NEWEST"))
+        //            .subscribe({ data in
+        //                print(data)
+        //            })
+        //            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
+    
+    private func registerCell() {
+        rootView.libraryCollectionView.libraryCollectionView
+            .register(MyLibraryCollectionViewCell.self,
+                      forCellWithReuseIdentifier: MyLibraryCollectionViewCell.cellIdentifier)
+        rootView.libraryTableView.libraryTableView
+            .register(MyLibraryTableViewCell.self,
+                      forCellReuseIdentifier: MyLibraryTableViewCell.cellIdentifier)
+        
+    }
+    
+    private func delegate() {
+        rootView.libraryCollectionView.libraryCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        rootView.libraryTableView.libraryTableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+    }
     
     private func bindViewModel() {
         let input = createViewModelInput()
@@ -77,7 +101,9 @@ final class MyLibraryViewController: UIViewController {
     private func createViewModelInput() -> MyLibraryViewModel.Input {
         return MyLibraryViewModel.Input(
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
-            sortButtonDidTap: rootView.headerView.sortButton.rx.tap
+            sortButtonDidTap: rootView.headerView.sortButton.rx.tap,
+            libraryCollectionViewContentSize: rootView.libraryCollectionView.rx.observe(CGSize.self, "contentSize"),
+            libraryTableViewContentSize: rootView.libraryTableView.rx.observe(CGSize.self, "contentSize")
         )
     }
     
@@ -103,4 +129,8 @@ final class MyLibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+}
+
+extension MyLibraryViewController: UIScrollViewDelegate {
+    
 }
