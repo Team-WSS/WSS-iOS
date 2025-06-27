@@ -66,7 +66,7 @@ final class WSSFilterButton: UIButton {
     
     //MARK: - Custom Method
     
-    func setButtonText(_ text: String) {
+    func setButtonText(_ text: String?) {
         filterLabel.do {
             $0.applyWSSFont(.body4, with: text)
         }

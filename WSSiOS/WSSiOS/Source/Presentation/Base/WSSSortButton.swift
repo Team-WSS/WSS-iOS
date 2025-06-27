@@ -14,8 +14,8 @@ final class WSSSortButton: UIButton {
     
     //MARK: - Components
     
-    let sortButtonLabel = UILabel()
-    let sortButtonImageView = UIImageView()
+    private let sortButtonLabel = UILabel()
+    private let sortButtonImageView = UIImageView()
     
     // MARK: - Life Cycle
     
