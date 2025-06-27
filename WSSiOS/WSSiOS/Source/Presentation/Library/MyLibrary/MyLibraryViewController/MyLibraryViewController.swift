@@ -63,19 +63,19 @@ final class MyLibraryViewController: UIViewController {
     //MARK: - Bind
     
     private func registerCell() {
-        rootView.libraryCollectionView.libraryCollectionView
-            .register(MyLibraryCollectionViewCell.self,
-                      forCellWithReuseIdentifier: MyLibraryCollectionViewCell.cellIdentifier)
-        rootView.libraryTableView.libraryTableView
-            .register(MyLibraryTableViewCell.self,
-                      forCellReuseIdentifier: MyLibraryTableViewCell.cellIdentifier)
+        rootView.libraryCollectionView.register(
+            MyLibraryCollectionViewCell.self,
+            forCellWithReuseIdentifier: MyLibraryCollectionViewCell.cellIdentifier)
+        rootView.libraryTableView.register(
+            MyLibraryTableViewCell.self,
+            forCellReuseIdentifier: MyLibraryTableViewCell.cellIdentifier)
         
     }
     
     private func delegate() {
-        rootView.libraryCollectionView.libraryCollectionView.rx.setDelegate(self)
+        rootView.libraryCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-        rootView.libraryTableView.libraryTableView.rx.setDelegate(self)
+        rootView.libraryTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
     
@@ -105,13 +105,34 @@ final class MyLibraryViewController: UIViewController {
                 owner.rootView.showLibraryListView(selectedType: layoutType)
             })
             .disposed(by: disposeBag)
+        
+        output.libraryNovelList
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.libraryCollectionView.rx.items(
+                cellIdentifier: MyLibraryCollectionViewCell.cellIdentifier,
+                cellType: MyLibraryCollectionViewCell.self)
+            ) { _, element, cell in
+                cell.bindData(element)
+            }
+            .disposed(by: disposeBag)
+        
+        output.libraryNovelList
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.libraryTableView.rx.items(
+                cellIdentifier: MyLibraryTableViewCell.cellIdentifier,
+                cellType: MyLibraryTableViewCell.self)
+            ) { _, element, cell in
+                cell.bindData(element)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> MyLibraryViewModel.Input {
         return MyLibraryViewModel.Input(
             viewWillAppear: viewWillAppear.asObservable(),
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
-            sortButtonDidTap: rootView.headerView.sortButton.rx.tap, layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap
+            sortButtonDidTap: rootView.headerView.sortButton.rx.tap,
+            layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap
         )
     }
     

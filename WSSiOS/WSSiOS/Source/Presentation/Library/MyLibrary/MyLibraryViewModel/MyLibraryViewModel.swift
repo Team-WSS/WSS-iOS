@@ -53,7 +53,7 @@ final class MyLibraryViewModel: ViewModelType {
         let selectedFilterOption: Driver<LibraryFilterOption>
         let selectedSortType: Driver<SortType>
         let selectedLayoutType: Driver<LayoutType>
-        let libraryNovelList: Driver<[MyLibraryEntity]>
+        let libraryNovelList: Observable<[MyLibraryEntity]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -81,20 +81,21 @@ final class MyLibraryViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable.combineLatest(filterOption, sortType, layoutType)
+            .observe(on: MainScheduler.asyncInstance)
             .map { _ in }
             .bind(to: reloadData)
             .disposed(by: disposeBag)
         
         input.viewWillAppear
-            .skip(1)
-            .map { _ in }
             .bind(to: reloadData)
             .disposed(by: disposeBag)
         
         reloadData
             .bind(with: self, onNext: { owner, _ in
-                owner.lastUserNovelId.accept(0)
                 owner.libraryNovelList.accept([])
+                owner.isLoadable.accept(true)
+                owner.novelCount.accept(0)
+                owner.lastUserNovelId.accept(0)
                 owner.updateData.accept(())
             })
             .disposed(by: disposeBag)
@@ -125,7 +126,7 @@ final class MyLibraryViewModel: ViewModelType {
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
             selectedLayoutType: layoutType.asDriver(),
-            libraryNovelList: libraryNovelList.asDriver()
+            libraryNovelList: libraryNovelList.asObservable()
         )
     }
     
