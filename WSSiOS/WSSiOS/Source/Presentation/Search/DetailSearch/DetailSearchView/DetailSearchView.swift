@@ -20,7 +20,7 @@ final class DetailSearchView: UIView {
     let detailSearchHeaderView = DetailSearchHeaderView()
     let detailSearchInfoView = DetailSearchInfoView()
     let detailSearchKeywordView = DetailSearchKeywordView()
-    let detailSearchBottomView = DetailSearchBottomView()
+    let detailSearchBottomView = WSSSearchBottomActionView()
     
     // Home Indicator 배경
     private let backgroundBottomView = UIView()

@@ -368,7 +368,7 @@ extension UIViewController {
     }
     
     func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
-        let viewController = LibraryViewController(userId: userId)
+        let viewController = UserLibraryViewController(userId: userId)
 
         viewController.setPageIndex(target: pageIndex)
         viewController.hidesBottomBarWhenPushed = true
@@ -377,6 +377,13 @@ extension UIViewController {
     
     func presentFeedFilterViewController(_ selectedFilterOption: FeedFilterOption) -> Observable<FeedFilterOption> {
         let viewController = FeedFilterViewController(feedFilterOption: selectedFilterOption)
+        self.presentModalViewController(viewController)
+        
+        return viewController.filterOption.asObservable()
+    }
+    
+    func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption) -> Observable<LibraryFilterOption> {
+        let viewController = LibraryFilterViewController(libraryFilterOption: selectedFilterOption)
         self.presentModalViewController(viewController)
         
         return viewController.filterOption.asObservable()
