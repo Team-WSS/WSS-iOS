@@ -18,7 +18,7 @@ final class MyLibraryViewModel: ViewModelType {
     let myLibraryRepository: MyLibraryRepository
     
     //Constant
-    let size = 20
+    let size = 10
     
     //Rx
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
@@ -49,6 +49,8 @@ final class MyLibraryViewModel: ViewModelType {
         let interestFilterButtonDidTap: ControlEvent<Void>
         let sortButtonDidTap: ControlEvent<Void>
         let layoutToggleButtonDidTap: ControlEvent<Void>
+        let collectionViewDidReachBottom: Observable<Void>
+        let tableViewDidReachBottom: Observable<Void>
     }
     
     struct Output {
@@ -92,6 +94,13 @@ final class MyLibraryViewModel: ViewModelType {
         input.viewWillAppear
             .bind(to: reloadData)
             .disposed(by: disposeBag)
+        
+        Observable.merge(
+            input.collectionViewDidReachBottom,
+            input.tableViewDidReachBottom
+        )
+        .bind(to: updateData)
+        .disposed(by: disposeBag)
         
         reloadData
             .bind(with: self, onNext: { owner, _ in
