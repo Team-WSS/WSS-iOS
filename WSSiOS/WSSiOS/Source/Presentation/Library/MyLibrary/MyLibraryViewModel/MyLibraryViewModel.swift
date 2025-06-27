@@ -37,6 +37,7 @@ final class MyLibraryViewModel: ViewModelType {
     struct Input {
         let interestFilterButtonDidTap: ControlEvent<Void>
         let sortButtonDidTap: ControlEvent<Void>
+        let layoutToggleButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -62,6 +63,12 @@ final class MyLibraryViewModel: ViewModelType {
             .withLatestFrom(sortType)
             .map { $0.toggle() }
             .bind(to: sortType)
+            .disposed(by: disposeBag)
+        
+        input.layoutToggleButtonDidTap
+            .withLatestFrom(layoutType)
+            .map { $0.toggle() }
+            .bind(to: layoutType)
             .disposed(by: disposeBag)
         
         

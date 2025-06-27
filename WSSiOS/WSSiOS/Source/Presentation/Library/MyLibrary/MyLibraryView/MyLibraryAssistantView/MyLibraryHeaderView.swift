@@ -102,5 +102,10 @@ final class MyLibraryHeaderView: UIView {
             $0.height.equalTo(1)
         }
     }
+    
+    func updateLayoutToggleButton(selectedType: LayoutType) {
+        layoutToggleButton.setImage(selectedType.image.withTintColor(.wssGray100),
+                                    for: .normal)
+    }
 }
 
