@@ -16,8 +16,8 @@ final class MyLibraryView: UIView {
     
     private let navigationView = MyLibraryNavigationView()
     let headerView = MyLibraryHeaderView()
-    let libraryCollectionView = MyLibraryCollectionView()
-    let libraryTableView = MyLibraryTableView()
+    let libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let libraryTableView = UITableView(frame: .zero, style: .plain)
     let libraryEmptyView = MyLibraryEmptyView()
     
     // MARK: - Life Cycle
@@ -38,6 +38,25 @@ final class MyLibraryView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        
+        libraryTableView.do {
+            $0.showsVerticalScrollIndicator = false
+            $0.separatorStyle = .none
+        }
+        
+        libraryCollectionView.do {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .vertical
+            layout.minimumLineSpacing = 18
+            layout.minimumInteritemSpacing = 6
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            let cellWidth = (UIScreen.main.bounds.width - (6 * 2) - (20 * 2)) / 3
+            let cellHeight = cellWidth * 160 / 108 + 71
+            layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+            
+            $0.collectionViewLayout = layout
+            $0.showsVerticalScrollIndicator = false
+        }
     }
   
     private func setHierarchy() {
