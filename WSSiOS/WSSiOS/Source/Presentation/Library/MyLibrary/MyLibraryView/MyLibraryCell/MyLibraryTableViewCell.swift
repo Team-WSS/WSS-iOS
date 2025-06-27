@@ -60,6 +60,10 @@ final class MyLibraryTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
+        self.do {
+            $0.selectionStyle = .none
+        }
+        
         stackView.do {
             $0.axis = .vertical
             $0.distribution = .fill

@@ -53,11 +53,6 @@ final class MyLibraryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewWillAppear.accept(())
-        //        DefaultMyLibraryService().getMyLibraryList(userId:  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId), query: MyLibraryNovelListQuery(lastUserNovelId: 0, size: 20, sortType: "NEWEST"))
-        //            .subscribe({ data in
-        //                print(data)
-        //            })
-        //            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
@@ -138,6 +133,13 @@ final class MyLibraryViewController: UIViewController {
                 owner.rootView.showEmptyLibraryView(isShowing: isShowing)
             })
             .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToNovelDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> MyLibraryViewModel.Input {
@@ -165,13 +167,19 @@ final class MyLibraryViewController: UIViewController {
             .filter { $0 }
             .map { _ in () }
         
+        let novelItemSelected = Observable.merge(
+            rootView.libraryCollectionView.rx.itemSelected.asObservable(),
+            rootView.libraryTableView.rx.itemSelected.asObservable()
+        )
+        
         return MyLibraryViewModel.Input(
             viewWillAppear: viewWillAppear.asObservable(),
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
             sortButtonDidTap: rootView.headerView.sortButton.rx.tap,
             layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap,
             collectionViewDidReachBottom: collectionViewDidReachBottom,
-            tableViewDidReachBottom: tableViewDidReachBottom
+            tableViewDidReachBottom: tableViewDidReachBottom,
+            novelItemSelected: novelItemSelected
         )
     }
     

@@ -34,6 +34,7 @@ final class MyLibraryViewModel: ViewModelType {
     private let isLoadable = BehaviorRelay<Bool>(value: true)
     
     private let showEmptyLibraryView = PublishRelay<Bool>()
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     
     //MARK: - Life Cycle
@@ -51,6 +52,7 @@ final class MyLibraryViewModel: ViewModelType {
         let layoutToggleButtonDidTap: ControlEvent<Void>
         let collectionViewDidReachBottom: Observable<Void>
         let tableViewDidReachBottom: Observable<Void>
+        let novelItemSelected: Observable<IndexPath>
     }
     
     struct Output {
@@ -60,6 +62,7 @@ final class MyLibraryViewModel: ViewModelType {
         let novelCount: Driver<Int>
         let libraryNovelList: Observable<[MyLibraryEntity]>
         let showEmptyLibraryView: Observable<Bool>
+        let pushToNovelDetailViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -96,13 +99,6 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: reloadData)
             .disposed(by: disposeBag)
         
-        Observable.merge(
-            input.collectionViewDidReachBottom,
-            input.tableViewDidReachBottom
-        )
-        .bind(to: updateData)
-        .disposed(by: disposeBag)
-        
         reloadData
             .bind(with: self, onNext: { owner, _ in
                 owner.libraryNovelList.accept([])
@@ -111,6 +107,13 @@ final class MyLibraryViewModel: ViewModelType {
                 owner.updateData.accept(())
             })
             .disposed(by: disposeBag)
+        
+        Observable.merge(
+            input.collectionViewDidReachBottom,
+            input.tableViewDidReachBottom
+        )
+        .bind(to: updateData)
+        .disposed(by: disposeBag)
         
         updateData
             .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
@@ -135,13 +138,22 @@ final class MyLibraryViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.novelItemSelected
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .withLatestFrom(libraryNovelList) { indexPath, novelList in
+                novelList[indexPath.item].novelId
+            }
+            .bind(to: pushToNovelDetailViewController)
+            .disposed(by: disposeBag)
+        
         return Output(
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
             selectedLayoutType: layoutType.asDriver(),
             novelCount: novelCount.asDriver(),
             libraryNovelList: libraryNovelList.asObservable(),
-            showEmptyLibraryView: showEmptyLibraryView.asObservable()
+            showEmptyLibraryView: showEmptyLibraryView.asObservable(),
+            pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable()
         )
     }
     
