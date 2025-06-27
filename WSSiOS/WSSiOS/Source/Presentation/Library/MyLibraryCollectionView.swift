@@ -1,5 +1,5 @@
 //
-//  LibraryCollectionView.swift
+//  MyLibraryCollectionView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/27/25.
