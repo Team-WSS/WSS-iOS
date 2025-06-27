@@ -33,6 +33,8 @@ final class MyLibraryViewModel: ViewModelType {
     private let isFetching = BehaviorRelay<Bool>(value: false)
     private let isLoadable = BehaviorRelay<Bool>(value: true)
     
+    private let showEmptyLibraryView = PublishRelay<Bool>()
+    
     
     //MARK: - Life Cycle
     
@@ -54,6 +56,7 @@ final class MyLibraryViewModel: ViewModelType {
         let selectedSortType: Driver<SortType>
         let selectedLayoutType: Driver<LayoutType>
         let libraryNovelList: Observable<[MyLibraryEntity]>
+        let showEmptyLibraryView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -80,8 +83,8 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: layoutType)
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(filterOption, sortType, layoutType)
-            .observe(on: MainScheduler.asyncInstance)
+        Observable.combineLatest(filterOption, sortType)
+            .observe(on: MainScheduler.asyncInstance)  // raceCondition을 방지하기 위해 한사이클 다음에 스트림이 작동하도록 추가함.
             .map { _ in }
             .bind(to: reloadData)
             .disposed(by: disposeBag)
@@ -119,6 +122,7 @@ final class MyLibraryViewModel: ViewModelType {
                 owner.novelCount.accept(entity.userNovelCount)
                 owner.lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
                 owner.isFetching.accept(false)
+                owner.showEmptyLibraryView.accept(newList.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -126,7 +130,8 @@ final class MyLibraryViewModel: ViewModelType {
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
             selectedLayoutType: layoutType.asDriver(),
-            libraryNovelList: libraryNovelList.asObservable()
+            libraryNovelList: libraryNovelList.asObservable(),
+            showEmptyLibraryView: showEmptyLibraryView.asObservable()
         )
     }
     

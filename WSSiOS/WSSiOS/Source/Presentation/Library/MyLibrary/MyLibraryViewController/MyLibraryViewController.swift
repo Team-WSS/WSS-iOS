@@ -125,6 +125,13 @@ final class MyLibraryViewController: UIViewController {
                 cell.bindData(element)
             }
             .disposed(by: disposeBag)
+        
+        output.showEmptyLibraryView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShowing in
+                owner.rootView.showEmptyLibraryView(isShowing: isShowing)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> MyLibraryViewModel.Input {
