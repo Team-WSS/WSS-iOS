@@ -84,7 +84,7 @@ final class MyLibraryViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable.combineLatest(filterOption, sortType)
-            .observe(on: MainScheduler.asyncInstance)  // raceCondition을 방지하기 위해 한사이클 다음에 스트림이 작동하도록 추가함.
+            .observe(on: MainScheduler.asyncInstance)  // raceCondition을 방지하기 위해 한사이클 다음에 스트림이 작동하도록 하는 역할.
             .map { _ in }
             .bind(to: reloadData)
             .disposed(by: disposeBag)
@@ -106,7 +106,7 @@ final class MyLibraryViewModel: ViewModelType {
         updateData
             .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
             .filter { !($0.0) && $0.1 }
-            .do(onNext: { _ in self.isFetching.accept(true) })
+            .do(onNext: { [weak self] _ in self?.isFetching.accept(true) })
             .withLatestFrom(Observable.combineLatest(filterOption, lastUserNovelId, sortType))
             .flatMapLatest { (filterOption, lastUserNovelId, sortType) in
                 self.getNovelListData(filterOption: filterOption,
@@ -145,9 +145,9 @@ final class MyLibraryViewModel: ViewModelType {
             sortType: sortType
         )
         .asObservable()
-        .catch { error in
+        .catch { [weak self] error in
             print(error)
-            self.isFetching.accept(false)
+            self?.isFetching.accept(false)
             return Observable.empty()
         }
     }
