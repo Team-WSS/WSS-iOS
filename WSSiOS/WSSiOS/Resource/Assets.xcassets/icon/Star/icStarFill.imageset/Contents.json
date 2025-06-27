@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Status=Filled.png",
+      "filename" : "star-fill.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Status=Filled@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Status=Filled@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
