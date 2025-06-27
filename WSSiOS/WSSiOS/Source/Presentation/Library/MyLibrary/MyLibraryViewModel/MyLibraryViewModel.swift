@@ -17,12 +17,18 @@ final class MyLibraryViewModel: ViewModelType {
     
     let myLibraryRepository: MyLibraryRepository
     
+    //Constant
+    let size = 20
+    
+    //Rx
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
     private let layoutType = BehaviorRelay<LayoutType>(value: .grid)
-    private let libraryNovelList = BehaviorRelay<[MyLibraryListEntity]>(value: [])
+    private let novelCount = BehaviorRelay<Int>(value: 0)
+    
+    private let libraryNovelList = BehaviorRelay<[MyLibraryEntity]>(value: [])
     private let loadData = PublishRelay<Void>()
-    private let lastFeedId = BehaviorRelay<Int>(value: 0)
+    private let lastUserNovelId = BehaviorRelay<Int>(value: 0)
     private let isFetching = BehaviorRelay<Bool>(value: false)
     private let isLoadable = BehaviorRelay<Bool>(value: true)
     
@@ -44,11 +50,11 @@ final class MyLibraryViewModel: ViewModelType {
         let selectedFilterOption: Driver<LibraryFilterOption>
         let selectedSortType: Driver<SortType>
         let selectedLayoutType: Driver<LayoutType>
-        let libraryNovelList: Driver<[MyLibraryListEntity]>
+        let libraryNovelList: Driver<[MyLibraryEntity]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-       
+        
         input.interestFilterButtonDidTap
             .withLatestFrom(filterOption)
             .map { option in
@@ -71,6 +77,27 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: layoutType)
             .disposed(by: disposeBag)
         
+        loadData
+            .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
+            .filter { !($0.0) && $0.1 }
+            .do(onNext: { _ in self.isFetching.accept(true) })
+            .withLatestFrom(Observable.combineLatest(filterOption, lastUserNovelId, sortType))
+            .flatMapLatest { (filterOption, lastUserNovelId, sortType) in
+                self.getNovelListData(filterOption: filterOption,
+                                      lastUserNovelId: lastUserNovelId,
+                                      sortType: sortType)
+            }
+            .withLatestFrom(libraryNovelList) { ($0, $1) }
+            .bind(with: self, onNext: { owner, data in
+                let (entity, currentList) = data
+                let newList = currentList + entity.userNovels
+                owner.libraryNovelList.accept(newList)
+                owner.isLoadable.accept(entity.isLoadable)
+                owner.novelCount.accept(entity.userNovelCount)
+                owner.lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
+                owner.isFetching.accept(false)
+            })
+            .disposed(by: disposeBag)
         
         return Output(
             selectedFilterOption: filterOption.asDriver(),
@@ -82,8 +109,19 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getNovelListData(disposeBag: DisposeBag) {
-        
+    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, sortType: SortType) -> Observable<MyLibraryListEntity> {
+        return self.myLibraryRepository.getNovelList(
+            filterOption: filterOption,
+            lastUserNovelId: lastUserNovelId,
+            size: self.size,
+            sortType: sortType
+        )
+        .asObservable()
+        .catch { error in
+            print(error)
+            self.isFetching.accept(false)
+            return Observable.empty()
+        }
     }
     
     //MARK: - Custom Method
