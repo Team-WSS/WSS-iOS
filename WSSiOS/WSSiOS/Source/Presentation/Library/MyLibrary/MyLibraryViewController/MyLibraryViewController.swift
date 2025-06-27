@@ -96,6 +96,20 @@ final class MyLibraryViewController: UIViewController {
                 owner.rootView.headerView.sortButton.updateSortButton(sortType: sortType)
             })
             .disposed(by: disposeBag)
+        
+        output.libraryCollectionViewHeight
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, height in
+                owner.rootView.libraryCollectionView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.libraryTableViewHeight
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, height in
+                owner.rootView.libraryTableView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> MyLibraryViewModel.Input {

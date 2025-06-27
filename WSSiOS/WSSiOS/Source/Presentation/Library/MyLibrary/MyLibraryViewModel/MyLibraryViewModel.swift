@@ -17,6 +17,8 @@ final class MyLibraryViewModel: ViewModelType {
     
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
+    private let libraryCollectionViewHeight = PublishRelay<CGFloat>()
+    private let libraryTableViewHeight = PublishRelay<CGFloat>()
     
     //MARK: - Life Cycle
     
@@ -33,6 +35,8 @@ final class MyLibraryViewModel: ViewModelType {
     struct Output {
         let selectedFilterOption: Driver<LibraryFilterOption>
         let selectedSortType: Driver<SortType>
+        let libraryCollectionViewHeight: Observable<CGFloat>
+        let libraryTableViewHeight: Observable<CGFloat>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -53,9 +57,21 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: sortType)
             .disposed(by: disposeBag)
         
+        input.libraryCollectionViewContentSize
+            .map { $0?.height ?? 0 }
+            .bind(to: libraryCollectionViewHeight)
+            .disposed(by: disposeBag)
+        
+        input.libraryTableViewContentSize
+            .map { $0?.height ?? 0 }
+            .bind(to: libraryTableViewHeight)
+            .disposed(by: disposeBag)
+        
         return Output(
             selectedFilterOption: filterOption.asDriver(),
-            selectedSortType: sortType.asDriver()
+            selectedSortType: sortType.asDriver(),
+            libraryCollectionViewHeight: libraryCollectionViewHeight.asObservable(),
+            libraryTableViewHeight: libraryTableViewHeight.asObservable()
         )
     }
     
