@@ -17,7 +17,7 @@ final class MyLibraryEmptyView: UIView {
     private let stackView = UIStackView()
     private let imageView = UIImageView()
     private let descriptionLabel = UILabel()
-    private let searchNovelButton = UIButton()
+    let searchNovelButton = UIButton()
     private let searchNovelButtonLabel = UILabel()
     
     // MARK: - Life Cycle

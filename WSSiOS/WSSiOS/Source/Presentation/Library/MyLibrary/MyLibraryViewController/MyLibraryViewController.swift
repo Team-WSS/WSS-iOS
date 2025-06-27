@@ -95,5 +95,12 @@ final class MyLibraryViewController: UIViewController {
         .distinctUntilChanged()
         .bind(to: viewModel.filterOption)
         .disposed(by: disposeBag)
+        
+        rootView.libraryEmptyView.searchNovelButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.pushToNormalSearchViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }
