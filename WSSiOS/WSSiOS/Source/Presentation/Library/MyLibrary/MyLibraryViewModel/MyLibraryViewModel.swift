@@ -15,6 +15,8 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    let myLibraryRepository: MyLibraryRepository
+    
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
     private let libraryCollectionViewHeight = PublishRelay<CGFloat>()
@@ -27,6 +29,9 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
+    init(myLibraryRepository: MyLibraryRepository) {
+        self.myLibraryRepository = myLibraryRepository
+    }
     
     //MARK: - Transform
     

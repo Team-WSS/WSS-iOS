@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol MyLibraryService {
-    func getMyLibraryList(userId: Int, query: MyLibraryListQuery) -> Single<MyLibraryListResponse>
+    func getNovelList(userId: Int, queryItem: MyLibraryNovelListQuery) -> Single<MyLibraryListResponse>
 }
 
 final class DefaultMyLibraryService: NSObject, Networking {
@@ -18,13 +18,13 @@ final class DefaultMyLibraryService: NSObject, Networking {
 }
 
 extension DefaultMyLibraryService: MyLibraryService {
-    func getMyLibraryList(userId: Int,
-                          query: MyLibraryListQuery) -> Single<MyLibraryListResponse> {
+    func getNovelList(userId: Int,
+                      queryItem: MyLibraryNovelListQuery) -> Single<MyLibraryListResponse> {
         do {
             let request = try makeHTTPRequest(
                 method: .get,
                 path: URLs.MyLibrary.getMyLibrarList(userId: userId),
-                queryItems: query.asQueryItems(),
+                queryItems: queryItem.asQueryItems(),
                 headers: APIConstants.accessTokenHeader,
                 body: nil
             )

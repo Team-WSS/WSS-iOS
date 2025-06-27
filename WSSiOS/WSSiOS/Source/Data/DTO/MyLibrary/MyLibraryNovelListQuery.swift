@@ -7,19 +7,19 @@
 
 import Foundation
 
-struct MyLibraryListQuery {
-    let lastUserNovelId: Int
-    let size: Int
-    let sortType: String
-    let isInterest: Bool? = nil
-    let readStatus: [String]? = nil
-    let attractivePoints: [String]? = nil
-    let novelRating: Float? = nil
-    let query: String? = nil
-    let updatedSince: String? = nil
+struct MyLibraryNovelListQuery {
+    var lastUserNovelId: Int
+    var size: Int
+    var sortType: String
+    var isInterest: Bool? = nil
+    var readStatus: [String]? = nil
+    var attractivePoints: [String]? = nil
+    var novelRating: Float? = nil
+    var query: String? = nil
+    var updatedSince: String? = nil
 }
 
-extension MyLibraryListQuery {
+extension MyLibraryNovelListQuery {
     func asQueryItems() -> [URLQueryItem] {
         var items: [URLQueryItem] = [
             URLQueryItem(name: "lastUserNovelId", value: "\(lastUserNovelId)"),
