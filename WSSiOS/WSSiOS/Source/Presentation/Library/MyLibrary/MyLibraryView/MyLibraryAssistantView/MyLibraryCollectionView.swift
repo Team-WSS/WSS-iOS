@@ -57,4 +57,10 @@ final class MyLibraryCollectionView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        libraryCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+    }
 }
