@@ -9,7 +9,6 @@ import Foundation
 
 struct UserNovelListResponse: Decodable {
     let userNovelCount: Int
-    let userNovelRating: Float
     let isLoadable: Bool
     let userNovels: [UserNovelResponse]
 }
@@ -17,8 +16,15 @@ struct UserNovelListResponse: Decodable {
 struct UserNovelResponse: Decodable {
     let userNovelId: Int
     let novelId: Int
-    let author: String
-    let novelImage: String
     let title: String
+    let novelImage: String
     let novelRating: Float
+    let readStatus: String?
+    let isInterest: Bool
+    let userNovelRating: Float
+    let attractivePoints: [String]
+    let startDate: String?
+    let endDate: String?
+    let keywords: [String]
+    let myFeeds: [String]
 }
