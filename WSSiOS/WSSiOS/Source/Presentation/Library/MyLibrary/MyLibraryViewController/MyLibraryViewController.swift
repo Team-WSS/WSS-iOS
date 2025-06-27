@@ -135,11 +135,37 @@ final class MyLibraryViewController: UIViewController {
     }
     
     private func createViewModelInput() -> MyLibraryViewModel.Input {
+        let collectionViewDidReachBottom = rootView.libraryCollectionView.rx.contentOffset
+            .map { [weak self] contentOffset in
+                guard let self = self else { return false }
+                let offsetY = contentOffset.y
+                let contentHeight = self.rootView.libraryCollectionView.contentSize.height
+                let frameHeight = self.rootView.libraryCollectionView.frame.height
+                return offsetY + frameHeight >= contentHeight - 100
+            }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .map { _ in () }
+        
+        let tableViewDidReachBottom =  rootView.libraryTableView.rx.contentOffset
+            .map { [weak self] contentOffset in
+                guard let self = self else { return false }
+                let offsetY = contentOffset.y
+                let contentHeight = self.rootView.libraryTableView.contentSize.height
+                let frameHeight = self.rootView.libraryTableView.frame.height
+                return offsetY + frameHeight >= contentHeight - 100
+            }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .map { _ in () }
+        
         return MyLibraryViewModel.Input(
             viewWillAppear: viewWillAppear.asObservable(),
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
             sortButtonDidTap: rootView.headerView.sortButton.rx.tap,
-            layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap
+            layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap,
+            collectionViewDidReachBottom: collectionViewDidReachBottom,
+            tableViewDidReachBottom: tableViewDidReachBottom
         )
     }
     
