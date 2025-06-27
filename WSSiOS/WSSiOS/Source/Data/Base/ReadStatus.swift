@@ -20,14 +20,6 @@ enum ReadStatus: String, CaseIterable {
         }
     }
     
-    var minimalStatusName: String {
-        switch self {
-        case .watching: return "보는중"
-        case .watched: return "봤어요"
-        case .quit: return "하차"
-        }
-    }
-    
     var fillImage: UIImage {
         switch self {
         case .watching: return .icWatchingFill
