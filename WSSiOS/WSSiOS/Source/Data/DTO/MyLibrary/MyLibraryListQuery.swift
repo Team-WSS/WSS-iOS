@@ -11,12 +11,12 @@ struct MyLibraryListQuery {
     let lastUserNovelId: Int
     let size: Int
     let sortType: String
-    let isInterest: Bool?
-    let readStatus: [String]?
-    let attractivePoints: [String]?
-    let novelRating: Float?
-    let query: String?
-    let updatedSince: String?
+    let isInterest: Bool? = nil
+    let readStatus: [String]? = nil
+    let attractivePoints: [String]? = nil
+    let novelRating: Float? = nil
+    let query: String? = nil
+    let updatedSince: String? = nil
 }
 
 extension MyLibraryListQuery {
