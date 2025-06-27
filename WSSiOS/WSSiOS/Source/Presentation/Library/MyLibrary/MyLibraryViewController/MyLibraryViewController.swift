@@ -99,7 +99,8 @@ final class MyLibraryViewController: UIViewController {
         
         output.selectedLayoutType
             .drive(with: self, onNext: { owner, layoutType in
-                owner.rootView.showLibraryListView(layout: layoutType)
+                owner.rootView.headerView.updateLayoutToggleButton(selectedType: layoutType)
+                owner.rootView.showLibraryListView(selectedType: layoutType)
             })
             .disposed(by: disposeBag)
     }
@@ -107,7 +108,7 @@ final class MyLibraryViewController: UIViewController {
     private func createViewModelInput() -> MyLibraryViewModel.Input {
         return MyLibraryViewModel.Input(
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
-            sortButtonDidTap: rootView.headerView.sortButton.rx.tap
+            sortButtonDidTap: rootView.headerView.sortButton.rx.tap, layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap
         )
     }
     
