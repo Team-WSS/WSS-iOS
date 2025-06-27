@@ -27,10 +27,12 @@ final class MyLibraryViewModel: ViewModelType {
     private let novelCount = BehaviorRelay<Int>(value: 0)
     
     private let libraryNovelList = BehaviorRelay<[MyLibraryEntity]>(value: [])
-    private let loadData = PublishRelay<Void>()
     private let lastUserNovelId = BehaviorRelay<Int>(value: 0)
+    private let updateData = PublishRelay<Void>()
+    private let reloadData = PublishRelay<Void>()
     private let isFetching = BehaviorRelay<Bool>(value: false)
     private let isLoadable = BehaviorRelay<Bool>(value: true)
+    
     
     //MARK: - Life Cycle
     
@@ -41,6 +43,7 @@ final class MyLibraryViewModel: ViewModelType {
     //MARK: - Transform
     
     struct Input {
+        let viewWillAppear: Observable<Void>
         let interestFilterButtonDidTap: ControlEvent<Void>
         let sortButtonDidTap: ControlEvent<Void>
         let layoutToggleButtonDidTap: ControlEvent<Void>
@@ -77,7 +80,26 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: layoutType)
             .disposed(by: disposeBag)
         
-        loadData
+        Observable.combineLatest(filterOption, sortType, layoutType)
+            .map { _ in }
+            .bind(to: reloadData)
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppear
+            .skip(1)
+            .map { _ in }
+            .bind(to: reloadData)
+            .disposed(by: disposeBag)
+        
+        reloadData
+            .bind(with: self, onNext: { owner, _ in
+                owner.lastUserNovelId.accept(0)
+                owner.libraryNovelList.accept([])
+                owner.updateData.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        updateData
             .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
             .filter { !($0.0) && $0.1 }
             .do(onNext: { _ in self.isFetching.accept(true) })
