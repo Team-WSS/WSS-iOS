@@ -33,7 +33,7 @@ final class LibraryFilterViewController: UIViewController {
         self.initialFilterOption = libraryFilterOption
         readStatusOptions.accept(libraryFilterOption.readStatusOptions)
         attractivePointOptions.accept(libraryFilterOption.attractivePointOptions)
-        ratingOption.accept(libraryFilterOption.ratingOption)
+        ratingOption.accept(libraryFilterOption.starRatingOption)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -152,9 +152,10 @@ final class LibraryFilterViewController: UIViewController {
             attractivePointOptions,
             ratingOption
         ) { readStatusOptions, attractivePointOptions, ratingOption in
-            LibraryFilterOption(readStatusOptions: readStatusOptions,
+            LibraryFilterOption(interestedOption: self.initialFilterOption.interestedOption,
+                                readStatusOptions: readStatusOptions,
                                 attractivePointOptions: attractivePointOptions,
-                                ratingOption: ratingOption)
+                                starRatingOption: ratingOption)
         }
         
         rootView.bottomActionView.searchButton.rx.tap

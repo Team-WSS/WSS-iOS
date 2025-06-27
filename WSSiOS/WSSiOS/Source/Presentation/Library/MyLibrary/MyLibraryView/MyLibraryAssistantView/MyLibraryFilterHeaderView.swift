@@ -17,7 +17,7 @@ final class MyLibraryFilterHeaderView: UIView {
     
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
-    private let interestFilterButton = WSSFilterButton()
+    let interestFilterButton = WSSFilterButton()
     private let dividerView = UIView()
     let readStatusFilterButton = WSSFilterButton()
     let starRatingFilterButton = WSSFilterButton()
@@ -110,6 +110,57 @@ final class MyLibraryFilterHeaderView: UIView {
         dividerView.snp.makeConstraints {
             $0.height.equalTo(33)
             $0.width.equalTo(1)
+        }
+    }
+    
+    func updateFilterButtons(selectedOption: LibraryFilterOption) {
+        interestFilterButton.updateButton(isSelected: selectedOption.interestedOption)
+        updateReadStatusFilterButton(selectedOption: selectedOption.readStatusOptions)
+        updateStarRatingFilterButton(selectedOption: selectedOption.starRatingOption)
+        updateAttractivePointFilterButton(selectedOption: selectedOption.attractivePointOptions)
+    }
+    
+    private func updateReadStatusFilterButton(selectedOption: [ReadStatus]) {
+        let isSelected = !selectedOption.isEmpty
+        let isMoreThanOne = selectedOption.count > 1
+        let overCount = selectedOption.count - 1
+        
+        let text = switch (isSelected, isMoreThanOne) {
+        case (true, false): selectedOption.first?.minimalStatusName
+        case (true, true): "\(selectedOption.first?.minimalStatusName ?? "") 외\(overCount)"
+        case (false, _): StringLiterals.MyLibrary.FilterButton.readStatus
+        }
+        
+        readStatusFilterButton.do {
+            $0.setButtonText(text)
+            $0.updateButton(isSelected: isSelected)
+        }
+    }
+    
+    private func updateStarRatingFilterButton(selectedOption: NovelRatingStatus?) {
+        let isSelected = selectedOption != nil
+        let text = isSelected ? selectedOption?.description : StringLiterals.MyLibrary.FilterButton.starRating
+        
+        starRatingFilterButton.do {
+            $0.setButtonText(text)
+            $0.updateButton(isSelected: isSelected)
+        }
+    }
+    
+    private func updateAttractivePointFilterButton(selectedOption: [AttractivePoint]) {
+        let isSelected = !selectedOption.isEmpty
+        let isMoreThanOne = selectedOption.count > 1
+        let overCount = selectedOption.count - 1
+        
+        let text = switch (isSelected, isMoreThanOne) {
+        case (true, false): selectedOption.first?.koreanString
+        case (true, true): "\(selectedOption.first?.koreanString ?? "") 외\(overCount)"
+        case (false, _): StringLiterals.MyLibrary.FilterButton.attractivePoint
+        }
+        
+        attractivePointFilterButton.do {
+            $0.setButtonText(text)
+            $0.updateButton(isSelected: isSelected)
         }
     }
 }

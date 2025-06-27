@@ -8,7 +8,8 @@
 import UIKit
 
 struct LibraryFilterOption: Equatable {
+    var interestedOption: Bool = false
     var readStatusOptions: [ReadStatus] = []
     var attractivePointOptions: [AttractivePoint] = []
-    var ratingOption: NovelRatingStatus? = nil
+    var starRatingOption: NovelRatingStatus? = nil
 }

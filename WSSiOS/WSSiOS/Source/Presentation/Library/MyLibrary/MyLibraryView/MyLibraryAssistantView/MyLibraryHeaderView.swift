@@ -17,8 +17,8 @@ final class MyLibraryHeaderView: UIView {
     let filterHeaderView = MyLibraryFilterHeaderView()
     private let bottomContentView = UIView()
     private let countLabel = UILabel()
-    private let sortButton = WSSSortButton()
-    private let layoutToggleButton = UIButton()
+    let sortButton = WSSSortButton()
+    let layoutToggleButton = UIButton()
     private let dividerView = UIView()
     
     // MARK: - Life Cycle
