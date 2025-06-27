@@ -16,6 +16,8 @@ final class MyLibraryView: UIView {
     
     private let navigationView = MyLibraryNavigationView()
     let headerView = MyLibraryHeaderView()
+    let libraryCollectionView = MyLibraryCollectionView()
+    let libraryTableView = MyLibraryTableView()
     let libraryEmptyView = MyLibraryEmptyView()
     
     // MARK: - Life Cycle
@@ -41,7 +43,9 @@ final class MyLibraryView: UIView {
     private func setHierarchy() {
         self.addSubviews(navigationView,
                          headerView,
-                         libraryEmptyView)
+                         libraryCollectionView,
+                         libraryTableView,
+                         libraryEmptyView,)
     }
     
     private func setLayout() {
@@ -50,15 +54,39 @@ final class MyLibraryView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        headerView.snp.makeConstraints() {
+        headerView.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
         }
         
-        libraryEmptyView.snp.makeConstraints() {
+        libraryCollectionView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalToSuperview()
         }
+        
+        libraryTableView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
+        libraryEmptyView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+    
+    func showEmptyLibraryView() {
+        libraryEmptyView.isHidden = false
+        libraryCollectionView.isHidden = true
+        libraryTableView.isHidden = true
+    }
+    
+    func showLibraryListView(layout: LayoutType) {
+        libraryEmptyView.isHidden = true
+        libraryCollectionView.isHidden = layout == .list
+        libraryTableView.isHidden = layout == .grid
     }
 }
