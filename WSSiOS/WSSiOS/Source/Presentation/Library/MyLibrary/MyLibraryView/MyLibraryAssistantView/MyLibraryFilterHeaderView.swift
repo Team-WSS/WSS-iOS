@@ -126,8 +126,8 @@ final class MyLibraryFilterHeaderView: UIView {
         let overCount = selectedOption.count - 1
         
         let text = switch (isSelected, isMoreThanOne) {
-        case (true, false): selectedOption.first?.minimalStatusName
-        case (true, true): "\(selectedOption.first?.minimalStatusName ?? "") 외\(overCount)"
+        case (true, false): selectedOption.first?.tagText
+        case (true, true): "\(selectedOption.first?.tagText ?? "") 외\(overCount)"
         case (false, _): StringLiterals.MyLibrary.FilterButton.readStatus
         }
         

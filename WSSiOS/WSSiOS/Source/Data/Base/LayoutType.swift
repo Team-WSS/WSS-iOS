@@ -17,4 +17,11 @@ enum LayoutType {
         case .list: .layoutList
         }
     }
+    
+    func toggle() -> LayoutType {
+        switch self {
+        case .grid: .list
+        case .list: .grid
+        }
+    }
 }

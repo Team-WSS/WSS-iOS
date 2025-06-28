@@ -207,4 +207,11 @@ enum URLs {
         static let termsURL = "https://websoso.notion.site/143600bd746880668556fb005fcef491?pvs=143"
         static let infoURL = "https://websoso.notion.site/143600bd74688050be18f4da31d9403e?pvs=4"
     }
+    
+    enum MyLibrary {
+        private static let myLibraryBasePath = "/users"
+        static func getMyLibrarList(userId: Int) -> String {
+            return "\(myLibraryBasePath)/\(userId)/novels"
+        }
+    }
 }
