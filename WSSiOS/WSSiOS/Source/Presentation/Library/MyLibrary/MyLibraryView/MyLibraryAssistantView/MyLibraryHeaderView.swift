@@ -42,6 +42,7 @@ final class MyLibraryHeaderView: UIView {
         
         countLabel.do {
             $0.textColor = .wssGray200
+            $0.applyWSSFont(.body4, with: StringLiterals.MyLibrary.novelCountText(13))
         }
         
         sortButton.do {
@@ -100,15 +101,6 @@ final class MyLibraryHeaderView: UIView {
             $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
-    }
-    
-    func updateLayoutToggleButton(selectedType: LayoutType) {
-        layoutToggleButton.setImage(selectedType.image.withTintColor(.wssGray100),
-                                    for: .normal)
-    }
-    
-    func updateCountLabel(count: Int) {
-        countLabel.applyWSSFont(.body4, with: StringLiterals.MyLibrary.novelCountText(count))
     }
 }
 

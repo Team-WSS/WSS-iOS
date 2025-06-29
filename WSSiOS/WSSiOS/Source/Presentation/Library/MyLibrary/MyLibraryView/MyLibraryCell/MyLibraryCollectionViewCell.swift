@@ -88,7 +88,7 @@ final class MyLibraryCollectionViewCell: UICollectionViewCell {
         for _ in 0..<5 {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
-            imageView.image = .icSmallStarEmpty
+            imageView.image = .icStarEmpty
             imageView.snp.makeConstraints {
                 $0.size.equalTo(9)
             }
@@ -166,11 +166,11 @@ final class MyLibraryCollectionViewCell: UICollectionViewCell {
             let starValue = Float(index) + 1
             
             if rating >= starValue {
-                imageView.image = .icSmallStarFilled
+                imageView.image = .icStarFill
             } else if rating >= starValue - 0.5 {
-                imageView.image = .icSmallStarHalf
+                imageView.image = .icStarHalf
             } else {
-                imageView.image = .icSmallStarEmpty
+                imageView.image = .icStarEmpty
             }
         }
     }

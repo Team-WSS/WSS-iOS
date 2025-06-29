@@ -78,7 +78,7 @@ enum WSSTabBarItem: Int, CaseIterable {
             return FeedViewController()
             
         case .library:
-            return ModuleFactory.shared.makeMyLibraryViewController()
+            return MyLibraryViewController(viewModel: MyLibraryViewModel())
             
         case .myPage:
             let myPageVC = MyPageViewController(
