@@ -97,21 +97,22 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: refreshNovelList)
             .disposed(by: disposeBag)
         
-        reloadNovelList
-            .bind(with: self, onNext: { owner, _ in
-                owner.libraryNovelList.accept([])
-                owner.isLoadable.accept(true)
-                owner.lastUserNovelId.accept(0)
-                owner.fetchNovelList.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         Observable.merge(
             input.collectionViewDidReachBottom,
             input.tableViewDidReachBottom
         )
         .bind(to: fetchNovelList)
         .disposed(by: disposeBag)
+        
+        reloadNovelList
+            .bind(with: self, onNext: { owner, _ in
+                owner.libraryNovelList.accept([])
+                owner.isLoadable.accept(true)
+                owner.lastUserNovelId.accept(0)
+                owner.isFetching.accept(false)
+                owner.fetchNovelList.accept(())
+            })
+            .disposed(by: disposeBag)
         
         fetchNovelList
             .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
@@ -123,16 +124,14 @@ final class MyLibraryViewModel: ViewModelType {
                                       lastUserNovelId: lastUserNovelId,
                                       sortType: sortType)
             }
-            .withLatestFrom(libraryNovelList) { ($0, $1) }
-            .bind(with: self, onNext: { owner, data in
-                let (entity, currentList) = data
-                let newList = currentList + entity.userNovels
-                owner.libraryNovelList.accept(newList)
-                owner.isLoadable.accept(entity.isLoadable)
-                owner.novelCount.accept(entity.userNovelCount)
-                owner.lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
-                owner.isFetching.accept(false)
-                owner.showEmptyLibraryView.accept(newList.isEmpty)
+            .do(onNext: { [weak self] _ in self?.isFetching.accept(false) })
+            .withLatestFrom(libraryNovelList) { entity, currentList in
+                var updatedEntity = entity
+                updatedEntity.userNovels = currentList + entity.userNovels
+                return updatedEntity
+            }
+            .bind(with: self, onNext: { owner, entity in
+                owner.updateLibraryState(with: entity)
             })
             .disposed(by: disposeBag)
         
@@ -147,13 +146,9 @@ final class MyLibraryViewModel: ViewModelType {
                                       size: novelList.count,
                                       sortType: sortType)
             }
+            .do(onNext: { [weak self] _ in self?.isFetching.accept(false) })
             .bind(with: self, onNext: { owner, entity in
-                owner.libraryNovelList.accept(entity.userNovels)
-                owner.isLoadable.accept(entity.isLoadable)
-                owner.novelCount.accept(entity.userNovelCount)
-                owner.lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
-                owner.isFetching.accept(false)
-                owner.showEmptyLibraryView.accept(entity.userNovels.isEmpty)
+                owner.updateLibraryState(with: entity)
             })
             .disposed(by: disposeBag)
         
@@ -195,5 +190,11 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - Custom Method
     
-    
+    private func updateLibraryState(with entity: MyLibraryListEntity) {
+        libraryNovelList.accept(entity.userNovels)
+        isLoadable.accept(entity.isLoadable)
+        novelCount.accept(entity.userNovelCount)
+        lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
+        showEmptyLibraryView.accept(entity.userNovels.isEmpty)
+    }
 }

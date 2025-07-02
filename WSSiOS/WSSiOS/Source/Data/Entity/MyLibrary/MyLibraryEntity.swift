@@ -8,9 +8,9 @@
 import Foundation
 
 struct MyLibraryListEntity {
-    let userNovelCount: Int
-    let isLoadable: Bool
-    let userNovels: [MyLibraryEntity]
+    var userNovelCount: Int
+    var isLoadable: Bool
+    var userNovels: [MyLibraryEntity]
 }
 
 extension MyLibraryListResponse {
