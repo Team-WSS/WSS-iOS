@@ -57,6 +57,7 @@ final class FeedEditViewModel: ViewModelType {
     private let showStopEditingAlert = PublishRelay<Void>()
     private let presentPhotoPicker = PublishRelay<Void>()
     private let showAddImageView = PublishRelay<Bool>()
+    private let showLoadingView = PublishRelay<Bool>()
     var selectedImages = BehaviorRelay<[UIImage]>(value: [])
     
     //MARK: - Life Cycle
@@ -113,6 +114,7 @@ final class FeedEditViewModel: ViewModelType {
         let presentPhotoPicker: Observable<Void>
         let showAddImageView: Observable<Bool>
         let selectedImages: Observable<[UIImage]>
+        let showLoadingView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -184,6 +186,7 @@ final class FeedEditViewModel: ViewModelType {
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
+                self.showLoadingView.accept(true)
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
             .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic, selectedImages))
@@ -195,6 +198,7 @@ final class FeedEditViewModel: ViewModelType {
                 }
             }
             .subscribe(with: self, onNext: { owner, _ in
+                owner.showLoadingView.accept(false)
                 NotificationCenter.default.post(name: NotificationName.feedEdited, object: nil)
                 owner.popViewController.accept(())
             }, onError: { owner, error  in
@@ -331,7 +335,8 @@ final class FeedEditViewModel: ViewModelType {
                       showStopEditingAlert: showStopEditingAlert.asObservable(),
                       presentPhotoPicker: presentPhotoPicker.asObservable(),
                       showAddImageView: showAddImageView.asObservable(),
-                      selectedImages: selectedImages.asObservable())
+                      selectedImages: selectedImages.asObservable(),
+                      showLoadingView: showLoadingView.asObservable())
     }
     
     // MARK: - Custom Method

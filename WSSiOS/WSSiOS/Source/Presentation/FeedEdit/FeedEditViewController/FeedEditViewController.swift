@@ -274,6 +274,13 @@ final class FeedEditViewController: UIViewController {
                     cell.bindData(image: element)
                 }
                 .disposed(by: disposeBag)
+        
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, isShow in
+                owner.rootView.showloadingView(isLoading: isShow)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Custom Method
