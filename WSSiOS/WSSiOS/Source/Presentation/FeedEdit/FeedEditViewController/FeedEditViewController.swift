@@ -102,10 +102,6 @@ final class FeedEditViewController: UIViewController {
         rootView.feedEditAddImageView.addImageCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
-        
-        rootView.feedEditAddImageView.addImageCollectionView.rx
-            .setDataSource(self)
-            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
@@ -240,21 +236,33 @@ final class FeedEditViewController: UIViewController {
         
         output.presentPhotoPicker
             .subscribe(with: self, onNext: { owner, _ in
-                owner.photoPickerManager = PhotoPickerManager(presentingViewController: owner)
-                owner.photoPickerManager?.didSelectImages = { newImages in
-                    var currentImages = owner.feedEditViewModel.selectedImages.value
-                    if currentImages.count + newImages.count > owner.maximumImageCount {
-                        owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
-                        return
-                    }
-                    currentImages.append(contentsOf: newImages)
-                    owner.feedEditViewModel.selectedImages.accept(currentImages)
-
-                    owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
-                    owner.rootView.showAddImages(hasImage: currentImages.count > 0)
-                }
-                owner.photoPickerManager?.presentPicker()
+                let manager = PhotoPickerManager(presentingViewController: owner)
+                owner.photoPickerManager = manager
+                manager.selectedImages
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(with: owner, onNext: { owner, newImages in
+                        var currentImages = owner.feedEditViewModel.selectedImages.value
+                        if currentImages.count + newImages.count > owner.maximumImageCount {
+                            owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
+                            return
+                        }
+                        currentImages.append(contentsOf: newImages)
+                        owner.feedEditViewModel.selectedImages.accept(currentImages)
+                        owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                        owner.rootView.showAddImages(hasImage: currentImages.count > 0)
+                    })
+                    .disposed(by: owner.disposeBag)
+                
+                manager.presentPicker()
             })
+            .disposed(by: disposeBag)
+        
+        feedEditViewModel.selectedImages
+            .bind(to: rootView.feedEditAddImageView.addImageCollectionView.rx.items(
+                cellIdentifier: FeedAddImageCollectionViewCell.cellIdentifier,
+                cellType: FeedAddImageCollectionViewCell.self)) { indexPath, element, cell in
+                    cell.bindData(image: element)
+            }
             .disposed(by: disposeBag)
     }
     
@@ -287,6 +295,7 @@ final class FeedEditViewController: UIViewController {
 extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == rootView.feedEditCategoryView.categoryCollectionView {
+            // 카테고리 컬렉션뷰에 대한 셀 사이즈 지정
             var text: String?
             
             text = self.feedEditViewModel.relevantCategoryList[indexPath.item].withKorean
@@ -298,27 +307,20 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 35)
         } else {
+            // 이외: 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
             return CGSize(width: 100, height: 100)
         }
     }
 }
 
-extension FeedEditViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return feedEditViewModel.selectedImages.value.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedAddImageCollectionViewCell.cellIdentifier, for: indexPath) as? FeedAddImageCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        cell.bindData(image: feedEditViewModel.selectedImages.value[indexPath.item])
-        return cell
-    }
-}
-
 extension FeedEditViewController: FeedAddImageCollectionDelegate {
-    func cancelButtonDidTap() {
-        
+    func cancelButtonDidTap(at indexPath: IndexPath) {
+        var currentImages = feedEditViewModel.selectedImages.value
+        currentImages.remove(at: indexPath.item)
+        feedEditViewModel.selectedImages.accept(currentImages)
+        print("\(indexPath) 클릭..")
+        rootView.feedEditAddImageView.addImageCollectionView.performBatchUpdates {
+            rootView.feedEditAddImageView.addImageCollectionView.deleteItems(at: [indexPath])
+        }
     }
 }

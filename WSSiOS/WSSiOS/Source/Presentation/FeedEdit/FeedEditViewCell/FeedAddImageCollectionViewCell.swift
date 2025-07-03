@@ -12,12 +12,14 @@ import Then
 import RxSwift
 
 protocol FeedAddImageCollectionDelegate: AnyObject {
-    func cancelButtonDidTap()
+    func cancelButtonDidTap(at indexPath: IndexPath)
 }
 
 final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
+    
+    var indexPath: IndexPath?
     
     private let disposeBag = DisposeBag()
     weak var delegate: FeedAddImageCollectionDelegate?
@@ -78,7 +80,9 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     private func bindAction() {
         cancelButton.rx.tap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.delegate?.cancelButtonDidTap()
+                if let indexPath = owner.indexPath {
+                    owner.delegate?.cancelButtonDidTap(at: indexPath)
+                }
             })
             .disposed(by: disposeBag)
     }
