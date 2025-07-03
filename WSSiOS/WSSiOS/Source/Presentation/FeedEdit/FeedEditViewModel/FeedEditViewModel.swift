@@ -56,6 +56,7 @@ final class FeedEditViewModel: ViewModelType {
     private let showAlreadyConnectedToast = PublishRelay<Void>()
     private let showStopEditingAlert = PublishRelay<Void>()
     private let presentPhotoPicker = PublishRelay<Void>()
+    private let showAddImageView = PublishRelay<Bool>()
     var selectedImages = BehaviorRelay<[UIImage]>(value: [])
     
     //MARK: - Life Cycle
@@ -110,16 +111,26 @@ final class FeedEditViewModel: ViewModelType {
         let showAlreadyConnectedToast: Observable<Void>
         let showStopEditingAlert: Observable<Void>
         let presentPhotoPicker: Observable<Void>
+        let showAddImageView: Observable<Bool>
         let selectedImages: Observable<[UIImage]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
-            .compactMap { [weak self] in self?.feedId }
-            .flatMapLatest { feedId in
-                self.getSingleFeed(feedId)
+            .map { [weak self] in self?.feedId }
+            .flatMapLatest { feedId -> Observable<FeedEntity?> in
+                if let feedId = feedId {
+                    return self.getSingleFeed(feedId).map { Optional($0) }
+                } else {
+                    return Observable.just(nil)
+                }
             }
             .subscribe(with: self, onNext: { owner, data in
+                guard let data = data else {
+                    owner.showAddImageView.accept(false)
+                    return
+                }
+                
                 owner.initialRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.newRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.categoryListData.accept(self.relevantCategoryList)
@@ -135,6 +146,8 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.initialIsPublic = data.isPublic
                 owner.isPublic.accept(data.isPublic)
+                
+                owner.showAddImageView.accept(!data.imageURLs.isEmpty)
                 
                 Observable.from(data.imageURLs)
                     .compactMap { $0 }
@@ -317,6 +330,7 @@ final class FeedEditViewModel: ViewModelType {
                       showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
                       showStopEditingAlert: showStopEditingAlert.asObservable(),
                       presentPhotoPicker: presentPhotoPicker.asObservable(),
+                      showAddImageView: showAddImageView.asObservable(),
                       selectedImages: selectedImages.asObservable())
     }
     

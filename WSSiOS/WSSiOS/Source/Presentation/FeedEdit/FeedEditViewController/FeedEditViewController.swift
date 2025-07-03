@@ -261,6 +261,12 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showAddImageView
+            .subscribe(with: self, onNext: { owner, isShow in
+                owner.rootView.showAddImages(hasImage: isShow)
+            })
+            .disposed(by: disposeBag)
+        
         output.selectedImages
             .bind(to: rootView.feedEditAddImageView.addImageCollectionView.rx.items(
                 cellIdentifier: FeedAddImageCollectionViewCell.cellIdentifier,
