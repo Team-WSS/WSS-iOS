@@ -236,18 +236,24 @@ final class FeedEditViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, _ in
                 let manager = PhotoPickerManager(presentingViewController: owner)
                 owner.photoPickerManager = manager
+                
                 manager.selectedImages
+                    .withLatestFrom(output.selectedImages) { newImages, currentImages in
+                        return (newImages, currentImages)
+                    }
                     .observe(on: MainScheduler.instance)
-                    .subscribe(with: owner, onNext: { owner, newImages in
-                        var currentImages = owner.feedEditViewModel.selectedImages.value
+                    .subscribe(with: owner, onNext: { owner, data in
+                        let (newImages, currentImages) = data
+                        
                         if currentImages.count + newImages.count > owner.maximumImageCount {
                             owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
                             return
                         }
-                        currentImages.append(contentsOf: newImages)
-                        owner.feedEditViewModel.selectedImages.accept(currentImages)
+                        
+                        let updatedImages = currentImages + newImages
+                        owner.feedEditViewModel.selectedImages.accept(updatedImages)
                         owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
-                        owner.rootView.showAddImages(hasImage: currentImages.count > 0)
+                        owner.rootView.showAddImages(hasImage: !updatedImages.isEmpty)
                     })
                     .disposed(by: owner.disposeBag)
                 
@@ -255,7 +261,7 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        feedEditViewModel.selectedImages
+        output.selectedImages
             .bind(to: rootView.feedEditAddImageView.addImageCollectionView.rx.items(
                 cellIdentifier: FeedAddImageCollectionViewCell.cellIdentifier,
                 cellType: FeedAddImageCollectionViewCell.self)) { item, element, cell in
