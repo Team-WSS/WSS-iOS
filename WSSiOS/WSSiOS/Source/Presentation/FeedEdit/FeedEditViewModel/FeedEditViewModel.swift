@@ -33,11 +33,13 @@ final class FeedEditViewModel: ViewModelType {
     private var initialIsSpoiler: Bool?
     private var initialIsPublic: Bool?
     private var initialNovelId: Int?
+    private var initialAddImages: [UIImage]?
     private var isRelevantCategoriesChanged: Bool = false
     private var isFeedContentChanged: Bool = false
     private var isSpoilerChanged: Bool = false
     private var isPublicChanged: Bool = false
     private var isNovelIdChanged: Bool = false
+    private var isAddImagesChanged: Bool = false
     
     // Output
     private let endEditing = PublishRelay<Bool>()
@@ -144,8 +146,10 @@ final class FeedEditViewModel: ViewModelType {
                     .observe(on: MainScheduler.instance)
                     .subscribe(onSuccess: { images in
                         owner.selectedImages.accept(images)
+                        owner.initialAddImages = images
                     })
                     .disposed(by: disposeBag)
+                
             }, onError: { owner, error in
                 print(error)
             })
@@ -290,6 +294,15 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        self.selectedImages
+            .skip(1)
+            .subscribe(with: self, onNext: { owner, images in
+                guard let initialImages = owner.initialAddImages else { return }
+                owner.isAddImagesChanged = initialImages != images
+                owner.checkIfCompleteButtonIsAbled()
+            })
+            .disposed(by: disposeBag)
+        
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
@@ -310,7 +323,7 @@ final class FeedEditViewModel: ViewModelType {
     // MARK: - Custom Method
     
     func isInitialFeedChanged() -> Bool {
-        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged : true
+        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged || isAddImagesChanged : true
     }
     
     func checkIfCompleteButtonIsAbled() {
