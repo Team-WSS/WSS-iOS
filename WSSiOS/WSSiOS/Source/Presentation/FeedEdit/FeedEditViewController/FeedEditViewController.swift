@@ -61,8 +61,6 @@ final class FeedEditViewController: UIViewController {
         viewDidLoadEvent.accept(())
         
         AmplitudeManager.shared.track(AmplitudeEvent.Feed.write)
-        
-        rootView.showAddImages(hasImage: false)
     }
     
     //MARK: - UI
@@ -260,10 +258,10 @@ final class FeedEditViewController: UIViewController {
         feedEditViewModel.selectedImages
             .bind(to: rootView.feedEditAddImageView.addImageCollectionView.rx.items(
                 cellIdentifier: FeedAddImageCollectionViewCell.cellIdentifier,
-                cellType: FeedAddImageCollectionViewCell.self)) { indexPath, element, cell in
+                cellType: FeedAddImageCollectionViewCell.self)) { item, element, cell in
                     cell.bindData(image: element)
-            }
-            .disposed(by: disposeBag)
+                }
+                .disposed(by: disposeBag)
     }
     
     // MARK: - Custom Method
@@ -309,18 +307,6 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
         } else {
             // 이외: 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
             return CGSize(width: 100, height: 100)
-        }
-    }
-}
-
-extension FeedEditViewController: FeedAddImageCollectionDelegate {
-    func cancelButtonDidTap(at indexPath: IndexPath) {
-        var currentImages = feedEditViewModel.selectedImages.value
-        currentImages.remove(at: indexPath.item)
-        feedEditViewModel.selectedImages.accept(currentImages)
-        print("\(indexPath) 클릭..")
-        rootView.feedEditAddImageView.addImageCollectionView.performBatchUpdates {
-            rootView.feedEditAddImageView.addImageCollectionView.deleteItems(at: [indexPath])
         }
     }
 }

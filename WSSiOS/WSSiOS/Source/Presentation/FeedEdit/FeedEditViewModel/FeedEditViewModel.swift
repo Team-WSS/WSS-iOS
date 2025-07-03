@@ -133,6 +133,19 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.initialIsPublic = data.isPublic
                 owner.isPublic.accept(data.isPublic)
+                
+                Observable.from(data.imageURLs)
+                    .compactMap { $0 }
+                    .flatMap { url -> Observable<UIImage> in
+                        KingFisherRxHelper.kingFisherImage(url: url)
+                            .catchAndReturn(UIImage())
+                    }
+                    .toArray()
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onSuccess: { images in
+                        owner.selectedImages.accept(images)
+                    })
+                    .disposed(by: disposeBag)
             }, onError: { owner, error in
                 print(error)
             })

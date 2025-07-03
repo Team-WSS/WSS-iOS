@@ -11,18 +11,11 @@ import SnapKit
 import Then
 import RxSwift
 
-protocol FeedAddImageCollectionDelegate: AnyObject {
-    func cancelButtonDidTap(at indexPath: IndexPath)
-}
-
 final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
-    
-    var indexPath: IndexPath?
-    
+
     private let disposeBag = DisposeBag()
-    weak var delegate: FeedAddImageCollectionDelegate?
     
     //MARK: - Components
     
@@ -37,8 +30,6 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
         setUI()
         setHierarchy()
         setLayout()
-        
-        bindAction()
     }
     
     required init?(coder: NSCoder) {
@@ -73,18 +64,6 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
             $0.size.equalTo(38)
             $0.top.trailing.equalToSuperview()
         }
-    }
-    
-    //MARK: - Bind
-    
-    private func bindAction() {
-        cancelButton.rx.tap
-            .subscribe(with: self, onNext: { owner, _ in
-                if let indexPath = owner.indexPath {
-                    owner.delegate?.cancelButtonDidTap(at: indexPath)
-                }
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: - Data

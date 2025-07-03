@@ -42,10 +42,8 @@ extension FeedResponse {
         let userProfileImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         let hasImage = self.images.count > 0
         let imageCount = self.images.count
-        //let imageURLs: [URL?] = self.images.map { KingFisherRxHelper.makeImageURLString(path: $0) }
-        // 테스트용 코드 -> 머지 시 삭제 예정
-        let imageURLs: [URL?] = self.images.map { URL(string: $0)! }
-        
+        let imageURLs: [URL?] = self.images.map { KingFisherRxHelper.makeImageURLString(path: $0) }
+
         //novelID 여부로 novelData 바인딩
         let hasLinkedNovel = self.novelId != nil
         let novelData = makeFeedNovelData()
