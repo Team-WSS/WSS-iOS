@@ -20,8 +20,8 @@ final class MyLibraryFilterHeaderView: UIView {
     let interestFilterButton = WSSFilterButton()
     private let dividerView = UIView()
     let readStatusFilterButton = WSSFilterButton()
-    let starRatingFilterButton = WSSFilterButton()
     let attractivePointFilterButton = WSSFilterButton()
+    let starRatingFilterButton = WSSFilterButton()
     
     // MARK: - Life Cycle
     
@@ -66,14 +66,14 @@ final class MyLibraryFilterHeaderView: UIView {
             $0.setButtonText(StringLiterals.MyLibrary.FilterButton.readStatus)
         }
         
-        starRatingFilterButton.do {
-            $0.setImageHidden(isHidden: false)
-            $0.setButtonText(StringLiterals.MyLibrary.FilterButton.starRating)
-        }
-        
         attractivePointFilterButton.do {
             $0.setImageHidden(isHidden: false)
             $0.setButtonText(StringLiterals.MyLibrary.FilterButton.attractivePoint)
+        }
+        
+        starRatingFilterButton.do {
+            $0.setImageHidden(isHidden: false)
+            $0.setButtonText(StringLiterals.MyLibrary.FilterButton.starRating)
         }
     }
     
@@ -83,8 +83,8 @@ final class MyLibraryFilterHeaderView: UIView {
         stackView.addArrangedSubviews(interestFilterButton,
                                       dividerView,
                                       readStatusFilterButton,
-                                      starRatingFilterButton,
-                                      attractivePointFilterButton)
+                                      attractivePointFilterButton,
+                                      starRatingFilterButton)
     }
     
     private func setLayout() {
@@ -116,8 +116,8 @@ final class MyLibraryFilterHeaderView: UIView {
     func updateFilterButtons(selectedOption: LibraryFilterOption) {
         interestFilterButton.updateButton(isSelected: selectedOption.interestedOption)
         updateReadStatusFilterButton(selectedOption: selectedOption.readStatusOptions)
-        updateStarRatingFilterButton(selectedOption: selectedOption.starRatingOption)
         updateAttractivePointFilterButton(selectedOption: selectedOption.attractivePointOptions)
+        updateStarRatingFilterButton(selectedOption: selectedOption.starRatingOption)
     }
     
     private func updateReadStatusFilterButton(selectedOption: [ReadStatus]) {
@@ -137,16 +137,6 @@ final class MyLibraryFilterHeaderView: UIView {
         }
     }
     
-    private func updateStarRatingFilterButton(selectedOption: NovelRatingStatus?) {
-        let isSelected = selectedOption != nil
-        let text = isSelected ? selectedOption?.description : StringLiterals.MyLibrary.FilterButton.starRating
-        
-        starRatingFilterButton.do {
-            $0.setButtonText(text)
-            $0.updateButton(isSelected: isSelected)
-        }
-    }
-    
     private func updateAttractivePointFilterButton(selectedOption: [AttractivePoint]) {
         let isSelected = !selectedOption.isEmpty
         let isMoreThanOne = selectedOption.count > 1
@@ -159,6 +149,16 @@ final class MyLibraryFilterHeaderView: UIView {
         }
         
         attractivePointFilterButton.do {
+            $0.setButtonText(text)
+            $0.updateButton(isSelected: isSelected)
+        }
+    }
+    
+    private func updateStarRatingFilterButton(selectedOption: NovelRatingStatus?) {
+        let isSelected = selectedOption != nil
+        let text = isSelected ? selectedOption?.description : StringLiterals.MyLibrary.FilterButton.starRating
+        
+        starRatingFilterButton.do {
             $0.setButtonText(text)
             $0.updateButton(isSelected: isSelected)
         }
