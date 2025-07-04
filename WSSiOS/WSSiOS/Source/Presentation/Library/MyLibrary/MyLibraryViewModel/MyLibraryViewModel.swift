@@ -68,6 +68,10 @@ final class MyLibraryViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewWillAppear
+            .skip(1)
+            .bind(to: refreshNovelList)
+            .disposed(by: disposeBag)
         
         input.interestFilterButtonDidTap
             .withLatestFrom(filterOption)
@@ -97,10 +101,6 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: reloadNovelList)
             .disposed(by: disposeBag)
         
-        input.viewWillAppear
-            .bind(to: refreshNovelList)
-            .disposed(by: disposeBag)
-        
         Observable.merge(
             input.collectionViewDidReachBottom,
             input.tableViewDidReachBottom
@@ -110,11 +110,8 @@ final class MyLibraryViewModel: ViewModelType {
         
         reloadNovelList
             .bind(with: self, onNext: { owner, _ in
-                owner.libraryNovelList.accept([])
-                owner.isLoadable.accept(true)
-                owner.lastUserNovelId.accept(0)
+                owner.initializeLibraryState()
                 owner.isFetching.accept(false)
-                owner.showLoadingView.accept(true)
                 owner.fetchNovelList.accept(())
             })
             .disposed(by: disposeBag)
@@ -122,7 +119,10 @@ final class MyLibraryViewModel: ViewModelType {
         fetchNovelList
             .withLatestFrom(Observable.combineLatest(isFetching, isLoadable))
             .filter { !($0.0) && $0.1 }
-            .do(onNext: { [weak self] _ in self?.isFetching.accept(true) })
+            .withLatestFrom(libraryNovelList)
+            .do(onNext: { [weak self] novelList in
+                self?.updateRequestState(isStarting: true, isReloading: novelList.isEmpty)
+            })
             .withLatestFrom(Observable.combineLatest(filterOption, lastUserNovelId, sortType))
             .flatMapLatest { (filterOption, lastUserNovelId, sortType) in
                 self.getNovelListData(filterOption: filterOption,
@@ -130,10 +130,11 @@ final class MyLibraryViewModel: ViewModelType {
                                       sortType: sortType)
             }
             .do(onNext: { [weak self] _ in
-                self?.isFetching.accept(false)
-                self?.showLoadingView.accept(false)
-                self?.showNetworkErrorView.accept(false)
+                self?.updateRequestState(isStarting: false)
+            }, onError: { [weak self] _ in
+                self?.updateRequestState(isStarting: false, isError: true)
             })
+            .catch({ _ in return Observable.empty() })
             .withLatestFrom(libraryNovelList) { entity, currentList in
                 var updatedEntity = entity
                 updatedEntity.userNovels = currentList + entity.userNovels
@@ -147,7 +148,9 @@ final class MyLibraryViewModel: ViewModelType {
         refreshNovelList
             .withLatestFrom(isFetching)
             .filter { !$0 }
-            .do(onNext: { [weak self] _ in self?.isFetching.accept(true) })
+            .do(onNext: { [weak self] _ in
+                self?.updateRequestState(isStarting: true)
+            })
             .withLatestFrom(Observable.combineLatest(filterOption, sortType, libraryNovelList))
             .flatMapLatest { (filterOption, sortType, novelList) in
                 self.getNovelListData(filterOption: filterOption,
@@ -156,9 +159,11 @@ final class MyLibraryViewModel: ViewModelType {
                                       sortType: sortType)
             }
             .do(onNext: { [weak self] _ in
-                self?.isFetching.accept(false)
-                self?.showNetworkErrorView.accept(false)
+                self?.updateRequestState(isStarting: false)
+            }, onError: { [weak self] _ in
+                self?.updateRequestState(isStarting: false, isError: true)
             })
+            .catch({ _ in return Observable.empty() })
             .bind(with: self, onNext: { owner, entity in
                 owner.updateLibraryState(with: entity)
             })
@@ -187,23 +192,24 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, size: Int = 12, sortType: SortType) -> Observable<MyLibraryListEntity> {
+    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, size: Int = 12, sortType: SortType) -> Single<MyLibraryListEntity> {
         return self.myLibraryRepository.getNovelList(
             filterOption: filterOption,
             lastUserNovelId: lastUserNovelId,
             size: size,
             sortType: sortType
         )
-        .asObservable()
-        .catch { [weak self] error in
-            print(error)
-            self?.isFetching.accept(false)
-            self?.showNetworkErrorView.accept(true)
-            return Observable.empty()
-        }
     }
     
     //MARK: - Custom Method
+    
+    private func initializeLibraryState() {
+        libraryNovelList.accept([])
+        isLoadable.accept(true)
+        novelCount.accept(0)
+        lastUserNovelId.accept(0)
+        showEmptyLibraryView.accept(false)
+    }
     
     private func updateLibraryState(with entity: MyLibraryListEntity) {
         libraryNovelList.accept(entity.userNovels)
@@ -211,5 +217,17 @@ final class MyLibraryViewModel: ViewModelType {
         novelCount.accept(entity.userNovelCount)
         lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
         showEmptyLibraryView.accept(entity.userNovels.isEmpty)
+    }
+    
+    private func updateRequestState(isStarting: Bool, isReloading: Bool = false, isError: Bool = false) {
+        if isStarting {
+            isFetching.accept(true)
+            showNetworkErrorView.accept(false)
+            showLoadingView.accept(isReloading)
+        } else {
+            isFetching.accept(false)
+            showNetworkErrorView.accept(isError)
+            showLoadingView.accept(false)
+        }
     }
 }
