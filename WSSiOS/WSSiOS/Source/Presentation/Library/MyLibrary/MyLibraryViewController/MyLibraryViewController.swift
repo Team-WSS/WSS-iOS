@@ -136,6 +136,20 @@ final class MyLibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShowing in
+                owner.rootView.showLoadingView(isShowing: isShowing)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showNetworkErrorView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShowing in
+                owner.rootView.showNetworkErrorView(isShowing: isShowing)
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToNovelDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, novelId in

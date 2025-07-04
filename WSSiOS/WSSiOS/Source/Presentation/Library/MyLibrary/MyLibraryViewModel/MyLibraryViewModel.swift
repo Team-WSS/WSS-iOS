@@ -33,6 +33,8 @@ final class MyLibraryViewModel: ViewModelType {
     
     private let showEmptyLibraryView = PublishRelay<Bool>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let showLoadingView = BehaviorRelay<Bool>(value: false)
+    private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
     
     
     //MARK: - Life Cycle
@@ -61,6 +63,8 @@ final class MyLibraryViewModel: ViewModelType {
         let libraryNovelList: Observable<[MyLibraryEntity]>
         let showEmptyLibraryView: Observable<Bool>
         let pushToNovelDetailViewController: Observable<Int>
+        let showLoadingView: Observable<Bool>
+        let showNetworkErrorView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -110,6 +114,7 @@ final class MyLibraryViewModel: ViewModelType {
                 owner.isLoadable.accept(true)
                 owner.lastUserNovelId.accept(0)
                 owner.isFetching.accept(false)
+                owner.showLoadingView.accept(true)
                 owner.fetchNovelList.accept(())
             })
             .disposed(by: disposeBag)
@@ -124,7 +129,11 @@ final class MyLibraryViewModel: ViewModelType {
                                       lastUserNovelId: lastUserNovelId,
                                       sortType: sortType)
             }
-            .do(onNext: { [weak self] _ in self?.isFetching.accept(false) })
+            .do(onNext: { [weak self] _ in
+                self?.isFetching.accept(false)
+                self?.showLoadingView.accept(false)
+                self?.showNetworkErrorView.accept(false)
+            })
             .withLatestFrom(libraryNovelList) { entity, currentList in
                 var updatedEntity = entity
                 updatedEntity.userNovels = currentList + entity.userNovels
@@ -146,7 +155,10 @@ final class MyLibraryViewModel: ViewModelType {
                                       size: novelList.count,
                                       sortType: sortType)
             }
-            .do(onNext: { [weak self] _ in self?.isFetching.accept(false) })
+            .do(onNext: { [weak self] _ in
+                self?.isFetching.accept(false)
+                self?.showNetworkErrorView.accept(false)
+            })
             .bind(with: self, onNext: { owner, entity in
                 owner.updateLibraryState(with: entity)
             })
@@ -167,7 +179,9 @@ final class MyLibraryViewModel: ViewModelType {
             novelCount: novelCount.asDriver(),
             libraryNovelList: libraryNovelList.asObservable(),
             showEmptyLibraryView: showEmptyLibraryView.asObservable(),
-            pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable()
+            pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
+            showLoadingView: showLoadingView.asObservable(),
+            showNetworkErrorView: showNetworkErrorView.asObservable()
         )
     }
     
@@ -184,6 +198,7 @@ final class MyLibraryViewModel: ViewModelType {
         .catch { [weak self] error in
             print(error)
             self?.isFetching.accept(false)
+            self?.showNetworkErrorView.accept(true)
             return Observable.empty()
         }
     }

@@ -19,6 +19,8 @@ final class MyLibraryView: UIView {
     let libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let libraryTableView = UITableView(frame: .zero, style: .plain)
     let libraryEmptyView = MyLibraryEmptyView()
+    let loadingView = WSSLoadingView()
+    let networkErrorView = WSSNetworkErrorView()
     
     // MARK: - Life Cycle
     
@@ -65,7 +67,9 @@ final class MyLibraryView: UIView {
                          headerView,
                          libraryCollectionView,
                          libraryTableView,
-                         libraryEmptyView)
+                         libraryEmptyView,
+                         loadingView,
+                         networkErrorView)
     }
     
     private func setLayout() {
@@ -96,6 +100,18 @@ final class MyLibraryView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
+        loadingView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
+        networkErrorView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
     
     func showEmptyLibraryView(isShowing: Bool) {
@@ -105,5 +121,13 @@ final class MyLibraryView: UIView {
     func showLibraryListView(selectedType: LayoutType) {
         libraryCollectionView.isHidden = selectedType == .list
         libraryTableView.isHidden = selectedType == .grid
+    }
+    
+    func showLoadingView(isShowing: Bool) {
+        loadingView.isHidden = !isShowing
+    }
+    
+    func showNetworkErrorView(isShowing: Bool) {
+        networkErrorView.isHidden = !isShowing
     }
 }
