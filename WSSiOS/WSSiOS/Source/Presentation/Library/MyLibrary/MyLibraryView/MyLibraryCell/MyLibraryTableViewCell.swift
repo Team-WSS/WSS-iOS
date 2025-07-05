@@ -96,7 +96,6 @@ final class MyLibraryTableViewCell: UITableViewCell {
         
         novelTitleLabel.do {
             $0.textColor = .wssBlack
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         ratingStackView.do {
@@ -305,7 +304,11 @@ final class MyLibraryTableViewCell: UITableViewCell {
             dateLabel.isHidden = true
         }
         
-        novelTitleLabel.applyWSSFont(.title2, with: data.title)
+        novelTitleLabel.do {
+            $0.applyWSSFont(.title2, with: data.title)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
+        }
         
         if data.userNovelRating > 0.0 {
             myRatingStackView.isHidden = false
@@ -329,7 +332,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
             attractivePointStackView.isHidden = false
             for (index, point) in data.attractivePoints.enumerated() {
                 guard let point else { continue }
-
+                
                 let attractivePointView = UIStackView()
                 attractivePointView.axis = .horizontal
                 attractivePointView.spacing = 3
