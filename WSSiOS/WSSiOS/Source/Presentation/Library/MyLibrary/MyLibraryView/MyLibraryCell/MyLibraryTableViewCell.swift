@@ -288,6 +288,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
             readStatusTagView.bindData(readStatus: readStatus)
         } else {
             readStatusTagView.isHidden = true
+            readStatusView.isHidden = true
         }
         novelImageView.kfSetImage(url: data.novelImage)
         interestImageView.isHidden = !data.isInterest
