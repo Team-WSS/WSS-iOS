@@ -285,6 +285,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
     func bindData(_ data: MyLibraryNovel) {
         if let readStatus = data.readStatus {
             readStatusTagView.isHidden = false
+            readStatusView.isHidden = false
             readStatusTagView.bindData(readStatus: readStatus)
         } else {
             readStatusTagView.isHidden = true
