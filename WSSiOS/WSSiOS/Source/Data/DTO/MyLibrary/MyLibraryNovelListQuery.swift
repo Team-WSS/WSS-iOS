@@ -24,7 +24,7 @@ extension MyLibraryNovelListQuery {
         var items: [URLQueryItem] = [
             URLQueryItem(name: "lastUserNovelId", value: "\(lastUserNovelId)"),
             URLQueryItem(name: "size", value: "\(size)"),
-            URLQueryItem(name: "sortType", value: sortType)
+            URLQueryItem(name: "sortCriteria", value: sortType)
         ]
         if let isInterest = isInterest {
             items.append(URLQueryItem(name: "isInterest", value: String(isInterest)))

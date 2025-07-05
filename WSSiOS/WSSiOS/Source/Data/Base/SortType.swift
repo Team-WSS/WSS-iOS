@@ -17,6 +17,15 @@ enum SortType {
         }
     }
     
+    var libraryQueryText: String {
+        switch self {
+        case .newest:
+            return "RECENT"
+        case .oldest:
+            return "OLD"
+        }
+    }
+    
     var text: String {
         switch self {
         case .newest:

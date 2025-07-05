@@ -32,7 +32,7 @@ struct DefaultMyLibraryRepository: MyLibraryRepository {
         var queryItem = MyLibraryNovelListQuery(
             lastUserNovelId: lastUserNovelId,
             size: size,
-            sortType: sortType.queryText)
+            sortType: sortType.libraryQueryText)
         queryItem.isInterest = filterOption.interestedOption ? true : nil
         queryItem.novelRating = filterOption.starRatingOption.map { $0.toFloat }
         if !filterOption.readStatusOptions.isEmpty {
