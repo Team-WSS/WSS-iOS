@@ -201,11 +201,12 @@ final class MyLibraryTableViewCell: UITableViewCell {
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.verticalEdges.equalToSuperview().inset(16)
+            $0.top.equalToSuperview().inset(28)
+            $0.bottom.equalToSuperview().inset(16)
             
             stackView.setCustomSpacing(8, after: readStatusView)
-            stackView.setCustomSpacing(8, after: novelInfoContentView)
-            stackView.setCustomSpacing(12, after: keywordScrollView)
+            stackView.setCustomSpacing(6, after: novelInfoContentView)
+            stackView.setCustomSpacing(6, after: keywordScrollView)
         }
         
         separatorView.snp.makeConstraints {
