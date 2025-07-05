@@ -36,7 +36,7 @@ final class MyLibraryMyFeedView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .wssPrimary20
+            $0.backgroundColor = .wssPrimary50
             $0.layer.cornerRadius = 8
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.wssGray70.cgColor
