@@ -130,7 +130,7 @@ final class MyLibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: MyLibraryEntity) {
+    func bindData(_ data: MyLibraryNovel) {
         novelImageView.kfSetImage(url: data.novelImage)
         if let readStatus = data.readStatus {
             readStatusTagView.isHidden = false

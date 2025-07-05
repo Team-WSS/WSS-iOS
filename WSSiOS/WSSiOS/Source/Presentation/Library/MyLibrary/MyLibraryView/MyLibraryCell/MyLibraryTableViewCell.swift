@@ -284,7 +284,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: MyLibraryEntity) {
+    func bindData(_ data: MyLibraryNovel) {
         if let readStatus = data.readStatus {
             readStatusTagView.isHidden = false
             readStatusTagView.bindData(readStatus: readStatus)

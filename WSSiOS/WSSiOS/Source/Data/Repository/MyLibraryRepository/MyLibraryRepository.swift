@@ -13,7 +13,7 @@ protocol MyLibraryRepository {
     func getNovelList(filterOption: LibraryFilterOption,
                       lastUserNovelId: Int,
                       size: Int,
-                      sortType: SortType) -> Single<MyLibraryListEntity>
+                      sortType: SortType) -> Single<MyLibraryEntity>
 }
 
 struct DefaultMyLibraryRepository: MyLibraryRepository {
@@ -27,7 +27,7 @@ struct DefaultMyLibraryRepository: MyLibraryRepository {
     func getNovelList(filterOption: LibraryFilterOption,
                       lastUserNovelId: Int,
                       size: Int,
-                      sortType: SortType) -> Single<MyLibraryListEntity> {
+                      sortType: SortType) -> Single<MyLibraryEntity> {
         let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
         var queryItem = MyLibraryNovelListQuery(
             lastUserNovelId: lastUserNovelId,

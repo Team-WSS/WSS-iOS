@@ -7,21 +7,21 @@
 
 import Foundation
 
-struct MyLibraryListEntity {
+struct MyLibraryEntity {
     var userNovelCount: Int
     var isLoadable: Bool
-    var userNovels: [MyLibraryEntity]
+    var userNovels: [MyLibraryNovel]
 }
 
 extension MyLibraryListResponse {
-    func toEntity() -> MyLibraryListEntity {
-        return MyLibraryListEntity(userNovelCount: self.userNovelCount,
+    func toEntity() -> MyLibraryEntity {
+        return MyLibraryEntity(userNovelCount: self.userNovelCount,
                                    isLoadable: self.isLoadable,
                                    userNovels: self.userNovels.map { $0.toEntity() })
     }
 }
 
-struct MyLibraryEntity {
+struct MyLibraryNovel {
     let userNovelId: Int
     let novelId: Int
     let title: String
@@ -38,11 +38,11 @@ struct MyLibraryEntity {
 }
 
 extension MyLibraryResponse {
-    func toEntity() -> MyLibraryEntity {
+    func toEntity() -> MyLibraryNovel {
         let readStatus = ReadStatus(rawValue: self.readStatus ?? "")
         let attractivePoints = attractivePoints.map { AttractivePoint(rawValue: $0) }
         
-        return MyLibraryEntity(
+        return MyLibraryNovel(
             userNovelId: self.userNovelId,
                                novelId: self.novelId,
                                title: self.title,
