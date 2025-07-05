@@ -52,8 +52,8 @@ extension MyLibraryResponse {
             isInterest: self.isInterest,
             userNovelRating: self.userNovelRating,
             attractivePoints: attractivePoints,
-            startDate: self.startDate,
-            endDate: self.endDate,
+            startDate:(self.startDate?.replacingOccurrences(of: "-", with: ".").dropFirst(2)).map{ String($0) },
+            endDate: (self.endDate?.replacingOccurrences(of: "-", with: ".").dropFirst(2)).map{ String($0) },
             keywords: self.keywords,
             myFeeds: self.myFeeds
         )
