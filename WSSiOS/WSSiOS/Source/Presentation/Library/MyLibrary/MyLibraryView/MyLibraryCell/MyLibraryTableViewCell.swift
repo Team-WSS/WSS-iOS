@@ -17,11 +17,12 @@ final class MyLibraryTableViewCell: UITableViewCell {
     private let stackView = UIStackView()
     
     private let novelInfoContentView = UIView()
-    private let novelImageStackView = UIStackView()
+    private let readStatusView = UIView()
     private let readStatusTagView = MyLibraryReadStatusTagView()
+    private let dateLabel = UILabel()
+    
     private let novelImageView = UIImageView()
     private let interestImageView = UIImageView()
-    private let dateLabel = UILabel()
     
     private let textStackView = UIStackView()
     private let novelTitleLabel = UILabel()
@@ -69,15 +70,14 @@ final class MyLibraryTableViewCell: UITableViewCell {
             $0.alignment = .fill
         }
         
-        novelImageStackView.do {
-            $0.axis = .vertical
-            $0.spacing = 0
+        readStatusTagView.do {
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
         
         novelImageView.do {
             $0.contentMode = .scaleAspectFill
+            $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
         
@@ -174,15 +174,15 @@ final class MyLibraryTableViewCell: UITableViewCell {
     private func setHierarchy() {
         contentView.addSubviews(stackView,
                                 separatorView)
-        stackView.addArrangedSubviews(novelInfoContentView,
+        stackView.addArrangedSubviews(readStatusView,
+                                      novelInfoContentView,
                                       keywordScrollView,
                                       feedScrollView)
-        novelInfoContentView.addSubviews(novelImageStackView,
+        readStatusView.addSubviews(readStatusTagView,
+                                   dateLabel)
+        novelInfoContentView.addSubviews(novelImageView,
                                          textStackView,
-                                         interestImageView,
-                                         dateLabel)
-        novelImageStackView.addArrangedSubviews(readStatusTagView,
-                                                novelImageView)
+                                         interestImageView)
         textStackView.addArrangedSubviews(novelTitleLabel,
                                           ratingStackView,
                                           attractivePointStackView)
@@ -204,6 +204,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
             $0.horizontalEdges.equalToSuperview()
             $0.verticalEdges.equalToSuperview().inset(16)
             
+            stackView.setCustomSpacing(8, after: readStatusView)
             stackView.setCustomSpacing(8, after: novelInfoContentView)
             stackView.setCustomSpacing(12, after: keywordScrollView)
         }
@@ -213,41 +214,38 @@ final class MyLibraryTableViewCell: UITableViewCell {
             $0.height.equalTo(1)
         }
         
-        novelImageStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+        readStatusTagView.snp.makeConstraints() {
             $0.leading.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
             $0.width.equalTo(60)
-            
-            readStatusTagView.snp.makeConstraints() {
-                $0.width.equalTo(60)
-                $0.height.equalTo(18)
-            }
-            
-            novelImageView.snp.makeConstraints() {
-                $0.width.equalTo(60)
-                $0.height.equalTo(80)
-            }
-        }
-        
-        interestImageView.snp.makeConstraints() {
-            $0.trailing.equalTo(novelImageStackView.snp.trailing).offset(-7)
-            $0.bottom.equalTo(novelImageStackView.snp.bottom).offset(-7)
+            $0.height.equalTo(18)
         }
         
         dateLabel.snp.makeConstraints() {
-            $0.top.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(readStatusTagView.snp.trailing).offset(16)
+        }
+        
+        novelImageView.snp.makeConstraints() {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalTo(60)
+            $0.height.equalTo(80)
+        }
+        
+        interestImageView.snp.makeConstraints() {
+            $0.trailing.equalTo(novelImageView.snp.trailing).offset(-10)
+            $0.bottom.equalTo(novelImageView.snp.bottom).offset(-10)
         }
         
         textStackView.snp.makeConstraints() {
-            $0.top.equalTo(novelImageView.snp.top).offset(5)
-            $0.leading.equalTo(novelImageStackView.snp.trailing).offset(16)
+            $0.top.equalToSuperview().inset(5)
+            $0.leading.equalTo(novelImageView.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().inset(20)
+            
+            textStackView.setCustomSpacing(2, after: novelTitleLabel)
+            textStackView.setCustomSpacing(6, after: ratingStackView)
         }
-        
-        textStackView.setCustomSpacing(2, after: novelTitleLabel)
-        textStackView.setCustomSpacing(6, after: ratingStackView)
         
         myRatingImageView.snp.makeConstraints() {
             $0.size.equalTo(9)
