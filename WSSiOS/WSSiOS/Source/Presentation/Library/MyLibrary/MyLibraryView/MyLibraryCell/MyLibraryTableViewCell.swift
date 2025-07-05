@@ -375,17 +375,17 @@ final class MyLibraryTableViewCell: UITableViewCell {
             data.keywords.forEach { keyword in
                 let keywordView = UIView()
                 keywordView.backgroundColor = .wssPrimary20
-                keywordView.layer.cornerRadius = 31 / 2
+                keywordView.layer.cornerRadius = 29 / 2
                 keywordView.clipsToBounds = true
                 let keywordLabel = UILabel()
-                keywordLabel.applyWSSFont(.body4, with: keyword)
+                keywordLabel.applyWSSFont(.body5, with: keyword)
                 keywordLabel.textColor = .wssGray200
                 
                 keywordView.addSubview(keywordLabel)
                 keywordStackView.addArrangedSubview(keywordView)
                 
                 keywordView.snp.makeConstraints {
-                    $0.height.equalTo(31)
+                    $0.height.equalTo(29)
                 }
                 keywordLabel.snp.makeConstraints {
                     $0.centerY.equalToSuperview()
