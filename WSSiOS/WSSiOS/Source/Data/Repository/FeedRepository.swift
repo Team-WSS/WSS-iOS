@@ -10,13 +10,13 @@ import UIKit
 import RxSwift
 
 protocol FeedRepository {
-    func getFeedData(category: String, lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity>
+    func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity>
     func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void>
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void>
 }
 
 struct TestFeedRepository: FeedRepository {
-    func getFeedData(category: String, lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
+    func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
         return Observable.just(TotalFeedListEntity.dummyFullData)
     }
     
@@ -37,8 +37,8 @@ struct DefaultFeedRepository: FeedRepository {
         self.feedService = feedService
     }
     
-    func getFeedData(category: String, lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
-        return feedService.getFeedList(category: category, lastFeedId: lastFeedId, size: size ?? self.size, feedsOption: feedsOption)
+    func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
+        return feedService.getFeedList(lastFeedId: lastFeedId, size: size ?? self.size, feedsOption: feedsOption)
             .map { $0.toEntity()}
             .asObservable()
     }
