@@ -17,7 +17,6 @@ final class FeedPageContentViewModel: ViewModelType {
     private let feedRepository: FeedRepository
     private let feedDetailRepository: FeedDetailRepository
     
-    private let category: String
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
@@ -46,10 +45,10 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, category: String) {
+    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedPageType: FeedPageType) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
-        self.category = category
+        self.feedPageType.accept(feedPageType)
     }
     
     struct Input {
@@ -91,8 +90,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: self.feedList.value.isEmpty ? nil : self.feedList.value.count,
                                  feedsOption: self.feedsOption)
             }
@@ -199,8 +197,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: self.feedList.value.isEmpty ? nil : self.feedList.value.count,
                                  feedsOption: self.feedsOption)
             }
@@ -229,8 +226,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.isFetching = true
             })
             .flatMapLatest {_ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: nil,
                                  feedsOption: self.feedsOption)
                 .do(onNext: { _ in
@@ -255,8 +251,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: nil,
                                  feedsOption: self.feedsOption)
             }
@@ -273,6 +268,7 @@ final class FeedPageContentViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
+            feedPageType: feedPageType.asDriver(),
             sortType: sortType.asDriver(),
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
@@ -292,8 +288,8 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getFeedData(category: String, lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
-        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId, size: size, feedsOption: feedsOption)
+    private func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
+        return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: feedsOption)
     }
     
     private func postFeedLike(_ feedId: Int) -> Observable<Void> {
