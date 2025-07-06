@@ -20,7 +20,6 @@ final class FeedPageContentViewModel: ViewModelType {
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
-    private var feedsOption: String = SosoFeedTab.all.rawValue
     
     private var feedId: Int = 0
     private var isMyFeed: Bool = false
@@ -93,8 +92,7 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .flatMapLatest { _ in
                 self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count,
-                                 feedsOption: self.feedsOption)
+                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -200,8 +198,7 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .flatMapLatest { _ in
                 self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count,
-                                 feedsOption: self.feedsOption)
+                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -229,11 +226,10 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .flatMapLatest {_ in
                 self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: nil,
-                                 feedsOption: self.feedsOption)
+                                 size: nil)
                 .do(onNext: { _ in
-                        self.isFetching = false
-                    })
+                    self.isFetching = false
+                })
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -254,8 +250,7 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .flatMapLatest { _ in
                 self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: nil,
-                                 feedsOption: self.feedsOption)
+                                 size: nil)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -290,8 +285,12 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
-        return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: feedsOption)
+    private func getFeedData(lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
+        switch feedPageType.value {
+        case .my: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.all.rawValue)
+        case .sosoAll: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.all.rawValue)
+        case.sosoRecommended: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.recommended.rawValue)
+        }
     }
     
     private func postFeedLike(_ feedId: Int) -> Observable<Void> {
