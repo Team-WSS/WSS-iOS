@@ -14,7 +14,9 @@ import RxSwift
 final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
-
+    
+    var cancelButtonTapped: (() -> Void)?
+    
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -30,6 +32,8 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
         setUI()
         setHierarchy()
         setLayout()
+        
+        bindAction()
     }
     
     required init?(coder: NSCoder) {
@@ -43,6 +47,7 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
             $0.contentMode = .scaleAspectFill
+            $0.isUserInteractionEnabled = true
         }
         
         cancelButton.do {
@@ -70,5 +75,15 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     
     func bindData(image: UIImage) {
         feedImageView.image = image
+    }
+    
+    //MARK: - Custom Method
+    
+    private func bindAction() {
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+    }
+    
+    @objc private func cancelTapped() {
+        cancelButtonTapped?()
     }
 }

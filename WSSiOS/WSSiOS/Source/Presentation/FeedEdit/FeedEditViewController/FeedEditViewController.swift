@@ -272,6 +272,18 @@ final class FeedEditViewController: UIViewController {
                 cellIdentifier: FeedAddImageCollectionViewCell.cellIdentifier,
                 cellType: FeedAddImageCollectionViewCell.self)) { item, element, cell in
                     cell.bindData(image: element)
+                    
+                    cell.cancelButtonTapped = {
+                        var currentImages = self.feedEditViewModel.selectedImages.value
+                        guard item < currentImages.count else { return }
+                        
+                        currentImages.remove(at: item)
+                        self.feedEditViewModel.selectedImages.accept(currentImages)
+                        
+                        DispatchQueue.main.async {
+                            self.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                        }
+                    }
                 }
                 .disposed(by: disposeBag)
         
