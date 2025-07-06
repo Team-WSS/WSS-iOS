@@ -213,10 +213,9 @@ extension FeedViewController {
                     ),
                     feedDetailRepository: DefaultFeedDetailRepository(
                         feedDetailService: DefaultFeedDetailService()
-                    ),
-                    category: NewNovelGenre.fantasy.rawValue
-                ),
-                pageType: pageType)
+                    ), feedPageType: pageType
+                )
+            )
             pages.append(viewController)
         }
         
