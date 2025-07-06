@@ -128,10 +128,7 @@ final class FeedEditViewModel: ViewModelType {
                 }
             }
             .subscribe(with: self, onNext: { owner, data in
-                guard let data = data else {
-                    owner.showAddImageView.accept(false)
-                    return
-                }
+                guard let data = data else { return }
                 
                 owner.initialRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.newRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
@@ -148,8 +145,6 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.initialIsPublic = data.isPublic
                 owner.isPublic.accept(data.isPublic)
-                
-                owner.showAddImageView.accept(!data.imageURLs.isEmpty)
                 
                 Observable.from(data.imageURLs)
                     .compactMap { $0 }
@@ -320,6 +315,10 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showAddImageView = self.selectedImages
+            .map { !$0.isEmpty }
+            .distinctUntilChanged()
+        
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
@@ -334,7 +333,7 @@ final class FeedEditViewModel: ViewModelType {
                       showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
                       showStopEditingAlert: showStopEditingAlert.asObservable(),
                       presentPhotoPicker: presentPhotoPicker.asObservable(),
-                      showAddImageView: showAddImageView.asObservable(),
+                      showAddImageView: showAddImageView,
                       selectedImages: selectedImages.asObservable(),
                       showLoadingView: showLoadingView.asObservable())
     }
