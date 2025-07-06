@@ -213,7 +213,11 @@ extension FeedViewController {
                     ),
                     feedDetailRepository: DefaultFeedDetailRepository(
                         feedDetailService: DefaultFeedDetailService()
-                    ), feedPageType: pageType
+                    ),
+                    userInfoRepository: DefaultUserInfoRepository(
+                        userService: DefaultUserService()
+                    ),
+                    feedPageType: pageType
                 )
             )
             pages.append(viewController)

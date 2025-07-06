@@ -16,6 +16,7 @@ final class FeedPageContentViewModel: ViewModelType {
     
     private let feedRepository: FeedRepository
     private let feedDetailRepository: FeedDetailRepository
+    private let userInfoRepository: UserInfoRepository
     
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
@@ -45,9 +46,10 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedPageType: FeedPageType) {
+    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, userInfoRepository: UserInfoRepository, feedPageType: FeedPageType) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
+        self.userInfoRepository = userInfoRepository
         self.feedPageType.accept(feedPageType)
     }
     
@@ -90,9 +92,10 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.isLoadable = false
                 self.lastFeedId = 0
             })
-            .flatMapLatest { _ in
+            .withLatestFrom(feedList)
+            .flatMapLatest { feedList in
                 self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
+                                 size: feedList.isEmpty ? nil : feedList.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -100,6 +103,7 @@ final class FeedPageContentViewModel: ViewModelType {
                     owner.lastFeedId = lastFeed.feedId
                 }
                 owner.feedList.accept(data.feeds)
+                print(data.feeds.count)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
@@ -238,6 +242,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 }
                 let newData = owner.feedList.value + data.feeds
                 owner.feedList.accept(newData)
+                print(newData.count)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
@@ -259,6 +264,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 }
                 owner.feedList.accept(data.feeds)
                 owner.feedTableViewEndRefreshing.accept(())
+                print(data.feeds.count)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
@@ -287,10 +293,28 @@ final class FeedPageContentViewModel: ViewModelType {
     
     private func getFeedData(lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
         switch feedPageType.value {
-        case .my: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.all.rawValue)
+        case .my: return self.getMyFeedData(lastFeedId: lastFeedId, size: size)
         case .sosoAll: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.all.rawValue)
         case.sosoRecommended: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.recommended.rawValue)
         }
+    }
+    
+    private func getMyFeedData(lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
+        let profileEntity = userInfoRepository.getMyProfileData()
+        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        let userFeedListEntity = userInfoRepository.getUserFeed(
+            userId: userId,
+            lastFeedId: lastFeedId,
+            size: size ?? 20
+        )
+        
+        return Observable.zip(profileEntity, userFeedListEntity)
+            .map { profileEntity, userFeedListEntity in
+                TotalFeedListEntity.from(
+                    userFeedListEntity: userFeedListEntity,
+                    myProfileEntity: profileEntity,
+                    userId: userId)
+            }
     }
     
     private func postFeedLike(_ feedId: Int) -> Observable<Void> {
