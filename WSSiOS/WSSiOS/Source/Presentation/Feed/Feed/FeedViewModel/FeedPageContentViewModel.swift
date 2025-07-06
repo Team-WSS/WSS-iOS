@@ -26,6 +26,7 @@ final class FeedPageContentViewModel: ViewModelType {
     private var isMyFeed: Bool = false
     
     // output
+    private var feedPageType = BehaviorRelay<FeedPageType>(value: .my)
     private let filterOption = PublishRelay<FeedFilterOption>()
     private let sortType = BehaviorRelay<SortType>(value: .newest)
     
@@ -67,6 +68,7 @@ final class FeedPageContentViewModel: ViewModelType {
     }
     
     struct Output {
+        let feedPageType: Driver<FeedPageType>
         let sortType: Driver<SortType>
         let feedList: Observable<[TotalFeedEntity]>
         let pushToFeedDetailViewController: Observable<Int>

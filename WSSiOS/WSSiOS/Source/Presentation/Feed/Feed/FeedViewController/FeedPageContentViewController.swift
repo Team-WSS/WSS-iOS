@@ -15,7 +15,6 @@ final class FeedPageContentViewController: UIViewController {
     
     //MARK: - Properties
     
-    let pageType: FeedPageType
     private var viewModel: FeedPageContentViewModel
     private let disposeBag = DisposeBag()
     
@@ -32,9 +31,8 @@ final class FeedPageContentViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedPageContentViewModel, pageType: FeedPageType) {
+    init(viewModel: FeedPageContentViewModel) {
         self.viewModel = viewModel
-        self.pageType = pageType
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,7 +42,6 @@ final class FeedPageContentViewController: UIViewController {
     }
     
     override func loadView() {
-        rootView.setFeedPageContentView(pageType: pageType)
         self.view = rootView
     }
     
@@ -90,6 +87,12 @@ final class FeedPageContentViewController: UIViewController {
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.feedPageType
+            .drive(with: self, onNext: { owner, pageType in
+                owner.rootView.setFeedPageContentView(pageType: pageType)
+            })
+            .disposed(by: disposeBag)
         
         output.sortType
             .drive(with: self, onNext: { owner, sortType in
