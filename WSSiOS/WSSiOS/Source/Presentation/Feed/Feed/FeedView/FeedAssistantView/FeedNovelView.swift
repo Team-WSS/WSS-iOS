@@ -109,7 +109,6 @@ final class FeedNovelView: UIView {
     //MARK: - Data
     
     func bindData(title: String, rating: Float, participants: Int, novelColor: UIColor, novelLinkImage: UIImage) {
-        print("🥹")
         backgroundColor = novelColor
         novelLinkIcon.image = novelLinkImage
         
