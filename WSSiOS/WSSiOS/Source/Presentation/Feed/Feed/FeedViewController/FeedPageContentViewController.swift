@@ -15,11 +15,9 @@ final class FeedPageContentViewController: UIViewController {
     
     //MARK: - Properties
     
-    let pageType: FeedPageType
     private var viewModel: FeedPageContentViewModel
     private let disposeBag = DisposeBag()
     
-    private let selectedFilterOption = BehaviorRelay<FeedFilterOption>(value: FeedFilterOption())
     private let feedProfileViewDidTap = PublishRelay<Int>()
     private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
@@ -32,9 +30,8 @@ final class FeedPageContentViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedPageContentViewModel, pageType: FeedPageType) {
+    init(viewModel: FeedPageContentViewModel) {
         self.viewModel = viewModel
-        self.pageType = pageType
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,7 +41,6 @@ final class FeedPageContentViewController: UIViewController {
     }
     
     override func loadView() {
-        rootView.setFeedPageContentView(pageType: pageType)
         self.view = rootView
     }
     
@@ -58,6 +54,7 @@ final class FeedPageContentViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        reloadFeed.accept(())
         showTabBar()
     }
     
@@ -76,7 +73,6 @@ final class FeedPageContentViewController: UIViewController {
         
         let input = FeedPageContentViewModel.Input(
             reloadFeed: reloadFeed.asObservable(),
-            feedFilterOptionDidChanged: selectedFilterOption.asObservable(),
             sortButtonDidTap: rootView.myFeedFilterHeaderView.sortButton.rx.tap,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
@@ -90,6 +86,18 @@ final class FeedPageContentViewController: UIViewController {
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.feedPageType
+            .drive(with: self, onNext: { owner, pageType in
+                owner.rootView.setFeedPageContentView(pageType: pageType)
+            })
+            .disposed(by: disposeBag)
+        
+        output.myFeedCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.myFeedFilterHeaderView.filterButton.setButtonText(StringLiterals.Feed.novelCountText(count))
+            })
+            .disposed(by: disposeBag)
         
         output.sortType
             .drive(with: self, onNext: { owner, sortType in
@@ -272,13 +280,13 @@ final class FeedPageContentViewController: UIViewController {
     
     private func bindAction() {
         rootView.myFeedFilterHeaderView.filterButton.rx.tap
-            .withLatestFrom(selectedFilterOption)
+            .withLatestFrom(viewModel.filterOption)
             .observe(on: MainScheduler.instance)
             .flatMap { filterOption in
                 self.presentFeedFilterViewController(filterOption)
             }
             .distinctUntilChanged()
-            .bind(to: selectedFilterOption)
+            .bind(to: viewModel.filterOption)
             .disposed(by: disposeBag)
     }
     

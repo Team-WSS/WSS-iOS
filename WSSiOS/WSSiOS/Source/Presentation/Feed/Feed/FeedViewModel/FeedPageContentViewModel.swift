@@ -16,8 +16,8 @@ final class FeedPageContentViewModel: ViewModelType {
     
     private let feedRepository: FeedRepository
     private let feedDetailRepository: FeedDetailRepository
+    private let userInfoRepository: UserInfoRepository
     
-    private let category: String
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
@@ -26,10 +26,13 @@ final class FeedPageContentViewModel: ViewModelType {
     private var isMyFeed: Bool = false
     
     // output
-    private let filterOption = PublishRelay<FeedFilterOption>()
+    private var feedPageType = BehaviorRelay<FeedPageType>(value: .my)
+    let filterOption = BehaviorRelay<FeedFilterOption>(value: FeedFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
+    private let feedTableViewIsRefreshing = PublishRelay<Void>()
     
     private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
+    private let myFeedCount = BehaviorRelay<Int>(value: 0)
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToUserViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
@@ -45,15 +48,15 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, category: String) {
+    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, userInfoRepository: UserInfoRepository, feedPageType: FeedPageType) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
-        self.category = category
+        self.userInfoRepository = userInfoRepository
+        self.feedPageType.accept(feedPageType)
     }
     
     struct Input {
         let reloadFeed: Observable<Void>
-        let feedFilterOptionDidChanged: Observable<FeedFilterOption>
         let sortButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
@@ -67,6 +70,8 @@ final class FeedPageContentViewModel: ViewModelType {
     }
     
     struct Output {
+        let feedPageType: Driver<FeedPageType>
+        let myFeedCount: Driver<Int>
         let sortType: Driver<SortType>
         let feedList: Observable<[TotalFeedEntity]>
         let pushToFeedDetailViewController: Observable<Int>
@@ -89,10 +94,10 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.isLoadable = false
                 self.lastFeedId = 0
             })
-            .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
+            .withLatestFrom(feedList)
+            .flatMapLatest { feedList in
+                self.getFeedData(lastFeedId: self.lastFeedId,
+                                 size: feedList.isEmpty ? nil : feedList.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -105,10 +110,6 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.feedFilterOptionDidChanged
-            .bind(to: filterOption)
-            .disposed(by: disposeBag)
-        
         input.sortButtonDidTap
             .withLatestFrom(sortType)
             .map { $0.toggle() }
@@ -117,7 +118,7 @@ final class FeedPageContentViewModel: ViewModelType {
         
         Observable.combineLatest(filterOption, sortType)
             .subscribe(with: self, onNext: { owner, query in
-                // Todo Reload FeedData with filter&sort query
+                owner.feedTableViewIsRefreshing.accept(())
                 
             })
             .disposed(by: disposeBag)
@@ -197,8 +198,7 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
@@ -226,12 +226,11 @@ final class FeedPageContentViewModel: ViewModelType {
                 self.isFetching = true
             })
             .flatMapLatest {_ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: nil)
                 .do(onNext: { _ in
-                        self.isFetching = false
-                    })
+                    self.isFetching = false
+                })
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -246,13 +245,16 @@ final class FeedPageContentViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.feedTableViewIsRefreshing
+            .bind(to: feedTableViewIsRefreshing)
+            .disposed(by: disposeBag)
+        
+        self.feedTableViewIsRefreshing
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId,
+                self.getFeedData(lastFeedId: self.lastFeedId,
                                  size: nil)
             }
             .subscribe(with: self, onNext: { owner, data in
@@ -268,6 +270,8 @@ final class FeedPageContentViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
+            feedPageType: feedPageType.asDriver(),
+            myFeedCount: myFeedCount.asDriver(),
             sortType: sortType.asDriver(),
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
@@ -287,8 +291,35 @@ final class FeedPageContentViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
-        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId, size: size)
+    private func getFeedData(lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
+        switch feedPageType.value {
+        case .my: return self.getMyFeedData(lastFeedId: lastFeedId, size: size)
+        case .sosoAll: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.all.rawValue)
+        case.sosoRecommended: return self.feedRepository.getFeedData(lastFeedId: lastFeedId, size: size, feedsOption: SosoFeedTab.recommended.rawValue)
+        }
+    }
+    
+    private func getMyFeedData(lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
+        let profileEntity = userInfoRepository.getMyProfileData()
+        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        let userFeedListEntity = userInfoRepository.getUserFeed(
+            userId: userId,
+            lastFeedId: lastFeedId,
+            size: size ?? 20,
+            filterOption: filterOption.value,
+            sortType: sortType.value
+        )
+        
+        return Observable.zip(profileEntity, userFeedListEntity)
+            .do { [weak self] profile, userFeedListEntity in
+                self?.myFeedCount.accept(userFeedListEntity.feedsCount)
+            }
+            .map { profileEntity, userFeedListEntity in
+                TotalFeedListEntity.from(
+                    userFeedListEntity: userFeedListEntity,
+                    myProfileEntity: profileEntity,
+                    userId: userId)
+            }
     }
     
     private func postFeedLike(_ feedId: Int) -> Observable<Void> {

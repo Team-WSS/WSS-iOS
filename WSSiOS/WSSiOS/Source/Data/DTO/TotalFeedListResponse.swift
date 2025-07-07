@@ -35,6 +35,7 @@ struct TotalFeedResponse: Decodable {
     
     let thumbnailUrl: String?
     let imageCount: Int
+    let genreName: String?
 }
 
 struct FeedContentRequest: Encodable {

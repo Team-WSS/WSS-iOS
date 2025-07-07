@@ -160,7 +160,9 @@ final class FeedListTableViewCell: UITableViewCell {
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.title,
                                             novelRatingCount: feed.novelRatingCount,
-                                            novelRating: feed.novelRating)
+                                            novelRating: feed.novelRating,
+                                            novelColor: feed.novelGenreColor,
+                                            novelLinkImage: feed.novelGenreImage)
             
             stackView.insertArrangedSubview(feedConnectedNovelView, at: 3)
             stackView.setCustomSpacing(10, after: feedConnectedNovelView)
@@ -213,7 +215,9 @@ final class FeedListTableViewCell: UITableViewCell {
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.feed.title,
                                             novelRatingCount: feed.feed.novelRatingCount,
-                                            novelRating: feed.feed.novelRating)
+                                            novelRating: feed.feed.novelRating,
+                                            novelColor: feed.feed.novelGenreColor,
+                                            novelLinkImage: feed.feed.novelGenreImage)
             
             stackView.insertArrangedSubview(feedConnectedNovelView, at: 3)
             stackView.setCustomSpacing(10, after: feedConnectedNovelView)

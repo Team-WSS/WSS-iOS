@@ -10,34 +10,33 @@ import UIKit
 import RxSwift
 
 protocol FeedService {
-    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse>
+    func getFeedList(lastFeedId: Int, size: Int, feedsOption: String) -> Single<TotalFeedListResponse>
     func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
 }
 
 final class DefaultFeedService: NSObject, Networking, FeedService {
-    func makeFeedListQuery(category: String,
-                           lastFeedId: Int,
-                           size: Int) -> [URLQueryItem] {
+    func makeFeedListQuery(lastFeedId: Int,
+                           size: Int,
+                           feedsOption: String) -> [URLQueryItem] {
         return [
-            URLQueryItem(name: "category", value: category),
             URLQueryItem(name: "lastFeedId", value: String(describing: lastFeedId)),
             URLQueryItem(name: "size", value: String(describing: size)),
+            URLQueryItem(name: "feedsOption", value: String(describing: feedsOption)),
         ]
     }
     
-    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse> {
+    func getFeedList(lastFeedId: Int, size: Int, feedsOption: String) -> Single<TotalFeedListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getFeeds,
-                                              queryItems: makeFeedListQuery(category: category,
-                                                                            lastFeedId: lastFeedId,
-                                                                            size: size),
+                                              queryItems: makeFeedListQuery(lastFeedId: lastFeedId,
+                                                                            size: size,
+                                                                            feedsOption: feedsOption),
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
-            
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: TotalFeedListResponse.self) }
