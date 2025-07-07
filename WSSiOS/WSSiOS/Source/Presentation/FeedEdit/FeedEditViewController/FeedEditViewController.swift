@@ -233,31 +233,34 @@ final class FeedEditViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.presentPhotoPicker
-            .subscribe(with: self, onNext: { owner, _ in
-                let manager = PhotoPickerManager(presentingViewController: owner)
-                owner.photoPickerManager = manager
+            .flatMapLatest { [weak self] _ -> Observable<(newImages: [UIImage], currentImages: [UIImage])> in
+                guard let self = self else { return .empty() }
                 
+                let manager = PhotoPickerManager(presentingViewController: self)
+                self.photoPickerManager = manager
+                
+                let selected: Observable<(newImages: [UIImage], currentImages: [UIImage])> =
                 manager.selectedImages
                     .withLatestFrom(output.selectedImages) { newImages, currentImages in
-                        return (newImages, currentImages)
+                        return (newImages: newImages, currentImages: currentImages)
                     }
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(with: owner, onNext: { owner, data in
-                        let (newImages, currentImages) = data
-                        
-                        if currentImages.count + newImages.count > owner.maximumImageCount {
-                            owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
-                            return
-                        }
-                        
-                        let updatedImages = currentImages + newImages
-                        owner.feedEditViewModel.selectedImages.accept(updatedImages)
-                        owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
-                        owner.rootView.showAddImages(hasImage: !updatedImages.isEmpty)
-                    })
-                    .disposed(by: owner.disposeBag)
                 
                 manager.presentPicker()
+                return selected
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                let (newImages, currentImages) = data
+                
+                if currentImages.count + newImages.count > owner.maximumImageCount {
+                    owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
+                    return
+                }
+                
+                let updatedImages = currentImages + newImages
+                owner.feedEditViewModel.selectedImages.accept(updatedImages)
+                owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                owner.rootView.showAddImages(hasImage: !updatedImages.isEmpty)
             })
             .disposed(by: disposeBag)
         
