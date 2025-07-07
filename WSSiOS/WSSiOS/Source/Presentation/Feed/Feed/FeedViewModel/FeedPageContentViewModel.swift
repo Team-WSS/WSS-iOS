@@ -27,8 +27,9 @@ final class FeedPageContentViewModel: ViewModelType {
     
     // output
     private var feedPageType = BehaviorRelay<FeedPageType>(value: .my)
-    private let filterOption = PublishRelay<FeedFilterOption>()
+    let filterOption = BehaviorRelay<FeedFilterOption>(value: FeedFilterOption())
     private let sortType = BehaviorRelay<SortType>(value: .newest)
+    private let feedTableViewIsRefreshing = PublishRelay<Void>()
     
     private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
     private let pushToFeedDetailViewController = PublishRelay<Int>()
@@ -55,7 +56,6 @@ final class FeedPageContentViewModel: ViewModelType {
     
     struct Input {
         let reloadFeed: Observable<Void>
-        let feedFilterOptionDidChanged: Observable<FeedFilterOption>
         let sortButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
@@ -109,10 +109,6 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.feedFilterOptionDidChanged
-            .bind(to: filterOption)
-            .disposed(by: disposeBag)
-        
         input.sortButtonDidTap
             .withLatestFrom(sortType)
             .map { $0.toggle() }
@@ -121,7 +117,7 @@ final class FeedPageContentViewModel: ViewModelType {
         
         Observable.combineLatest(filterOption, sortType)
             .subscribe(with: self, onNext: { owner, query in
-                // Todo Reload FeedData with filter&sort query
+                owner.feedTableViewIsRefreshing.accept(())
                 
             })
             .disposed(by: disposeBag)
@@ -249,6 +245,10 @@ final class FeedPageContentViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.feedTableViewIsRefreshing
+            .bind(to: feedTableViewIsRefreshing)
+            .disposed(by: disposeBag)
+        
+        self.feedTableViewIsRefreshing
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
@@ -305,7 +305,9 @@ final class FeedPageContentViewModel: ViewModelType {
         let userFeedListEntity = userInfoRepository.getUserFeed(
             userId: userId,
             lastFeedId: lastFeedId,
-            size: size ?? 20
+            size: size ?? 20,
+            filterOption: filterOption.value,
+            sortType: sortType.value
         )
         
         return Observable.zip(profileEntity, userFeedListEntity)

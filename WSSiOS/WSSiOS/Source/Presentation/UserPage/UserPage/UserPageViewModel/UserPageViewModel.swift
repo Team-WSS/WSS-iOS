@@ -461,6 +461,6 @@ final class UserPageViewModel: ViewModelType {
     }
     
     private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity> {
-        return userRepository.userInfoRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
+        return userRepository.userInfoRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size, filterOption: nil, sortType: nil)
     }
 }
