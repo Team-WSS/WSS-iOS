@@ -105,7 +105,6 @@ final class FeedPageContentViewModel: ViewModelType {
                     owner.lastFeedId = lastFeed.feedId
                 }
                 owner.feedList.accept(data.feeds)
-                print(data.feeds.count)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
@@ -240,7 +239,6 @@ final class FeedPageContentViewModel: ViewModelType {
                 }
                 let newData = owner.feedList.value + data.feeds
                 owner.feedList.accept(newData)
-                print(newData.count)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
@@ -266,7 +264,6 @@ final class FeedPageContentViewModel: ViewModelType {
                 }
                 owner.feedList.accept(data.feeds)
                 owner.feedTableViewEndRefreshing.accept(())
-                print(data.feeds.count)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
