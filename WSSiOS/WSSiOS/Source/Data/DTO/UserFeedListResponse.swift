@@ -9,6 +9,7 @@ import Foundation
 
 struct UserFeedListResponse: Decodable {
     let isLoadable: Bool
+    let feedsCount: Int
     let feeds: [UserFeedResponse]
 }
 

@@ -10,13 +10,15 @@ import UIKit
 
 struct UserFeedListEntity {
     let isLoadable: Bool
+    let feedsCount: Int
     let feeds: [UserFeedEntity]
 }
 
 extension UserFeedListResponse {
     func toEntity() -> UserFeedListEntity {
         return UserFeedListEntity(isLoadable: self.isLoadable,
-                                feeds: self.feeds.map { $0.toEntity()} )
+                                  feedsCount: self.feedsCount,
+                                  feeds: self.feeds.map { $0.toEntity()} )
     }
 }
 
