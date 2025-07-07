@@ -23,7 +23,7 @@ protocol UserService {
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferencesListResponse>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<UserFeedListResponse>
+    func getUserFeed(userId: Int, userFeedListQuery: UserFeedListQuery) -> Single<UserFeedListResponse>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -318,15 +318,11 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<UserFeedListResponse> {
-        let feedQueryItems: [URLQueryItem] = [
-            URLQueryItem(name: "lastFeedId", value: String(describing: lastFeedId)),
-            URLQueryItem(name: "size", value: String(describing: size))
-        ]
+    func getUserFeed(userId: Int, userFeedListQuery: UserFeedListQuery) -> Single<UserFeedListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.getProfileFeed(userId: userId),
-                                              queryItems: feedQueryItems,
+                                              queryItems: userFeedListQuery.asQueryItems(),
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             

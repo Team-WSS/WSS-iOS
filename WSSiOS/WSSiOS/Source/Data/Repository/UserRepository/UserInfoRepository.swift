@@ -23,7 +23,7 @@ protocol UserInfoRepository {
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int, filterOption: FeedFilterOption?, sortType: SortType?) -> Observable<UserFeedListEntity>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -114,8 +114,17 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         return userService.getNicknameisValid(nickname: nickname)
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<UserFeedListEntity> {
-        return userService.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int, filterOption: FeedFilterOption? = nil, sortType: SortType? = nil) -> Observable<UserFeedListEntity> {
+        var queryItem = UserFeedListQuery(
+            lastFeedId: lastFeedId,
+            size: size,
+            sortCriteria: sortType?.queryText ?? SortType.newest.queryText
+        )
+        queryItem.genreNames = filterOption?.genres.map{ $0.rawValue }
+        queryItem.isUnVisible = filterOption?.visibilityOptions.contains(.private)
+        queryItem.isVisible = filterOption?.visibilityOptions.contains(.public)
+        
+        return userService.getUserFeed(userId: userId, userFeedListQuery: queryItem)
             .map { $0.toEntity() }
             .asObservable()
     }
