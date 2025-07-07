@@ -181,16 +181,20 @@ final class FeedEditViewModel: ViewModelType {
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
+                self.completeButtonIsAbled.accept(false)
                 self.showLoadingView.accept(true)
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
             .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic, selectedImages))
             .flatMapLatest { (isSpoiler, isPublic, selectedImages) in
-                if let feedId = self.feedId {
-                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
-                } else {
-                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                Observable.deferred {
+                    if let feedId = self.feedId {
+                        self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                    } else {
+                        self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                    }
                 }
+                .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             }
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showLoadingView.accept(false)
