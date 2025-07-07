@@ -58,6 +58,7 @@ final class FeedEditViewModel: ViewModelType {
     private let presentPhotoPicker = PublishRelay<Void>()
     private let showAddImageView = PublishRelay<Bool>()
     private let showLoadingView = PublishRelay<Bool>()
+    private let backButtonIsAbled = BehaviorRelay<Bool>(value: false)
     var selectedImages = BehaviorRelay<[UIImage]>(value: [])
     
     //MARK: - Life Cycle
@@ -115,6 +116,7 @@ final class FeedEditViewModel: ViewModelType {
         let showAddImageView: Observable<Bool>
         let selectedImages: Observable<[UIImage]>
         let showLoadingView: Observable<Bool>
+        let backButtonIsAbled: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -182,6 +184,7 @@ final class FeedEditViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
                 self.completeButtonIsAbled.accept(false)
+                self.backButtonIsAbled.accept(false)
                 self.showLoadingView.accept(true)
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
@@ -198,6 +201,7 @@ final class FeedEditViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showLoadingView.accept(false)
+                owner.backButtonIsAbled.accept(true)
                 NotificationCenter.default.post(name: NotificationName.feedEdited, object: nil)
                 owner.popViewController.accept(())
             }, onError: { owner, error  in
@@ -339,7 +343,8 @@ final class FeedEditViewModel: ViewModelType {
                       presentPhotoPicker: presentPhotoPicker.asObservable(),
                       showAddImageView: showAddImageView,
                       selectedImages: selectedImages.asObservable(),
-                      showLoadingView: showLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable(),
+                      backButtonIsAbled: backButtonIsAbled.asObservable())
     }
     
     // MARK: - Custom Method

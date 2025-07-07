@@ -151,4 +151,8 @@ final class FeedEditView: UIView {
     func showloadingView(isLoading: Bool) {
         loadingView.isHidden = !isLoading
     }
+    
+    func enableBackButton(isEnabled: Bool) {
+        backButton.isEnabled = isEnabled
+    }
 }

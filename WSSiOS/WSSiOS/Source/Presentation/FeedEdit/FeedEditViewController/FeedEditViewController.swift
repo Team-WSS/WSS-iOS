@@ -296,6 +296,12 @@ final class FeedEditViewController: UIViewController {
                 owner.rootView.showloadingView(isLoading: isShow)
             })
             .disposed(by: disposeBag)
+        
+        output.backButtonIsAbled
+            .subscribe(with: self, onNext: { owner, isAbled in
+                owner.rootView.enableBackButton(isEnabled: isAbled)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Custom Method
