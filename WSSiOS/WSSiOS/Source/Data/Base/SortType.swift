@@ -11,9 +11,9 @@ enum SortType {
     var queryText: String {
         switch self {
         case .newest:
-            return "NEWEST"
+            return "RECENT"
         case .oldest:
-            return "OLDEST"
+            return "OLD"
         }
     }
     
