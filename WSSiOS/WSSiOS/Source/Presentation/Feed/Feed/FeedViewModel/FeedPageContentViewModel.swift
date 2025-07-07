@@ -32,6 +32,7 @@ final class FeedPageContentViewModel: ViewModelType {
     private let feedTableViewIsRefreshing = PublishRelay<Void>()
     
     private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
+    private let myFeedCount = BehaviorRelay<Int>(value: 0)
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToUserViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
@@ -70,6 +71,7 @@ final class FeedPageContentViewModel: ViewModelType {
     
     struct Output {
         let feedPageType: Driver<FeedPageType>
+        let myFeedCount: Driver<Int>
         let sortType: Driver<SortType>
         let feedList: Observable<[TotalFeedEntity]>
         let pushToFeedDetailViewController: Observable<Int>
@@ -272,6 +274,7 @@ final class FeedPageContentViewModel: ViewModelType {
         
         return Output(
             feedPageType: feedPageType.asDriver(),
+            myFeedCount: myFeedCount.asDriver(),
             sortType: sortType.asDriver(),
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
@@ -311,6 +314,9 @@ final class FeedPageContentViewModel: ViewModelType {
         )
         
         return Observable.zip(profileEntity, userFeedListEntity)
+            .do { [weak self] profile, userFeedListEntity in
+                self?.myFeedCount.accept(userFeedListEntity.feedsCount)
+            }
             .map { profileEntity, userFeedListEntity in
                 TotalFeedListEntity.from(
                     userFeedListEntity: userFeedListEntity,

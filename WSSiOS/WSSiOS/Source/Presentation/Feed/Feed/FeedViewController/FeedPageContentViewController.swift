@@ -93,6 +93,12 @@ final class FeedPageContentViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.myFeedCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.myFeedFilterHeaderView.filterButton.setButtonText(StringLiterals.Feed.novelCountText(count))
+            })
+            .disposed(by: disposeBag)
+        
         output.sortType
             .drive(with: self, onNext: { owner, sortType in
                 owner.rootView.myFeedFilterHeaderView.updateSortButton(sortType: sortType)
