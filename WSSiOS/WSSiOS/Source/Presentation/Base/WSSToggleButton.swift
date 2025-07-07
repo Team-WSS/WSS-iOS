@@ -18,7 +18,7 @@ final class WSSToggleButton: UIButton {
     
     // 상태별 스위치 배경 색상
     private let onColor = UIColor.wssPrimary100
-    private let offColor = UIColor.wssGray70
+    private let offColor = UIColor.wssGray100
     
     // 스위치가 이동하는 애니메이션 시간
     private var animationDuration: TimeInterval = 0.20

@@ -11,16 +11,13 @@ import SnapKit
 import Then
 import RxSwift
 
-protocol FeedAddImageCollectionDelegate: AnyObject {
-    func cancelButtonDidTap()
-}
-
 final class FeedAddImageCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
+    var cancelButtonTapped: (() -> Void)?
+    
     private let disposeBag = DisposeBag()
-    weak var delegate: FeedAddImageCollectionDelegate?
     
     //MARK: - Components
     
@@ -50,6 +47,7 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
             $0.contentMode = .scaleAspectFill
+            $0.isUserInteractionEnabled = true
         }
         
         cancelButton.do {
@@ -73,19 +71,19 @@ final class FeedAddImageCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - Bind
-    
-    private func bindAction() {
-        cancelButton.rx.tap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.delegate?.cancelButtonDidTap()
-            })
-            .disposed(by: disposeBag)
-    }
-    
     //MARK: - Data
     
     func bindData(image: UIImage) {
         feedImageView.image = image
+    }
+    
+    //MARK: - Custom Method
+    
+    private func bindAction() {
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+    }
+    
+    @objc private func cancelTapped() {
+        cancelButtonTapped?()
     }
 }

@@ -56,4 +56,28 @@ final class KingFisherRxHelper {
             }
         }
     }
+    
+    static func kingFisherImage(url: URL?) -> Observable<UIImage> {
+        return Observable.create { observer in
+            
+            guard let imageURL = url else {
+                observer.onError(NetworkServiceError.invalidURLError)
+                return Disposables.create()
+            }
+            
+            let task = KingfisherManager.shared.retrieveImage(with: imageURL) { result in
+                switch result {
+                case .success(let imageResult):
+                    observer.onNext(imageResult.image)
+                    observer.onCompleted()
+                case .failure(let error):
+                    observer.onError(error)
+                }
+            }
+            
+            return Disposables.create {
+                task?.cancel()
+            }
+        }
+    }
 }

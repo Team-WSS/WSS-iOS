@@ -80,54 +80,62 @@ extension Networking {
         return String(format: "%.2fMB", Double(bytes) / (1024.0 * 1024.0))
     }
     
+    // 병렬 처리
     func compressImages(_ images: [UIImage],
                         maxImageSize: Int = MultipartConstants.maxImageSize) -> [Data] {
-        // 압축된 이미지 파일 배열
-        var compressedDatas: [Data] = []
+        var compressedDatas = Array<Data?>(repeating: nil, count: images.count)
+        let group = DispatchGroup()
+        let queue = DispatchQueue(label: "image.compress.queue", attributes: .concurrent)
         
         for (index, image) in images.enumerated() {
-            
-            // 이미지 압축 품질 설정
-            var quality: CGFloat = 1.0
-            
-            // 이미지 기본 해상도 설정
-            var scale: CGFloat = 0.7
-            
-            // HEIC 파일 타입 기본 해상도 설정 - 0.5
-            if let cgImageSource = CGImageSourceCreateWithData(image.pngData()! as CFData, nil),
-               let utiString = CGImageSourceGetType(cgImageSource) as String?,
-               let utType = UTType(utiString),
-               utType.conforms(to: .heic) {
-                scale = 0.5
-                print("🧾 이미지 \(index) HEIC 포맷으로 감지 → 초기 해상도 0.5 적용")
-            }
-            
-            var data: Data? = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
-            print("🖼️ 이미지 \(index) 초기 해상도 \(String(format: "%.2f", scale)) 적용 → 크기: \(formatBytesToMB(data?.count ?? 0))")
-            
-            while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
-                if quality > 0.2 {
-                    quality -= 0.1
-                } else {
-                    scale -= 0.1
-                    if let resizedImage = image.resizedImage(to: scale) {
-                        data = resizedImage.jpegData(compressionQuality: quality)
-                    }
-                    continue
-                }
-                data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
-                print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
-            }
-            
-            if let data = data, data.count <= maxImageSize {
-                print("✅ 이미지 \(index) 최종 해상도 \(String(format: "%.2f", scale)), 품질 \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data.count))")
-                compressedDatas.append(data)
-            } else {
-                print("❌ 이미지 \(index) 압축 실패 또는 제한 초과, 빈 데이터 추가")
-                compressedDatas.append(Data())
+            group.enter()
+            queue.async {
+                let compressedData = compressImage(image, index: index, maxImageSize: maxImageSize)
+                compressedDatas[index] = compressedData
+                group.leave()
             }
         }
         
-        return compressedDatas
+        group.wait()
+        
+        return compressedDatas.map { $0 ?? Data() }
+    }
+    
+    private func compressImage(_ image: UIImage, index: Int, maxImageSize: Int) -> Data {
+        var quality: CGFloat = 1.0
+        var scale: CGFloat = 0.7
+        
+        if let cgImageSource = CGImageSourceCreateWithData(image.pngData()! as CFData, nil),
+           let utiString = CGImageSourceGetType(cgImageSource) as String?,
+           let utType = UTType(utiString),
+           utType.conforms(to: .heic) {
+            scale = 0.5
+            print("🧾 이미지 \(index) HEIC 포맷으로 감지 → 초기 해상도 0.5 적용")
+        }
+        
+        var data: Data? = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
+        print("🖼️ 이미지 \(index) 초기 해상도 \(String(format: "%.2f", scale)) 적용 → 크기: \(formatBytesToMB(data?.count ?? 0))")
+        
+        while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
+            if quality > 0.2 {
+                quality -= 0.1
+            } else {
+                scale -= 0.1
+                if let resizedImage = image.resizedImage(to: scale) {
+                    data = resizedImage.jpegData(compressionQuality: quality)
+                }
+                continue
+            }
+            data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
+            print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
+        }
+        
+        if let data = data, data.count <= maxImageSize {
+            print("✅ 이미지 \(index) 최종 해상도 \(String(format: "%.2f", scale)), 품질 \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data.count))")
+            return data
+        } else {
+            print("❌ 이미지 \(index) 압축 실패 또는 제한 초과, 빈 데이터 추가")
+            return Data()
+        }
     }
 }

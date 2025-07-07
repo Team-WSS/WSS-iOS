@@ -35,8 +35,6 @@ final class FeedEditAddImageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssSecondary50
-        
         addImageCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.itemSize = CGSize(width: 100, height: 100)

@@ -33,11 +33,13 @@ final class FeedEditViewModel: ViewModelType {
     private var initialIsSpoiler: Bool?
     private var initialIsPublic: Bool?
     private var initialNovelId: Int?
+    private var initialAddImages: [UIImage]?
     private var isRelevantCategoriesChanged: Bool = false
     private var isFeedContentChanged: Bool = false
     private var isSpoilerChanged: Bool = false
     private var isPublicChanged: Bool = false
     private var isNovelIdChanged: Bool = false
+    private var isAddImagesChanged: Bool = false
     
     // Output
     private let endEditing = PublishRelay<Bool>()
@@ -54,6 +56,9 @@ final class FeedEditViewModel: ViewModelType {
     private let showAlreadyConnectedToast = PublishRelay<Void>()
     private let showStopEditingAlert = PublishRelay<Void>()
     private let presentPhotoPicker = PublishRelay<Void>()
+    private let showAddImageView = PublishRelay<Bool>()
+    private let showLoadingView = PublishRelay<Bool>()
+    private let backButtonIsAbled = BehaviorRelay<Bool>(value: false)
     var selectedImages = BehaviorRelay<[UIImage]>(value: [])
     
     //MARK: - Life Cycle
@@ -108,16 +113,25 @@ final class FeedEditViewModel: ViewModelType {
         let showAlreadyConnectedToast: Observable<Void>
         let showStopEditingAlert: Observable<Void>
         let presentPhotoPicker: Observable<Void>
+        let showAddImageView: Observable<Bool>
         let selectedImages: Observable<[UIImage]>
+        let showLoadingView: Observable<Bool>
+        let backButtonIsAbled: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
-            .compactMap { [weak self] in self?.feedId }
-            .flatMapLatest { feedId in
-                self.getSingleFeed(feedId)
+            .map { [weak self] in self?.feedId }
+            .flatMapLatest { feedId -> Observable<FeedEntity?> in
+                if let feedId = feedId {
+                    return self.getSingleFeed(feedId).map { Optional($0) }
+                } else {
+                    return Observable.just(nil)
+                }
             }
             .subscribe(with: self, onNext: { owner, data in
+                guard let data = data else { return }
+                
                 owner.initialRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.newRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.categoryListData.accept(self.relevantCategoryList)
@@ -133,6 +147,21 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.initialIsPublic = data.isPublic
                 owner.isPublic.accept(data.isPublic)
+                
+                Observable.from(data.imageURLs)
+                    .compactMap { $0 }
+                    .flatMap { url -> Observable<UIImage> in
+                        KingFisherRxHelper.kingFisherImage(url: url)
+                            .catchAndReturn(UIImage())
+                    }
+                    .toArray()
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onSuccess: { images in
+                        owner.selectedImages.accept(images)
+                        owner.initialAddImages = images
+                    })
+                    .disposed(by: disposeBag)
+                
             }, onError: { owner, error in
                 print(error)
             })
@@ -154,17 +183,25 @@ final class FeedEditViewModel: ViewModelType {
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
+                self.completeButtonIsAbled.accept(false)
+                self.backButtonIsAbled.accept(false)
+                self.showLoadingView.accept(true)
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
             })
             .withLatestFrom(Observable.combineLatest(isSpoiler, isPublic, selectedImages))
             .flatMapLatest { (isSpoiler, isPublic, selectedImages) in
-                if let feedId = self.feedId {
-                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
-                } else {
-                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                Observable.deferred {
+                    if let feedId = self.feedId {
+                        self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                    } else {
+                        self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                    }
                 }
+                .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             }
             .subscribe(with: self, onNext: { owner, _ in
+                owner.showLoadingView.accept(false)
+                owner.backButtonIsAbled.accept(true)
                 NotificationCenter.default.post(name: NotificationName.feedEdited, object: nil)
                 owner.popViewController.accept(())
             }, onError: { owner, error  in
@@ -277,6 +314,19 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        self.selectedImages
+            .skip(1)
+            .subscribe(with: self, onNext: { owner, images in
+                guard let initialImages = owner.initialAddImages else { return }
+                owner.isAddImagesChanged = initialImages != images
+                owner.checkIfCompleteButtonIsAbled()
+            })
+            .disposed(by: disposeBag)
+        
+        let showAddImageView = self.selectedImages
+            .map { !$0.isEmpty }
+            .distinctUntilChanged()
+        
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
@@ -291,13 +341,16 @@ final class FeedEditViewModel: ViewModelType {
                       showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
                       showStopEditingAlert: showStopEditingAlert.asObservable(),
                       presentPhotoPicker: presentPhotoPicker.asObservable(),
-                      selectedImages: selectedImages.asObservable())
+                      showAddImageView: showAddImageView,
+                      selectedImages: selectedImages.asObservable(),
+                      showLoadingView: showLoadingView.asObservable(),
+                      backButtonIsAbled: backButtonIsAbled.asObservable())
     }
     
     // MARK: - Custom Method
     
     func isInitialFeedChanged() -> Bool {
-        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged : true
+        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged || isAddImagesChanged : true
     }
     
     func checkIfCompleteButtonIsAbled() {

@@ -31,6 +31,9 @@ final class FeedEditView: UIView {
     let feedEditNovelConnectView = FeedEditNovelConnectView()
     let feedEditConnectedNovelView = FeedEditConnectedNovelView()
     
+    // 업로드 로딩
+    private let loadingView = WSSLoadingView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -81,12 +84,19 @@ final class FeedEditView: UIView {
             $0.axis = .vertical
             $0.spacing = 12
         }
+        
+        loadingView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(feedEditPrivateSettingView,
-                         scrollView)
+                         scrollView,
+                         loadingView)
+        
         scrollView.addSubview(stackView)
+        
         stackView.addArrangedSubviews(feedEditCategoryView,
                                       feedEditContentView,
                                       feedEditAddImageView,
@@ -105,6 +115,10 @@ final class FeedEditView: UIView {
             $0.top.equalTo(feedEditPrivateSettingView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().inset(30)
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         stackView.snp.makeConstraints {
@@ -132,5 +146,13 @@ final class FeedEditView: UIView {
             $0.setButtonAttributedTitle(text: StringLiterals.FeedEdit.complete, font: .Title2, color: isAbled ? .wssPrimary100 : .wssGray200)
             $0.isEnabled = isAbled
         }
+    }
+    
+    func showloadingView(isLoading: Bool) {
+        loadingView.isHidden = !isLoading
+    }
+    
+    func enableBackButton(isEnabled: Bool) {
+        backButton.isEnabled = isEnabled
     }
 }
