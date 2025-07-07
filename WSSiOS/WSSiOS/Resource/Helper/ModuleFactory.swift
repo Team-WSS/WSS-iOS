@@ -25,6 +25,10 @@ protocol FeedDetailModuleFactory {
     func makeFeedDetailViewController(feedId: Int) -> UIViewController
 }
 
+protocol MyLibraryModuleFactory {
+    func makeMyLibraryViewController() -> UIViewController
+}
+
 protocol MyPageModuleFactory {
     func makeMyPageViewController() -> UIViewController
     func makeUserPageViewController(profileId: Int) -> UIViewController
@@ -98,5 +102,14 @@ extension ModuleFactory: MyPageModuleFactory {
                 userRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
                 entryType: entryType,
                 profileData: profile))
+    }
+}
+
+extension ModuleFactory: MyLibraryModuleFactory {
+    func makeMyLibraryViewController() -> UIViewController {
+        return MyLibraryViewController(
+            viewModel: MyLibraryViewModel(
+                myLibraryRepository: DefaultMyLibraryRepository(
+                    myLibraryService: DefaultMyLibraryService())))
     }
 }

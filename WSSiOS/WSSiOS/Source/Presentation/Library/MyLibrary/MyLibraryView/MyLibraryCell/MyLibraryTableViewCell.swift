@@ -17,11 +17,12 @@ final class MyLibraryTableViewCell: UITableViewCell {
     private let stackView = UIStackView()
     
     private let novelInfoContentView = UIView()
-    private let novelImageStackView = UIStackView()
+    private let readStatusView = UIView()
     private let readStatusTagView = MyLibraryReadStatusTagView()
+    private let dateLabel = UILabel()
+    
     private let novelImageView = UIImageView()
     private let interestImageView = UIImageView()
-    private let dateLabel = UILabel()
     
     private let textStackView = UIStackView()
     private let novelTitleLabel = UILabel()
@@ -60,21 +61,23 @@ final class MyLibraryTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
-        stackView.do {
-            $0.axis = .vertical
-            $0.distribution = .fill
+        self.do {
+            $0.selectionStyle = .none
         }
         
-        novelImageStackView.do {
+        stackView.do {
             $0.axis = .vertical
-            $0.spacing = 0
+            $0.alignment = .fill
+        }
+        
+        readStatusTagView.do {
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
-            $0.distribution = .fill
         }
         
         novelImageView.do {
             $0.contentMode = .scaleAspectFill
+            $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
         
@@ -93,7 +96,6 @@ final class MyLibraryTableViewCell: UITableViewCell {
         
         novelTitleLabel.do {
             $0.textColor = .wssBlack
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         ratingStackView.do {
@@ -108,7 +110,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         myRatingImageView.do {
-            $0.image = .icStarFill
+            $0.image = .icStar
         }
         
         myRatingNumberLabel.do {
@@ -126,7 +128,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
         }
         
         totalRatingImageView.do {
-            $0.image = .icStarEmpty
+            $0.image = .icStar.withTintColor(.wssGray200)
         }
         
         totalRatingNumberLabel.do {
@@ -171,15 +173,15 @@ final class MyLibraryTableViewCell: UITableViewCell {
     private func setHierarchy() {
         contentView.addSubviews(stackView,
                                 separatorView)
-        stackView.addArrangedSubviews(novelInfoContentView,
+        stackView.addArrangedSubviews(readStatusView,
+                                      novelInfoContentView,
                                       keywordScrollView,
                                       feedScrollView)
-        novelInfoContentView.addSubviews(novelImageStackView,
+        readStatusView.addSubviews(readStatusTagView,
+                                   dateLabel)
+        novelInfoContentView.addSubviews(novelImageView,
                                          textStackView,
-                                         interestImageView,
-                                         dateLabel)
-        novelImageStackView.addArrangedSubviews(readStatusTagView,
-                                                novelImageView)
+                                         interestImageView)
         textStackView.addArrangedSubviews(novelTitleLabel,
                                           ratingStackView,
                                           attractivePointStackView)
@@ -198,11 +200,13 @@ final class MyLibraryTableViewCell: UITableViewCell {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.lessThanOrEqualToSuperview().inset(16)
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalToSuperview().inset(28)
+            $0.bottom.equalToSuperview().inset(16)
             
-            stackView.setCustomSpacing(8, after: novelInfoContentView)
-            stackView.setCustomSpacing(12, after: keywordScrollView)
+            stackView.setCustomSpacing(8, after: readStatusView)
+            stackView.setCustomSpacing(6, after: novelInfoContentView)
+            stackView.setCustomSpacing(6, after: keywordScrollView)
         }
         
         separatorView.snp.makeConstraints {
@@ -210,51 +214,51 @@ final class MyLibraryTableViewCell: UITableViewCell {
             $0.height.equalTo(1)
         }
         
-        novelImageStackView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
-            
-            readStatusTagView.snp.makeConstraints() {
-                $0.width.equalTo(60)
-                $0.height.equalTo(18)
-            }
-            
-            novelImageView.snp.makeConstraints() {
-                $0.width.equalTo(60)
-                $0.height.equalTo(80)
-            }
-        }
-        
-        interestImageView.snp.makeConstraints() {
-            $0.right.equalTo(novelImageStackView.snp.right).offset(-9)
-            $0.bottom.equalTo(novelImageStackView.snp.bottom).offset(-9)
+        readStatusTagView.snp.makeConstraints() {
+            $0.leading.equalToSuperview().inset(20)
+            $0.verticalEdges.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(18)
         }
         
         dateLabel.snp.makeConstraints() {
-            $0.top.trailing.equalToSuperview().inset(20)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(readStatusTagView.snp.trailing).offset(16)
+        }
+        
+        novelImageView.snp.makeConstraints() {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalTo(60)
+            $0.height.equalTo(80)
+        }
+        
+        interestImageView.snp.makeConstraints() {
+            $0.trailing.equalTo(novelImageView.snp.trailing).offset(-10)
+            $0.bottom.equalTo(novelImageView.snp.bottom).offset(-10)
         }
         
         textStackView.snp.makeConstraints() {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(novelImageStackView.snp.trailing).offset(16)
+            $0.top.equalToSuperview().inset(5)
+            $0.leading.equalTo(novelImageView.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().inset(20)
+            
+            textStackView.setCustomSpacing(2, after: novelTitleLabel)
+            textStackView.setCustomSpacing(6, after: ratingStackView)
         }
-        
-        textStackView.setCustomSpacing(2, after: novelTitleLabel)
-        textStackView.setCustomSpacing(6, after: ratingStackView)
         
         myRatingImageView.snp.makeConstraints() {
-            $0.size.equalTo(9)
+            $0.size.equalTo(12)
         }
         
-        myRatingStackView.setCustomSpacing(3.5, after: myRatingImageView)
+        myRatingStackView.setCustomSpacing(2, after: myRatingImageView)
         myRatingStackView.setCustomSpacing(5, after: myRatingNumberLabel)
         
         totalRatingImageView.snp.makeConstraints {
-            $0.size.equalTo(9)
+            $0.size.equalTo(12)
         }
         
-        totalRatingStackView.setCustomSpacing(3.5, after: totalRatingImageView)
+        totalRatingStackView.setCustomSpacing(2, after: totalRatingImageView)
         totalRatingStackView.setCustomSpacing(5, after: totalRatingNumberLabel)
         
         keywordScrollView.snp.makeConstraints {
@@ -278,12 +282,14 @@ final class MyLibraryTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: MyLibraryEntity) {
+    func bindData(_ data: MyLibraryNovel) {
         if let readStatus = data.readStatus {
             readStatusTagView.isHidden = false
+            readStatusView.isHidden = false
             readStatusTagView.bindData(readStatus: readStatus)
         } else {
             readStatusTagView.isHidden = true
+            readStatusView.isHidden = true
         }
         novelImageView.kfSetImage(url: data.novelImage)
         interestImageView.isHidden = !data.isInterest
@@ -301,7 +307,11 @@ final class MyLibraryTableViewCell: UITableViewCell {
             dateLabel.isHidden = true
         }
         
-        novelTitleLabel.applyWSSFont(.title2, with: data.title)
+        novelTitleLabel.do {
+            $0.applyWSSFont(.title2, with: data.title)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
+        }
         
         if data.userNovelRating > 0.0 {
             myRatingStackView.isHidden = false
@@ -325,7 +335,7 @@ final class MyLibraryTableViewCell: UITableViewCell {
             attractivePointStackView.isHidden = false
             for (index, point) in data.attractivePoints.enumerated() {
                 guard let point else { continue }
-
+                
                 let attractivePointView = UIStackView()
                 attractivePointView.axis = .horizontal
                 attractivePointView.spacing = 3
@@ -367,17 +377,17 @@ final class MyLibraryTableViewCell: UITableViewCell {
             data.keywords.forEach { keyword in
                 let keywordView = UIView()
                 keywordView.backgroundColor = .wssPrimary20
-                keywordView.layer.cornerRadius = 31 / 2
+                keywordView.layer.cornerRadius = 29 / 2
                 keywordView.clipsToBounds = true
                 let keywordLabel = UILabel()
-                keywordLabel.applyWSSFont(.body4, with: keyword)
+                keywordLabel.applyWSSFont(.body5, with: keyword)
                 keywordLabel.textColor = .wssGray200
                 
                 keywordView.addSubview(keywordLabel)
                 keywordStackView.addArrangedSubview(keywordView)
                 
                 keywordView.snp.makeConstraints {
-                    $0.height.equalTo(31)
+                    $0.height.equalTo(29)
                 }
                 keywordLabel.snp.makeConstraints {
                     $0.centerY.equalToSuperview()
