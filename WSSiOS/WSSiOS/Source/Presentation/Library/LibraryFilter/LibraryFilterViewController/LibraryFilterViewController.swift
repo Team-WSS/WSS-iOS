@@ -102,6 +102,13 @@ final class LibraryFilterViewController: UIViewController {
             .flatMap { button in
                 button.rx.tap.map { button.status }
             }
+            .withLatestFrom(ratingOption) { tappedButton, currentOption in
+                if tappedButton == currentOption {
+                    return nil
+                } else {
+                    return tappedButton
+                }
+            }
             .bind(to: ratingOption)
             .disposed(by: disposeBag)
         
