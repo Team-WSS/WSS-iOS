@@ -182,6 +182,8 @@ final class FeedEditViewModel: ViewModelType {
         
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .withLatestFrom(self.completeButtonIsAbled)
+            .filter { $0 }
             .do(onNext: { _ in
                 self.completeButtonIsAbled.accept(false)
                 self.backButtonIsAbled.accept(false)
