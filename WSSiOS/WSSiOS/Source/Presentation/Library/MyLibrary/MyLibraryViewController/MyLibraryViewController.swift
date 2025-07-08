@@ -129,10 +129,15 @@ final class MyLibraryViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.showEmptyLibraryView
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isShowing in
-                owner.rootView.showEmptyLibraryView(isShowing: isShowing)
+        output.showLibraryEmptyView
+            .drive(with: self, onNext: { owner, isShowing in
+                owner.rootView.showLibraryEmptyView(isShowing: isShowing)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showFilterResultEmptyView
+            .drive(with: self, onNext: { owner, isShowing in
+                owner.rootView.showFilterResultEmptyView(isShowing: isShowing)
             })
             .disposed(by: disposeBag)
         

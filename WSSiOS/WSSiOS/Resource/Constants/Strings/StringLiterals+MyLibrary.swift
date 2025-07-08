@@ -24,5 +24,11 @@ extension StringLiterals {
             static let attractivePoint = "매력포인트"
             static let rating = "별점"
         }
+        
+        enum Empty {
+            static let libraryEmpty = "서재가 비어있어요"
+            static let searchButton = "웹소설 찾으러 가기"
+            static let filterResultEmpty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
+        }
     }
 }

@@ -31,7 +31,9 @@ final class MyLibraryViewModel: ViewModelType {
     private let reloadNovelList = PublishRelay<Void>()
     private let refreshNovelList = PublishRelay<Void>()
     
-    private let showEmptyLibraryView = BehaviorRelay<Bool>(value: false)
+    private let isLibraryEmpty = BehaviorRelay<Bool>(value: false)
+    private let showLibraryEmptyView = BehaviorRelay<Bool>(value: false)
+    private let showFilterResultEmptyView = BehaviorRelay<Bool>(value: false)
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let showLoadingView = BehaviorRelay<Bool>(value: false)
     private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
@@ -61,7 +63,8 @@ final class MyLibraryViewModel: ViewModelType {
         let selectedLayoutType: Driver<LayoutType>
         let novelCount: Driver<Int>
         let libraryNovelList: Observable<[MyLibraryNovel]>
-        let showEmptyLibraryView: Observable<Bool>
+        let showLibraryEmptyView: Driver<Bool>
+        let showFilterResultEmptyView: Driver<Bool>
         let pushToNovelDetailViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
         let showNetworkErrorView: Observable<Bool>
@@ -164,13 +167,31 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: pushToNovelDetailViewController)
             .disposed(by: disposeBag)
         
+        isLibraryEmpty
+            .withLatestFrom(filterOption) { isEmpty, filterOption in
+                return (isEmpty, filterOption != LibraryFilterOption())
+            }
+            .bind(with: self, onNext: { owner, data in
+                let (isLibraryEmpty, isFilterResult) = data
+                if isLibraryEmpty {
+                    owner.showFilterResultEmptyView.accept(isFilterResult)
+                    owner.showLibraryEmptyView.accept(!isFilterResult)
+                } else {
+                    owner.showFilterResultEmptyView.accept(false)
+                    owner.showLibraryEmptyView.accept(false)
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             selectedFilterOption: filterOption.asDriver(),
             selectedSortType: sortType.asDriver(),
             selectedLayoutType: layoutType.asDriver(),
             novelCount: novelCount.asDriver(),
             libraryNovelList: libraryNovelList.asObservable(),
-            showEmptyLibraryView: showEmptyLibraryView.asObservable(),
+            showLibraryEmptyView: showLibraryEmptyView.asDriver(),
+            showFilterResultEmptyView: showFilterResultEmptyView.asDriver(),
             pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
             showLoadingView: showLoadingView.asObservable(),
             showNetworkErrorView: showNetworkErrorView.asObservable()
@@ -201,7 +222,7 @@ final class MyLibraryViewModel: ViewModelType {
         isLoadable.accept(true)
         novelCount.accept(0)
         lastUserNovelId.accept(0)
-        showEmptyLibraryView.accept(false)
+        isLibraryEmpty.accept(false)
     }
     
     private func updateLibraryState(with entity: MyLibraryEntity) {
@@ -209,7 +230,7 @@ final class MyLibraryViewModel: ViewModelType {
         isLoadable.accept(entity.isLoadable)
         novelCount.accept(entity.userNovelCount)
         lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
-        showEmptyLibraryView.accept(entity.userNovels.isEmpty)
+        isLibraryEmpty.accept(entity.userNovels.isEmpty)
     }
     
     private func updateRequestState(isStarting: Bool, isReloading: Bool = false, isError: Bool = false) {
