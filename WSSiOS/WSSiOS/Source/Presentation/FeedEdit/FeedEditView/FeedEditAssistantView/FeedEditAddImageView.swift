@@ -76,7 +76,7 @@ final class FeedEditAddImageView: UIView {
     func bindData(count: Int) {
         addImageCountLabel.do {
             $0.applyWSSFontPartialColor(.title2,
-                                        with: String(count) + " / 5",
+                                        with: String(count) + " / \(FeedEdit.imageMaxCount)",
                                         rangeText: String(count),
                                         color: .wssPrimary100)
         }
