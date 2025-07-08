@@ -343,7 +343,7 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 35)
+            return CGSize(width: width, height: 37)
         } else {
             // 이외: 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
             return CGSize(width: 100, height: 100)
