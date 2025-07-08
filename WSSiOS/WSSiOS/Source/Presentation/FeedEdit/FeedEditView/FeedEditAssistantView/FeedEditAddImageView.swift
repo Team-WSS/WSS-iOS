@@ -16,6 +16,7 @@ final class FeedEditAddImageView: UIView {
     
     let addImageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     private let addImageCollectionViewLayout = UICollectionViewFlowLayout()
+    let addImageCountLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -46,19 +47,38 @@ final class FeedEditAddImageView: UIView {
         addImageCollectionView.do {
             $0.showsHorizontalScrollIndicator = false
         }
+        
+        addImageCountLabel.do {
+            $0.textColor = .wssGray200
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(addImageCollectionView)
+        self.addSubviews(addImageCollectionView,
+                         addImageCountLabel)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
+        addImageCollectionView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
             $0.height.equalTo(100)
         }
         
-        addImageCollectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        addImageCountLabel.snp.makeConstraints {
+            $0.top.equalTo(addImageCollectionView.snp.bottom).offset(14)
+            $0.leading.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(count: Int) {
+        addImageCountLabel.do {
+            $0.applyWSSFontPartialColor(.title2,
+                                        with: String(count) + " / 5",
+                                        rangeText: String(count),
+                                        color: .wssPrimary100)
         }
     }
 }

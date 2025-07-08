@@ -261,6 +261,7 @@ final class FeedEditViewController: UIViewController {
                 owner.feedEditViewModel.selectedImages.accept(updatedImages)
                 owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
                 owner.rootView.showAddImages(hasImage: !updatedImages.isEmpty)
+                owner.rootView.feedEditAddImageView.bindData(count: updatedImages.count)
             })
             .disposed(by: disposeBag)
         
@@ -285,6 +286,7 @@ final class FeedEditViewController: UIViewController {
                         
                         DispatchQueue.main.async {
                             self.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                            self.rootView.feedEditAddImageView.bindData(count: currentImages.count)
                         }
                     }
                 }
