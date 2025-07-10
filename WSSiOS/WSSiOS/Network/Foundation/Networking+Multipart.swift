@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UniformTypeIdentifiers
-
 // multipart에 사용되는 값에 대한 열거형
 enum MultipartConstants {
     static let jsonPartName = "feed"
@@ -117,15 +115,6 @@ extension Networking {
         if originalSize <= maxImageSize {
             print("이미지 \(index) 압축 생략")
             return originalData
-        }
-
-        // HEIC 포맷이면 초기 scale 조정
-        if let cgImageSource = CGImageSourceCreateWithData(image.pngData()! as CFData, nil),
-           let utiString = CGImageSourceGetType(cgImageSource) as String?,
-           let utType = UTType(utiString),
-           utType.conforms(to: .heic) {
-            scale = 0.5
-            print("🧾 이미지 \(index) HEIC → 초기 해상도 0.5 적용")
         }
 
         var data: Data?
