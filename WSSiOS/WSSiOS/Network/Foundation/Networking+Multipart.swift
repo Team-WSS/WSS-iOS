@@ -80,7 +80,7 @@ extension Networking {
         return String(format: "%.2fMB", Double(bytes) / (1024.0 * 1024.0))
     }
     
-    // 병렬 처리
+    // 병렬 + 비동기 이미지 압축
     func compressImages(_ images: [UIImage],
                         maxImageSize: Int = MultipartConstants.maxImageSize) -> [Data] {
         var compressedDatas = Array<Data?>(repeating: nil, count: images.count)
@@ -105,16 +105,26 @@ extension Networking {
         var quality: CGFloat = 1.0
         var scale: CGFloat = 0.7
         
+        if let originalData = image.jpegData(compressionQuality: 1.0) {
+            let originalSize = originalData.count
+            print("이미지 \(index) 원본 사이즈: \(formatBytesToMB(originalSize))")
+            
+            // 원본 사이즈가 최대 사이즈보다 작을 때 -> 압축 생략
+            if originalSize <= maxImageSize {
+                return originalData
+            }
+        }
+        
+        // HEIC 확장자 -> 해상도를 0.5로 설정
         if let cgImageSource = CGImageSourceCreateWithData(image.pngData()! as CFData, nil),
            let utiString = CGImageSourceGetType(cgImageSource) as String?,
            let utType = UTType(utiString),
            utType.conforms(to: .heic) {
             scale = 0.5
-            print("🧾 이미지 \(index) HEIC 포맷으로 감지 → 초기 해상도 0.5 적용")
         }
         
+        // 해상도(scale) 조절
         var data: Data? = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
-        print("🖼️ 이미지 \(index) 초기 해상도 \(String(format: "%.2f", scale)) 적용 → 크기: \(formatBytesToMB(data?.count ?? 0))")
         
         while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
             if quality > 0.2 {
@@ -127,11 +137,11 @@ extension Networking {
                 continue
             }
             data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
-            print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
+            print("↘️ 크기: \(formatBytesToMB(data?.count ?? 0))")
         }
         
         if let data = data, data.count <= maxImageSize {
-            print("✅ 이미지 \(index) 최종 해상도 \(String(format: "%.2f", scale)), 품질 \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data.count))")
+            print("✅ 이미지 \(index) 최종 크기: \(formatBytesToMB(data.count))")
             return data
         } else {
             print("❌ 이미지 \(index) 압축 실패 또는 제한 초과, 빈 데이터 추가")
