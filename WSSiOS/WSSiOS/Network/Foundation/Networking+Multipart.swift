@@ -102,8 +102,10 @@ extension Networking {
     }
     
     private func compressImage(_ image: UIImage, index: Int, maxImageSize: Int) -> Data {
+        // 품질
         var quality: CGFloat = 1.0
-        var scale: CGFloat = 0.7
+        // 해상도
+        var scale: CGFloat = 0.9
         
         if let originalData = image.jpegData(compressionQuality: 1.0) {
             let originalSize = originalData.count
@@ -123,7 +125,7 @@ extension Networking {
             scale = 0.5
         }
         
-        // 해상도(scale) 조절
+        // 초기 해상도(scale) 0.9로 설정
         var data: Data? = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
         
         while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
