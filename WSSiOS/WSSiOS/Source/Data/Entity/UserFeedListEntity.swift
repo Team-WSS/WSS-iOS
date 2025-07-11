@@ -38,11 +38,12 @@ struct UserFeedEntity {
     let novelRatingCount: Int
     let novelGenreColor: UIColor
     let novelGenreImage: UIImage
+    let userNovelRating: Float?
     
     let relevantCategories: [String]
     let isPublic: Bool
     
-    let thumbnailImage: String
+    let thumbnailImage: String?
     let hasImage: Bool
     let imageCount: Int
 }
@@ -56,6 +57,7 @@ extension UserFeedResponse {
             makeNovelRating = -1
         }
         
+        let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
         let translatedGenres = self.relevantCategories.compactMap {
             NewNovelGenre(rawValue: $0)?.withKorean
         }
@@ -65,24 +67,25 @@ extension UserFeedResponse {
         let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
         
         return UserFeedEntity(feedId: self.feedId,
-                            feedContent: self.feedContent,
-                            createdDate: self.formattedDate(),
-                            isSpoiler: self.isSpoiler,
-                            isModified: self.isModified,
-                            isLiked: self.isLiked,
-                            likeCount: self.likeCount,
-                            commentCount: self.commentCount,
-                            novelId: self.novelId ?? -1,
-                            title: self.title ?? "",
-                            novelRating: makeNovelRating,
-                            novelRatingCount: self.novelRatingCount ?? -1,
+                              feedContent: self.feedContent,
+                              createdDate: self.formattedDate(),
+                              isSpoiler: self.isSpoiler,
+                              isModified: self.isModified,
+                              isLiked: self.isLiked,
+                              likeCount: self.likeCount,
+                              commentCount: self.commentCount,
+                              novelId: self.novelId ?? -1,
+                              title: self.title ?? "",
+                              novelRating: makeNovelRating,
+                              novelRatingCount: self.novelRatingCount ?? -1,
                               novelGenreColor: novelGenreColor,
                               novelGenreImage: novelGenreImage,
-                            relevantCategories: translatedGenres,
-                            isPublic: isPublic,
-                            thumbnailImage: "",
-                            hasImage: true,
-                            imageCount: 20)
+                              userNovelRating: self.userNovelRating,
+                              relevantCategories: translatedGenres,
+                              isPublic: isPublic,
+                              thumbnailImage: self.thumbnailUrl,
+                              hasImage: hasImage,
+                              imageCount: self.imageCount)
     }
     
     private func formattedDate() -> String {

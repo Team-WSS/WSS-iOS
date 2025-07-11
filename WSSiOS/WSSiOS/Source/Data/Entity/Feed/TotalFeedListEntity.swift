@@ -41,41 +41,13 @@ extension TotalFeedListEntity {
                     isModified: $0.isModified,
                     isMyFeed: true,
                     isPublic: $0.isPublic,
-                    thumbnailImageURL: URL(string: $0.thumbnailImage),
+                    thumbnailImageURL: URL(string: $0.thumbnailImage ?? ""),
                     hasImage: $0.hasImage,
-                    imageCount: $0.imageCount)
+                    imageCount: $0.imageCount,
+                    userNovelRating: $0.userNovelRating)
             })
     }
 }
-//struct TotalFeedEntity {
-//    let feedId: Int
-//    //let userId: Int
-//   // let nickname: String
-//   // let avatarImage: URL?
-//    let feedContent: String
-//    let createdDate: String
-//    let isSpoiler: Bool
-//    let isModified: Bool
-//    let isLiked: Bool
-//    let likeCount: Int
-//    let commentCount: Int
-//    let novelId: Int
-//    let title: String
-//
-//    let novelRatingCount: Int
-//    let novelRating: Float
-//    let novelGenreColor: UIColor
-//    let novelGenreImage: UIImage
-//
-//    let relevantCategories: String
-//    let isPublic: Bool
-//
-//    //let isMyFeed: Bool
-//
-//    let thumbnailImageURL: URL?
-//    let hasImage: Bool
-//    let imageCount: Int
-//}
 
 
 extension TotalFeedListResponse {
@@ -113,6 +85,7 @@ struct TotalFeedEntity {
     let thumbnailImageURL: URL?
     let hasImage: Bool
     let imageCount: Int
+    let userNovelRating: Float?
 }
 
 extension TotalFeedResponse {
@@ -156,7 +129,8 @@ extension TotalFeedResponse {
             isPublic: self.isPublic,
             thumbnailImageURL: thumbnailImageURL,
             hasImage: hasImage,
-            imageCount: self.imageCount
+            imageCount: self.imageCount,
+            userNovelRating: self.userNovelRating
         )
     }
 }
@@ -188,7 +162,8 @@ extension TotalFeedListEntity {
                                                                     isPublic: true,
                                                                     thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: true,
-                                                                    imageCount: 12),
+                                                                    imageCount: 12,
+                                                                    userNovelRating: 2),
                                                     TotalFeedEntity(feedId: 123123,
                                                                     userId: 31313131,
                                                                     nickname: "구리",
@@ -211,7 +186,8 @@ extension TotalFeedListEntity {
                                                                     isPublic: true,
                                                                     thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: true,
-                                                                    imageCount: 3),
+                                                                    imageCount: 3,
+                                                                    userNovelRating: 3),
                                                     TotalFeedEntity(feedId: 123123,
                                                                     userId: 31313131,
                                                                     nickname: "구림",
@@ -234,7 +210,8 @@ extension TotalFeedListEntity {
                                                                     isPublic: true,
                                                                     thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: false,
-                                                                    imageCount: 0),
+                                                                    imageCount: 0,
+                                                                    userNovelRating: 3),
                                                     TotalFeedEntity(feedId: 123123,
                                                                     userId: 31313131,
                                                                     nickname: "구리",
@@ -257,6 +234,7 @@ extension TotalFeedListEntity {
                                                                     isPublic: true,
                                                                     thumbnailImageURL: URL(string: "https://i.pinimg.com/736x/38/7c/11/387c11814df12d9b28d64d0af942c679.jpg")!,
                                                                     hasImage: false,
-                                                                    imageCount: 0)
+                                                                    imageCount: 0,
+                                                                    userNovelRating: 3)
                                                    ])
 }
