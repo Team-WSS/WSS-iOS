@@ -34,11 +34,9 @@ struct UserFeedEntity {
     let novelId: Int
     let title: String
     
-    let novelRating: Float
-    let novelRatingCount: Int
     let novelGenreColor: UIColor
     let novelGenreImage: UIImage
-    let userNovelRating: Float?
+    let userNovelRating: Float
     
     let relevantCategories: [String]
     let isPublic: Bool
@@ -50,11 +48,11 @@ struct UserFeedEntity {
 
 extension UserFeedResponse {
     func toEntity() -> UserFeedEntity {
-        let makeNovelRating: Float
-        if let novelRating = self.novelRating {
-            makeNovelRating = round(novelRating * 10) / 10
+        let roundedRating: Float
+        if let userNovelRating = self.userNovelRating {
+            roundedRating = round(userNovelRating * 10) / 10
         } else {
-            makeNovelRating = -1
+            roundedRating = -1
         }
         
         let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
@@ -76,11 +74,9 @@ extension UserFeedResponse {
                               commentCount: self.commentCount,
                               novelId: self.novelId ?? -1,
                               title: self.title ?? "",
-                              novelRating: makeNovelRating,
-                              novelRatingCount: self.novelRatingCount ?? -1,
                               novelGenreColor: novelGenreColor,
                               novelGenreImage: novelGenreImage,
-                              userNovelRating: self.userNovelRating,
+                              userNovelRating: roundedRating,
                               relevantCategories: translatedGenres,
                               isPublic: isPublic,
                               thumbnailImage: self.thumbnailUrl,

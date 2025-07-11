@@ -156,11 +156,10 @@ final class FeedListTableViewCell: UITableViewCell {
                                  isSpoiler: feed.isSpoiler)
         
         // 연결 작품 바인딩
-        let hasConnectedNovel = !feed.title.isEmpty && feed.novelRatingCount != -1 && feed.novelRating != -1
+        let hasConnectedNovel = !feed.title.isEmpty
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.title,
-                                            novelRatingCount: feed.novelRatingCount,
-                                            novelRating: feed.novelRating,
+                                            userNovelRating: feed.userNovelRating,
                                             novelColor: feed.novelGenreColor,
                                             novelLinkImage: feed.novelGenreImage)
             
@@ -209,13 +208,10 @@ final class FeedListTableViewCell: UITableViewCell {
         //연결된 작품 바인딩
         let hasConnectedNovel = feed.feed.novelId != -1
         && !feed.feed.title.isEmpty
-        && feed.feed.novelRatingCount != -1
-        && feed.feed.novelRating != -1
         
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.feed.title,
-                                            novelRatingCount: feed.feed.novelRatingCount,
-                                            novelRating: feed.feed.novelRating,
+                                            userNovelRating: feed.feed.userNovelRating,
                                             novelColor: feed.feed.novelGenreColor,
                                             novelLinkImage: feed.feed.novelGenreImage)
             
