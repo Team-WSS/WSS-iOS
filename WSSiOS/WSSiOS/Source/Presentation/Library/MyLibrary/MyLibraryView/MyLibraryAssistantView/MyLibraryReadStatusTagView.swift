@@ -52,7 +52,7 @@ final class MyLibraryReadStatusTagView: UIView {
         self.backgroundColor = readStatus.tagBackgroundColor
         
         statusLabel.do {
-            $0.applyWSSFont(.label2, with: readStatus.tagText)
+            $0.applyWSSFont(.label2, with: readStatus.statusName)
         }
     }
 }

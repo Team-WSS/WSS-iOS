@@ -1,5 +1,5 @@
 //
-//  MyLibraryEmptyView.swift
+//  MyLibraryFilterResultEmptyView.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 6/25/25.
@@ -10,15 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyLibraryEmptyView: UIView {
+final class MyLibraryFilterResultEmptyView: UIView {
     
     //MARK: - Components
     
     private let stackView = UIStackView()
     private let imageView = UIImageView()
     private let descriptionLabel = UILabel()
-    let searchNovelButton = UIButton()
-    private let searchNovelButtonLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -49,52 +47,31 @@ final class MyLibraryEmptyView: UIView {
         }
         
         descriptionLabel.do {
-            $0.applyWSSFont(.body1, with: StringLiterals.MyLibrary.Empty.libraryEmpty)
+            $0.applyWSSFont(.body1, with: StringLiterals.MyLibrary.Empty.filterResultEmpty)
             $0.textColor = .wssGray200
-        }
-        
-        searchNovelButton.do {
-            $0.layer.backgroundColor = UIColor.wssPrimary50.cgColor
-            $0.layer.cornerRadius = 12
-        }
-        
-        searchNovelButtonLabel.do {
-            $0.applyWSSFont(.title1, with: StringLiterals.MyLibrary.Empty.searchButton)
-            $0.textColor = .wssPrimary100
-            $0.isUserInteractionEnabled = false
+            $0.textAlignment = .center
+            $0.numberOfLines = 2
         }
     }
 
     private func setHierarchy() {
         self.addSubviews(stackView)
         stackView.addArrangedSubviews(imageView,
-                                      descriptionLabel,
-                                      searchNovelButton)
-        searchNovelButton.addSubview(searchNovelButtonLabel)
+                                      descriptionLabel)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints() {
-            $0.centerY.equalToSuperview().offset(-59)
+            $0.centerY.equalToSuperview().offset(-47)
             $0.horizontalEdges.equalToSuperview()
         }
         
         stackView.do {
-            $0.setCustomSpacing(8, after: imageView)
-            $0.setCustomSpacing(45, after: descriptionLabel)
+            $0.spacing = 8
         }
         
         imageView.snp.makeConstraints() {
             $0.height.equalTo(48)
-        }
-        
-        searchNovelButton.snp.makeConstraints() {
-            $0.height.equalTo(53)
-            $0.horizontalEdges.equalToSuperview().inset(90)
-        }
-        
-        searchNovelButtonLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
         }
     }
 }

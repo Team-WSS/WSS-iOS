@@ -19,6 +19,7 @@ final class MyLibraryView: UIView {
     let libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let libraryTableView = UITableView(frame: .zero, style: .plain)
     let libraryEmptyView = MyLibraryEmptyView()
+    let libraryFilterResultEmptyView = MyLibraryFilterResultEmptyView()
     let loadingView = WSSLoadingView()
     let networkErrorView = WSSNetworkErrorView()
     
@@ -68,6 +69,7 @@ final class MyLibraryView: UIView {
                          libraryCollectionView,
                          libraryTableView,
                          libraryEmptyView,
+                         libraryFilterResultEmptyView,
                          loadingView,
                          networkErrorView)
     }
@@ -101,6 +103,12 @@ final class MyLibraryView: UIView {
             $0.bottom.equalToSuperview()
         }
         
+        libraryFilterResultEmptyView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
         loadingView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
@@ -114,8 +122,12 @@ final class MyLibraryView: UIView {
         }
     }
     
-    func showEmptyLibraryView(isShowing: Bool) {
+    func showLibraryEmptyView(isShowing: Bool) {
         libraryEmptyView.isHidden = !isShowing
+    }
+    
+    func showFilterResultEmptyView(isShowing: Bool) {
+        libraryFilterResultEmptyView.isHidden = !isShowing
     }
     
     func showLibraryListView(selectedType: LayoutType) {
