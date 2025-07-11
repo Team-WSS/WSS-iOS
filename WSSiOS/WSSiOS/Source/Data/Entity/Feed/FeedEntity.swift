@@ -83,7 +83,7 @@ extension FeedResponse {
             else { return nil }
             
             //userNovelRating 여부로 feedAuthorData 바인딩
-            let hasFeedAuthorRating = self.userNovelRating != nil
+            let hasFeedAuthorRating = self.feedWriterNovelRating != nil
             let feedAuthorData = makeFeedAuthorData(hasFeedAuthorRating: hasFeedAuthorRating)
             
             return FeedDetailNovelEntity(
@@ -101,7 +101,7 @@ extension FeedResponse {
     private func makeFeedAuthorData(hasFeedAuthorRating: Bool) -> FeedDetailNovelFeedAuthorEntity? {
         let feedAuthorData = hasFeedAuthorRating ? FeedDetailNovelFeedAuthorEntity(
             feedAuthor: self.nickname,
-            feedAuthorRating: self.userNovelRating!
+            feedAuthorRating: self.feedWriterNovelRating!
         ) : nil
         return feedAuthorData
     }
