@@ -103,27 +103,30 @@ extension Networking {
         let oneMB = 1024 * 1024
         var quality: CGFloat = 1.0
         var scale: CGFloat = 0.9
-
+        
         guard let originalData = image.jpegData(compressionQuality: 1.0) else {
             return Data()
         }
-
+        
         let originalSize = originalData.count
         print("이미지 \(index) 원본 사이즈: \(formatBytesToMB(originalSize))")
-
+        
         // 원본이 이미 작으면 압축 생략
         if originalSize <= maxImageSize {
             print("이미지 \(index) 압축 생략")
             return originalData
         }
-
+        
         var data: Data?
-
+        
         // 원본이 1MB 이하 → quality만 낮춤
         if originalSize <= oneMB {
-            while let compressed = image.jpegData(compressionQuality: quality), compressed.count > maxImageSize, quality > 0.1 {
-            data = compressed
-        
+            while let compressed =
+                    image.jpegData(compressionQuality: quality),
+                  compressed.count > maxImageSize,
+                  quality > 0.1 {
+                data = compressed
+                
                 print("이미지 \(index) 크기: \(formatBytesToMB(data?.count ?? 0))")
                 quality -= 0.1
             }
@@ -131,7 +134,7 @@ extension Networking {
             // 원본이 1MB 초과 → scale 먼저 줄이고 필요 시 quality도 함께 감소
             data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
             print("이미지 \(index)크기: \(formatBytesToMB(data?.count ?? 0))")
-
+            
             while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
                 if quality > 0.2 {
                     quality -= 0.1
@@ -146,7 +149,7 @@ extension Networking {
                 print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
             }
         }
-
+        
         if let data = data, data.count <= maxImageSize {
             print("이미지 \(index) 최종 크기: \(formatBytesToMB(data.count))")
             return data
