@@ -127,7 +127,7 @@ final class FeedViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        NotificationCenter.default.rx.notification(Notification.Name("FeedEdited"))
+        NotificationCenter.default.rx.notification(NotificationName.feedEdited)
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.showToast(.feedEdited)

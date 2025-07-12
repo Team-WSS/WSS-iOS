@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UniformTypeIdentifiers
-
 // multipart에 사용되는 값에 대한 열거형
 enum MultipartConstants {
     static let jsonPartName = "feed"
@@ -80,7 +78,7 @@ extension Networking {
         return String(format: "%.2fMB", Double(bytes) / (1024.0 * 1024.0))
     }
     
-    // 병렬 처리
+    // 병렬 + 비동기 이미지 압축
     func compressImages(_ images: [UIImage],
                         maxImageSize: Int = MultipartConstants.maxImageSize) -> [Data] {
         var compressedDatas = Array<Data?>(repeating: nil, count: images.count)
@@ -102,36 +100,58 @@ extension Networking {
     }
     
     private func compressImage(_ image: UIImage, index: Int, maxImageSize: Int) -> Data {
+        let oneMB = 1024 * 1024
         var quality: CGFloat = 1.0
-        var scale: CGFloat = 0.7
+        var scale: CGFloat = 0.9
         
-        if let cgImageSource = CGImageSourceCreateWithData(image.pngData()! as CFData, nil),
-           let utiString = CGImageSourceGetType(cgImageSource) as String?,
-           let utType = UTType(utiString),
-           utType.conforms(to: .heic) {
-            scale = 0.5
-            print("🧾 이미지 \(index) HEIC 포맷으로 감지 → 초기 해상도 0.5 적용")
+        guard let originalData = image.jpegData(compressionQuality: 1.0) else {
+            return Data()
         }
         
-        var data: Data? = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
-        print("🖼️ 이미지 \(index) 초기 해상도 \(String(format: "%.2f", scale)) 적용 → 크기: \(formatBytesToMB(data?.count ?? 0))")
+        let originalSize = originalData.count
+        print("이미지 \(index) 원본 사이즈: \(formatBytesToMB(originalSize))")
         
-        while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
-            if quality > 0.2 {
+        // 원본이 이미 작으면 압축 생략
+        if originalSize <= maxImageSize {
+            print("이미지 \(index) 압축 생략")
+            return originalData
+        }
+        
+        var data: Data?
+        
+        // 원본이 1MB 이하 → quality만 낮춤
+        if originalSize <= oneMB {
+            while let compressed =
+                    image.jpegData(compressionQuality: quality),
+                  compressed.count > maxImageSize,
+                  quality > 0.1 {
+                data = compressed
+                
+                print("이미지 \(index) 크기: \(formatBytesToMB(data?.count ?? 0))")
                 quality -= 0.1
-            } else {
-                scale -= 0.1
-                if let resizedImage = image.resizedImage(to: scale) {
-                    data = resizedImage.jpegData(compressionQuality: quality)
-                }
-                continue
             }
+        } else {
+            // 원본이 1MB 초과 → scale 먼저 줄이고 필요 시 quality도 함께 감소
             data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
-            print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
+            print("이미지 \(index)크기: \(formatBytesToMB(data?.count ?? 0))")
+            
+            while (data == nil || data!.count > maxImageSize) && quality > 0.01 && scale > 0.1 {
+                if quality > 0.2 {
+                    quality -= 0.1
+                } else {
+                    scale -= 0.1
+                    if let resized = image.resizedImage(to: scale) {
+                        data = resized.jpegData(compressionQuality: quality)
+                    }
+                    continue
+                }
+                data = image.resizedImage(to: scale)?.jpegData(compressionQuality: quality)
+                print("↘️ 해상도: \(String(format: "%.2f", scale)), 품질: \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data?.count ?? 0))")
+            }
         }
         
         if let data = data, data.count <= maxImageSize {
-            print("✅ 이미지 \(index) 최종 해상도 \(String(format: "%.2f", scale)), 품질 \(String(format: "%.2f", quality)) → 크기: \(formatBytesToMB(data.count))")
+            print("이미지 \(index) 최종 크기: \(formatBytesToMB(data.count))")
             return data
         } else {
             print("❌ 이미지 \(index) 압축 실패 또는 제한 초과, 빈 데이터 추가")

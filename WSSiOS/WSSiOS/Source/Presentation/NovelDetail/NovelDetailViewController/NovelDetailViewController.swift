@@ -543,7 +543,7 @@ final class NovelDetailViewController: UIViewController {
             reloadNovelDetailFeed: reloadNovelDetailFeed.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
-            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
+            feedEditedNotification: NotificationCenter.default.rx.notification(NotificationName.feedEdited).asObservable(),
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
         )
     }
