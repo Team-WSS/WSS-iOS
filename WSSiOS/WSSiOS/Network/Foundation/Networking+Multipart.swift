@@ -121,8 +121,9 @@ extension Networking {
 
         // 원본이 1MB 이하 → quality만 낮춤
         if originalSize <= oneMB {
-            while (data == nil || data!.count > maxImageSize) && quality > 0.1 {
-                data = image.jpegData(compressionQuality: quality)
+            while let compressed = image.jpegData(compressionQuality: quality), compressed.count > maxImageSize, quality > 0.1 {
+            data = compressed
+        
                 print("이미지 \(index) 크기: \(formatBytesToMB(data?.count ?? 0))")
                 quality -= 0.1
             }
