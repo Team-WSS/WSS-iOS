@@ -76,7 +76,7 @@ final class FeedEditView: UIView {
         stackView.do {
             $0.alignment = .fill
             $0.axis = .vertical
-            $0.spacing = 36
+            $0.spacing = 30
         }
         
         novelConnectStackView.do {

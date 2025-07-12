@@ -261,6 +261,7 @@ final class FeedEditViewController: UIViewController {
                 owner.feedEditViewModel.selectedImages.accept(updatedImages)
                 owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
                 owner.rootView.showAddImages(hasImage: !updatedImages.isEmpty)
+                owner.rootView.feedEditAddImageView.bindData(count: updatedImages.count)
             })
             .disposed(by: disposeBag)
         
@@ -285,6 +286,7 @@ final class FeedEditViewController: UIViewController {
                         
                         DispatchQueue.main.async {
                             self.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                            self.rootView.feedEditAddImageView.bindData(count: currentImages.count)
                         }
                     }
                 }
@@ -343,7 +345,7 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 35)
+            return CGSize(width: width, height: 37)
         } else {
             // 이외: 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
             return CGSize(width: 100, height: 100)

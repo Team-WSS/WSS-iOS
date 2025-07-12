@@ -14,7 +14,6 @@ final class FeedEditCategoryView: UIView {
     
     //MARK: - Components
     
-    private let categoryLabel = UILabel()
     let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     //MARK: - Life Cycle
@@ -38,11 +37,6 @@ final class FeedEditCategoryView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
-        categoryLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Category.category)
-            $0.textColor = .wssBlack
-        }
-        
         categoryCollectionView.do {
             let layout = LeftAlignedCollectionViewFlowLayout()
             layout.scrollDirection = .vertical
@@ -56,21 +50,13 @@ final class FeedEditCategoryView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(categoryLabel,
-                         categoryCollectionView)
+        self.addSubview(categoryCollectionView)
     }
     
     private func setLayout() {
-        categoryLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
         categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.bottom).offset(14)
-            $0.leading.equalToSuperview().inset(20)
-            $0.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(84)
         }
     }
