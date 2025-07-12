@@ -5,7 +5,7 @@
 //  Created by YunhakLee on 5/26/25.
 //
 
-enum SortType {
+enum SortType: Equatable {
     case newest, oldest
     
     var queryText: String {

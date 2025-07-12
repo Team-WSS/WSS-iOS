@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum AttractivePoint: String, CaseIterable {
+enum AttractivePoint: String, CaseIterable, Codable {
     case worldview = "worldview"
     case material = "material"
     case character = "character"

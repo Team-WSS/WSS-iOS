@@ -21,6 +21,7 @@ enum StringLiterals {
         static let isRegister = "IS_REGISTER"
         static let showReviewFirstDescription = "SHOW_REVIEW_FIRST_DESCRIPTION"
         static let userBirth = "USER_BIRTH"
+        static let libraryFilterOption = "LIBRARY_FILTER_OPTION"
     }
     
     enum FCMCenter {
