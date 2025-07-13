@@ -19,6 +19,7 @@ final class MyLibraryHeaderView: UIView {
     private let countLabel = UILabel()
     let sortButton = WSSSortButton()
     let layoutToggleButton = UIButton()
+    let layoutToggleButtonImageView = UIImageView()
     private let dividerView = UIView()
     
     // MARK: - Life Cycle
@@ -49,9 +50,13 @@ final class MyLibraryHeaderView: UIView {
         }
         
         layoutToggleButton.do {
-            $0.setImage(.layoutList.withTintColor(.wssGray100), for: .normal)
             $0.configuration = .plain()
             $0.configuration?.background.backgroundColor = .white
+        }
+        
+        layoutToggleButtonImageView.do {
+            $0.image = .layoutGrid.withTintColor(.wssGray100)
+            $0.isUserInteractionEnabled = false
         }
         
         dividerView.do {
@@ -66,6 +71,7 @@ final class MyLibraryHeaderView: UIView {
                                       sortButton,
                                       layoutToggleButton,
                                       dividerView)
+        layoutToggleButton.addSubview(layoutToggleButtonImageView)
     }
     
     private func setLayout() {
@@ -87,13 +93,19 @@ final class MyLibraryHeaderView: UIView {
         
         sortButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(layoutToggleButton.snp.leading).offset(-20.5)
+            $0.trailing.equalTo(layoutToggleButton.snp.leading).offset(-10)
         }
         
         layoutToggleButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(9.5)
+            $0.trailing.equalToSuperview().inset(20)
             $0.size.equalTo(33)
+        }
+        
+        layoutToggleButtonImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.size.equalTo(12)
         }
         
         dividerView.snp.makeConstraints {
@@ -103,8 +115,7 @@ final class MyLibraryHeaderView: UIView {
     }
     
     func updateLayoutToggleButton(selectedType: LayoutType) {
-        layoutToggleButton.setImage(selectedType.image.withTintColor(.wssGray100),
-                                    for: .normal)
+        layoutToggleButtonImageView.image = selectedType.image.withTintColor(.wssGray100)
     }
     
     func updateCountLabel(count: Int) {
