@@ -164,7 +164,7 @@ final class MyLibraryViewModel: ViewModelType {
             .do(onNext: { [weak self] _ in self?.updateRequestState(isStarting: true)})
             .withLatestFrom(Observable.combineLatest(filterOption, sortType, libraryNovelList))
             .flatMapLatest { (filterOption, sortType, novelList) in
-                let size = novelList.count == 0 ? 12 : novelList.count
+                let size = novelList.count == 0 ? 12 : novelList.count + 12
                 return self.getNovelListData(filterOption: filterOption,
                                              lastUserNovelId: 0,
                                              size: size,
