@@ -36,7 +36,7 @@ struct UserFeedEntity {
     
     let novelGenreColor: UIColor
     let novelGenreImage: UIImage
-    let userNovelRating: Float
+    let feedWriterNovelRating: Float
     
     let relevantCategories: [String]
     let isPublic: Bool
@@ -49,7 +49,7 @@ struct UserFeedEntity {
 extension UserFeedResponse {
     func toEntity() -> UserFeedEntity {
         let roundedRating: Float
-        if let userNovelRating = self.userNovelRating {
+        if let userNovelRating = self.feedWriterNovelRating {
             roundedRating = round(userNovelRating * 10) / 10
         } else {
             roundedRating = -1
@@ -76,7 +76,7 @@ extension UserFeedResponse {
                               title: self.title ?? "",
                               novelGenreColor: novelGenreColor,
                               novelGenreImage: novelGenreImage,
-                              userNovelRating: roundedRating,
+                              feedWriterNovelRating: roundedRating,
                               relevantCategories: translatedGenres,
                               isPublic: isPublic,
                               thumbnailImage: self.thumbnailUrl,

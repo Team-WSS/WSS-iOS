@@ -37,7 +37,7 @@ struct TotalFeedEntity {
     let title: String
     let novelGenreColor: UIColor
     let novelGenreImage: UIImage
-    let userNovelRating: Float
+    let feedWriterNovelRating: Float
     
     let relevantCategories: String
     let isSpoiler: Bool
@@ -70,7 +70,7 @@ extension TotalFeedListEntity {
                     title: $0.title,
                     novelGenreColor: $0.novelGenreColor,
                     novelGenreImage: $0.novelGenreImage,
-                    userNovelRating: $0.userNovelRating,
+                    feedWriterNovelRating: $0.feedWriterNovelRating,
                     relevantCategories: $0.relevantCategories.joined(separator: ", "),
                     isSpoiler: $0.isSpoiler,
                     isModified: $0.isModified,
@@ -88,7 +88,7 @@ extension TotalFeedResponse {
         let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         let categoryText = self.relevantCategories.joined(separator: ", ")
         let roundedRating: Float
-        if let userNovelRating = self.userNovelRating {
+        if let userNovelRating = self.feedWriterNovelRating {
             roundedRating = round(userNovelRating * 10) / 10
         } else {
             roundedRating = -1
@@ -115,7 +115,7 @@ extension TotalFeedResponse {
             title: self.title ?? "",
             novelGenreColor: novelGenreColor,
             novelGenreImage: novelGenreImage,
-            userNovelRating: roundedRating,
+            feedWriterNovelRating: roundedRating,
             relevantCategories: categoryText,
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
@@ -146,7 +146,7 @@ extension TotalFeedListEntity {
                                                                     title: "바보야",
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
-                                                                    userNovelRating: 3.33,
+                                                                    feedWriterNovelRating: 3.33,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -168,7 +168,7 @@ extension TotalFeedListEntity {
                                                                     title: "",
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
-                                                                    userNovelRating: 3.33,
+                                                                    feedWriterNovelRating: 3.33,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -190,7 +190,7 @@ extension TotalFeedListEntity {
                                                                     title: "바보야",
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
-                                                                    userNovelRating: 3.33,
+                                                                    feedWriterNovelRating: 3.33,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -212,7 +212,7 @@ extension TotalFeedListEntity {
                                                                     title: "",
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
-                                                                    userNovelRating: -1,
+                                                                    feedWriterNovelRating: -1,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,

@@ -159,7 +159,7 @@ final class FeedListTableViewCell: UITableViewCell {
         let hasConnectedNovel = !feed.title.isEmpty
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.title,
-                                            userNovelRating: feed.userNovelRating,
+                                            feedWriterNovelRating: feed.feedWriterNovelRating,
                                             novelColor: feed.novelGenreColor,
                                             novelLinkImage: feed.novelGenreImage)
             
@@ -211,7 +211,7 @@ final class FeedListTableViewCell: UITableViewCell {
         
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.feed.title,
-                                            userNovelRating: feed.feed.userNovelRating,
+                                            feedWriterNovelRating: feed.feed.feedWriterNovelRating,
                                             novelColor: feed.feed.novelGenreColor,
                                             novelLinkImage: feed.feed.novelGenreImage)
             

@@ -36,7 +36,7 @@ struct TotalFeedResponse: Decodable {
     let thumbnailUrl: String?
     let imageCount: Int
     let genreName: String?
-    let userNovelRating: Float?
+    let feedWriterNovelRating: Float?
 }
 
 struct FeedContentRequest: Encodable {
