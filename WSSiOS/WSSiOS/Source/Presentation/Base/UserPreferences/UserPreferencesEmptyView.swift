@@ -59,7 +59,6 @@ final class UserPreferencesEmptyView: UIView {
         userPreferencesEmptyLabel.snp.makeConstraints {
             $0.top.equalTo(userPreferencesEmptyImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(20)
         }
     }
 }

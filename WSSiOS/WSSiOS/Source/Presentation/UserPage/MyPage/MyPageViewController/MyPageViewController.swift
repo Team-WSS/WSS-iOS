@@ -130,7 +130,6 @@ final class MyPageViewController: UIViewController {
         output.bindGenreData
             .observe(on: MainScheduler.instance)
             .do(onNext: { [weak self] data in
-                self?.rootView.myPagePreferencesView.isPreferencesEmpty(isEmpty: false)
                 self?.rootView.myPagePreferencesView.bindData(genreTotalCountText: data.genreTotalCount)
                 self?.rootView.myPagePreferencesView.myPageGenrePreferencesView.bindData(data: data)
             })
@@ -153,7 +152,8 @@ final class MyPageViewController: UIViewController {
         output.isPrefernecesEmpty
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isEmpty in
-                owner.rootView.myPagePreferencesView.isPreferencesEmpty(isEmpty: isEmpty)
+                let (isGenreEmpty, isNovelEmpty) = isEmpty
+                owner.rootView.myPagePreferencesView.updatePreferenceViews(genreEmpty: isGenreEmpty, novelEmpty: isNovelEmpty)
             })
             .disposed(by: disposeBag)
         
