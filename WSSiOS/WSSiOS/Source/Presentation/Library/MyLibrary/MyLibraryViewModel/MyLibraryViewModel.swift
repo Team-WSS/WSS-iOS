@@ -78,9 +78,6 @@ final class MyLibraryViewModel: ViewModelType {
         
         input.viewWillAppear
             .map { self.loadFilterOption() }
-            .withLatestFrom(filterOption) {($0, $1)}
-            .filter { $0 != $1 }
-            .map { loaded, _ in return loaded }
             .bind(to: filterOption)
             .disposed(by: disposeBag)
         
