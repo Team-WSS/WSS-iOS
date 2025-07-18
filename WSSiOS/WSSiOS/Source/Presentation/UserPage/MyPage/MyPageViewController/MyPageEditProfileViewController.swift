@@ -157,6 +157,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.introText
             .bind(with: self, onNext: { owner, text in
+                owner.rootView.introTextView.text = text
                 owner.rootView.updateIntroCount(text: text)
             })
             .disposed(by: disposeBag)
