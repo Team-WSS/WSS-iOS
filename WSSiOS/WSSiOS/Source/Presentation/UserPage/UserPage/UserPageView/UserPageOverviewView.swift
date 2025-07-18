@@ -120,13 +120,16 @@ final class UserPageOverviewView: UIView {
         userPagePrivateView.isHidden = false
     }
     
-    func isPreferencesEmpty() {
-        [userPageGenrePrefrerencesView,
-         secondDividerView,
-         userPageNovelPrefrerencesView] .forEach { view in
-            view.isHidden = true
-        }
+    func updatePreferenceViews(genreEmpty: Bool, novelEmpty: Bool) {
         
-        preferencesEmptyView.isHidden = false
+        //장르뷰
+        userPageGenrePrefrerencesView.isHidden = genreEmpty
+        secondDividerView.isHidden = genreEmpty
+
+        // 노벨뷰
+        userPageNovelPrefrerencesView.isHidden = novelEmpty
+
+        // Empty 뷰
+        preferencesEmptyView.isHidden = !novelEmpty
     }
 }

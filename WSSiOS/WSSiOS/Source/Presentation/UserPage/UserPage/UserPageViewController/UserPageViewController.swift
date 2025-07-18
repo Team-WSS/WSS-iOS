@@ -206,10 +206,11 @@ final class UserPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isEmptyPreferneces
+        output.isPrefernecesEmpty
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.userPageOverviewView.isPreferencesEmpty()
+            .bind(with: self, onNext: { owner, isEmpty in
+                let (isGenreEmpty, isNovelEmpty) = isEmpty
+                owner.rootView.userPageOverviewView.updatePreferenceViews(genreEmpty: isGenreEmpty, novelEmpty: isNovelEmpty)
             })
             .disposed(by: disposeBag)
         
