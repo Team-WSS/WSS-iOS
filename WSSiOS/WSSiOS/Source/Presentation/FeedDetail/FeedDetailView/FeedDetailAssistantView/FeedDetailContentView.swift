@@ -72,11 +72,16 @@ final class FeedDetailContentView: UIView {
             $0.edges.equalToSuperview()
         }
 
-        [contentLabel, linkNovelView, reactView].forEach {
+        [contentLabel,  reactView].forEach {
             $0.snp.makeConstraints {
                 $0.verticalEdges.equalToSuperview()
                 $0.horizontalEdges.equalToSuperview().inset(20)
             }
+        }
+        
+        linkNovelView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
         dividerView.snp.makeConstraints {

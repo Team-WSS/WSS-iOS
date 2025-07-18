@@ -41,7 +41,7 @@ final class FeedDetailAddImageView: UIView {
     private func setUI() {
         scrollView.do {
             $0.showsHorizontalScrollIndicator = false
-            $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            $0.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
         
         stackView.do {
