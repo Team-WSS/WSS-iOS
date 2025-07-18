@@ -86,12 +86,29 @@ final class FeedListTableViewCell: UITableViewCell {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().inset(10)
             
             stackView.do {
                 $0.setCustomSpacing(10, after: feedHeaderView)
                 $0.setCustomSpacing(20, after: feedContentView)
+            }
+            
+            [feedHeaderView,
+             feedContentView,
+             feedReactView,
+             feedPrivateView].forEach {
+                $0.snp.makeConstraints {
+                    $0.horizontalEdges.equalToSuperview().inset(20)
+                }
+            }
+            
+            [feedImageView,
+             feedConnectedNovelView].forEach {
+                $0.snp.makeConstraints {
+                    $0.horizontalEdges.equalToSuperview().inset(16)
+                }
             }
         }
         

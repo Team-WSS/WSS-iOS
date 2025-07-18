@@ -42,7 +42,7 @@ final class FeedListHeaderView: UIView {
     private func setUI() {
         profileView.do {
             $0.axis = .horizontal
-            $0.spacing = 14
+            $0.spacing = 10
             $0.alignment = .center
             $0.isUserInteractionEnabled = true
         }
@@ -54,7 +54,7 @@ final class FeedListHeaderView: UIView {
         }
         
         userNicknameLabel.do {
-            $0.font = .Title2
+            $0.font = .Body4
             $0.textColor = .wssBlack
         }
         
@@ -64,7 +64,7 @@ final class FeedListHeaderView: UIView {
         
         createdDateLabel.do {
             $0.font = .Body5
-            $0.textColor = .wssBlack
+            $0.textColor = .wssGray200
         }
         
         isModifiedLabel.do {
@@ -94,18 +94,18 @@ final class FeedListHeaderView: UIView {
         }
         
         userImageView.snp.makeConstraints {
-            $0.size.equalTo(36)
+            $0.size.equalTo(32)
         }
         
         dotImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(profileView.snp.trailing).offset(6)
+            $0.leading.equalTo(profileView.snp.trailing).offset(4)
             $0.size.equalTo(8)
         }
         
         createdDateLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(dotImageView.snp.trailing).offset(6)
+            $0.leading.equalTo(dotImageView.snp.trailing).offset(4)
         }
         
         isModifiedLabel.snp.makeConstraints {
@@ -128,7 +128,7 @@ final class FeedListHeaderView: UIView {
     
     func bindData(avatarImageURL: URL?, nickname: String, createdDate: String, isModified: Bool) {
         userImageView.kfSetImage(url: avatarImageURL)
-        userNicknameLabel.applyWSSFont(.title2, with: nickname)
+        userNicknameLabel.applyWSSFont(.body4, with: nickname)
         createdDateLabel.applyWSSFont(.body5, with: createdDate)
         isModifiedLabel.isHidden = !isModified
     }
