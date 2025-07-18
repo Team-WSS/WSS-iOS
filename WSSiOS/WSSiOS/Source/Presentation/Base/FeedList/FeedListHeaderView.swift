@@ -90,7 +90,8 @@ final class FeedListHeaderView: UIView {
     
     private func setLayout() {
         profileView.snp.makeConstraints {
-            $0.centerY.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(4)
         }
         
         userImageView.snp.makeConstraints {
@@ -119,7 +120,8 @@ final class FeedListHeaderView: UIView {
         }
         
         dropdownImageView.snp.makeConstraints {
-            $0.centerY.trailing.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(4)
             $0.size.equalTo(18)
         }
     }
