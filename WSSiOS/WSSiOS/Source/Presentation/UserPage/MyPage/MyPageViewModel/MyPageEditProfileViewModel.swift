@@ -328,12 +328,22 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func changeInfoData() {
-        if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.introdution && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImageURL) {
-            self.changeCompleteButton.accept(self.checkDuplicatedButton.value)
+        let isIntroValid = checkIntroAvailability(self.userIntro.value)
+
+        if self.userNickname.value == profileData?.nickname &&
+            self.userIntro.value == profileData?.introdution &&
+            self.userGenre.value == profileData?.genrePreferences &&
+            self.userImage.value == profileData?.avatarImageURL {
+            
+            self.changeCompleteButton.accept(self.checkDuplicatedButton.value && isIntroValid)
+            
+        } else {
+            self.changeCompleteButton.accept(isIntroValid)
         }
-        else {
-            self.changeCompleteButton.accept(true)
-        }
+    }
+    
+    private func checkIntroAvailability(_ intro: String) -> Bool {
+        return !intro.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
     private func checkNicknameAvailability(_ nickname: String) {
