@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NovelRatingStatus: String, CaseIterable {
+enum NovelRatingStatus: String, CaseIterable, Codable {
     case aboveThreePointFive
     case aboveFourPointZero
     case aboveFourPointFive

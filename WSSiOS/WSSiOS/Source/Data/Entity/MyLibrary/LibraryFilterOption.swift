@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct LibraryFilterOption: Equatable {
+struct LibraryFilterOption: Equatable, Codable {
     var interestedOption: Bool = false
     var readStatusOptions: [ReadStatus] = []
     var attractivePointOptions: [AttractivePoint] = []

@@ -76,6 +76,11 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: refreshNovelList)
             .disposed(by: disposeBag)
         
+        input.viewWillAppear
+            .map { self.loadFilterOption() }
+            .bind(to: filterOption)
+            .disposed(by: disposeBag)
+        
         input.interestFilterButtonDidTap
             .withLatestFrom(filterOption)
             .map { option in
@@ -84,6 +89,14 @@ final class MyLibraryViewModel: ViewModelType {
                 return updated
             }
             .bind(to: filterOption)
+            .disposed(by: disposeBag)
+        
+        filterOption
+            .skip(1)
+            .distinctUntilChanged()
+            .bind(with: self, onNext: { owner, selectedOption in
+                owner.saveFilterOption(selectedOption)
+            })
             .disposed(by: disposeBag)
         
         input.sortButtonDidTap
@@ -99,6 +112,7 @@ final class MyLibraryViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable.combineLatest(filterOption, sortType)
+            .distinctUntilChanged{ $0 == $1 }
             .observe(on: MainScheduler.asyncInstance)  // raceCondition을 방지하기 위해 한사이클 다음에 스트림이 작동하도록 하는 역할.
             .map { _ in }
             .bind(to: reloadNovelList)
@@ -147,11 +161,11 @@ final class MyLibraryViewModel: ViewModelType {
             .do(onNext: { [weak self] _ in self?.updateRequestState(isStarting: true)})
             .withLatestFrom(Observable.combineLatest(filterOption, sortType, libraryNovelList))
             .flatMapLatest { (filterOption, sortType, novelList) in
-                let size = novelList.count == 0 ? 12 : novelList.count
+                let size = novelList.count == 0 ? 12 : novelList.count + 12
                 return self.getNovelListData(filterOption: filterOption,
-                                      lastUserNovelId: 0,
-                                      size: size,
-                                      sortType: sortType)
+                                             lastUserNovelId: 0,
+                                             size: size,
+                                             sortType: sortType)
             }
             .do(onNext: { [weak self] _ in self?.updateRequestState(isStarting: false)})
             .bind(with: self, onNext: { owner, entity in
@@ -242,6 +256,22 @@ final class MyLibraryViewModel: ViewModelType {
             isFetching.accept(false)
             showNetworkErrorView.accept(isError)
             showLoadingView.accept(false)
+        }
+    }
+    
+    private func saveFilterOption(_ filterOption: LibraryFilterOption) {
+        if let encodedData = try? JSONEncoder().encode(filterOption) {
+            UserDefaults.standard.set(encodedData,
+                                      forKey: StringLiterals.UserDefault.libraryFilterOption)
+        }
+    }
+    
+    private func loadFilterOption() -> LibraryFilterOption {
+        if let savedData = UserDefaults.standard.data(forKey: StringLiterals.UserDefault.libraryFilterOption),
+           let loadedFilterOption = try? JSONDecoder().decode(LibraryFilterOption.self, from: savedData) {
+            return loadedFilterOption
+        } else { 
+            return LibraryFilterOption()
         }
     }
 }

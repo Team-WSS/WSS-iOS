@@ -43,7 +43,7 @@ final class MyLibraryFilterHeaderView: UIView {
         self.backgroundColor = .wssWhite
         
         scrollView.do {
-            $0.showsVerticalScrollIndicator = false
+            $0.showsHorizontalScrollIndicator = false
             $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         }
         

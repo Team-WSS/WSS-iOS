@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum ReadStatus: String, CaseIterable {
+enum ReadStatus: String, CaseIterable, Codable {
     case watching = "WATCHING"
     case watched = "WATCHED"
     case quit = "QUIT"
