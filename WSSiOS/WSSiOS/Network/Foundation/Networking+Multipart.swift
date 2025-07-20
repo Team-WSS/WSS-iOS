@@ -119,8 +119,8 @@ extension Networking {
         var bestData: Data? = nil
         var bestSize: Int = Int.max
         
+        // 원본이 1MB 이하 → quality만 낮춤
         if originalSize <= oneMB {
-            // quality만 줄여서 시도
             while quality >= 0.01 {
                 if let compressed = image.jpegData(compressionQuality: quality) {
                     let size = compressed.count
@@ -136,10 +136,10 @@ extension Networking {
                 quality -= 0.05
             }
         } else {
-            // scale과 quality를 줄이면서 반복
             while scale >= 0.1 {
                 if let resized = image.resizedImage(to: scale) {
                     var tempQuality: CGFloat = 1.0
+                    // quality만 줄여서 시도
                     while tempQuality >= 0.01 {
                         if let compressed = resized.jpegData(compressionQuality: tempQuality) {
                             let size = compressed.count
@@ -160,7 +160,7 @@ extension Networking {
         }
         
         if let bestData = bestData {
-            print("이미지 \(index) 최선 압축 결과 반환 → 크기: \(formatBytesToMB(bestData.count))")
+            print("⚠️ 이미지 \(index) 최선 압축 결과 반환 → 크기: \(formatBytesToMB(bestData.count))")
             return bestData
         } else {
             print("이미지 \(index) 압축 실패, 빈 데이터 반환")
