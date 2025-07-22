@@ -17,15 +17,6 @@ enum SortType: Equatable {
         }
     }
     
-    var libraryQueryText: String {
-        switch self {
-        case .newest:
-            return "RECENT"
-        case .oldest:
-            return "OLD"
-        }
-    }
-    
     var text: String {
         switch self {
         case .newest:
@@ -54,6 +45,17 @@ enum SortType: Equatable {
             return .oldest
         case .oldest:
             return .newest
+        }
+    }
+    
+    static func fromText(_ text: String) -> SortType? {
+        switch text {
+        case "최신 순":
+            return .newest
+        case "오래된 순":
+            return .oldest
+        default:
+            return nil
         }
     }
 }

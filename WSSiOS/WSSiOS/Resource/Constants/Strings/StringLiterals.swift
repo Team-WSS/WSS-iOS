@@ -22,6 +22,7 @@ enum StringLiterals {
         static let showReviewFirstDescription = "SHOW_REVIEW_FIRST_DESCRIPTION"
         static let userBirth = "USER_BIRTH"
         static let libraryFilterOption = "LIBRARY_FILTER_OPTION"
+        static let librarySortOption = "LIBRARY_SORT_OPTION"
     }
     
     enum FCMCenter {

@@ -81,6 +81,11 @@ final class MyLibraryViewModel: ViewModelType {
             .bind(to: filterOption)
             .disposed(by: disposeBag)
         
+        input.viewWillAppear
+            .map { self.loadSortType() }
+            .bind(to: sortType)
+            .disposed(by: disposeBag)
+        
         input.interestFilterButtonDidTap
             .withLatestFrom(filterOption)
             .map { option in
@@ -96,6 +101,14 @@ final class MyLibraryViewModel: ViewModelType {
             .distinctUntilChanged()
             .bind(with: self, onNext: { owner, selectedOption in
                 owner.saveFilterOption(selectedOption)
+            })
+            .disposed(by: disposeBag)
+        
+        sortType
+            .skip(1)
+            .distinctUntilChanged()
+            .bind(with: self, onNext: { owner, selectedType in
+                owner.saveSortType(selectedType)
             })
             .disposed(by: disposeBag)
         
@@ -266,12 +279,27 @@ final class MyLibraryViewModel: ViewModelType {
         }
     }
     
+    private func saveSortType(_ sortType: SortType) {
+        UserDefaults.standard.set(sortType.text,
+                                  forKey: StringLiterals.UserDefault.librarySortOption)
+    }
+    
+    
     private func loadFilterOption() -> LibraryFilterOption {
         if let savedData = UserDefaults.standard.data(forKey: StringLiterals.UserDefault.libraryFilterOption),
            let loadedFilterOption = try? JSONDecoder().decode(LibraryFilterOption.self, from: savedData) {
             return loadedFilterOption
         } else { 
             return LibraryFilterOption()
+        }
+    }
+    
+    private func loadSortType() -> SortType {
+        if let savedData = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.librarySortOption),
+           let sortType = SortType.fromText(savedData) {
+            return sortType
+        } else {
+            return SortType.newest
         }
     }
 }
