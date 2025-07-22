@@ -108,7 +108,6 @@ final class UserNovelPreferencesView: UIView {
         preferencesCollectionView.do {
             $0.isHidden = height == 0
             $0.snp.updateConstraints {
-                $0.leading.trailing.equalToSuperview().inset(20)
                 $0.height.equalTo(height)
             }
         }

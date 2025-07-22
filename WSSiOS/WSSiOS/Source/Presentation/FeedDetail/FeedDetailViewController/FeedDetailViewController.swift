@@ -69,7 +69,7 @@ final class FeedDetailViewController: UIViewController {
     
     private func setNavigationBar() {
         self.setWSSNavigationBar(title: nil, left: self.rootView.backButton, right: self.rootView.dropdownButton)
-        self.navigationItem.titleView = self.rootView.viewTitleLabel
+        self.navigationItem.titleView = UIView()
     }
     
     //MARK: - Bind

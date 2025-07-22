@@ -17,8 +17,8 @@ final class UserPageOverviewView: UIView {
     private let stackView = UIStackView()
     let userPageLibraryStatusView = UserPageLibraryStatusView()
     
-    let userPageGenrePrefrerencesView = UserPageGenrePreferencesView()
-    let userPageNovelPrefrerencesView = UserPageNovelPreferencesView()
+    let userPageGenrePreferencesView = UserPageGenrePreferencesView()
+    let userPageNovelPreferencesView = UserPageNovelPreferencesView()
     
     private let preferencesEmptyView = UserPagePreferencesEmptyView()
     private let userPagePrivateView = UserPagePrivateView()
@@ -61,9 +61,9 @@ final class UserPageOverviewView: UIView {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(userPageLibraryStatusView,
                                       firstDividerView,
-                                      userPageGenrePrefrerencesView,
+                                      userPageGenrePreferencesView,
                                       secondDividerView,
-                                      userPageNovelPrefrerencesView,
+                                      userPageNovelPreferencesView,
                                       userPagePrivateView,
                                       preferencesEmptyView)
     }
@@ -78,7 +78,7 @@ final class UserPageOverviewView: UIView {
             $0.height.equalTo(160)
         }
         
-        userPageGenrePrefrerencesView.snp.makeConstraints {
+        userPageGenrePreferencesView.snp.makeConstraints {
             $0.height.equalTo(224.5)
         }
         
@@ -101,7 +101,7 @@ final class UserPageOverviewView: UIView {
     //MARK: - Custom Method
     
     func updateGenreViewHeight(isExpanded: Bool) {
-        userPageGenrePrefrerencesView.snp.updateConstraints {
+        userPageGenrePreferencesView.snp.updateConstraints {
             $0.height.equalTo(isExpanded ? 514 : 224.5)
         }
     }
@@ -109,9 +109,9 @@ final class UserPageOverviewView: UIView {
     func isPrivateUserPage(nickname: String) {
         [userPageLibraryStatusView,
          firstDividerView,
-         userPageGenrePrefrerencesView,
+         userPageGenrePreferencesView,
          secondDividerView,
-         userPageNovelPrefrerencesView].forEach { view in
+         userPageNovelPreferencesView].forEach { view in
             view.isHidden = true
         }
         
@@ -120,13 +120,16 @@ final class UserPageOverviewView: UIView {
         userPagePrivateView.isHidden = false
     }
     
-    func isPreferencesEmpty() {
-        [userPageGenrePrefrerencesView,
-         secondDividerView,
-         userPageNovelPrefrerencesView] .forEach { view in
-            view.isHidden = true
-        }
+    func updatePreferenceViews(genreEmpty: Bool, novelEmpty: Bool) {
         
-        preferencesEmptyView.isHidden = false
+        //장르뷰
+        userPageGenrePreferencesView.isHidden = genreEmpty
+        secondDividerView.isHidden = genreEmpty
+
+        // 노벨뷰
+        userPageNovelPreferencesView.isHidden = novelEmpty
+
+        // Empty 뷰
+        preferencesEmptyView.isHidden = !novelEmpty
     }
 }

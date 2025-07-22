@@ -21,8 +21,6 @@ final class MyPagePreferencesView: UIView {
     
     private let myPageNovelPreferencesTitleLabel = UILabel()
     let myPageNovelPreferencesView = UserNovelPreferencesView()
-    
-    private let myPagePreferencesEmptyTitleLabel = UILabel()
     private let preferencesEmptyView = UserPreferencesEmptyView()
     
     private let dividerView = UIView()
@@ -129,18 +127,23 @@ final class MyPagePreferencesView: UIView {
         }
     }
     
-    func isPreferencesEmpty(isEmpty: Bool) {
-        [myPageGenrePreferencesCountLabel,
-         myPageGenrePreferencesView,
-         dividerView,
-         myPageNovelPreferencesView].forEach {
-            $0.isHidden = isEmpty
-        }
-        preferencesEmptyView.isHidden = !isEmpty
-        preferencesEmptyView.snp.remakeConstraints {
-            $0.horizontalEdges.equalToSuperview()
-            if !isEmpty {
-                $0.bottom.equalToSuperview().inset(97.72)
+    func updatePreferenceViews(genreEmpty: Bool, novelEmpty: Bool) {
+        
+        //장르뷰
+        myPageGenrePreferencesCountLabel.isHidden = genreEmpty
+        myPageGenrePreferencesView.isHidden = genreEmpty
+        dividerView.isHidden = genreEmpty
+
+        // 노벨뷰
+        myPageNovelPreferencesView.isHidden = novelEmpty
+
+        // Empty 뷰
+        preferencesEmptyView.isHidden = !novelEmpty
+
+        if novelEmpty {
+            preferencesEmptyView.snp.remakeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(223)
             }
         }
     }

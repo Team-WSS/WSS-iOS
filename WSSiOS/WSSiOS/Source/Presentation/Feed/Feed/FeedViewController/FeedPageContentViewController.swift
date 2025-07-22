@@ -279,6 +279,12 @@ final class FeedPageContentViewController: UIViewController {
     }
     
     private func bindAction() {
+        rootView.myFeedFilterHeaderView.sortButton.rx.tap
+            .bind(with: self, onNext: { _, _ in
+                HapticManager.shared.generateSelectionFeedback()
+            })
+            .disposed(by: disposeBag)
+        
         rootView.myFeedFilterHeaderView.filterButton.rx.tap
             .withLatestFrom(viewModel.filterOption)
             .observe(on: MainScheduler.instance)

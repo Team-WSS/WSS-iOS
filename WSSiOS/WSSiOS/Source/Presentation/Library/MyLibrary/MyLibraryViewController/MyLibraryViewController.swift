@@ -225,6 +225,12 @@ final class MyLibraryViewController: UIViewController {
                 owner.pushToNormalSearchViewController()
             })
             .disposed(by: disposeBag)
+        
+        rootView.headerView.sortButton.rx.tap
+            .bind(with: self, onNext: { _, _ in
+                HapticManager.shared.generateSelectionFeedback()
+            })
+            .disposed(by: disposeBag)
     }
 }
 

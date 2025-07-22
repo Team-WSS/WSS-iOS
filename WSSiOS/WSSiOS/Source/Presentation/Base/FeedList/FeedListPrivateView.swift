@@ -52,7 +52,8 @@ final class FeedListPrivateView: UIView {
     private func setLayout() {
         lockImageView.snp.makeConstraints {
             $0.size.equalTo(18)
-            $0.leading.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(4)
         }
         
         privateFeedLabel.snp.makeConstraints {

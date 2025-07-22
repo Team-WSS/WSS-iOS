@@ -86,7 +86,8 @@ final class FeedListTableViewCell: UITableViewCell {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(10)
             
             stackView.do {
@@ -156,11 +157,10 @@ final class FeedListTableViewCell: UITableViewCell {
                                  isSpoiler: feed.isSpoiler)
         
         // 연결 작품 바인딩
-        let hasConnectedNovel = !feed.title.isEmpty && feed.novelRatingCount != -1 && feed.novelRating != -1
+        let hasConnectedNovel = !feed.title.isEmpty
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.title,
-                                            novelRatingCount: feed.novelRatingCount,
-                                            novelRating: feed.novelRating,
+                                            feedWriterNovelRating: feed.feedWriterNovelRating,
                                             novelColor: feed.novelGenreColor,
                                             novelLinkImage: feed.novelGenreImage)
             
@@ -209,13 +209,10 @@ final class FeedListTableViewCell: UITableViewCell {
         //연결된 작품 바인딩
         let hasConnectedNovel = feed.feed.novelId != -1
         && !feed.feed.title.isEmpty
-        && feed.feed.novelRatingCount != -1
-        && feed.feed.novelRating != -1
         
         if hasConnectedNovel {
             feedConnectedNovelView.bindData(title: feed.feed.title,
-                                            novelRatingCount: feed.feed.novelRatingCount,
-                                            novelRating: feed.feed.novelRating,
+                                            feedWriterNovelRating: feed.feed.feedWriterNovelRating,
                                             novelColor: feed.feed.novelGenreColor,
                                             novelLinkImage: feed.feed.novelGenreImage)
             

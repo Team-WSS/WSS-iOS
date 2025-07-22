@@ -58,7 +58,7 @@ final class FeedDetailProfileView: UIView {
         }
         
         createdDateLabel.do {
-            $0.textColor = .wssBlack
+            $0.textColor = .wssGray200
         }
     }
     
@@ -76,19 +76,19 @@ final class FeedDetailProfileView: UIView {
         }
         
         userProfileImageView.snp.makeConstraints {
-            $0.size.equalTo(36)
+            $0.size.equalTo(32)
         }
         
         profileStackView.do {
-            $0.setCustomSpacing(14, after: userProfileImageView)
-            $0.setCustomSpacing(6, after: userNicknameLabel)
-            $0.setCustomSpacing(6, after: blackDotImageView)
+            $0.setCustomSpacing(10, after: userProfileImageView)
+            $0.setCustomSpacing(4, after: userNicknameLabel)
+            $0.setCustomSpacing(4, after: blackDotImageView)
         }
     }
     
     func bindData(data: FeedEntity) {
         userProfileImageView.kfSetImage(url: data.userProfileImageURL)
-        userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
+        userNicknameLabel.applyWSSFont(.body4, with: data.userNickname)
         createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
     }
 }

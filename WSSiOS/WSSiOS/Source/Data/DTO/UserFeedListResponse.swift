@@ -30,4 +30,7 @@ struct UserFeedResponse: Decodable {
     let relevantCategories: [String]
     let isPublic: Bool
     let genre: String?
+    let feedWriterNovelRating: Float?
+    let thumbnailUrl: String?
+    let imageCount: Int
 }

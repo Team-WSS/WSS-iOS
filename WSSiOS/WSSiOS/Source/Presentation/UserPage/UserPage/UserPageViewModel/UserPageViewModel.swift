@@ -28,7 +28,7 @@ final class UserPageViewModel: ViewModelType {
                                                                                              genrePreferences: [],
                                                                                              isProfilePublic: true,
                                                                                              avatarImageURL: nil))
-    private let isEmptyPrefernecesRelay = PublishRelay<Void>()
+    private let isPrefernecesEmptyRelay = PublishRelay<(Bool, Bool)>()
     private let bindLibraryStatusDataRelay = BehaviorRelay<UserNovelStatusEntity>(value: UserNovelStatusEntity(interestNovelCount: 0,
                                                                                                            watchingNovelCount: 0,
                                                                                                            watchedNovelCount: 0,
@@ -101,7 +101,7 @@ final class UserPageViewModel: ViewModelType {
         let bindLibraryStatusData: BehaviorRelay<UserNovelStatusEntity>
         
         let showGenreOtherView: BehaviorRelay<Bool>
-        let isEmptyPreferneces: PublishRelay<Void>
+        let isPrefernecesEmpty: PublishRelay<(Bool, Bool)>
         
         let bindFeedData: BehaviorRelay<[UserFeedListItem]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
@@ -259,7 +259,7 @@ final class UserPageViewModel: ViewModelType {
             bindLibraryStatusData: self.bindLibraryStatusDataRelay,
             
             showGenreOtherView: self.showGenreOtherViewRelay,
-            isEmptyPreferneces: self.isEmptyPrefernecesRelay,
+            isPrefernecesEmpty: self.isPrefernecesEmptyRelay,
             
             bindFeedData: self.bindFeedDataRelay,
             updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
@@ -339,51 +339,32 @@ final class UserPageViewModel: ViewModelType {
     
     //취향분석 데이터 바인딩
     private func updateMyPageLibraryPreferenceData() -> Observable<Void> {
-        return getNovelPreferenceData(userId: self.profileId)
-            .flatMap { [weak self] preference -> Observable<Bool> in
-                guard let self else { return .just(false) }
-                
-                //작품취향 분기처리
-                //1. 매력포인트, 키워드 둘 다 있을 때
-                //2. 매력포인트만 있을 때
-                //3. 키워드만 있을 때
-                // => 각각의 뷰만 뜨게 함
-                
-                //4. 둘 다 없을 때
-                //=> emptyView 처리
-                //=> 이 경우 장르 취향도 데이터가 없기 때문에 false 반환
-                let keywords = preference.keywords
-                if preference.attractivePoints == [] && keywords.isEmpty {
-                    self.isEmptyPrefernecesRelay.accept(())
-                    return .just(false)
-                } else {
-                    self.bindAttractivePointsDataRelay.accept(preference.attractivePoints)
-                    self.bindKeywordRelay.accept(keywords)
-                    return .just(true)
-                }
-            }
+        let genrePreferences = getGenrePreferenceData(userId: self.profileId)
+        let novelPreferences = getNovelPreferenceData(userId: self.profileId)
         
-        //회원가입후 처음 접속시 서버연결 에러가 나서 분기처리가 제대로 안된 에러 발생
-        //=> 해결 위하여 서버연결 실패시 emptyView 처리
+        return Observable.zip(genrePreferences, novelPreferences)
+            .do(onNext: { [weak self] genre, novel in
+                guard let self else { return }
+                let isGenreEmpty = genre.genreTotalCount == 0
+                let isNovelEmpty = novel.attractivePoints.isEmpty && novel.keywords.isEmpty
+                self.isPrefernecesEmptyRelay.accept((isGenreEmpty, isNovelEmpty))
+                
+                //둘 다 비어있으면 더이상 작업X
+                guard !(isGenreEmpty && isNovelEmpty) else { return }
+                
+                //장르, 작품 취향 개별 데이터 바인딩
+                if !isGenreEmpty {
+                    self.bindGenreDataRelay.accept(genre)
+                }
+                if !isNovelEmpty {
+                    self.bindAttractivePointsDataRelay.accept(novel.attractivePoints)
+                    self.bindKeywordRelay.accept(novel.keywords)
+                }
+            })
+            .map { _ in Void() }
             .catch { [weak self] error in
-                self?.isEmptyPrefernecesRelay.accept(())
-                return .just(false)
-            }
-        
-        // 장르 취향
-            .flatMap { [weak self] isExist -> Observable<Void> in
-                guard let self else { return .empty() }
-                if isExist {
-                    return self.getGenrePreferenceData(userId: self.profileId)
-                        .do(onNext: { data in
-                            if !data.genrePreferences.isEmpty {
-                                self.bindGenreDataRelay.accept(data)
-                            }
-                        })
-                        .map { _ in Void() }
-                } else {
-                    return .just(Void())
-                }
+                self?.isPrefernecesEmptyRelay.accept((true, true))
+                return .just(Void())
             }
     }
     

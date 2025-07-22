@@ -37,7 +37,7 @@ struct FeedResponse: Decodable {
     var novelThumbnailImage: String?
     var novelGenre: String?
     
-    var userNovelRating: Float?
+    var feedWriterNovelRating: Float?
     var novelDescription: String?
 }
 

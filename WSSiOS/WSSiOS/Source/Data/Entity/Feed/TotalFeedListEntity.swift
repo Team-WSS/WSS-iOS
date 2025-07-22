@@ -14,70 +14,6 @@ struct TotalFeedListEntity {
     let feeds: [TotalFeedEntity]
 }
 
-extension TotalFeedListEntity {
-    static func from(userFeedListEntity: UserFeedListEntity, myProfileEntity: MyProfileEntity, userId: Int) -> TotalFeedListEntity {
-        TotalFeedListEntity(
-            category: "all",
-            isLoadable: userFeedListEntity.isLoadable,
-            feeds: userFeedListEntity.feeds.map {
-                TotalFeedEntity(
-                    feedId: $0.feedId,
-                    userId: userId,
-                    nickname: myProfileEntity.nickname,
-                    avatarImage: myProfileEntity.avatarImageURL,
-                    createdDate: $0.createdDate,
-                    feedContent: $0.feedContent,
-                    likeCount: $0.likeCount,
-                    isLiked: $0.isLiked,
-                    commentCount: $0.commentCount,
-                    novelId: $0.novelId,
-                    title: $0.title,
-                    novelRatingCount: $0.novelRatingCount,
-                    novelRating: $0.novelRating,
-                    novelGenreColor: $0.novelGenreColor,
-                    novelGenreImage: $0.novelGenreImage,
-                    relevantCategories: $0.relevantCategories.joined(separator: ", "),
-                    isSpoiler: $0.isSpoiler,
-                    isModified: $0.isModified,
-                    isMyFeed: true,
-                    isPublic: $0.isPublic,
-                    thumbnailImageURL: URL(string: $0.thumbnailImage),
-                    hasImage: $0.hasImage,
-                    imageCount: $0.imageCount)
-            })
-    }
-}
-//struct TotalFeedEntity {
-//    let feedId: Int
-//    //let userId: Int
-//   // let nickname: String
-//   // let avatarImage: URL?
-//    let feedContent: String
-//    let createdDate: String
-//    let isSpoiler: Bool
-//    let isModified: Bool
-//    let isLiked: Bool
-//    let likeCount: Int
-//    let commentCount: Int
-//    let novelId: Int
-//    let title: String
-//
-//    let novelRatingCount: Int
-//    let novelRating: Float
-//    let novelGenreColor: UIColor
-//    let novelGenreImage: UIImage
-//
-//    let relevantCategories: String
-//    let isPublic: Bool
-//
-//    //let isMyFeed: Bool
-//
-//    let thumbnailImageURL: URL?
-//    let hasImage: Bool
-//    let imageCount: Int
-//}
-
-
 extension TotalFeedListResponse {
     func toEntity() -> TotalFeedListEntity {
         return TotalFeedListEntity(category: self.category,
@@ -99,10 +35,9 @@ struct TotalFeedEntity {
     
     let novelId: Int
     let title: String
-    let novelRatingCount: Int
-    let novelRating: Float
     let novelGenreColor: UIColor
     let novelGenreImage: UIImage
+    let feedWriterNovelRating: Float
     
     let relevantCategories: String
     let isSpoiler: Bool
@@ -115,15 +50,48 @@ struct TotalFeedEntity {
     let imageCount: Int
 }
 
+extension TotalFeedListEntity {
+    static func from(userFeedListEntity: UserFeedListEntity, myProfileEntity: MyProfileEntity, userId: Int) -> TotalFeedListEntity {
+        TotalFeedListEntity(
+            category: "all",
+            isLoadable: userFeedListEntity.isLoadable,
+            feeds: userFeedListEntity.feeds.map {
+                TotalFeedEntity(
+                    feedId: $0.feedId,
+                    userId: userId,
+                    nickname: myProfileEntity.nickname,
+                    avatarImage: myProfileEntity.avatarImageURL,
+                    createdDate: $0.createdDate,
+                    feedContent: $0.feedContent,
+                    likeCount: $0.likeCount,
+                    isLiked: $0.isLiked,
+                    commentCount: $0.commentCount,
+                    novelId: $0.novelId,
+                    title: $0.title,
+                    novelGenreColor: $0.novelGenreColor,
+                    novelGenreImage: $0.novelGenreImage,
+                    feedWriterNovelRating: $0.feedWriterNovelRating,
+                    relevantCategories: $0.relevantCategories.joined(separator: ", "),
+                    isSpoiler: $0.isSpoiler,
+                    isModified: $0.isModified,
+                    isMyFeed: true,
+                    isPublic: $0.isPublic,
+                    thumbnailImageURL: URL(string: $0.thumbnailImage ?? ""),
+                    hasImage: $0.hasImage,
+                    imageCount: $0.imageCount)
+            })
+    }
+}
+
 extension TotalFeedResponse {
     func toEntity() -> TotalFeedEntity {
         let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         let categoryText = self.relevantCategories.joined(separator: ", ")
-        let makeNovelRating: Float
-        if let novelRating = self.novelRating {
-            makeNovelRating = round(novelRating * 10) / 10
+        let roundedRating: Float
+        if let userNovelRating = self.feedWriterNovelRating {
+            roundedRating = round(userNovelRating * 10) / 10
         } else {
-            makeNovelRating = -1
+            roundedRating = -1
         }
         
         let thumbnailImageURL = URL(string: self.thumbnailUrl ?? "")
@@ -145,10 +113,9 @@ extension TotalFeedResponse {
             commentCount: self.commentCount,
             novelId: self.novelId ?? -1,
             title: self.title ?? "",
-            novelRatingCount: self.novelRatingCount ?? -1,
-            novelRating: makeNovelRating,
             novelGenreColor: novelGenreColor,
             novelGenreImage: novelGenreImage,
+            feedWriterNovelRating: roundedRating,
             relevantCategories: categoryText,
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
@@ -177,10 +144,9 @@ extension TotalFeedListEntity {
                                                                     commentCount: 23,
                                                                     novelId: 234,
                                                                     title: "바보야",
-                                                                    novelRatingCount: 23,
-                                                                    novelRating: 3.33,
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
+                                                                    feedWriterNovelRating: 3.33,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -200,10 +166,9 @@ extension TotalFeedListEntity {
                                                                     commentCount: 23,
                                                                     novelId: -1,
                                                                     title: "",
-                                                                    novelRatingCount: -1,
-                                                                    novelRating: -1,
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
+                                                                    feedWriterNovelRating: 3.33,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -223,10 +188,9 @@ extension TotalFeedListEntity {
                                                                     commentCount: 23,
                                                                     novelId: 234,
                                                                     title: "바보야",
-                                                                    novelRatingCount: 23,
-                                                                    novelRating: 3.33,
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
+                                                                    feedWriterNovelRating: 3.33,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
@@ -246,10 +210,9 @@ extension TotalFeedListEntity {
                                                                     commentCount: 23,
                                                                     novelId: -1,
                                                                     title: "",
-                                                                    novelRatingCount: -1,
-                                                                    novelRating: -1,
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
+                                                                    feedWriterNovelRating: -1,
                                                                     relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,

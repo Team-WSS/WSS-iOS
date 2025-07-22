@@ -66,7 +66,8 @@ final class FeedListReactView: UIView {
     
     private func setLayout() {
         likeView.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().inset(4)
             $0.height.equalTo(37)
         }
         
@@ -94,7 +95,7 @@ final class FeedListReactView: UIView {
         commentLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(commentImageView.snp.trailing).offset(5)
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(4)
         }
     }
     
