@@ -1,0 +1,31 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "App Store Connect 배포 (Release)"
+  lane :appstore do
+    match(type: "appstore")
+
+    build_app(
+      scheme: "WSSiOS",
+      configuration: "Release",
+      export_method: "app-store",
+      output_name: "WSSiOS.ipa"
+    )
+
+    upload_to_app_store
+  end
+
+  desc "TestFlight 내부 배포 (Debug)"
+  lane :internal do
+    match(type: "development")
+
+    build_app(
+      scheme: "WSSiOS",
+      configuration: "Debug",
+      export_method: "development",
+      output_name: "WSSiOS_DEV.ipa"
+    )
+
+    upload_to_testflight(distribute_external: false)
+  end
+end

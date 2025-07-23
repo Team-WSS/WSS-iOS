@@ -94,3 +94,4 @@ fastlane/test_output
 iOSInjectionProject/
 GoogleService-Info-Debug.plist
 GoogleService-Info.plist
+.env
