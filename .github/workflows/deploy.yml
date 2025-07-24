@@ -1,0 +1,52 @@
+# 디버그 모드로 내부 테스트플라이트 용도
+name: "[Debug] WSS iOS CI/CD - Internal TestFlight Deploy"
+
+# deploy 브랜치에 push될 때 실행 (브랜치네이밍은 임시)
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  build-and-deploy:
+    name: Running CI/CD for WSS iOS Debug
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # fastlane 을 위한 Ruby
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' 
+
+      - name: Install Bundler and Fastlane
+        run: |
+          gem install bundler
+          bundle install || gem install fastlane
+
+      - name: Set up Keychain
+        uses: maxim-lobanov/setup-keychain@v1
+        with:
+          keychain-password: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+
+      # match 에서 인증서 복호화 할때 필요한 과정
+      - name: Decrypt Certificates
+        run: |
+          brew install gnupg
+          mkdir -p ~/.gnupg
+          echo "$MATCH_GIT_PRIVATE_KEY" > ~/private-key.asc
+          gpg --batch --yes --import ~/private-key.asc
+
+      - name: Run Fastlane (internal)
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+        run: bundle exec fastlane internal
