@@ -44,14 +44,14 @@ jobs:
           echo "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" > ~/private-key.asc
           gpg --batch --yes --import ~/private-key.asc
           
-      - name: Debug: Print directory structure
+      - name: Debug - Print directory structut
         run: |
           echo "== CURRENT DIRECTORY =="
           pwd
           echo "== FILE STRUCTURE =="
           ls -alR
           
-      - name: Debug: Confirm .xcodeproj
+      - name: Debug - Confirm .xcodeproj
         run: |
           echo "== FIND .xcodeproj FILES =="
           find . -name "*.xcodeproj"
