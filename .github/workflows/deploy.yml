@@ -5,7 +5,7 @@ name: "[Debug] WSS iOS CI/CD - Internal TestFlight Deploy"
 on:
   push:
     branches:
-      - deploy
+      - DebugTest/#609
 
 jobs:
   build-and-deploy:
