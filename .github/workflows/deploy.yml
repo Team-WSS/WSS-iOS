@@ -1,0 +1,58 @@
+# 디버그 모드로 내부 테스트플라이트 용도
+name: "[Debug] WSS iOS CI/CD - Internal TestFlight Deploy"
+
+# deploy 브랜치에 push될 때 실행 (브랜치네이밍은 임시)
+on:
+  push:
+    branches:
+      - Feat/#609
+
+jobs:
+  build-and-deploy:
+    name: Running CI/CD for WSS iOS Debug
+    runs-on: macos-14
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_15.0.app/Contents/Developer
+        
+      # fastlane 을 위한 Ruby
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' 
+
+      - name: Install Bundler and Fastlane
+        run: |
+          gem install bundler
+          bundle install || gem install fastlane
+
+      - name: Create temporary keychain
+        run: |
+          security create-keychain -p "ci_password" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "ci_password" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+
+      # match 에서 인증서 복호화 할때 필요한 과정
+      - name: Decrypt Certificates
+        run: |
+          brew install gnupg
+          mkdir -p ~/.gnupg
+          echo "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" > ~/private-key.asc
+          gpg --batch --yes --import ~/private-key.asc
+
+      - name: Run Fastlane (internal)
+        working-directory: ${{ github.workspace }}
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: https://x-access-token:${{ secrets.MATCH_GIT_TOKEN }}@${{ secrets.MATCH_GIT_URL }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+        run: fastlane debug
+        
