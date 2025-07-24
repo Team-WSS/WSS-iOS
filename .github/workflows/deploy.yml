@@ -45,7 +45,7 @@ jobs:
       - name: Run Fastlane (internal)
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          MATCH_GIT_URL: https://x-access-token:${{ secrets.MATCH_GITHUB_TOKEN }}@github.com/your-org/your-cert-repo.git
+          MATCH_GIT_URL: https://x-access-token:${{ secrets.MATCH_GIT_TOKEN }}@${{ secrets.MATCH_GIT_URL }}
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
