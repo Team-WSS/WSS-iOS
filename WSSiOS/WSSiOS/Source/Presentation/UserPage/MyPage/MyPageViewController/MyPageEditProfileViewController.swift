@@ -168,7 +168,7 @@ final class MyPageEditProfileViewController: UIViewController {
                 
                 if !editing {
                     owner.rootView.introTextView.endEditing(true)
-                }
+                } 
             })
             .disposed(by: disposeBag)
         
