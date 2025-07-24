@@ -27,10 +27,12 @@ jobs:
           gem install bundler
           bundle install || gem install fastlane
 
-      - name: Set up Keychain
-        uses: maxim-lobanov/setup-keychain@v1
-        with:
-          keychain-password: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+      - name: Create temporary keychain
+        run: |
+          security create-keychain -p "ci_password" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "ci_password" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
 
       # match 에서 인증서 복호화 할때 필요한 과정
       - name: Decrypt Certificates
