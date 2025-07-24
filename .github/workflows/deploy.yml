@@ -43,7 +43,21 @@ jobs:
           mkdir -p ~/.gnupg
           echo "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" > ~/private-key.asc
           gpg --batch --yes --import ~/private-key.asc
-
+          
+      - name: Debug: Print directory structure
+        run: |
+          echo "== CURRENT DIRECTORY =="
+          pwd
+          echo "== FILE STRUCTURE =="
+          ls -alR
+          
+      - name: Debug: Confirm .xcodeproj
+        run: |
+          echo "== FIND .xcodeproj FILES =="
+          find . -name "*.xcodeproj"
+          echo "== VALIDATE project.pbxproj =="
+          plutil -lint WSSiOS/WSSiOS.xcodeproj/project.pbxproj
+  
       - name: Run Fastlane (internal)
         working-directory: ${{ github.workspace }}
         env:
