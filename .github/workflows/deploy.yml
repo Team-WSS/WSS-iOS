@@ -45,7 +45,7 @@ jobs:
           gpg --batch --yes --import ~/private-key.asc
 
       - name: Run Fastlane (internal)
-        working-directory: .
+        working-directory: ${{ github.workspace }}
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: https://x-access-token:${{ secrets.MATCH_GIT_TOKEN }}@${{ secrets.MATCH_GIT_URL }}
