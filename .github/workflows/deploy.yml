@@ -10,7 +10,7 @@ on:
 jobs:
   build-and-deploy:
     name: Running CI/CD for WSS iOS Debug
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout Repository
