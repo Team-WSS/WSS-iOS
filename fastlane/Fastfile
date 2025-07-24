@@ -33,7 +33,7 @@ platform :ios do
       scheme: "WSSiOS",
       configuration: "Debug",
       export_method: "app-store",
-      project: "WSSiOS.xcodeproj"
+      project: "WSSiOS/WSSiOS.xcodeproj"
     )
 
     upload_to_testflight(
