@@ -35,7 +35,7 @@ platform :ios do
       export_method: "app-store",
       project: "WSSiOS/WSSiOS.xcodeproj"
     )
-
+ 
     upload_to_testflight(
       distribute_external: false,
       skip_waiting_for_build_processing: true
