@@ -23,14 +23,9 @@ platform :ios do
       app_identifier: "kr.websoso.debug"
     )
 
-    latest = latest_testflight_build_number(
-      app_identifier: "kr.websoso.debug"
-    )
-    new_build_number = latest + 1
-    UI.success("✅ 새 빌드 넘버: #{new_build_number}")
-
+    time_based_number = Time.now.strftime("%Y%m%d%H%M")
     increment_build_number(
-      build_number: new_build_number,
+      build_number: time_based_number,
       xcodeproj: "WSSiOS/WSSiOS.xcodeproj"
     )
 
