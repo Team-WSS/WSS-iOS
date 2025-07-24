@@ -14,33 +14,36 @@ platform :ios do
 
     upload_to_app_store
   end
-
+  
   desc "TestFlight 내부 배포 (Debug)"
-  lane :internal do
-    match(type: "development")
+  lane :debug do
+    match(
+      type: "appstore",
+      readonly: true,
+      app_identifier: "kr.websoso.debug"
+    )
 
-    today = Time.now.strftime("%Y%m%d")
-    existing_builds = sh("xcrun altool --list-apps -u $FASTLANE_USER -p $FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD 2>/dev/null | grep #{today}").split("\n")
-    today_build_count = existing_builds
-                          .map { |line| line[/#{today}(\d{2})/, 1] }
-                          .compact
-                          .map(&:to_i)
-                          .max.to_i + 1
-
-    new_build_number = "#{today}#{format('%02d', today_build_count)}"
-    UI.message("✅ 빌드 넘버: #{new_build_number}")
+    latest = latest_testflight_build_number(
+      app_identifier: "kr.websoso.debug"
+    )
+    new_build_number = latest + 1
+    UI.success("✅ 새 빌드 넘버: #{new_build_number}")
 
     increment_build_number(
-      build_number: new_build_number
+      build_number: new_build_number,
+      xcodeproj: "WSSiOS/WSSiOS.xcodeproj"
     )
 
     build_app(
       scheme: "WSSiOS",
       configuration: "Debug",
-      export_method: "development",
-      output_name: "WSSiOS_DEV.ipa"
+      export_method: "app-store",
+      project: "WSSiOS/WSSiOS.xcodeproj"
     )
 
-    upload_to_testflight(distribute_external: false)
+    upload_to_testflight(
+      distribute_external: false,
+      skip_waiting_for_build_processing: true
+    )
   end
 end
