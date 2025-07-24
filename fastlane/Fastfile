@@ -19,6 +19,21 @@ platform :ios do
   lane :internal do
     match(type: "development")
 
+    today = Time.now.strftime("%Y%m%d")
+    existing_builds = sh("xcrun altool --list-apps -u $FASTLANE_USER -p $FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD 2>/dev/null | grep #{today}").split("\n")
+    today_build_count = existing_builds
+                          .map { |line| line[/#{today}(\d{2})/, 1] }
+                          .compact
+                          .map(&:to_i)
+                          .max.to_i + 1
+
+    new_build_number = "#{today}#{format('%02d', today_build_count)}"
+    UI.message("✅ 빌드 넘버: #{new_build_number}")
+
+    increment_build_number(
+      build_number: new_build_number
+    )
+
     build_app(
       scheme: "WSSiOS",
       configuration: "Debug",
