@@ -37,7 +37,7 @@ jobs:
         run: |
           brew install gnupg
           mkdir -p ~/.gnupg
-          echo "$MATCH_GIT_PRIVATE_KEY" > ~/private-key.asc
+          echo "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" > ~/private-key.asc
           gpg --batch --yes --import ~/private-key.asc
 
       - name: Run Fastlane (internal)
@@ -49,4 +49,4 @@ jobs:
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-        run: bundle exec fastlane internal
+        run: fastlane debug
