@@ -223,6 +223,7 @@ final class MyPageViewModel: ViewModelType {
             }
     }
     
+    
     private func handleKeywordCollectionViewHeight(resizeKeywordCollectionViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {
         return resizeKeywordCollectionViewHeight
             .map { $0?.height ?? 0 }
