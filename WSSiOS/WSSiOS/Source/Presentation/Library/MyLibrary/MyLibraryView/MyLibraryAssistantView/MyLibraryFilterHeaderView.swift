@@ -127,7 +127,7 @@ final class MyLibraryFilterHeaderView: UIView {
         
         let text = switch (isSelected, isMoreThanOne) {
         case (true, false): selectedOption.first?.statusName
-        case (true, true): "\(selectedOption.first?.statusName ?? "") 외\(overCount)"
+        case (true, true): "\(selectedOption.first?.statusName ?? "") 외 \(overCount)"
         case (false, _): StringLiterals.MyLibrary.FilterButton.readStatus
         }
         
@@ -144,7 +144,7 @@ final class MyLibraryFilterHeaderView: UIView {
         
         let text = switch (isSelected, isMoreThanOne) {
         case (true, false): selectedOption.first?.koreanString
-        case (true, true): "\(selectedOption.first?.koreanString ?? "") 외\(overCount)"
+        case (true, true): "\(selectedOption.first?.koreanString ?? "") 외 \(overCount)"
         case (false, _): StringLiterals.MyLibrary.FilterButton.attractivePoint
         }
         
