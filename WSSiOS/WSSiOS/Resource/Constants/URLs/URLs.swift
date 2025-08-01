@@ -198,7 +198,7 @@ enum URLs {
     
     enum Contact {
         static let kakao = "http://pf.kakao.com/_kHxlWG"
-        static let inquiry = "https://websoso.notion.site/1c4600bd7468817f9b48e6644c0b6720?pvs=105"
+        static let inquiry = "https://helpwebsoso.notion.site/241a9688d1a38164b3f8efd0b51edaab?pvs=105"
     }
     
     enum Setting {
