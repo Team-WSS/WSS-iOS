@@ -62,7 +62,7 @@ final class FeedPageContentView: UIView {
     private func setLayout() {
         emptyView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.centerY.equalToSuperview().inset(-57)
+            $0.centerY.equalToSuperview()
         }
         
         feedTableView.snp.makeConstraints() {
