@@ -43,17 +43,16 @@ final class FeedEmptyView: UIView {
             $0.axis = .vertical
             $0.distribution = .fill
             $0.alignment = .center
-            $0.spacing = 8
-            
-            emptyImageView.do {
-                $0.image = .imgEmpty
-            }
-            
-            emptyTitleLabel.do {
-                $0.applyWSSFont(.body1, with: StringLiterals.Feed.isEmpty)
-                $0.textColor = .wssGray200
-                $0.textAlignment = .center
-            }
+        }
+        
+        emptyImageView.do {
+            $0.image = .imgEmpty
+        }
+        
+        emptyTitleLabel.do {
+            $0.applyWSSFont(.body1, with: StringLiterals.Feed.isEmpty)
+            $0.textColor = .wssGray200
+            $0.textAlignment = .center
         }
         
         writeFeedButton.do {
@@ -69,18 +68,21 @@ final class FeedEmptyView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(emptyStackView,
-                         writeFeedButton)
+        self.addSubviews(emptyStackView)
         emptyStackView.addArrangedSubviews(emptyImageView,
-                                           emptyTitleLabel)
+                                           emptyTitleLabel,
+                                           writeFeedButton)
         writeFeedButton.addSubview(writeFeedButtonLabel)
     }
     
     private func setLayout() {
         emptyStackView.snp.makeConstraints() {
-            $0.top.equalToSuperview()
-            $0.centerX.equalToSuperview()
-            $0.leading.equalToSuperview().inset(90)
+            $0.edges.equalToSuperview()
+        }
+        
+        emptyStackView.do {
+            $0.setCustomSpacing(8, after: emptyImageView)
+            $0.setCustomSpacing(45, after: emptyTitleLabel)
         }
         
         emptyImageView.snp.makeConstraints() {
@@ -88,9 +90,7 @@ final class FeedEmptyView: UIView {
         }
         
         writeFeedButton.snp.makeConstraints() {
-            $0.top.equalTo(emptyStackView.snp.bottom).offset(45)
-            $0.centerX.equalToSuperview()
-            $0.leading.equalToSuperview().inset(90)
+            $0.horizontalEdges.equalToSuperview().inset(90)
             $0.height.equalTo(53)
             
             writeFeedButtonLabel.snp.makeConstraints {
