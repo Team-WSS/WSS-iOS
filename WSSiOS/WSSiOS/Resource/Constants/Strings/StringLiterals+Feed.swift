@@ -50,6 +50,8 @@ extension StringLiterals {
         static let spoilerText = "스포일러가 포함된 글 보기"
         static let modifiedText = "(수정됨)"
         static let isPrivate = "나만 보는 기록이에요."
+        static let isEmpty = "아직 남긴 기록이 없어요"
+        static let writeFeed = "글 쓰러 가기"
         
         enum Filter {
             static let title = "글 찾기 필터"

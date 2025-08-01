@@ -15,7 +15,7 @@ final class FeedPageContentView: UIView {
     //MARK: - Components
     
     let myFeedFilterHeaderView = MyFeedFilterHeaderView()
-    private let emptyView = NovelDetailFeedEmptyView()
+    let emptyView = FeedEmptyView()
     let feedTableView = UITableView(frame: .zero, style: .plain)
     let dropdownView = FeedDetailDropdownView()
     
