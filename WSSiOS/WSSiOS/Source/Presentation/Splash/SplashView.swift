@@ -11,13 +11,14 @@ import SnapKit
 import Then
 
 final class SplashView: UIView {
+    
     //MARK: - UI Components
     
-    let backgroundImageView = UIImageView()
-    let splashAppLogoImageView = UIImageView()
-    let splashAppTypeImageView = UIImageView()
+    private let backgroundImageView = UIImageView()
+    private let splashAppLogoImageView = UIImageView()
+    private let splashAppTypeImageView = UIImageView()
     
-    let middleView = UIView()
+    private let middleView = UIView()
     
     //MARK: - Life Cycle
     
@@ -54,10 +55,9 @@ final class SplashView: UIView {
     
     private func setHierarchy() {
         self.addSubview(backgroundImageView)
-        backgroundImageView.addSubviews(
-            middleView,
-            splashAppLogoImageView,
-            splashAppTypeImageView)
+        backgroundImageView.addSubviews(middleView,
+                                        splashAppLogoImageView,
+                                        splashAppTypeImageView)
     }
     
     private func setLayout() {
