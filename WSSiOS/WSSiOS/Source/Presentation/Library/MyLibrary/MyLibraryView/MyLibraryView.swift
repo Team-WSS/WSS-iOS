@@ -99,7 +99,8 @@ final class MyLibraryView: UIView {
         
         libraryEmptyView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(97)
+            $0.centerY.equalToSuperview().offset(57)
+            
         }
         
         libraryFilterResultEmptyView.snp.makeConstraints {
