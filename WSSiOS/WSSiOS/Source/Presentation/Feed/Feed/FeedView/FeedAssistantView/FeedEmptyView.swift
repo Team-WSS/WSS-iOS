@@ -18,7 +18,7 @@ final class FeedEmptyView: UIView {
     private let emptyImageView = UIImageView()
     private let emptyTitleLabel = UILabel()
     var writeFeedButton = UIButton()
-    private var writeFeedButtonLabel = UILabel()
+    private let writeFeedButtonLabel = UILabel()
     
     // MARK: - Life Cycle
     
