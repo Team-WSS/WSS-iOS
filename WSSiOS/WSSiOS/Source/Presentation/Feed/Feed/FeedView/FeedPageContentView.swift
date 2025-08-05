@@ -15,7 +15,7 @@ final class FeedPageContentView: UIView {
     //MARK: - Components
     
     let myFeedFilterHeaderView = MyFeedFilterHeaderView()
-    private let emptyView = NovelDetailFeedEmptyView()
+    let emptyView = FeedEmptyView()
     let feedTableView = UITableView(frame: .zero, style: .plain)
     let dropdownView = FeedDetailDropdownView()
     
@@ -61,7 +61,8 @@ final class FeedPageContentView: UIView {
     
     private func setLayout() {
         emptyView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.centerY.equalToSuperview()
         }
         
         feedTableView.snp.makeConstraints() {

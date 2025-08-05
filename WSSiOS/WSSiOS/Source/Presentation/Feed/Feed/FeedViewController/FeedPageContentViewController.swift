@@ -294,6 +294,12 @@ final class FeedPageContentViewController: UIViewController {
             .distinctUntilChanged()
             .bind(to: viewModel.filterOption)
             .disposed(by: disposeBag)
+        
+        rootView.emptyView.writeFeedButton.rx.tap
+            .bind(with: self, onNext: { _, _ in
+                self.pushToFeedEditViewController()
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method

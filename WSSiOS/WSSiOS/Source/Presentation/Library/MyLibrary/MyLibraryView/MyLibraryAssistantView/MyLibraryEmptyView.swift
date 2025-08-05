@@ -75,8 +75,7 @@ final class MyLibraryEmptyView: UIView {
     
     private func setLayout() {
         stackView.snp.makeConstraints() {
-            $0.centerY.equalToSuperview().offset(-59)
-            $0.horizontalEdges.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         stackView.do {
