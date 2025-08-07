@@ -351,7 +351,8 @@ final class DetailSearchViewModel: ViewModelType {
         
         input.contactButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: URLs.Contact.inquiry) {
+                if let url = URL(string: URLs.Contact.inquiryAddNovel
+) {
                     if UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
