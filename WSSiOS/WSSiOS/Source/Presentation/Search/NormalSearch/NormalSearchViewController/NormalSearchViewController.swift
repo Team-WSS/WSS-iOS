@@ -176,7 +176,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.inquiryButtonEnabled
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: URLs.Contact.inquiryAddNovel
+                if let url = URL(string: ExternaLinks.inquiryAddNovel
 ) {
                     UIApplication.shared.open(url, options: [:])
                 }
@@ -219,7 +219,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.resultView.resultCountView.noSearchResultLabel.rx.tapGesture()
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: URLs.Contact.inquiryAddNovel
+                if let url = URL(string: ExternaLinks.inquiryAddNovel
 ) {
                     UIApplication.shared.open(url, options: [:])
                 }
