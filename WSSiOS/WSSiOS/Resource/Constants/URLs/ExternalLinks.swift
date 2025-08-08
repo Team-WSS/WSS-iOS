@@ -1,5 +1,5 @@
 //
-//  ExternaLinks.swift
+//  ExternalLinks.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 8/8/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ExternaLinks {
+enum ExternalLinks {
     static let kakao = "http://pf.kakao.com/_kHxlWG" //현재 사용 안함
     static let inquiry = "https://helpwebsoso.notion.site/241a9688d1a381548c20dd314d0a0b0a"
     static let inquiryAddNovel = "https://helpwebsoso.notion.site/241a9688d1a38164b3f8efd0b51edaab?pvs=105"
