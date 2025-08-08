@@ -215,7 +215,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.contactButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Search.contactKeyword)
-                if let url = URL(string: ExternaLinks.inquiry) {
+                if let url = URL(string: ExternalLinks.inquiry) {
                     if UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }

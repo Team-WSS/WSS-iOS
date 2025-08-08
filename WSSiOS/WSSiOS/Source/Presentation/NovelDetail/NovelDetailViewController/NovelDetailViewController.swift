@@ -217,7 +217,7 @@ final class NovelDetailViewController: UIViewController {
         output.showReportPage
             .drive(with: self, onNext: { owner, _ in
                 owner.rootView.showHeaderDropDownView(isShow: false)
-                if let url = URL(string: ExternaLinks.inquiry) {
+                if let url = URL(string: ExternalLinks.inquiry) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
