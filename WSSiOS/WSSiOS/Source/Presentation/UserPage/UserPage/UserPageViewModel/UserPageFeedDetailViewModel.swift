@@ -57,7 +57,7 @@ final class UserPageFeedDetailViewModel: ViewModelType {
         input.loadNextPageTrigger
             .filter { [weak self] _ in
                 guard let self = self else { return false }
-                return !self.isFetching && self.isLoadableRelay.value
+                return !self.isFetching && self.isLoadableRelay.value && !self.feedDataRelay.value.isEmpty
             }
             .do(onNext: { [weak self] _ in
                 self?.isFetching = true
