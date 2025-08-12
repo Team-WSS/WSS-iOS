@@ -41,7 +41,7 @@ struct UserFeedEntity {
     let relevantCategories: [String]
     let isPublic: Bool
     
-    let thumbnailImage: String?
+    let thumbnailImage: URL?
     let hasImage: Bool
     let imageCount: Int
 }
@@ -63,6 +63,7 @@ extension UserFeedResponse {
         let genre = NewNovelGenre(rawValue: self.genre ?? "")
         let novelGenreColor = genre?.linkColor ?? .genreColorR
         let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
+        let thumbnailImageURL = KingFisherRxHelper.makeImageURLString(path: self.thumbnailUrl ?? "")
         
         return UserFeedEntity(feedId: self.feedId,
                               feedContent: self.feedContent,
@@ -79,7 +80,7 @@ extension UserFeedResponse {
                               feedWriterNovelRating: roundedRating,
                               relevantCategories: translatedGenres,
                               isPublic: isPublic,
-                              thumbnailImage: self.thumbnailUrl,
+                              thumbnailImage: thumbnailImageURL,
                               hasImage: hasImage,
                               imageCount: self.imageCount)
     }
