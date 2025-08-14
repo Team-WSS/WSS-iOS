@@ -126,7 +126,7 @@ final class UserLibraryChildViewModel: ViewModelType {
                                              data: UserNovelNovelStatus(readStatus: self.initData.readStatus,
                                                                         lastUserNovelId: self.lastNovelIdRelay.value,
                                                                         size: self.initData.size,
-                                                                        sortType: isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType))
+                                                                        sortType: isSortTypeNewestRelay.value ? SortType.newest.queryText : SortType.oldest.queryText))
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.setNovelListData(novelResult)
@@ -246,7 +246,7 @@ final class UserLibraryChildViewModel: ViewModelType {
             readStatus: self.initData.readStatus,
             lastUserNovelId: self.lastNovelIdRelay.value,
             size: self.initData.size,
-            sortType: self.isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType
+            sortType: self.isSortTypeNewestRelay.value ? SortType.newest.queryText : SortType.oldest.queryText
         )
         
         self.updateCollectionViewWithLoadTriggerRelay.accept(status)
