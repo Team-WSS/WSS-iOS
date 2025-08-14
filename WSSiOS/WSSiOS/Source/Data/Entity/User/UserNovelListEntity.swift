@@ -9,7 +9,6 @@ import Foundation
 
 struct UserNovelListEntity {
     let userNovelCount: Int
-    let userNovelRating: Float
     let isLoadable: Bool
     let userNovels: [UserNovelEntity]
 }
@@ -17,7 +16,6 @@ struct UserNovelListEntity {
 extension UserNovelListResponse {
     func toEntity() -> UserNovelListEntity {
         return UserNovelListEntity(userNovelCount: self.userNovelCount,
-                                   userNovelRating: self.userNovelRating,
                                    isLoadable: self.isLoadable,
                                    userNovels: self.userNovels.map { $0.toEntity() })
     }
