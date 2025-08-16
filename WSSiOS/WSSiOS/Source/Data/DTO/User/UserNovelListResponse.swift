@@ -9,7 +9,6 @@ import Foundation
 
 struct UserNovelListResponse: Decodable {
     let userNovelCount: Int
-    let userNovelRating: Float
     let isLoadable: Bool
     let userNovels: [UserNovelResponse]
 }

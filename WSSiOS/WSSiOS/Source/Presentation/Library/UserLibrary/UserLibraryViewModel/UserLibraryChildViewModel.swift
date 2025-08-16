@@ -126,7 +126,7 @@ final class UserLibraryChildViewModel: ViewModelType {
                                              data: UserNovelNovelStatus(readStatus: self.initData.readStatus,
                                                                         lastUserNovelId: self.lastNovelIdRelay.value,
                                                                         size: self.initData.size,
-                                                                        sortType: isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType))
+                                                                        sortType: isSortTypeNewestRelay.value ? SortType.newest.queryText : SortType.oldest.queryText))
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.setNovelListData(novelResult)
@@ -152,14 +152,14 @@ final class UserLibraryChildViewModel: ViewModelType {
                     guard let self = self else { return false }
                     return !self.isSortTypeNewestRelay.value
                 }
-                .map { ("newest", true) },
+                .map { (SortType.newest.queryText, true) },
             input.oldestTapped
                 .throttle(.seconds(1), scheduler: MainScheduler.instance)
                 .filter { [weak self] _ in
                     guard let self = self else { return false }
                     return self.isSortTypeNewestRelay.value
                 }
-                .map { ("oldest", false) }
+                .map { (SortType.oldest.queryText, false) }
         )
         .do(onNext: { [weak self] sortType, isNewest in
             self?.isSortTypeNewestRelay.accept(isNewest)
@@ -246,7 +246,7 @@ final class UserLibraryChildViewModel: ViewModelType {
             readStatus: self.initData.readStatus,
             lastUserNovelId: self.lastNovelIdRelay.value,
             size: self.initData.size,
-            sortType: self.isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType
+            sortType: self.isSortTypeNewestRelay.value ? SortType.newest.queryText : SortType.oldest.queryText
         )
         
         self.updateCollectionViewWithLoadTriggerRelay.accept(status)

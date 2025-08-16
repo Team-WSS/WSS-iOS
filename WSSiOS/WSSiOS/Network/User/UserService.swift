@@ -50,7 +50,7 @@ final class DefaultUserService: NSObject, Networking {
             URLQueryItem(name: "readStatus", value: readStatus),
             URLQueryItem(name: "lastUserNovelId", value: String(describing: lastUserNovelId)),
             URLQueryItem(name: "size", value: String(describing: size)),
-            URLQueryItem(name: "sortType", value: sortType)
+            URLQueryItem(name: "sortCriteria", value: sortType)
         ]
     }
 }

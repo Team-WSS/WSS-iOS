@@ -44,7 +44,7 @@ enum URLs {
             return "\(userBasePath)/\(userId)/feeds"
         }
         static func getUserNovel(userId: Int) -> String {
-            return "\(userBasePath)/\(userId)/novels"
+            return "\(userBasePath)/\(userId)/novels/legacy"
         }
         static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
