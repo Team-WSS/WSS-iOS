@@ -152,14 +152,14 @@ final class UserLibraryChildViewModel: ViewModelType {
                     guard let self = self else { return false }
                     return !self.isSortTypeNewestRelay.value
                 }
-                .map { ("newest", true) },
+                .map { (SortType.newest.queryText, true) },
             input.oldestTapped
                 .throttle(.seconds(1), scheduler: MainScheduler.instance)
                 .filter { [weak self] _ in
                     guard let self = self else { return false }
                     return self.isSortTypeNewestRelay.value
                 }
-                .map { ("oldest", false) }
+                .map { (SortType.oldest.queryText, false) }
         )
         .do(onNext: { [weak self] sortType, isNewest in
             self?.isSortTypeNewestRelay.accept(isNewest)
