@@ -76,7 +76,7 @@ extension TotalFeedListEntity {
                     isModified: $0.isModified,
                     isMyFeed: true,
                     isPublic: $0.isPublic,
-                    thumbnailImageURL: URL(string: $0.thumbnailImage ?? ""),
+                    thumbnailImageURL: $0.thumbnailImage,
                     hasImage: $0.hasImage,
                     imageCount: $0.imageCount)
             })
