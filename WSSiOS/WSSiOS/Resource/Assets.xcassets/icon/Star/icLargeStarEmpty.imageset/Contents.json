@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icLargeStarEmpty.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

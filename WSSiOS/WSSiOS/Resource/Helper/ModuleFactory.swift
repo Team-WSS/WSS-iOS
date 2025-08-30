@@ -17,8 +17,22 @@ protocol NovelDetailModuleFactory {
     func makeNovelDetailViewController(novelId: Int) -> UIViewController
 }
 
-protocol ServiceTermAgreementFactory {
+protocol ServiceTermAgreementModuleFactory {
     func makeServiceTermAgreementViewController() -> UIViewController
+}
+
+protocol FeedDetailModuleFactory {
+    func makeFeedDetailViewController(feedId: Int) -> UIViewController
+}
+
+protocol MyLibraryModuleFactory {
+    func makeMyLibraryViewController() -> UIViewController
+}
+
+protocol MyPageModuleFactory {
+    func makeMyPageViewController() -> UIViewController
+    func makeUserPageViewController(profileId: Int) -> UIViewController
+    func makeMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) -> UIViewController
 }
 
 final class ModuleFactory {
@@ -51,8 +65,51 @@ extension ModuleFactory: OnboardingModuleFactory {
     }
 }
 
-extension ModuleFactory: ServiceTermAgreementFactory {
+extension ModuleFactory: ServiceTermAgreementModuleFactory {
     func makeServiceTermAgreementViewController() -> UIViewController {
         return ServiceTermAgreementViewController(repository: DefaultUserInfoRepository(userService: DefaultUserService()))
+    }
+}
+
+extension ModuleFactory: FeedDetailModuleFactory {
+    func makeFeedDetailViewController(feedId: Int) -> UIViewController {
+        return FeedDetailViewController(viewModel: FeedDetailViewModel(feedDetailRepository: DefaultFeedDetailRepository(feedDetailService: DefaultFeedDetailService()),
+                                                                       userRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                                                                       feedId: feedId))
+    }
+}
+
+extension ModuleFactory: MyPageModuleFactory {
+    func makeMyPageViewController() -> UIViewController {
+        return MyPageViewController(viewModel: MyPageViewModel(
+            userRepository: DefaultUserRepository(
+                userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                userBlockRepository: DefaultUserBlockRepository(blocksService: DefaultBlocksService()))))
+    }
+    
+    func makeUserPageViewController(profileId: Int) -> UIViewController {
+        return UserPageViewController(
+            viewModel: UserPageViewModel(
+                userRepository: DefaultUserRepository(
+                    userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                    userBlockRepository: DefaultUserBlockRepository(blocksService: DefaultBlocksService())),
+                profileId: profileId))
+    }
+    
+    func makeMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) -> UIViewController {
+        return MyPageEditProfileViewController(
+            viewModel: MyPageEditProfileViewModel(
+                userRepository: DefaultUserInfoRepository(userService: DefaultUserService()),
+                entryType: entryType,
+                profileData: profile))
+    }
+}
+
+extension ModuleFactory: MyLibraryModuleFactory {
+    func makeMyLibraryViewController() -> UIViewController {
+        return MyLibraryViewController(
+            viewModel: MyLibraryViewModel(
+                myLibraryRepository: DefaultMyLibraryRepository(
+                    myLibraryService: DefaultMyLibraryService())))
     }
 }

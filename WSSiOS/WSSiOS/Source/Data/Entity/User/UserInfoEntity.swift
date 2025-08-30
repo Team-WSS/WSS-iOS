@@ -7,6 +7,20 @@
 
 import Foundation
 
+struct UserMeEntity {
+    let userId: Int
+    let nickname: String
+    let gender: String
+}
+
+extension UserMeResponse {
+    func toEntity() -> UserMeEntity {
+        return UserMeEntity(userId: self.userId,
+                            nickname: self.nickname,
+                            gender: self.gender)
+    }
+}
+
 struct UserInfoEntity {
     let email: String
     let gender: String

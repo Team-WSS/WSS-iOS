@@ -73,7 +73,7 @@ final class NovelReviewRatingView: UIView {
         return (0..<5).map { _ in
             let starImageView = UIImageView().then {
                 $0.isUserInteractionEnabled = true
-                $0.image = .icStarEmpty
+                $0.image = .icLargeStarEmpty
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }
@@ -88,11 +88,11 @@ final class NovelReviewRatingView: UIView {
         for (index, imageView) in starImageViews.enumerated() {
             switch index {
             case ..<fullStars:
-                imageView.image = .icStarFill
+                imageView.image = .icLargeStarFilled
             case fullStars where hasHalfStar:
-                imageView.image = .icStarHalf
+                imageView.image = .icLargeStarHalf
             default:
-                imageView.image = .icStarEmpty
+                imageView.image = .icLargeStarEmpty
             }
         }
     }

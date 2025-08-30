@@ -14,9 +14,13 @@ final class FeedDetailContentView: UIView {
     
     //MARK: - UI Components
     
+    private let stackView = UIStackView()
+    private let contentWrapperView = UIView()
     private let contentLabel = UILabel()
-    let linkNovelView = FeedNovelView()
-    private let genreLabel = UILabel()
+    let addImageView = FeedDetailAddImageView()
+    private let linkNovelWrapperView = UIView()
+    let linkNovelView = FeedDetailNovelView()
+    private let reactWrapperView = UIView()
     let reactView = FeedReactView()
     private let dividerView = UIView()
     
@@ -36,12 +40,14 @@ final class FeedDetailContentView: UIView {
     }
     
     private func setUI() {
-        contentLabel.do {
-            $0.textColor = .wssBlack
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 30
         }
         
-        genreLabel.do {
-            $0.textColor = .wssGray200
+        contentLabel.do {
+            $0.textColor = .wssBlack
         }
         
         dividerView.do {
@@ -50,39 +56,38 @@ final class FeedDetailContentView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(contentLabel,
-                         linkNovelView,
-                         genreLabel,
-                         reactView,
+        self.addSubviews(stackView,
                          dividerView)
+        contentWrapperView.addSubview(contentLabel)
+        linkNovelWrapperView.addSubview(linkNovelView)
+        reactWrapperView.addSubview(reactView)
+        stackView.addArrangedSubviews(contentWrapperView,
+                                      addImageView,
+                                      linkNovelWrapperView,
+                                      reactWrapperView)
     }
     
     private func setLayout() {
-        contentLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        [contentLabel,  reactView].forEach {
+            $0.snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview()
+                $0.horizontalEdges.equalToSuperview().inset(20)
+            }
         }
         
         linkNovelView.snp.makeConstraints {
-            $0.top.equalTo(contentLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(48)
-        }
-        
-        genreLabel.snp.makeConstraints {
-            $0.top.equalTo(linkNovelView.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        reactView.snp.makeConstraints {
-            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
         dividerView.snp.makeConstraints {
-            $0.top.equalTo(reactView.snp.bottom).offset(22)
+            $0.top.equalTo(stackView.snp.bottom).offset(16)
             $0.height.equalTo(7)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
         }
     }
     
@@ -95,33 +100,25 @@ final class FeedDetailContentView: UIView {
         }
         
         if data.hasLinkedNovel {
-            linkNovelView.isHidden = false
-            linkNovelView.snp.remakeConstraints {
-                $0.top.equalTo(contentLabel.snp.bottom).offset(20)
-                $0.leading.trailing.equalToSuperview().inset(20)
-                $0.height.equalTo(48)
-            }
-            linkNovelView.bindData(title: data.novelTitle ?? "",
-                                   rating: data.novelRating ?? 0,
-                                   participants: data.novelRatingCount ?? 0)
+            stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
+            guard let novelData = data.novelData else { return }
+            linkNovelView.bindData(novelData: novelData)
         } else {
-            linkNovelView.isHidden = true
-            genreLabel.snp.remakeConstraints {
-                $0.top.equalTo(contentLabel.snp.bottom).offset(20)
-                $0.leading.trailing.equalToSuperview().inset(20)
-            }
-        }
-
-        genreLabel.do {
-            let genreCategories = data.genreCategories.joined(separator: ",")
-            $0.applyWSSFont(.body2, with: genreCategories)
-            $0.lineBreakMode = .byTruncatingTail
+            linkNovelWrapperView.removeFromSuperview()
         }
         
         reactView.do {
             $0.bindData(likeRating: data.likeCount,
                         isLiked: data.isLiked,
                         commentRating: data.commentCount)
+        }
+        
+        if data.hasImage {
+            stackView.insertArrangedSubview(addImageView, at: 1)
+            stackView.setCustomSpacing(data.hasLinkedNovel ? 16 : 30, after: addImageView)
+            addImageView.bindImages(imageURLs: data.imageURLs)
+        } else {
+            addImageView.removeFromSuperview()
         }
     }
 }

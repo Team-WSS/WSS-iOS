@@ -1,0 +1,145 @@
+//
+//  UserLibraryChildViewController.swift
+//  WSSiOS
+//
+//  Created by 신지원 on 1/14/24.
+//
+
+import UIKit
+
+import RxSwift
+import RxCocoa
+
+final class UserLibraryChildViewController: UIViewController {
+    
+    //MARK: - Properties
+    
+    private let libraryViewModel: UserLibraryChildViewModel
+    private let disposeBag = DisposeBag()
+    private let viewWillAppearEventRelay = PublishRelay<Void>()
+    
+    //MARK: - Components
+    
+    private let rootView = UserLibraryChildView()
+    
+    // MARK: - Life Cycle
+    
+    init(libraryViewModel: UserLibraryChildViewModel) {
+        self.libraryViewModel = libraryViewModel
+    
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        self.view = rootView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        register()
+        bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewWillAppearEventRelay.accept(())
+    }
+    
+    //MARK: - Bind
+    
+    private func register() {
+        rootView.libraryCollectionView.register(LibraryCollectionViewCell.self,
+                                                forCellWithReuseIdentifier: LibraryCollectionViewCell.cellIdentifier)
+    }
+    
+    private func bindViewModel() {
+        let loadNextPageTrigger = rootView.libraryCollectionView.rx.contentOffset
+            .map { [weak self] contentOffset in
+                guard let self = self else { return false }
+                let offsetY = contentOffset.y
+                let contentHeight = self.rootView.libraryCollectionView.contentSize.height
+                let frameHeight = self.rootView.libraryCollectionView.frame.height
+                return offsetY + frameHeight >= contentHeight - 100
+            }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .map { _ in () }
+        
+        let input = UserLibraryChildViewModel.Input(
+            viewWillAppear: viewWillAppearEventRelay.asObservable(),
+            lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
+            cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
+            loadNextPageTrigger: loadNextPageTrigger,
+            dropdownListDidTap: rootView.descriptionView.libraryNovelListButton.rx.tap,
+            newestTapped: rootView.libraryDropdownView.libraryNewestButton.rx.tap,
+            oldestTapped: rootView.libraryDropdownView.libraryOldestButton.rx.tap
+        )
+        
+        let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.cellData
+            .bind(to: rootView.libraryCollectionView.rx.items(
+                cellIdentifier: LibraryCollectionViewCell.cellIdentifier,
+                cellType: LibraryCollectionViewCell.self)) {(row, element, cell) in
+                    cell.bindData(element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.showEmptyView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                let (isEmpty, isMyPage) = data
+                owner.rootView.libraryEmptyView.isHidden = !isEmpty
+                owner.rootView.libraryEmptyView.libraryLookForNovelButton.isHidden = !isMyPage
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToDetailNovelViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToNovelDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNormalSearchViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToNormalSearchViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showNovelTotalCount
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, count in
+                owner.rootView.descriptionView.updateNovelCount(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownListView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.libraryDropdownView.isHidden = !show
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateToggleViewTitle
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isNewest in
+                owner.rootView.descriptionView.updatelibraryNovelListButtonTitle(title: isNewest)
+            })
+            .disposed(by: disposeBag)
+        
+        output.reloadCollectionView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.libraryCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+}

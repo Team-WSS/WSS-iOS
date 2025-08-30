@@ -5,6 +5,8 @@
 //  Created by 신지원 on 3/19/25.
 //
 
+import Foundation
+
 struct AvatarListEntity {
     let avatars: [AvatarEntity]
 }
@@ -19,16 +21,17 @@ struct AvatarEntity {
     let avatarId: Int
     let avatarName: String
     let avatarLine: String
-    let avatarImage: String
+    let avatarImageURL: URL?
     let isRepresentative: Bool
 }
 
 extension AvatarResponse {
     func toEntity() -> AvatarEntity {
+        let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         return AvatarEntity(avatarId: self.avatarId,
                             avatarName: self.avatarName,
                             avatarLine: self.avatarLine,
-                            avatarImage: self.avatarImage,
+                            avatarImageURL: avatarImageURL,
                             isRepresentative: self.isRepresentative)
     }
 }

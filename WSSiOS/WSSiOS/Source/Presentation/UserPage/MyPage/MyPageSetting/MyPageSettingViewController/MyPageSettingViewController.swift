@@ -1,0 +1,166 @@
+//
+//  MyPageSettingViewController.swift
+//  WSSiOS
+//
+//  Created by 신지원 on 7/10/24.
+//
+
+import UIKit
+
+import RxSwift
+import RxRelay
+
+final class MyPageSettingViewController: UIViewController {
+    
+    //MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+    private let settingList = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
+    private let changeVisibilityNotification = PublishRelay<Bool>()
+    
+    //MARK: - UI Components
+    
+    private var rootView = MyPageSettingView()
+    
+    // MARK: - Life Cycle
+    
+    override func loadView() {
+        self.view = rootView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        register()
+        bindCell()
+        bindAction()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNavigationBar()
+        swipeBackGesture()
+        hideTabBar()
+    }
+    
+    //MARK: - Delegate
+    
+    private func register() {
+        rootView.settingTableView.register(
+            MyPageSettingTableViewCell.self,
+            forCellReuseIdentifier: MyPageSettingTableViewCell.cellIdentifier)
+    }
+    
+    //MARK: - Bind
+    
+    private func bindCell() {
+        Observable.just(settingList)
+            .bind(to: rootView.settingTableView.rx.items(
+                cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
+                cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
+                    cell.bindData(title: element)
+                }
+                .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Action
+    
+    private func bindAction() {
+        self.rootView.backButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.settingTableView.rx.itemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                self.rootView.settingTableView.deselectRow(at: indexPath, animated: true)
+                
+                switch indexPath.row {
+                case 0:
+                    print("계정정보")
+                    owner.pushToMyPageInfoViewController()
+                case 1:
+                    print("프로필 공개 여부 설정")
+                    owner.pushToMyPageProfileVisibilityViewController()
+                case 2:
+                    print("알림 설정")
+                    owner.checkNotificationAuthorizationStatus()
+                case 3:
+                    print("웹소소 공식 계정")
+                    if let url = URL(string: ExternalLinks.instaURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                case 4:
+                    print("문의하기 & 의견 보내기")
+                    if let url = URL(string: ExternalLinks.inquiry) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                case 5:
+                    print("개인정보 처리 방침")
+                    if let url = URL(string: ExternalLinks.termsURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                case 6:
+                    print("서비스 이용약관")
+                    if let url = URL(string: ExternalLinks.infoURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                default: break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        changeVisibilityNotification
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, status in
+                owner.showToast(status ? .changePublic : .changePrivate)
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name("ChangeVisibility"))
+            .compactMap { notification -> Bool? in
+                notification.object as? Bool
+            }
+            .bind(to: changeVisibilityNotification)
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    func checkNotificationAuthorizationStatus() {
+        NotificationHelper.shared.checkNotificationAuthorizationStatus()
+            .observe(on: MainScheduler.instance)
+            .flatMap{ isAuthorized -> Observable<AlertButtonType> in
+                if isAuthorized {
+                    self.pushToMyPagePushNotificationViewController()
+                    return Observable<AlertButtonType>.empty()
+                } else {
+                    return self.presentToAlertViewController(
+                        iconImage: .icModalWarning,
+                        titleText: StringLiterals.MyPage.PushNotification.moveToSettingAlertTitle,
+                        contentText: StringLiterals.MyPage.PushNotification.moveToSettingAlertDescription,
+                        leftTitle: StringLiterals.MyPage.PushNotification.moveCancel,
+                        rightTitle: StringLiterals.MyPage.PushNotification.moveAccept,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }
+            .bind(with: self, onNext: { owner, buttonType in
+                if buttonType == .right {
+                    NotificationHelper.shared.moveToDeviceSettingApp()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+//MARK: - UI
+
+extension MyPageSettingViewController {
+    private func setNavigationBar() {
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
+                         left: self.rootView.backButton,
+                         right: nil)
+    }
+}

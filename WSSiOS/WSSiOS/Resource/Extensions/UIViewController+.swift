@@ -207,8 +207,6 @@ extension UIViewController {
         
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController, animated: true)
-        
-        
     }
     
     func dismissModalViewController() {
@@ -278,16 +276,7 @@ extension UIViewController {
     }
     
     func pushToFeedDetailViewController(feedId: Int) {
-        let viewController = FeedDetailViewController(
-            viewModel: FeedDetailViewModel(
-                feedDetailRepository: DefaultFeedDetailRepository(
-                    feedDetailService: DefaultFeedDetailService()
-                ), userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
-                ),
-                feedId: feedId
-            )
-        )
+        let viewController = ModuleFactory.shared.makeFeedDetailViewController(feedId: feedId)
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -300,29 +289,20 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageViewController(userId: Int) {
-        let viewController = MyPageViewController(
-            viewModel: MyPageViewModel(
-                userRepository: DefaultUserRepository(
-                    userInfoRepository: DefaultUserInfoRepository(
-                        userService: DefaultUserService()),
-                    userBlockRepository: DefaultUserBlockRepository(
-                        blocksService: DefaultBlocksService())),
-                profileId: userId))
-        
+    func pushToMyPageViewController() {
+        let viewController = ModuleFactory.shared.makeMyPageViewController()
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToUserPageViewController(userId: Int) {
+        let viewController = ModuleFactory.shared.makeUserPageViewController(profileId: userId)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) {
-        let viewController = MyPageEditProfileViewController(
-            viewModel: MyPageEditProfileViewModel(
-                userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
-                ),
-                entryType: entryType,
-                profileData: profile))
-        
+        let viewController = ModuleFactory.shared.makeMyPageEditViewController(entryType: entryType, profile: profile)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -388,21 +368,35 @@ extension UIViewController {
     }
     
     func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
-        let viewController = LibraryViewController(userId: userId)
+        let viewController = UserLibraryViewController(userId: userId)
 
         viewController.setPageIndex(target: pageIndex)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
-        let viewController = MyPageFeedDetailViewController(
-            viewModel: MyPageFeedDetailViewModel(
+    func presentFeedFilterViewController(_ selectedFilterOption: FeedFilterOption) -> Observable<FeedFilterOption> {
+        let viewController = FeedFilterViewController(feedFilterOption: selectedFilterOption)
+        self.presentModalViewController(viewController)
+        
+        return viewController.filterOption.asObservable()
+    }
+    
+    func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption) -> Observable<LibraryFilterOption> {
+        let viewController = LibraryFilterViewController(libraryFilterOption: selectedFilterOption)
+        self.presentModalViewController(viewController)
+        
+        return viewController.filterOption.asObservable()
+    }
+    
+    func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {
+        let viewController = UserPageFeedDetailViewController(
+            viewModel: UserPageFeedDetailViewModel(
                 userRepository: DefaultUserInfoRepository(
                     userService: DefaultUserService()
                 ),
                 profileId: userId,
-                profileData: useData))
+                profileData: userData))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -412,6 +406,12 @@ extension UIViewController {
         feedDetailUnknownFeedErrorViewController.modalTransitionStyle = .crossDissolve
         
         self.present(feedDetailUnknownFeedErrorViewController, animated: true)
+    }
+    
+    func presentToFeedDetailAddImageViewerViewController(startIndex: Int, imageURLs: [URL?]) {
+        let viewController = FeedDetailAddImageViewerController(startIndex: startIndex, imageURLs: imageURLs)
+        viewController.modalPresentationStyle = .overFullScreen
+        self.present(viewController, animated: true)
     }
     
     func topViewController() -> UIViewController {

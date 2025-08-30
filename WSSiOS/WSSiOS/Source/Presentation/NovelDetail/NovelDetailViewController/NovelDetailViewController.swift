@@ -217,7 +217,7 @@ final class NovelDetailViewController: UIViewController {
         output.showReportPage
             .drive(with: self, onNext: { owner, _ in
                 owner.rootView.showHeaderDropDownView(isShow: false)
-                if let url = URL(string: URLs.Contact.kakao) {
+                if let url = URL(string: ExternalLinks.inquiry) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
@@ -310,7 +310,7 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushToUserViewController
             .subscribe(with: self, onNext: { owner, userId in
-                owner.pushToMyPageViewController(userId: userId)
+                owner.pushToUserPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
         
@@ -543,7 +543,7 @@ final class NovelDetailViewController: UIViewController {
             reloadNovelDetailFeed: reloadNovelDetailFeed.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
-            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
+            feedEditedNotification: NotificationCenter.default.rx.notification(NotificationName.feedEdited).asObservable(),
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
         )
     }

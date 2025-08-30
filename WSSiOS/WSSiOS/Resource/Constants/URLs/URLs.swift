@@ -44,7 +44,7 @@ enum URLs {
             return "\(userBasePath)/\(userId)/feeds"
         }
         static func getUserNovel(userId: Int) -> String {
-            return "\(userBasePath)/\(userId)/novels"
+            return "\(userBasePath)/\(userId)/novels/legacy"
         }
         static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
@@ -196,8 +196,10 @@ enum URLs {
         static let searchKeyword = "/keywords"
     }
     
-    enum Contact {
-        static let kakao = "http://pf.kakao.com/_kHxlWG"
-        static let inquiry = "https://www.notion.so/websoso/1c4600bd7468817f9b48e6644c0b6720?pvs=106"
+    enum MyLibrary {
+        private static let myLibraryBasePath = "/users"
+        static func getMyLibrarList(userId: Int) -> String {
+            return "\(myLibraryBasePath)/\(userId)/novels"
+        }
     }
 }

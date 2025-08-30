@@ -23,12 +23,13 @@ enum ToastStatus {
     case changePrivate
     case changeUserInfo
     case editUserProfile
+    case limitAddImage(limitCount: Int)
 
     var toastImage: UIImage {
         switch self {
         case .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit, .unknownUser:
             return .icAlertSuccess
-        case .novelReviewed, .novelReviewDeleted, .feedEdited, .blockUser, .changePublic, .changePrivate, .changeUserInfo, .editUserProfile:
+        case .novelReviewed, .novelReviewDeleted, .feedEdited, .blockUser, .changePublic, .changePrivate, .changeUserInfo, .editUserProfile, .limitAddImage:
             return .icAlertCheck
         }
     }
@@ -59,6 +60,8 @@ enum ToastStatus {
             "성별/나이 정보가 수정되었어요"
         case .editUserProfile:
             "프로필 정보가 수정되었어요"
+        case .limitAddImage(let limitCount):
+            "\(limitCount)장까지 업로드 가능해요"
         }
     }
 }

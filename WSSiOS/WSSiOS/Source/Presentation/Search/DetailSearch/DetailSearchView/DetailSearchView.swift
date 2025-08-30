@@ -20,7 +20,7 @@ final class DetailSearchView: UIView {
     let detailSearchHeaderView = DetailSearchHeaderView()
     let detailSearchInfoView = DetailSearchInfoView()
     let detailSearchKeywordView = DetailSearchKeywordView()
-    let detailSearchBottomView = DetailSearchBottomView()
+    let detailSearchBottomView = WSSSearchBottomActionView()
     
     // Home Indicator 배경
     private let backgroundBottomView = UIView()
@@ -39,18 +39,13 @@ final class DetailSearchView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        backgroundView.roundCorners([.topLeft, .topRight], radius: 15)
-    }
-    
+
     private func setUI() {
-        self.backgroundColor = .black.withAlphaComponent(0.6)
-        
         backgroundView.do {
             $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 15
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,
+                                      .layerMaxXMinYCorner]
         }
         
         cancelModalButton.do {

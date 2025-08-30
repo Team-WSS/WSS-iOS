@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum ReadStatus: String, CaseIterable {
+enum ReadStatus: String, CaseIterable, Codable {
     case watching = "WATCHING"
     case watched = "WATCHED"
     case quit = "QUIT"
@@ -49,6 +49,14 @@ enum ReadStatus: String, CaseIterable {
         case .watching: return StringLiterals.NovelDetail.Info.ReadStatus.watching
         case .watched: return StringLiterals.NovelDetail.Info.ReadStatus.watched
         case .quit: return StringLiterals.NovelDetail.Info.ReadStatus.quit
+        }
+    }
+    
+    var tagBackgroundColor: UIColor {
+        switch self {
+        case .watching: return .wssPrimary100
+        case .watched: return .wssBlack
+        case .quit: return .wssGray200
         }
     }
 }

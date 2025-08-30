@@ -107,14 +107,24 @@ final class FeedListConnectedNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(title: String, novelRatingCount: Int, novelRating: Float) {
+    func bindData(title: String, feedWriterNovelRating: Float, novelColor: UIColor, novelLinkImage: UIImage) {
+        backgroundColor = novelColor
+        linkImageView.image = novelLinkImage
+        
         titleLabel.do {
             $0.applyWSSFont(.title3, with: title)
             $0.lineBreakMode = .byTruncatingTail
         }
         
-        ratingLabel.do {
-            $0.applyWSSFont(.body4, with: "\(novelRating) (\(novelRatingCount))")
+        if feedWriterNovelRating != -1 {
+            ratingLabel.do {
+                $0.applyWSSFont(.body4, with: "\(feedWriterNovelRating)")
+            }
+            ratingLabel.isHidden = false
+            starImageView.isHidden = false
+        } else {
+            ratingLabel.isHidden = true
+            starImageView.isHidden = true
         }
     }
 }

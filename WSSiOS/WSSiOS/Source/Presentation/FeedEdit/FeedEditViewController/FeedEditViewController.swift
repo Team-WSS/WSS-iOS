@@ -21,10 +21,13 @@ final class FeedEditViewController: UIViewController {
     private let viewDidLoadEvent = PublishRelay<Void>()
     private let stopEditingEvent = PublishRelay<Void>()
     
+    private var photoPickerManager: PhotoPickerManager?
+    private let maximumImageCount = FeedEdit.imageMaxCount
+    
     //MARK: - Components
-
+    
     private let rootView = FeedEditView()
-
+    
     //MARK: - Life Cycle
     
     init(viewModel: FeedEditViewModel) {
@@ -35,29 +38,29 @@ final class FeedEditViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-     override func loadView() {
-         self.view = rootView
-     }
+    
+    override func loadView() {
+        self.view = rootView
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         setNavigationBar()
     }
-
-     override func viewDidLoad() {
-         super.viewDidLoad()
-         
-         hideTabBar()
-         setNotificationCenter()
-         register()
-         delegate()
-         bindViewModel()
-         
-         viewDidLoadEvent.accept(())
-         
-         AmplitudeManager.shared.track(AmplitudeEvent.Feed.write)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        hideTabBar()
+        setNotificationCenter()
+        register()
+        delegate()
+        bindViewModel()
+        
+        viewDidLoadEvent.accept(())
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Feed.write)
     }
     
     //MARK: - UI
@@ -77,17 +80,27 @@ final class FeedEditViewController: UIViewController {
                                                object: nil)
     }
     
+    //MARK: - Bind
+    
     private func register() {
-        rootView.feedEditCategoryView.categoryCollectionView.register(FeedCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
+        rootView.feedEditCategoryView.categoryCollectionView
+            .register(FeedCategoryCollectionViewCell.self,
+                      forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
+        
+        rootView.feedEditAddImageView.addImageCollectionView
+            .register(FeedAddImageCollectionViewCell.self,
+                      forCellWithReuseIdentifier: FeedAddImageCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
         rootView.feedEditCategoryView.categoryCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
+        
+        rootView.feedEditAddImageView.addImageCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
-
-    //MARK: - Bind
     
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
@@ -106,16 +119,18 @@ final class FeedEditViewController: UIViewController {
                 .asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            spoilerButtonDidTap: rootView.feedEditContentView.spoilerButton.rx.tap,
+            spoilerButtonDidTap: rootView.feedEditContentView.spoilerView.spoilerButton.rx.tap,
+            publicButtonDidTap: rootView.feedEditPrivateSettingView.privateSettingButton.rx.tap,
             categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
             categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
             feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
             novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
-            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable(),
+            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(NotificationName.feedNovelConnected).asObservable(),
             novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap,
-            stopEditButtonDidTap: stopEditingEvent.asObservable()
+            stopEditButtonDidTap: stopEditingEvent.asObservable(),
+            photoAddButtonDidTap: rootView.feedEditContentView.photoAddButton.rx.tap
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -152,10 +167,16 @@ final class FeedEditViewController: UIViewController {
                 owner.rootView.feedEditContentView.bindData(feedContent: feedContent)
             })
             .disposed(by: disposeBag)
-
+        
         output.isSpoiler
             .subscribe(with: self, onNext: { owner, isSpoiler in
-                owner.rootView.feedEditContentView.spoilerButton.updateToggle(isSpoiler)
+                owner.rootView.feedEditContentView.spoilerView.spoilerButton.updateToggle(isSpoiler)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isPublic
+            .subscribe(with: self, onNext: { owner, isPublic in
+                owner.rootView.feedEditPrivateSettingView.privateSettingButton.updateToggle(!isPublic)
             })
             .disposed(by: disposeBag)
         
@@ -210,6 +231,79 @@ final class FeedEditViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.presentPhotoPicker
+            .flatMapLatest { [weak self] _ -> Observable<(newImages: [UIImage], currentImages: [UIImage])> in
+                guard let self = self else { return .empty() }
+                
+                let manager = PhotoPickerManager(presentingViewController: self)
+                self.photoPickerManager = manager
+                
+                let selected: Observable<(newImages: [UIImage], currentImages: [UIImage])> =
+                manager.selectedImages
+                    .withLatestFrom(output.selectedImages) { newImages, currentImages in
+                        return (newImages: newImages, currentImages: currentImages)
+                    }
+                
+                manager.presentPicker()
+                return selected
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                let (newImages, currentImages) = data
+                
+                if currentImages.count + newImages.count > owner.maximumImageCount {
+                    owner.showToast(.limitAddImage(limitCount: owner.maximumImageCount))
+                    return
+                }
+                
+                let updatedImages = currentImages + newImages
+                owner.feedEditViewModel.selectedImages.accept(updatedImages)
+                owner.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                owner.rootView.showAddImages(hasImage: !updatedImages.isEmpty)
+                owner.rootView.feedEditAddImageView.bindData(count: updatedImages.count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showAddImageView
+            .subscribe(with: self, onNext: { owner, isShow in
+                owner.rootView.showAddImages(hasImage: isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedImages
+            .bind(to: rootView.feedEditAddImageView.addImageCollectionView.rx.items(
+                cellIdentifier: FeedAddImageCollectionViewCell.cellIdentifier,
+                cellType: FeedAddImageCollectionViewCell.self)) { item, element, cell in
+                    cell.bindData(image: element)
+                    
+                    cell.cancelButtonTapped = {
+                        var currentImages = self.feedEditViewModel.selectedImages.value
+                        guard item < currentImages.count else { return }
+                        
+                        currentImages.remove(at: item)
+                        self.feedEditViewModel.selectedImages.accept(currentImages)
+                        
+                        DispatchQueue.main.async {
+                            self.rootView.feedEditAddImageView.addImageCollectionView.reloadData()
+                            self.rootView.feedEditAddImageView.bindData(count: currentImages.count)
+                        }
+                    }
+                }
+                .disposed(by: disposeBag)
+        
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, isShow in
+                owner.rootView.showloadingView(isLoading: isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.backButtonIsAbled
+            .subscribe(with: self, onNext: { owner, isAbled in
+                owner.rootView.enableBackButton(isEnabled: isAbled)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Custom Method
@@ -230,25 +324,31 @@ final class FeedEditViewController: UIViewController {
             }
         }
     }
-
+    
     @objc private func keyboardWillHide(_ notification: Notification) {
         UIView.animate(withDuration: 0.3) {
-            self.rootView.scrollView.contentInset.bottom = 0
+            self.rootView.scrollView.contentInset.bottom = 30
         }
     }
 }
 
 extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var text: String?
-        
-        text = self.feedEditViewModel.relevantCategoryList[indexPath.item].withKorean
-        
-        guard let unwrappedText = text else {
-            return CGSize(width: 0, height: 0)
+        if collectionView == rootView.feedEditCategoryView.categoryCollectionView {
+            // 카테고리 컬렉션뷰에 대한 셀 사이즈 지정
+            var text: String?
+            
+            text = self.feedEditViewModel.relevantCategoryList[indexPath.item].withKorean
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+            return CGSize(width: width, height: 37)
+        } else {
+            // 이외: 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
+            return CGSize(width: 100, height: 100)
         }
-        
-        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-        return CGSize(width: width, height: 35)
     }
 }

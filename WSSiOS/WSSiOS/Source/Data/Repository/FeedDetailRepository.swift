@@ -31,7 +31,7 @@ protocol FeedDetailRepository {
 
 struct TestFeedDetailRepository: FeedDetailRepository {
     func getSingleFeedData(feedId: Int) -> Observable<FeedEntity> {
-        return Observable.just(FeedEntity(userId: 0, userNickname: "굴", userProfileImageURL: nil, feedId: 1, createdDate: "2001년 10월 3일", feedContent: "오호랏", likeCount: 1, isLiked: true, commentCount: 1, genreCategories: [], hasLinkedNovel: false, novelId: 1, novelTitle: "", novelRatingCount: 0, novelRating: 0, isSpoiler: false, isModified: true, isMyFeed: true))
+        return Observable.just(FeedResponse.dummyOneImageData).map { $0.toEntity() }
     }
     
     func getSingleFeedComments(feedId: Int) -> Observable<FeedCommentsEntity> {

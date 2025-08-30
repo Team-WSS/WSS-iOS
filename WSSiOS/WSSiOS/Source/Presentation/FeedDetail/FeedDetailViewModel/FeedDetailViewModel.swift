@@ -25,13 +25,17 @@ final class FeedDetailViewModel: ViewModelType {
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private var feedUserId: Int?
     
-    // 작품 연결
-    private var novelId: Int?
-    private let presentNovelDetailViewController = PublishRelay<Int>()
+    // 첨부 이미지
+    private var imageURLs: [URL?] = []
+    private let presentToFeedDetailAddImageViewerViewController = PublishRelay<(Int, [URL?])>()
     
     // 관심 버튼
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
+    
+    // 작품 연결
+    private var novelId: Int?
+    private let presentNovelDetailViewController = PublishRelay<Int>()
     
     // 댓글 작성
     let commentCount = BehaviorRelay<Int>(value: 0)
@@ -43,6 +47,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
+    private var isProcessing: Bool = false
     
     // 피드 드롭다운
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
@@ -92,6 +97,9 @@ final class FeedDetailViewModel: ViewModelType {
         let likeButtonDidTap: Observable<UITapGestureRecognizer>
         let userProfileViewDidTap: Observable<UITapGestureRecognizer>
         
+        // 첨부 이미지
+        let imageViewDidTap: Observable<Int>
+        
         // 작품 연결
         let linkNovelViewDidTap: Observable<UITapGestureRecognizer>
         
@@ -124,6 +132,9 @@ final class FeedDetailViewModel: ViewModelType {
         let myProfileData: Observable<MyProfileEntity>
         let popViewController: Observable<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
+        
+        // 첨부 이미지
+        let presentFeedDetailAddImageViewerController: Observable<(Int, [URL?])>
         
         // 관심 버튼
         let likeCount: Driver<Int>
@@ -180,9 +191,10 @@ final class FeedDetailViewModel: ViewModelType {
                     owner.likeButtonState.accept(feed.isLiked)
                     owner.likeCount.accept(feed.likeCount)
                     owner.feedUserId = feed.userId
-                    owner.novelId = feed.novelId
+                    owner.novelId = feed.novelData?.novelId
                     owner.commentCount.accept(feed.commentCount)
                     owner.isMyFeed.accept(feed.isMyFeed)
+                    owner.imageURLs = feed.imageURLs
                 case .error(let error):
                     owner.handleNetworkError(error)
                 case .completed:
@@ -254,6 +266,13 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // 첨부 이미지
+        input.imageViewDidTap
+            .subscribe(with: self, onNext: { owner, index in
+                owner.presentToFeedDetailAddImageViewerViewController.accept((index, owner.imageURLs))
+            })
+            .disposed(by: disposeBag)
+        
         // 작품 연결
         input.linkNovelViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
@@ -305,55 +324,59 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.sendButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .do(onNext: {
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return .empty() }
+
+                if self.isProcessing { return .empty() }
+                self.isProcessing = true
+
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeComment)
-            })
-            .flatMapLatest { () -> Observable<Void> in
+
+                let finishSendingComment: () -> Void = {
+                    self.isProcessing = false
+                    self.textViewResignFirstResponder.accept(())
+                    self.updatedCommentContent = ""
+                    self.textViewEmpty.accept(true)
+                    self.showPlaceholder.accept(true)
+                    self.showLoadingView.accept(false)
+                }
+
                 if self.isCommentEditing {
                     return self.putComment(self.feedId,
                                            self.selectedCommentId,
                                            self.updatedCommentContent)
-                    .flatMapLatest { _ in
-                        self.getSingleFeedComments(self.feedId)
-                            .do(onNext: { _ in
-                                self.showLoadingView.accept(true)
-                            })
-                            .do(onNext: { newComments in
-                                self.commentsData.accept(newComments.comments)
-                            })
-                            .map { _ in () }
-                    }
-                    .do(onNext: {
-                        self.textViewResignFirstResponder.accept(())
-                        self.updatedCommentContent = ""
-                        self.textViewEmpty.accept(true)
-                        self.showPlaceholder.accept(true)
-                        self.isCommentEditing = false
-                        self.selectedCommentId = 0
-                        self.showLoadingView.accept(false)
-                    })
-                } else {
-                    return self.postComment(self.feedId, self.updatedCommentContent)
                         .flatMapLatest { _ in
                             self.getSingleFeedComments(self.feedId)
-                                .do(onNext: { _ in
-                                    self.showLoadingView.accept(true)
-                                })
                                 .do(onNext: { newComments in
                                     self.commentsData.accept(newComments.comments)
+                                    self.showLoadingView.accept(true)
                                 })
                                 .map { _ in () }
                         }
                         .do(onNext: {
-                            self.textViewResignFirstResponder.accept(())
-                            self.updatedCommentContent = ""
-                            self.textViewEmpty.accept(true)
-                            self.showPlaceholder.accept(true)
+                            finishSendingComment()
+                            self.isCommentEditing = false
                             self.selectedCommentId = 0
-                            self.showLoadingView.accept(false)
-                            
-                            let newCommentCount = self.commentCount.value + 1
-                            self.commentCount.accept(newCommentCount)
+                        }, onError: { _ in
+                            self.isProcessing = false
+                        })
+                } else {
+                    return self.postComment(self.feedId,
+                                            self.updatedCommentContent)
+                        .flatMapLatest { _ in
+                            self.getSingleFeedComments(self.feedId)
+                                .do(onNext: { newComments in
+                                    self.commentsData.accept(newComments.comments)
+                                    self.showLoadingView.accept(true)
+                                })
+                                .map { _ in () }
+                        }
+                        .do(onNext: {
+                            finishSendingComment()
+                            self.selectedCommentId = 0
+                            self.commentCount.accept(self.commentCount.value + 1)
+                        }, onError: { _ in
+                            self.isProcessing = false
                         })
                 }
             }
@@ -470,6 +493,7 @@ final class FeedDetailViewModel: ViewModelType {
                       myProfileData: myProfileData.asObservable(),
                       popViewController: popViewController.asObservable(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
+                      presentFeedDetailAddImageViewerController: presentToFeedDetailAddImageViewerViewController.asObservable(),
                       likeCount: likeCount.asDriver(),
                       likeButtonToggle: likeButtonState.asDriver(),
                       presentNovelDetailViewController: presentNovelDetailViewController.asObservable(),

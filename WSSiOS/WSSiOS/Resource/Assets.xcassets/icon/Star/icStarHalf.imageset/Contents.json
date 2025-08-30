@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Status=Half.png",
+      "filename" : "status=half.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Status=Half@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Status=Half@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

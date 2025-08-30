@@ -14,7 +14,7 @@ final class KeywordLink: UIView {
     
     //MARK: - Properties
     
-    private var labelHeight: CGFloat = 35
+    private var labelHeight: CGFloat = 37
     
     //MARK: - Components
     
@@ -63,11 +63,7 @@ final class KeywordLink: UIView {
     
     func setText(_ text: String) {
         keywordLabel.do {
-            $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 150)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
-            $0.font = .Body2
+            $0.applyWSSFont(.body2, with: text)
             $0.textColor = .wssGray300
         }
     }

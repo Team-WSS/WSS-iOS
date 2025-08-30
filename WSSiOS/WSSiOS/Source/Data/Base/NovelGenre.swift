@@ -131,6 +131,81 @@ enum NewNovelGenre: String, CaseIterable {
         }
     }
     
+    var markImage: UIImage {
+        switch self {
+        case .fantasy:
+            return .icGenremarkF
+        case .modernFantasy:
+            return .icGenremarkHF
+        case .wuxia:
+            return .icGenremarkMH
+        case .drama:
+            return .icGenremarkD
+        case .mystery:
+            return .icGenremarkMT
+        case .lightNovel:
+            return .icGenremarkLN
+        case .romance:
+            return .icGenremarkR
+        case .romanceFantasy:
+            return .icGenremarkRF
+        case .bl:
+            return .icGenremarkBL
+        default :
+            return .icGenremarkRF
+        }
+    }
+    
+    var linkImage: UIImage {
+        switch self {
+        case .fantasy:
+            return .icGenreLinkF
+        case .modernFantasy:
+            return .icGenreLinkHF
+        case .wuxia:
+            return .icGenreLinkMH
+        case .drama:
+            return .icGenreD
+        case .mystery:
+            return .icGenreLinkMT
+        case .lightNovel:
+            return .icGenreLinkLN
+        case .romance:
+            return .icGenreLinkR
+        case .romanceFantasy:
+            return .icGenreLinkRF
+        case .bl:
+            return .icGenreLinkBL
+        default :
+            return .icGenreLinkR
+        }
+    }
+    
+    var linkColor: UIColor {
+        switch self {
+        case .fantasy:
+            return UIColor.genreColorF
+        case .modernFantasy:
+            return UIColor.genreColorHF
+        case .wuxia:
+            return UIColor.genreColorMH
+        case .drama:
+            return UIColor.genreColorD
+        case .mystery:
+            return UIColor.genreColorMT
+        case .lightNovel:
+            return UIColor.genreColorLN
+        case .romance:
+            return UIColor.genreColorR
+        case .romanceFantasy:
+            return UIColor.genreColorRF
+        case .bl:
+            return UIColor.genreColorBL
+        default :
+            return UIColor.genreColorR
+        }
+    }
+    
     var amplitudeEvent: AmplitudeEvent.Feed? {
         switch self {
         case .all:
@@ -166,4 +241,5 @@ extension NewNovelGenre {
     static let onboardingGenres: [NewNovelGenre] = [.romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .lightNovel, .drama, .mystery]
     static let feedMaleGenres: [NewNovelGenre] = [.all, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .romance, .romanceFantasy, .bl, .etc]
     static let feedFemaleGenres: [NewNovelGenre] = [.all, .romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .etc]
+    static let feedFilterGenres: [NewNovelGenre] = [.romance, .romanceFantasy, .fantasy, .modernFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl]
 }

@@ -172,7 +172,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.comment.accept(data)
         
         self.userProfileImageView.kfSetImage(url: data.userProfileImageURL)
-        self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
+        self.userNicknameLabel.applyWSSFont(.title3, with: data.userNickname)
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
         
         self.replyContentLabel.do {

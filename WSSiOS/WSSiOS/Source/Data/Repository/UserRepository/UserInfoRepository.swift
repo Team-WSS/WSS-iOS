@@ -10,20 +10,20 @@ import Foundation
 import RxSwift
 
 protocol UserInfoRepository {
-    func getUserMeData() -> Observable<UserMeResult>
+    func getUserMeData() -> Observable<UserMeEntity>
     func getMyProfileData() -> Observable<MyProfileEntity>
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity>
+    func getOtherProfile(userId: Int) -> Observable<UserProfileEntity>
     func getUserInfo() -> Observable<UserInfoEntity>
     func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusEntity>
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesEntity>
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int, filterOption: FeedFilterOption?, sortType: SortType?) -> Observable<UserFeedListEntity>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -37,13 +37,14 @@ protocol UserInfoRepository {
 struct DefaultUserInfoRepository: UserInfoRepository {
     
     private let userService: UserService
-
+    
     init(userService: UserService) {
         self.userService = userService
     }
-
-    func getUserMeData() -> Observable<UserMeResult> {
+    
+    func getUserMeData() -> Observable<UserMeEntity> {
         return userService.getUserData()
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
@@ -53,14 +54,9 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity> {
+    func getOtherProfile(userId: Int) -> Observable<UserProfileEntity> {
         return userService.getOtherProfile(userId: userId)
             .map{ $0.toEntity() }
-            .asObservable()
-    }
-    
-    func getUserData() -> Observable<UserMeResult> {
-        return userService.getUserData()
             .asObservable()
     }
     
@@ -81,18 +77,21 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusEntity> {
         return userService.getUserNovelStatus(userId: userId)
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse> {
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesEntity> {
         return userService.getUserNovelPreferences(userId: userId)
+            .map { $0.toEntity() }
             .asObservable()
     }
     
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences> {
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferencesListEntity> {
         return userService.getUserGenrePreferences(userId: userId)
+            .map { $0.toEntity() }
             .asObservable()
     }
     
@@ -115,8 +114,17 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         return userService.getNicknameisValid(nickname: nickname)
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
-        return userService.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int, filterOption: FeedFilterOption? = nil, sortType: SortType? = nil) -> Observable<UserFeedListEntity> {
+        var queryItem = UserFeedListQuery(
+            lastFeedId: lastFeedId,
+            size: size,
+            sortCriteria: sortType?.queryText ?? SortType.newest.queryText
+        )
+        queryItem.genreNames = filterOption?.genres.map{ $0.rawValue }
+        queryItem.isUnVisible = filterOption?.visibilityOptions.contains(.private)
+        queryItem.isVisible = filterOption?.visibilityOptions.contains(.public)
+        
+        return userService.getUserFeed(userId: userId, userFeedListQuery: queryItem)
             .map { $0.toEntity() }
             .asObservable()
     }

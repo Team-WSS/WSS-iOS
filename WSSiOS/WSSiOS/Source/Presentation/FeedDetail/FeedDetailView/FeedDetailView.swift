@@ -18,7 +18,6 @@ final class FeedDetailView: UIView {
     private let contentView = UIView()
     
     let backButton = UIButton()
-    let viewTitleLabel = UILabel()
     let dropdownButton = UIButton()
     let dropdownView = FeedDetailDropdownView()
     
@@ -56,13 +55,8 @@ final class FeedDetailView: UIView {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }
         
-        viewTitleLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.title)
-            $0.textColor = .wssBlack
-        }
-        
         dropdownButton.do {
-            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }
         
         dropdownView.do {
@@ -120,17 +114,17 @@ final class FeedDetailView: UIView {
         }
         
         profileView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(16)
             $0.leading.equalToSuperview().inset(20)
         }
         
         feedContentView.snp.makeConstraints {
-            $0.top.equalTo(profileView.snp.bottom).offset(12)
+            $0.top.equalTo(profileView.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview()
         }
         
         replyView.snp.makeConstraints {
-            $0.top.equalTo(feedContentView.snp.bottom)
+            $0.top.equalTo(feedContentView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         

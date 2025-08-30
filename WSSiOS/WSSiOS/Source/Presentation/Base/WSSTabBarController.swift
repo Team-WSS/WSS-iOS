@@ -85,18 +85,10 @@ final class WSSTabBarController: UITabBarController {
             self.setTabBarController()
         }
         
-        NotificationCenter.default.rx.notification(StringLiterals.NotificationCenter.moveToLibraryTab)
+        NotificationCenter.default.rx.notification(NotificationName.moveToLibraryTab)
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, notification in
-                if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
-                   let libraryVC = libraryNavigationVC.topViewController as? LibraryViewController {
-                    
-                    owner.selectedIndex = WSSTabBarItem.library.rawValue
-                    
-                    if let pageIndex = notification.object as? Int {
-                        libraryVC.setPageIndex(target: pageIndex)
-                    }
-                }
+                owner.selectedIndex = WSSTabBarItem.library.rawValue
             })
             .disposed(by: disposeBag)
     }

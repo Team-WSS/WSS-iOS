@@ -5,14 +5,28 @@
 //  Created by 신지원 on 5/15/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 
 protocol FeedRepository {
-    func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity>
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void>
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void>
+    func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity>
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void>
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void>
+}
+
+struct TestFeedRepository: FeedRepository {
+    func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
+        return Observable.just(TotalFeedListEntity.dummyFullData)
+    }
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        return Observable.just(())
+    }
 }
 
 struct DefaultFeedRepository: FeedRepository {
@@ -23,19 +37,19 @@ struct DefaultFeedRepository: FeedRepository {
         self.feedService = feedService
     }
     
-    func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
-        return feedService.getFeedList(category: category, lastFeedId: lastFeedId, size: size ?? self.size)
+    func getFeedData(lastFeedId: Int, size: Int?, feedsOption: String) -> Observable<TotalFeedListEntity> {
+        return feedService.getFeedList(lastFeedId: lastFeedId, size: size ?? self.size, feedsOption: feedsOption)
             .map { $0.toEntity()}
             .asObservable()
     }
-   
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
-        return feedService.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        return feedService.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
             .asObservable()
     }
     
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
-        return feedService.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        return feedService.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
             .asObservable()
     }
     

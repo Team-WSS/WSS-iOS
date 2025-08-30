@@ -44,7 +44,8 @@ final class FeedListContentView: UIView {
     
     private func setLayout() {
         contentLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(4)
         }
     }
     

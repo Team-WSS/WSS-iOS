@@ -1,0 +1,79 @@
+//
+//  FeedNavigationView.swift
+//  WSSiOS
+//
+//  Created by 신지원 on 5/19/24.
+//
+
+import UIKit
+
+import SnapKit
+import Then
+
+final class FeedHeaderView: UIView {
+    
+    //MARK: - Components
+    
+    let myFeedTabButton = FeedHeaderTabButton(feedTab: .my)
+    let sosoFeedTabButton = FeedHeaderTabButton(feedTab: .soso)
+    let createFeedButton = UIButton()
+    
+    // MARK: - Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setUI()
+        setHierarchy()
+        setLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - UI
+    
+    private func setUI() {
+        self.backgroundColor = .wssWhite
+        
+        createFeedButton.do {
+            $0.setImage(.icPencilSm.withTintColor(.wssBlack).withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+    }
+    
+    private func setHierarchy() {
+        addSubviews(myFeedTabButton,
+                    sosoFeedTabButton,
+                    createFeedButton)
+    }
+    
+    private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(56)
+        }
+        
+        myFeedTabButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        sosoFeedTabButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(myFeedTabButton.snp.trailing).offset(16)
+        }
+        
+        createFeedButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.height.equalTo(40)
+            $0.trailing.equalToSuperview()
+            $0.width.equalTo(60)
+        }
+    }
+    
+    func updateButtons(selectedTab: FeedTab) {
+        myFeedTabButton.updateButton(selectedTab: selectedTab)
+        sosoFeedTabButton.updateButton(selectedTab: selectedTab)
+    }
+}
+
