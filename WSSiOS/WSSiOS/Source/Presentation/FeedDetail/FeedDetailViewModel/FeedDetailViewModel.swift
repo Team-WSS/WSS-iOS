@@ -465,7 +465,6 @@ final class FeedDetailViewModel: ViewModelType {
                     owner.showCommentDeleteAlertView.accept((owner.deleteComment,
                                                              owner.feedId,
                                                              owner.selectedCommentId))
-                    print("owner.initialCommentContent: \(owner.initialCommentContent)")
                 case (.top, false):
                     // 스포일러 댓글 신고하기
                     owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
