@@ -439,7 +439,6 @@ final class FeedDetailViewModel: ViewModelType {
                     if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) {
                         let indexPath = IndexPath(row: index, section: 0)
                         owner.showCommentDropdownView.accept((indexPath, isMyComment))
-                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
                     }
                 }
                 owner.selectedCommentId = commentId
@@ -453,18 +452,30 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.hideCommentDropdownView.accept(())
                 switch result {
                 case (.top, true):
+                    // 댓글 수정하기
                     owner.isCommentEditing = true
                     owner.myCommentEditing.accept(())
+                    
+                    // 수정할 때에만 initialCommentContent가 업데이트되도록 한다.
+                    if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == owner.selectedCommentId }) {
+                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
+                    }
                 case (.bottom, true):
+                    // 댓글 삭제하기
                     owner.showCommentDeleteAlertView.accept((owner.deleteComment,
                                                              owner.feedId,
                                                              owner.selectedCommentId))
-                case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
-                                                                              owner.feedId,
-                                                                              owner.selectedCommentId))
-                case (.bottom, false): owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
-                                                                                      owner.feedId,
-                                                                                      owner.selectedCommentId))
+                    print("owner.initialCommentContent: \(owner.initialCommentContent)")
+                case (.top, false):
+                    // 스포일러 댓글 신고하기
+                    owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
+                                                              owner.feedId,
+                                                              owner.selectedCommentId))
+                case (.bottom, false):
+                    // 부적절한 댓글 신고하기
+                    owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
+                                                                   owner.feedId,
+                                                                   owner.selectedCommentId))
                 }
             })
             .disposed(by: disposeBag)
