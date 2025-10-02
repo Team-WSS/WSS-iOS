@@ -326,58 +326,61 @@ final class FeedDetailViewModel: ViewModelType {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return .empty() }
-
+                
                 if self.isProcessing { return .empty() }
                 self.isProcessing = true
-
+                
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeComment)
-
+                
                 let finishSendingComment: () -> Void = {
                     self.isProcessing = false
                     self.textViewResignFirstResponder.accept(())
+                    
+                    self.initialCommentContent = ""
                     self.updatedCommentContent = ""
+                    
                     self.textViewEmpty.accept(true)
                     self.showPlaceholder.accept(true)
                     self.showLoadingView.accept(false)
                 }
-
+                
                 if self.isCommentEditing {
                     return self.putComment(self.feedId,
                                            self.selectedCommentId,
                                            self.updatedCommentContent)
-                        .flatMapLatest { _ in
-                            self.getSingleFeedComments(self.feedId)
-                                .do(onNext: { newComments in
-                                    self.commentsData.accept(newComments.comments)
-                                    self.showLoadingView.accept(true)
-                                })
-                                .map { _ in () }
-                        }
-                        .do(onNext: {
-                            finishSendingComment()
-                            self.isCommentEditing = false
-                            self.selectedCommentId = 0
-                        }, onError: { _ in
-                            self.isProcessing = false
-                        })
+                    .flatMapLatest { _ in
+                        self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { newComments in
+                                self.commentsData.accept(newComments.comments)
+                                self.showLoadingView.accept(true)
+                            })
+                            .map { _ in () }
+                    }
+                    .do(onNext: {
+                        finishSendingComment()
+                        self.isCommentEditing = false
+                        self.selectedCommentId = 0
+                    }, onError: { _ in
+                        self.isProcessing = false
+                    })
                 } else {
                     return self.postComment(self.feedId,
                                             self.updatedCommentContent)
-                        .flatMapLatest { _ in
-                            self.getSingleFeedComments(self.feedId)
-                                .do(onNext: { newComments in
-                                    self.commentsData.accept(newComments.comments)
-                                    self.showLoadingView.accept(true)
-                                })
-                                .map { _ in () }
-                        }
-                        .do(onNext: {
-                            finishSendingComment()
-                            self.selectedCommentId = 0
-                            self.commentCount.accept(self.commentCount.value + 1)
-                        }, onError: { _ in
-                            self.isProcessing = false
-                        })
+                    .flatMapLatest { _ in
+                        self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { newComments in
+                                self.commentsData.accept(newComments.comments)
+                                self.showLoadingView.accept(true)
+                            })
+                            .map { _ in () }
+                    }
+                    .do(onNext: {
+                        finishSendingComment()
+                        self.selectedCommentId = 0
+                        self.commentCount.accept(self.commentCount.value + 1)
+                    }, onError: { _ in
+                        self.isProcessing = false
+                    })
                 }
             }
             .subscribe()
