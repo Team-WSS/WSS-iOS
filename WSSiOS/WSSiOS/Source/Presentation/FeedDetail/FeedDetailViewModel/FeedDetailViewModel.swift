@@ -237,20 +237,31 @@ final class FeedDetailViewModel: ViewModelType {
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
         input.likeButtonDidTap
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(200), scheduler: MainScheduler.instance)
             .do(onNext: { _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedDetailLike)
             })
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
-                let request: Observable<Void>
-                request = isLiked ? self.deleteFeedLike(self.feedId) : self.postFeedLike(self.feedId)
+                
+                // UI 반영
+                let newLikedState = !isLiked
+                self.likeButtonState.accept(newLikedState)
+                let newCount = newLikedState ? self.likeCount.value + 1 : self.likeCount.value - 1
+                self.likeCount.accept(newCount)
+                HapticManager.shared.generateImpactFeedback(style: .light)
+                
+                // 서버 전송
+                let request: Observable<Void> = newLikedState
+                ? self.postFeedLike(self.feedId)
+                : self.deleteFeedLike(self.feedId)
+                
                 return request
-                    .do(onNext: {
-                        self.likeButtonState.accept(!isLiked)
-                        let newCount = isLiked ? self.likeCount.value - 1 : self.likeCount.value + 1
-                        self.likeCount.accept(newCount)
-                    })
+                    .catch { error in
+                        self.likeButtonState.accept(isLiked)
+                        self.likeCount.accept(self.likeCount.value + (isLiked ? 1 : -1))
+                        return .empty()
+                    }
             }
             .subscribe()
             .disposed(by: disposeBag)
