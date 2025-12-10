@@ -200,7 +200,8 @@ final class MyLibraryViewController: UIViewController {
             layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap,
             collectionViewDidReachBottom: collectionViewDidReachBottom,
             tableViewDidReachBottom: tableViewDidReachBottom,
-            novelItemSelected: novelItemSelected
+            novelItemSelected: novelItemSelected,
+            networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap
         )
     }
     
