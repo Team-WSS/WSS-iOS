@@ -47,7 +47,8 @@ final class MyPageEditAvatarViewController: UIViewController {
     
     private func register() {
         self.rootView.avatarImageCollectionView
-            .register(MyPageEditAvatarCollectionViewCell.self, forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
+            .register(MyPageEditAvatarCollectionViewCell.self,
+                      forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
@@ -63,17 +64,9 @@ final class MyPageEditAvatarViewController: UIViewController {
                 cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
                     let (avatarImage, isRepresentive) = data
-                    cell.bindData(avatarImageURL: avatarImage, isRepresentative: isRepresentive)
+                    cell.bindData(avatarImageURL: avatarImage)
                 }
                 .disposed(by: disposeBag)
-        
-        output.bindAvatarImageCell
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, avatarList in
-                let cellCount = avatarList.count
-                owner.rootView.updateCollectionViewWidth(cellCount: cellCount)
-            })
-            .disposed(by: disposeBag)
         
         output.dismissModalViewController
             .observe(on: MainScheduler.instance)

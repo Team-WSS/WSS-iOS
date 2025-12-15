@@ -53,7 +53,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
                 owner.totalAvatarData = avatarList.avatars
                 
                 //셀 바인딩을 위한 튜플 생성
-                let avatarImage = avatarList.avatars.map { ($0.avatarImageURL , $0.isRepresentative)}
+                let avatarImage = avatarList.avatars.map { ($0.avatarProfileImageURL , $0.isRepresentative)}
                 output.bindAvatarImageCell.accept(avatarImage)
                 
                 //View 바인딩을 위한 대표아바타ID 저장
