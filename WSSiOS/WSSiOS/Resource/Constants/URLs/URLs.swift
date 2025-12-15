@@ -97,7 +97,7 @@ enum URLs {
     }
     
     enum Avatar {
-        static let getAvatar = "/avatars"
+        static let getAvatar = "/avatar-profiles"
     }
     
     enum Feed {
