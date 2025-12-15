@@ -84,7 +84,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 let avatarId = owner.lastTappedAvatarId.value
                 if (avatarId != owner.defaultAvatarId) {
-                    let avatarImage = owner.totalAvatarData[avatarId-1].avatarImageURL
+                    let avatarImage = owner.totalAvatarData[avatarId-1].avatarProfileImageURL
                     NotificationCenter.default.post(name: NotificationName.changeRepresentativeAvatar, object: (avatarId, avatarImage))
                 }
                 output.dismissModalViewController.accept(())
