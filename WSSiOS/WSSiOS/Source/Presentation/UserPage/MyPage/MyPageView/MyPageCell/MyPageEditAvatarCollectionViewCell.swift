@@ -50,7 +50,7 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(avatarImageURL: URL?) {
+    func bindData(avatarImageURL: URL?, isRepresentative: Bool) {
         avatarImageView.do {
             if avatarImageURL == nil {
                 $0.image = .imgProfile
@@ -58,6 +58,11 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
                 $0.image = .imgProfile
                 $0.kfSetImage(url: avatarImageURL)
             }
+        }
+        
+        if isRepresentative {
+            avatarImageView.layer.borderWidth = 2
+            avatarImageView.layer.borderColor = UIColor.wssPrimary100.cgColor
         }
     }
 }
