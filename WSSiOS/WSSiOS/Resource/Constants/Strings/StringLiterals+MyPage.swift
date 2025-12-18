@@ -10,8 +10,8 @@ import Foundation
 extension StringLiterals {
     enum MyPage {
         enum Modal {
-            static let keepOriginally = "원래대로 유지하기"
-            static let changeCharacter = "대표 캐릭터 설정하기"
+            static let keepOriginally = "취소"
+            static let changeCharacter = "확인"
         }
         
         enum Profile {

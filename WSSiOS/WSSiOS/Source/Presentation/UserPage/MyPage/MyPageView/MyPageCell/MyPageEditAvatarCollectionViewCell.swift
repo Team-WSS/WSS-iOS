@@ -55,13 +55,14 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
             if avatarImageURL == nil {
                 $0.image = .imgProfile
             } else {
+                $0.image = .imgProfile
                 $0.kfSetImage(url: avatarImageURL)
             }
-            
-            if (isRepresentative) {
-                $0.layer.borderColor = UIColor.wssPrimary100.cgColor
-                $0.layer.borderWidth = 5
-            }
+        }
+        
+        if isRepresentative {
+            avatarImageView.layer.borderWidth = 2
+            avatarImageView.layer.borderColor = UIColor.wssPrimary100.cgColor
         }
     }
 }

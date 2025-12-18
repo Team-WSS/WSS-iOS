@@ -39,7 +39,7 @@ enum URLs {
         static func genrePreferencesstatic(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/preferences/genres"
         }
-        static let editUserProfile = "\(userBasePath)/my-profile"
+        static let editUserProfile = "\(userBasePath)/profile"
         static func getProfileFeed(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/feeds"
         }
@@ -97,7 +97,7 @@ enum URLs {
     }
     
     enum Avatar {
-        static let getAvatar = "/avatars"
+        static let getAvatar = "/avatar-profiles"
     }
     
     enum Feed {

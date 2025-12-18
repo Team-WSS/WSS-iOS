@@ -16,14 +16,24 @@ enum WSSTabBarItem: Int, CaseIterable {
         switch self {
         case .home:
             return .icNavigateHome
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .search:
             return .icNavigateSearch
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .feed:
             return .icNavigateFeed
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .library:
             return .icNavigateLibrary
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .myPage:
             return .icNavigateMy
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         }
     }
     
