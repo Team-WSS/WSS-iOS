@@ -54,7 +54,6 @@ final class MyLibraryViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         viewWillAppear.accept(())
-        
     }
     
     //MARK: - Bind

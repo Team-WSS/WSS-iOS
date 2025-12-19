@@ -50,20 +50,33 @@ final class WSSTabBarController: UITabBarController {
     //MARK: - UI
     
     private func setUI() {
-        view.do {
-            $0.backgroundColor = .wssWhite
-        }
+        tabBar.itemPositioning = .centered
         
-        tabBar.do {
-            let border = CALayer()
-            border.backgroundColor = UIColor.wssGray50.cgColor
-            border.frame = CGRect(x: 0, y: 0, width: $0.frame.width, height: 1)
+        if #available(iOS 26.0, *) {
+            tabBar.isTranslucent = true
+            tabBar.tintColor = .wssBlack
+            tabBar.unselectedItemTintColor = .wssGray200
+        } else {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
             
-            $0.layer.addSublayer(border)
-            $0.isTranslucent = false
-            $0.itemPositioning = .centered
-            $0.layer.masksToBounds = true
-            $0.tintColor = .wssBlack
+            appearance.backgroundColor = .wssWhite
+            appearance.shadowColor = .clear
+            
+            appearance.stackedLayoutAppearance.normal.iconColor = .wssGray200
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+                .foregroundColor: UIColor.wssGray200
+            ]
+            
+            appearance.stackedLayoutAppearance.selected.iconColor = .wssBlack
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+                .foregroundColor: UIColor.wssBlack
+            ]
+            
+            tabBar.standardAppearance = appearance
+            tabBar.scrollEdgeAppearance = appearance
+            
+            tabBar.isTranslucent = false
         }
     }
     
