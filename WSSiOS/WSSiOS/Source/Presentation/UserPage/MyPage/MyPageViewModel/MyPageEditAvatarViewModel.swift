@@ -47,17 +47,20 @@ final class MyPageEditAvatarViewModel: ViewModelType {
             .flatMapLatest { _ in
                 self.getAvatarList()
             }
+            .map { [weak self] avatarList -> [AvatarEntity] in
+                guard let self else { return avatarList.avatars }
+                return self.reorderAvatarsForPaging(avatars: avatarList.avatars)
+            }
             .subscribe(with: self, onNext: { owner, avatarList in
                 
-                //전체 avatar 리스트 저장
-                owner.totalAvatarData = avatarList.avatars
-                
-                //셀 바인딩을 위한 튜플 생성
-                let avatarImage = avatarList.avatars.map { ($0.avatarProfileImageURL , $0.isRepresentative)}
+                owner.totalAvatarData = avatarList
+
+                let avatarImage = avatarList.map {
+                    ($0.avatarProfileImageURL, $0.isRepresentative)
+                }
                 output.bindAvatarImageCell.accept(avatarImage)
-                
-                //View 바인딩을 위한 대표아바타ID 저장
-                let presentativeId = avatarList.avatars.first(where: { $0.isRepresentative })?.avatarId
+
+                let presentativeId = avatarList.first(where: { $0.isRepresentative })?.avatarId
                 owner.defaultAvatarId = presentativeId ?? owner.defaultAvatarId
                 owner.lastTappedAvatarId.accept(owner.defaultAvatarId)
                 
@@ -105,5 +108,30 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     
     private func getAvatarList() -> Observable<AvatarListEntity> {
         return avatarRepository.getAvatarList()
+    }
+    
+    private func reorderAvatarsForPaging(
+        avatars: [AvatarEntity],
+        rows: Int = 2,
+        columns: Int = 5
+    ) -> [AvatarEntity] {
+
+        let pageSize = rows * columns
+        var reordered: [AvatarEntity] = []
+
+        for start in stride(from: 0, to: avatars.count, by: pageSize) {
+            let page = Array(avatars[start..<min(start + pageSize, avatars.count)])
+
+            for row in 0..<rows {
+                for column in 0..<columns {
+                    let index = column * rows + row
+                    if index < page.count {
+                        reordered.append(page[index])
+                    }
+                }
+            }
+        }
+
+        return reordered
     }
 }

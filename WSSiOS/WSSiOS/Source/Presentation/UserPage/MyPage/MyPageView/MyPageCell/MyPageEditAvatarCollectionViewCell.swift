@@ -21,6 +21,7 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierarchy()
         setLayout()
     }
@@ -32,11 +33,17 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.height / 2
         avatarImageView.clipsToBounds = true
     }
     
     //MARK: - UI
+    
+    private func setUI() {
+        avatarImageView.do {
+            $0.contentMode = .scaleAspectFill
+        }
+    }
     
     private func setHierarchy() {
         self.addSubview(avatarImageView)
