@@ -72,7 +72,7 @@ final class MyPageEditAvatarViewController: UIViewController {
         output.initialSelectedAvatarIndex
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, index in
-                // index값에 따라 collectionView의 어떤 페이지를 보여줄 지 정하는 로직 구현
+                owner.rootView.bindInitialAvatarPage(for: index)
             })
             .disposed(by: disposeBag)
 

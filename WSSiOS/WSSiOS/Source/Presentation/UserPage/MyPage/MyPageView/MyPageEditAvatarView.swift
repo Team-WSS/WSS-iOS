@@ -224,6 +224,26 @@ final class MyPageEditAvatarView: UIView {
         }
     }
     
+    func bindInitialAvatarPage(for index: Int) {
+        let itemsPerPage = 10
+        let page = index / itemsPerPage
+        
+        let itemIndex = IndexPath(item: page * itemsPerPage,
+                                  section: 0)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.avatarImageCollectionView.scrollToItem(
+                at: itemIndex,
+                at: .left,
+                animated: false
+            )
+            
+            self.updatePageIndicator(currentPage: page)
+        }
+    }
+    
     func pagingCompositionalLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(self.profileSize.width),
