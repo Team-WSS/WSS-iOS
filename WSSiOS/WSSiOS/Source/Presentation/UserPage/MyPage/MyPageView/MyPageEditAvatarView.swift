@@ -85,7 +85,7 @@ final class MyPageEditAvatarView: UIView {
         
         avatarImageCollectionView.do {
             $0.collectionViewLayout = makeLayout()
-            $0.isScrollEnabled = true
+            $0.isScrollEnabled = false
         }
         
         circleStackView.do {
