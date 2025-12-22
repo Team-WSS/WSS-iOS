@@ -17,9 +17,9 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     private let userNickname: String
     private let avatarRepository: AvatarRepository
     
-    private var totalAvatarData: [AvatarEntity] = []
-    private let lastTappedAvatarId = BehaviorRelay<Int>(value: 1)
-    private var defaultAvatarId: Int = 1
+    private let avatars = BehaviorRelay<[AvatarEntity]>(value: [])
+    private let selectedAvatar = BehaviorRelay<AvatarEntity?>(value: nil)
+    private var defaultAvatar: AvatarEntity? = nil
     
     //MARK: - Life Cycle
     
@@ -31,7 +31,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     struct Input {
         let avatarCellDidTap: ControlEvent<IndexPath>
         let changeButtonDidTap: ControlEvent<Void>
-        let continueButtonDidTap: ControlEvent<Void>
+        let cancelButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -44,57 +44,58 @@ final class MyPageEditAvatarViewModel: ViewModelType {
         let output = Output()
         
         Observable.just(())
-            .flatMapLatest { _ in
-                self.getAvatarList()
+            .flatMapLatest { self.getAvatarList() }
+            .map { avatars in
+                self.reorderAvatarsForPaging(avatars: avatars.avatars)
             }
-            .map { [weak self] avatarList -> [AvatarEntity] in
-                guard let self else { return avatarList.avatars }
-                return self.reorderAvatarsForPaging(avatars: avatarList.avatars)
-            }
-            .subscribe(with: self, onNext: { owner, avatarList in
+            .subscribe(with: self, onNext: { owner, avatars in
+                owner.avatars.accept(avatars)
                 
-                owner.totalAvatarData = avatarList
-
-                let avatarImage = avatarList.map {
+                owner.defaultAvatar = avatars.first(where: { $0.isRepresentative })
+                owner.selectedAvatar.accept(owner.defaultAvatar)
+                
+                let cellData = avatars.map {
                     ($0.avatarProfileImageURL, $0.isRepresentative)
                 }
-                output.bindAvatarImageCell.accept(avatarImage)
-
-                let presentativeId = avatarList.first(where: { $0.isRepresentative })?.avatarId
-                owner.defaultAvatarId = presentativeId ?? owner.defaultAvatarId
-                owner.lastTappedAvatarId.accept(owner.defaultAvatarId)
-                
-            }, onError: { owner, error in
-                print(error.localizedDescription)
+                output.bindAvatarImageCell.accept(cellData)
             })
             .disposed(by: disposeBag)
         
         input.avatarCellDidTap
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .map { $0.row + 1 }
-            .bind(to: lastTappedAvatarId)
+            .withLatestFrom(avatars) { indexPath, avatars in
+                avatars[indexPath.row]
+            }
+            .bind(to: selectedAvatar)
             .disposed(by: disposeBag)
         
-        self.lastTappedAvatarId
-            .subscribe(with: self, onNext: { owner, avatarId in
-                guard avatarId >= 0 && avatarId <= owner.totalAvatarData.count else { return }
-                output.updateAvatarData.accept((owner.totalAvatarData[avatarId - 1], owner.userNickname))
+        selectedAvatar
+            .compactMap { $0 }
+            .subscribe(with: self, onNext: { owner, avatar in
+                // 아바타 대사 속 유저의 닉네임이 들어가는 경우 존재
+                output.updateAvatarData.accept((avatar, owner.userNickname))
             })
             .disposed(by: disposeBag)
         
         input.changeButtonDidTap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                let avatarId = owner.lastTappedAvatarId.value
-                if (avatarId != owner.defaultAvatarId) {
-                    let avatarImage = owner.totalAvatarData[avatarId-1].avatarProfileImageURL
-                    NotificationCenter.default.post(name: NotificationName.changeRepresentativeAvatar, object: (avatarId, avatarImage))
+            .withLatestFrom(selectedAvatar.compactMap { $0 })
+            .subscribe(with: self, onNext: { owner, avatar in
+                
+                // 기존에 선택한 아바타와 최종 선택한 아바타가 동일 시 전달 X
+                guard avatar.avatarId != owner.defaultAvatar?.avatarId else {
+                    output.dismissModalViewController.accept(())
+                    return
                 }
+                
+                NotificationCenter.default.post(
+                    name: NotificationName.changeRepresentativeAvatar,
+                    object: (avatar.avatarId, avatar.avatarProfileImageURL)
+                )
+                
                 output.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
-        input.continueButtonDidTap
+        input.cancelButtonDidTap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.dismissModalViewController.accept(())
@@ -110,18 +111,15 @@ final class MyPageEditAvatarViewModel: ViewModelType {
         return avatarRepository.getAvatarList()
     }
     
-    private func reorderAvatarsForPaging(
-        avatars: [AvatarEntity],
-        rows: Int = 2,
-        columns: Int = 5
-    ) -> [AvatarEntity] {
-
+    private func reorderAvatarsForPaging(avatars: [AvatarEntity],
+                                         rows: Int = 2,
+                                         columns: Int = 5) -> [AvatarEntity] {
         let pageSize = rows * columns
         var reordered: [AvatarEntity] = []
-
+        
         for start in stride(from: 0, to: avatars.count, by: pageSize) {
             let page = Array(avatars[start..<min(start + pageSize, avatars.count)])
-
+            
             for row in 0..<rows {
                 for column in 0..<columns {
                     let index = column * rows + row
@@ -131,7 +129,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
                 }
             }
         }
-
+        
         return reordered
     }
 }

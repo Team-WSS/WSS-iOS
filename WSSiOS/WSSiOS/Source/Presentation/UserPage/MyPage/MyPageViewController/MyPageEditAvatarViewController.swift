@@ -55,7 +55,7 @@ final class MyPageEditAvatarViewController: UIViewController {
         let input = MyPageEditAvatarViewModel.Input(
             avatarCellDidTap: rootView.avatarImageCollectionView.rx.itemSelected,
             changeButtonDidTap: rootView.changeButton.rx.tap,
-            continueButtonDidTap: rootView.notChangeButton.rx.tap)
+            cancelButtonDidTap: rootView.notChangeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
