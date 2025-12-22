@@ -69,6 +69,13 @@ final class MyPageEditAvatarViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
+        output.initialSelectedAvatarIndex
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, index in
+                // index값에 따라 collectionView의 어떤 페이지를 보여줄 지 정하는 로직 구현
+            })
+            .disposed(by: disposeBag)
+
         output.dismissModalViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -76,7 +83,7 @@ final class MyPageEditAvatarViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateAvatarData
+        output.updateAvatarLine
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 let (avatarData, nickname) = data

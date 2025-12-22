@@ -36,23 +36,29 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     
     struct Output {
         let bindAvatarImageCell = BehaviorRelay<[(URL?, Bool)]>(value: [])
-        let updateAvatarData = PublishRelay<(AvatarEntity, String)>()
+        let updateAvatarLine = PublishRelay<(AvatarEntity, String)>()
+        let initialSelectedAvatarIndex = PublishRelay<Int>()
         let dismissModalViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        Observable.just(())
-            .flatMapLatest { self.getAvatarList() }
-            .map { avatars in
-                self.reorderAvatarsForPaging(avatars: avatars.avatars)
+        self.getAvatarList()
+            .map {
+                self.reorderAvatarsForPaging(avatars: $0.avatars)
             }
             .subscribe(with: self, onNext: { owner, avatars in
                 owner.avatars.accept(avatars)
                 
-                owner.defaultAvatar = avatars.first(where: { $0.isRepresentative })
+                let defaultAvatar = avatars.first(where: { $0.isRepresentative })
+                owner.defaultAvatar = defaultAvatar
                 owner.selectedAvatar.accept(owner.defaultAvatar)
+                
+                if let defaultAvatar,
+                   let index = avatars.firstIndex(where: { $0.avatarId == defaultAvatar.avatarId }) {
+                    output.initialSelectedAvatarIndex.accept(index)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -78,9 +84,10 @@ final class MyPageEditAvatarViewModel: ViewModelType {
         
         selectedAvatar
             .compactMap { $0 }
+            .distinctUntilChanged { $0.avatarId == $1.avatarId }
             .subscribe(with: self, onNext: { owner, avatar in
                 // 아바타 대사 속 유저의 닉네임이 들어가는 경우 존재
-                output.updateAvatarData.accept((avatar, owner.userNickname))
+                output.updateAvatarLine.accept((avatar, owner.userNickname))
             })
             .disposed(by: disposeBag)
         
