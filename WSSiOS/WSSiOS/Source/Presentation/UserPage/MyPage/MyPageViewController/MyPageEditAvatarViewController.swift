@@ -63,8 +63,9 @@ final class MyPageEditAvatarViewController: UIViewController {
             .bind(to: rootView.avatarImageCollectionView.rx.items(
                 cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
-                    let (avatarImage, isRepresentative) = data
-                    cell.bindData(avatarImageURL: avatarImage, isRepresentative: isRepresentative)
+                    let (avatarImage, isSelected) = data
+                    cell.bindData(avatarImageURL: avatarImage,
+                                  isSelected: isSelected)
                 }
                 .disposed(by: disposeBag)
         

@@ -36,7 +36,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     
     struct Output {
         let bindAvatarImageCell = BehaviorRelay<[(URL?, Bool)]>(value: [])
-        let updateAvatarData = PublishRelay<(AvatarEntity,String)>()
+        let updateAvatarData = PublishRelay<(AvatarEntity, String)>()
         let dismissModalViewController = PublishRelay<Void>()
     }
     
@@ -53,12 +53,20 @@ final class MyPageEditAvatarViewModel: ViewModelType {
                 
                 owner.defaultAvatar = avatars.first(where: { $0.isRepresentative })
                 owner.selectedAvatar.accept(owner.defaultAvatar)
-                
-                let cellData = avatars.map {
-                    ($0.avatarProfileImageURL, $0.isRepresentative)
-                }
-                output.bindAvatarImageCell.accept(cellData)
             })
+            .disposed(by: disposeBag)
+        
+        Observable
+            .combineLatest(avatars, selectedAvatar)
+            .map { avatars, selectedAvatar in
+                avatars.map { avatar in
+                    (
+                        avatar.avatarProfileImageURL,
+                        avatar.avatarId == selectedAvatar?.avatarId
+                    )
+                }
+            }
+            .bind(to: output.bindAvatarImageCell)
             .disposed(by: disposeBag)
         
         input.avatarCellDidTap
