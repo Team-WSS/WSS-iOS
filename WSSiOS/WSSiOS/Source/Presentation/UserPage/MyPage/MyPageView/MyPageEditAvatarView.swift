@@ -84,8 +84,8 @@ final class MyPageEditAvatarView: UIView {
         }
         
         avatarImageCollectionView.do {
-            $0.collectionViewLayout = makeLayout()
-            $0.isScrollEnabled = false
+            $0.collectionViewLayout = pagingCompositionalLayout()
+            $0.alwaysBounceVertical = false
         }
         
         circleStackView.do {
@@ -224,7 +224,7 @@ final class MyPageEditAvatarView: UIView {
         }
     }
     
-    func makeLayout() -> UICollectionViewLayout {
+    func pagingCompositionalLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(self.profileSize.width),
             heightDimension: .absolute(self.profileSize.height)
@@ -244,8 +244,9 @@ final class MyPageEditAvatarView: UIView {
 
         let pageGroupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(self.profileSize.height * 2 + 14)
+            heightDimension: .fractionalHeight(1.0)
         )
+        
         let pageGroup = NSCollectionLayoutGroup.vertical(
             layoutSize: pageGroupSize,
             subitem: rowGroup,
