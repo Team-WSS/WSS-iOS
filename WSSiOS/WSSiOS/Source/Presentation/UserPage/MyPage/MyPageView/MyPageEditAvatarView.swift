@@ -65,7 +65,7 @@ final class MyPageEditAvatarView: UIView {
         }
         
         navigationLabel.do {
-            $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.changeAvatar)
+            $0.applyWSSFont(.title2, with: StringLiterals.Navigation.Title.changeAvatar)
             $0.textColor = .wssBlack
         }
         
@@ -113,16 +113,16 @@ final class MyPageEditAvatarView: UIView {
         
         notChangeButton.do {
             $0.backgroundColor = .wssGray70
-            $0.layer.cornerRadius = 8
+            $0.layer.cornerRadius = 14
         }
         
         changeButtonLabel.do {
-            $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Modal.changeCharacter)
+            $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Modal.changeCharacter)
             $0.textColor = .wssWhite
         }
         
         notChangeButtonLabel.do {
-            $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Modal.keepOriginally)
+            $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Modal.keepOriginally)
             $0.textColor = .wssGray300
         }
     }
