@@ -65,7 +65,7 @@ final class MyPageEditAvatarView: UIView {
         }
         
         navigationLabel.do {
-            $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.changeAvatar)
+            $0.applyWSSFont(.title2, with: StringLiterals.Navigation.Title.changeAvatar)
             $0.textColor = .wssBlack
         }
         
