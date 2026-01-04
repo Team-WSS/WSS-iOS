@@ -17,6 +17,8 @@ protocol AuthService {
     func postWithdrawId(withdrawData: WithdrawRequest) -> Single<Void>
     func postLogout(logoutRequest: LogoutRequest) -> Single<Void>
     func checkUserisValid() -> Single<Void>
+    func syncAppleLoginState(authorizationCode: String,
+                             idToken: String) -> Single<Void>
 }
 
 
@@ -25,20 +27,20 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
         guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(authorizationCode: authorizationCode, idToken: idToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
-                
+        
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Auth.loginWithApple,
                                               headers: APIConstants.noTokenHeader,
                                               body: appleLoginBody)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: LoginResponse.self) }
                 .asSingle()
-
+            
         } catch {
             return Single.error(error)
         }
@@ -50,9 +52,9 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                               path: URLs.Auth.loginWithKakao,
                                               headers: APIConstants.kakaoLoginHeader(kakaoAccessToken),
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: LoginResponse.self) }
@@ -71,20 +73,20 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
         guard let reissueBody = try? JSONEncoder().encode(ReissueRequest(refreshToken: refreshToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
-                
+        
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Auth.reissue,
                                               headers: APIConstants.noTokenHeader,
                                               body: reissueBody)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: ReissueResponse.self) }
                 .asSingle()
-
+            
         } catch {
             return Single.error(error)
         }
@@ -101,7 +103,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                               body: data)
             
             NetworkLogger.log(request: request)
-
+            
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
@@ -121,7 +123,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                               body: data)
             
             NetworkLogger.log(request: request)
-
+            
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
@@ -148,6 +150,28 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
             return Single.error(error)
         }
     }
-}
     
+    func syncAppleLoginState(authorizationCode: String,
+                             idToken: String) -> Single<Void> {
+        do {
+            guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(authorizationCode: authorizationCode, idToken: idToken)) else {
+                return Single.error(NetworkServiceError.invalidRequestError)
+            }
+            
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Auth.authAppleSync,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: appleLoginBody)
+            
+            NetworkLogger.log(request: request)
+            
+            return basicURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+}
+
 
