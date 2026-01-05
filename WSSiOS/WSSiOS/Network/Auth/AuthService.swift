@@ -158,7 +158,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                 return Single.error(NetworkServiceError.invalidRequestError)
             }
             
-            let request = try makeHTTPRequest(method: .post,
+            let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.Auth.authAppleSync,
                                               headers: APIConstants.accessTokenHeader,
                                               body: appleLoginBody)
