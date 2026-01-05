@@ -25,7 +25,11 @@ enum StringLiterals {
         static let librarySortOption = "LIBRARY_SORT_OPTION"
         
         //v.1.4.0 애플 로그인 동기화 로직을 위한 임시 변수
-        static let navigateToLoginV140 = "NAVIGATE_TO_LOGIN_V140"
+        // 1) 1.4.0 업데이트 이후 로그인 확인 플로우를 거쳤는지
+        // -> 액션 시트를 한번만 노출하기 위해
+        static let didEnterLoginV140 = "DID_ENTER_LOGIN_V140"
+        // 2) Apple 로그인 유저가 Apple 계정 재동기화를 완료했는지
+        static let appleReauthDoneV140 = "APPLE_REAUTH_DONE_V140"
     }
     
     enum FCMCenter {

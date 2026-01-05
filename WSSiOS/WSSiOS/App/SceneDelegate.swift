@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             // v.1.4.0 로그인 확인을 위한 로그인 화면 이동
             // 앱 업데이트 이후 첫 앱 진입시에만 반영되도록 함
-            let didLoginV140 = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.navigateToLoginV140)
+            let didLoginV140 = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.didEnterLoginV140)
             if !didLoginV140 {
                 self.setRootToLoginViewController()
                 return
