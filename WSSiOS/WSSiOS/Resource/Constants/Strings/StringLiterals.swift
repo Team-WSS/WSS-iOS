@@ -23,6 +23,9 @@ enum StringLiterals {
         static let userBirth = "USER_BIRTH"
         static let libraryFilterOption = "LIBRARY_FILTER_OPTION"
         static let librarySortOption = "LIBRARY_SORT_OPTION"
+        
+        //v.1.4.0 애플 로그인 동기화 로직을 위한 임시 변수
+        static let navigateToLoginV140 = "NAVIGATE_TO_LOGIN_V140"
     }
     
     enum FCMCenter {
