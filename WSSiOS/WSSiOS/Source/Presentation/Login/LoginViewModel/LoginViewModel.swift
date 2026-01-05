@@ -38,6 +38,15 @@ final class LoginViewModel: NSObject, ViewModelType {
     private let loginWithApple = PublishRelay<(authorizationCode: String,
                                                idToken: String)>()
     
+    private var needsAppleSyncV140: Bool {
+        // accessToken이 캐시에 존재하고
+        // 아직 애플 로그인 동기화를 진행하지 않은 유저
+        APIConstants.isLogined &&
+        !UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.appleReauthDoneV140)
+    }
+    private var appleSyncCompleted = PublishRelay<Void>()
+    private var loginCheckV140Completed = PublishRelay<Void>()
+    
     //MARK: - Life Cycle
     
     init(authRepository: AuthRepository) {
@@ -57,6 +66,9 @@ final class LoginViewModel: NSObject, ViewModelType {
         let autoScrollTrigger: Driver<Void>
         let navigateToOnboarding: Observable<Void>
         let navigateToHome: Observable<Void>
+        
+        let appleSyncCompleted: Observable<Void>
+        let loginCheckV140Completed: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -102,15 +114,43 @@ final class LoginViewModel: NSObject, ViewModelType {
             .disposed(by: disposeBag)
         
         // 애플로그인 후 authorizationCode와 idToken을 받아와서 로그인 요청
+//        loginWithApple
+//            .flatMapLatest { authorizationCode, idToken in
+//                self.loginWithApple(authorizationCode: authorizationCode,
+//                                    idToken: idToken)
+//            }
+//            .subscribe(with: self, onNext: { owner, result in
+//                owner.loginSuccess(result: result)
+//            }, onError: { owner, error  in
+//                print(error)
+//            })
+//            .disposed(by: disposeBag)
+        
         loginWithApple
             .flatMapLatest { authorizationCode, idToken in
-                self.loginWithApple(authorizationCode: authorizationCode,
-                                    idToken: idToken)
+                if self.needsAppleSyncV140 {
+                    return self.syncAppleLoginV140(
+                        authorizationCode: authorizationCode,
+                        idToken: idToken
+                    )
+                    .do(onNext: {
+                        self.appleSyncCompleted.accept(())
+                    })
+                }
+                
+                return self.loginWithApple(
+                    authorizationCode: authorizationCode,
+                    idToken: idToken
+                )
+                .do(onNext: { result in
+                    self.loginSuccess(result: result)
+                })
+                .map { _ in () }
             }
-            .subscribe(with: self, onNext: { owner, result in
-                owner.loginSuccess(result: result)
-            }, onError: { owner, error  in
-                print(error)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.loginCheckV140Completed.accept(())
+            }, onError: { error, _ in
+                print("Apple login / sync error:", error)
             })
             .disposed(by: disposeBag)
         
@@ -119,7 +159,9 @@ final class LoginViewModel: NSObject, ViewModelType {
             indicatorIndex: indicatorIndex.asDriver(),
             autoScrollTrigger: autoScrollTrigger,
             navigateToOnboarding: navigateToOnboarding.asObservable(),
-            navigateToHome: navigateToHome.asObservable()
+            navigateToHome: navigateToHome.asObservable(),
+            appleSyncCompleted: appleSyncCompleted.asObservable(),
+            loginCheckV140Completed: loginCheckV140Completed.asObservable()
         )
     }
     
@@ -165,6 +207,12 @@ final class LoginViewModel: NSObject, ViewModelType {
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.performRequests()
+    }
+    
+    private func syncAppleLoginV140(authorizationCode: String, idToken: String) -> Observable<Void> {
+        authRepository.syncAppleLoginState(authorizationCode: authorizationCode,
+                                           idToken: idToken)
+        .observe(on: MainScheduler.instance)
     }
     
     //MARK: - API/Kakao
