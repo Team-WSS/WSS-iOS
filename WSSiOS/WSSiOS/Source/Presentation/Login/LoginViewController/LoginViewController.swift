@@ -131,9 +131,8 @@ final class LoginViewController: UIViewController {
 
         output.loginCheckV140Completed
             .observe(on: MainScheduler.instance)
-            .bind { [weak self] in
+            .bind { _ in
                 UserDefaults.standard.set(true, forKey: StringLiterals.UserDefault.didEnterLoginV140)
-                self?.loginCompleted()
             }
             .disposed(by: disposeBag)
     }

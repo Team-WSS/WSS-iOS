@@ -104,9 +104,11 @@ final class LoginViewModel: NSObject, ViewModelType {
                 switch type {
                 case .skip:
                     AmplitudeManager.shared.track(AmplitudeEvent.Onboarding.nonLogin)
+                    owner.loginCheckV140Completed.accept(())
                     owner.navigateToHome.accept(())
                 case .kakao:
                     owner.loginWithKakao(disposeBag: disposeBag)
+                    owner.loginCheckV140Completed.accept(())
                 case .apple:
                     owner.requestAppleLogin() // 애플로그인 요청
                 }
