@@ -137,6 +137,7 @@ final class LoginViewModel: NSObject, ViewModelType {
                     )
                     .do(onNext: {
                         self.appleSyncCompleted.accept(())
+                        self.navigateToHome.accept(())
                     })
                 }
                 
