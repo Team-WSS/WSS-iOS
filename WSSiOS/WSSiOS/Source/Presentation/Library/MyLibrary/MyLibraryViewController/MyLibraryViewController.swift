@@ -54,7 +54,6 @@ final class MyLibraryViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         viewWillAppear.accept(())
-        
     }
     
     //MARK: - Bind
@@ -200,7 +199,8 @@ final class MyLibraryViewController: UIViewController {
             layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap,
             collectionViewDidReachBottom: collectionViewDidReachBottom,
             tableViewDidReachBottom: tableViewDidReachBottom,
-            novelItemSelected: novelItemSelected
+            novelItemSelected: novelItemSelected,
+            networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap
         )
     }
     

@@ -70,7 +70,7 @@ final class HomeView: UIView {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalToSuperview()
         }
         
         loadingView.snp.makeConstraints {

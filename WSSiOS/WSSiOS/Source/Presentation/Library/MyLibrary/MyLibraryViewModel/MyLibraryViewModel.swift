@@ -55,6 +55,7 @@ final class MyLibraryViewModel: ViewModelType {
         let collectionViewDidReachBottom: Observable<Void>
         let tableViewDidReachBottom: Observable<Void>
         let novelItemSelected: Observable<IndexPath>
+        let networkErrorRefreshButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -137,6 +138,10 @@ final class MyLibraryViewModel: ViewModelType {
         )
         .bind(to: fetchNovelList)
         .disposed(by: disposeBag)
+        
+        input.networkErrorRefreshButtonDidTap
+            .bind(to: reloadNovelList)
+            .disposed(by: disposeBag)
         
         reloadNovelList
             .bind(with: self, onNext: { owner, _ in

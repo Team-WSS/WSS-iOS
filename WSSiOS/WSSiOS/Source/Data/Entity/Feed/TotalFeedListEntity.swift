@@ -29,8 +29,8 @@ struct TotalFeedEntity {
     let avatarImage: URL?
     let createdDate: String
     let feedContent: String
-    let likeCount: Int
-    let isLiked: Bool
+    var likeCount: Int
+    var isLiked: Bool
     let commentCount: Int
     
     let novelId: Int

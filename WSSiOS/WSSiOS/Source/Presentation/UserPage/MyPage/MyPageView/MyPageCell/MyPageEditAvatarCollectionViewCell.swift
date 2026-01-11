@@ -21,6 +21,7 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierarchy()
         setLayout()
     }
@@ -32,11 +33,17 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.height / 2
         avatarImageView.clipsToBounds = true
     }
     
     //MARK: - UI
+    
+    private func setUI() {
+        avatarImageView.do {
+            $0.contentMode = .scaleAspectFill
+        }
+    }
     
     private func setHierarchy() {
         self.addSubview(avatarImageView)
@@ -50,18 +57,10 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(avatarImageURL: URL?, isRepresentative: Bool) {
-        avatarImageView.do {
-            if avatarImageURL == nil {
-                $0.image = .imgProfile
-            } else {
-                $0.kfSetImage(url: avatarImageURL)
-            }
-            
-            if (isRepresentative) {
-                $0.layer.borderColor = UIColor.wssPrimary100.cgColor
-                $0.layer.borderWidth = 5
-            }
-        }
+    func bindData(avatarImageURL: URL?, isSelected: Bool) {
+        avatarImageView.kfSetImage(url: avatarImageURL)
+        
+        avatarImageView.layer.borderWidth = isSelected ? 5 : 0
+        avatarImageView.layer.borderColor = isSelected ? UIColor.wssPrimary100.cgColor : UIColor.clear.cgColor
     }
 }

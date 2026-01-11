@@ -14,6 +14,7 @@ enum URLs {
         static let reissue = "/reissue"
         static let withdrawId = "/auth/withdraw"
         static let logout = "/auth/logout"
+        static let authAppleSync = "/auth/apple/sync"
     }
     
     enum Onboarding {
@@ -39,7 +40,7 @@ enum URLs {
         static func genrePreferencesstatic(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/preferences/genres"
         }
-        static let editUserProfile = "\(userBasePath)/my-profile"
+        static let editUserProfile = "\(userBasePath)/profile"
         static func getProfileFeed(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/feeds"
         }
@@ -97,7 +98,7 @@ enum URLs {
     }
     
     enum Avatar {
-        static let getAvatar = "/avatars"
+        static let getAvatar = "/avatar-profiles"
     }
     
     enum Feed {

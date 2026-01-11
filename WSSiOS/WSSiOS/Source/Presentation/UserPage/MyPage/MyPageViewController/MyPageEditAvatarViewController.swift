@@ -47,14 +47,15 @@ final class MyPageEditAvatarViewController: UIViewController {
     
     private func register() {
         self.rootView.avatarImageCollectionView
-            .register(MyPageEditAvatarCollectionViewCell.self, forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
+            .register(MyPageEditAvatarCollectionViewCell.self,
+                      forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
         let input = MyPageEditAvatarViewModel.Input(
             avatarCellDidTap: rootView.avatarImageCollectionView.rx.itemSelected,
             changeButtonDidTap: rootView.changeButton.rx.tap,
-            continueButtonDidTap: rootView.notChangeButton.rx.tap)
+            cancelButtonDidTap: rootView.notChangeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -62,19 +63,19 @@ final class MyPageEditAvatarViewController: UIViewController {
             .bind(to: rootView.avatarImageCollectionView.rx.items(
                 cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
-                    let (avatarImage, isRepresentive) = data
-                    cell.bindData(avatarImageURL: avatarImage, isRepresentative: isRepresentive)
+                    let (avatarImage, isSelected) = data
+                    cell.bindData(avatarImageURL: avatarImage,
+                                  isSelected: isSelected)
                 }
                 .disposed(by: disposeBag)
         
-        output.bindAvatarImageCell
+        output.initialSelectedAvatarIndex
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, avatarList in
-                let cellCount = avatarList.count
-                owner.rootView.updateCollectionViewWidth(cellCount: cellCount)
+            .subscribe(with: self, onNext: { owner, index in
+                owner.rootView.bindInitialAvatarPage(for: index)
             })
             .disposed(by: disposeBag)
-        
+
         output.dismissModalViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -82,7 +83,7 @@ final class MyPageEditAvatarViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateAvatarData
+        output.updateAvatarLine
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 let (avatarData, nickname) = data

@@ -54,6 +54,7 @@ final class LoginViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        handleLoginCheckV140()
         setCarouselViewInitialState()
     }
     
@@ -120,6 +121,20 @@ final class LoginViewController: UIViewController {
                 owner.loginCompleted()
             })
             .disposed(by: disposeBag)
+        
+        output.appleSyncCompleted
+            .observe(on: MainScheduler.instance)
+            .bind {
+                UserDefaults.standard.set(true, forKey: StringLiterals.UserDefault.appleReauthDoneV140)
+            }
+            .disposed(by: disposeBag)
+
+        output.loginCheckV140Completed
+            .observe(on: MainScheduler.instance)
+            .bind { _ in
+                UserDefaults.standard.set(true, forKey: StringLiterals.UserDefault.didEnterLoginV140)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> LoginViewModel.Input {
@@ -158,6 +173,31 @@ final class LoginViewController: UIViewController {
             return
         }
         sceneDelegate.setRootToWSSTabBarController()
+    }
+    
+    // v.1.4.0 분기처리 로직
+    private func handleLoginCheckV140() {
+        // accessToken이 없는 경우 -> 일반 신규 회원가입
+        guard APIConstants.isLogined else { return }
+        
+        // 이미 로그인 확인 절차를 거쳤을 경우
+        let didLoginV140 = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.didEnterLoginV140)
+        
+        guard !didLoginV140 else { return }
+        
+        showReloginActionSheet()
+    }
+    
+    private func showReloginActionSheet() {
+        let sheet = UIAlertController(
+            title: "로그인 확인이 필요합니다.",
+            message: "앱 업데이트 이후 로그인 상태를 다시 확인하고 있습니다.",
+            preferredStyle: .actionSheet
+        )
+        
+        sheet.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        
+        self.present(sheet, animated: true)
     }
 }
 

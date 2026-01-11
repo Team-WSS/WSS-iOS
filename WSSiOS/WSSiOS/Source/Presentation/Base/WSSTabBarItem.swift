@@ -16,14 +16,24 @@ enum WSSTabBarItem: Int, CaseIterable {
         switch self {
         case .home:
             return .icNavigateHome
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .search:
             return .icNavigateSearch
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .feed:
             return .icNavigateFeed
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .library:
             return .icNavigateLibrary
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         case .myPage:
             return .icNavigateMy
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray200)
         }
     }
     
@@ -31,14 +41,24 @@ enum WSSTabBarItem: Int, CaseIterable {
         switch self {
         case .home:
             return .icNavigateHomeSelected
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssBlack)
         case .search:
             return .icNavigateSearchSelected
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssBlack)
         case .feed:
             return .icNavigateFeedSelected
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssBlack)
         case .library:
             return .icNavigateLibrarySelected
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssBlack)
         case .myPage:
             return .icNavigateMySelected
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssBlack)
         }
     }
     

@@ -8,13 +8,14 @@
 import Foundation
 
 struct AvatarListResponse: Decodable {
-    let avatars: [AvatarResponse]
+    let avatarProfiles: [AvatarResponse]
 }
 
 struct AvatarResponse: Decodable {
-    let avatarId: Int
-    let avatarName: String
-    let avatarLine: String
-    let avatarImage: String
+    let avatarProfileId: Int
+    let avatarProfileName: String
+    let avatarProfileLine: String
+    let avatarProfileImage: String
+    let avatarCharacterImage: String
     let isRepresentative: Bool
 }

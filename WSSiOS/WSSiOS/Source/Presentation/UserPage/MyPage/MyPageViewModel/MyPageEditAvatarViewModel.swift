@@ -17,9 +17,9 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     private let userNickname: String
     private let avatarRepository: AvatarRepository
     
-    private var totalAvatarData: [AvatarEntity] = []
-    private let lastTappedAvatarId = BehaviorRelay<Int>(value: 1)
-    private var defaultAvatarId: Int = 1
+    private let avatars = BehaviorRelay<[AvatarEntity]>(value: [])
+    private let selectedAvatar = BehaviorRelay<AvatarEntity?>(value: nil)
+    private var defaultAvatar: AvatarEntity? = nil
     
     //MARK: - Life Cycle
     
@@ -31,67 +31,86 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     struct Input {
         let avatarCellDidTap: ControlEvent<IndexPath>
         let changeButtonDidTap: ControlEvent<Void>
-        let continueButtonDidTap: ControlEvent<Void>
+        let cancelButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
         let bindAvatarImageCell = BehaviorRelay<[(URL?, Bool)]>(value: [])
-        let updateAvatarData = PublishRelay<(AvatarEntity,String)>()
+        let updateAvatarLine = PublishRelay<(AvatarEntity, String)>()
+        let initialSelectedAvatarIndex = PublishRelay<Int>()
         let dismissModalViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        Observable.just(())
-            .flatMapLatest { _ in
-                self.getAvatarList()
+        self.getAvatarList()
+            .map {
+                self.reorderAvatarsForPaging(avatars: $0.avatars)
             }
-            .subscribe(with: self, onNext: { owner, avatarList in
+            .subscribe(with: self, onNext: { owner, avatars in
+                owner.avatars.accept(avatars)
                 
-                //전체 avatar 리스트 저장
-                owner.totalAvatarData = avatarList.avatars
+                let defaultAvatar = avatars.first(where: { $0.isRepresentative })
+                owner.defaultAvatar = defaultAvatar
+                owner.selectedAvatar.accept(owner.defaultAvatar)
                 
-                //셀 바인딩을 위한 튜플 생성
-                let avatarImage = avatarList.avatars.map { ($0.avatarImageURL , $0.isRepresentative)}
-                output.bindAvatarImageCell.accept(avatarImage)
-                
-                //View 바인딩을 위한 대표아바타ID 저장
-                let presentativeId = avatarList.avatars.first(where: { $0.isRepresentative })?.avatarId
-                owner.defaultAvatarId = presentativeId ?? owner.defaultAvatarId
-                owner.lastTappedAvatarId.accept(owner.defaultAvatarId)
-                
-            }, onError: { owner, error in
-                print(error.localizedDescription)
+                if let defaultAvatar,
+                   let index = avatars.firstIndex(where: { $0.avatarId == defaultAvatar.avatarId }) {
+                    output.initialSelectedAvatarIndex.accept(index)
+                }
             })
             .disposed(by: disposeBag)
         
-        input.avatarCellDidTap
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .map { $0.row + 1 }
-            .bind(to: lastTappedAvatarId)
+        Observable
+            .combineLatest(avatars, selectedAvatar)
+            .map { avatars, selectedAvatar in
+                avatars.map { avatar in
+                    (
+                        avatar.avatarProfileImageURL,
+                        avatar.avatarId == selectedAvatar?.avatarId
+                    )
+                }
+            }
+            .bind(to: output.bindAvatarImageCell)
             .disposed(by: disposeBag)
         
-        self.lastTappedAvatarId
-            .subscribe(with: self, onNext: { owner, avatarId in
-                guard avatarId >= 0 && avatarId <= owner.totalAvatarData.count else { return }
-                output.updateAvatarData.accept((owner.totalAvatarData[avatarId - 1], owner.userNickname))
+        input.avatarCellDidTap
+            .withLatestFrom(avatars) { indexPath, avatars in
+                avatars[indexPath.row]
+            }
+            .bind(to: selectedAvatar)
+            .disposed(by: disposeBag)
+        
+        selectedAvatar
+            .compactMap { $0 }
+            .distinctUntilChanged { $0.avatarId == $1.avatarId }
+            .subscribe(with: self, onNext: { owner, avatar in
+                // 아바타 대사 속 유저의 닉네임이 들어가는 경우 존재
+                output.updateAvatarLine.accept((avatar, owner.userNickname))
             })
             .disposed(by: disposeBag)
         
         input.changeButtonDidTap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                let avatarId = owner.lastTappedAvatarId.value
-                if (avatarId != owner.defaultAvatarId) {
-                    let avatarImage = owner.totalAvatarData[avatarId-1].avatarImageURL
-                    NotificationCenter.default.post(name: NotificationName.changeRepresentativeAvatar, object: (avatarId, avatarImage))
+            .withLatestFrom(selectedAvatar.compactMap { $0 })
+            .subscribe(with: self, onNext: { owner, avatar in
+                
+                // 기존에 선택한 아바타와 최종 선택한 아바타가 동일 시 전달 X
+                guard avatar.avatarId != owner.defaultAvatar?.avatarId else {
+                    output.dismissModalViewController.accept(())
+                    return
                 }
+                
+                NotificationCenter.default.post(
+                    name: NotificationName.changeRepresentativeAvatar,
+                    object: (avatar.avatarId, avatar.avatarProfileImageURL)
+                )
+                
                 output.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
-        input.continueButtonDidTap
+        input.cancelButtonDidTap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.dismissModalViewController.accept(())
@@ -105,5 +124,27 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     
     private func getAvatarList() -> Observable<AvatarListEntity> {
         return avatarRepository.getAvatarList()
+    }
+    
+    private func reorderAvatarsForPaging(avatars: [AvatarEntity],
+                                         rows: Int = 2,
+                                         columns: Int = 5) -> [AvatarEntity] {
+        let pageSize = rows * columns
+        var reordered: [AvatarEntity] = []
+        
+        for start in stride(from: 0, to: avatars.count, by: pageSize) {
+            let page = Array(avatars[start..<min(start + pageSize, avatars.count)])
+            
+            for row in 0..<rows {
+                for column in 0..<columns {
+                    let index = column * rows + row
+                    if index < page.count {
+                        reordered.append(page[index])
+                    }
+                }
+            }
+        }
+        
+        return reordered
     }
 }

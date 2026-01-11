@@ -184,32 +184,42 @@ final class FeedPageContentViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.feedLikeViewDidTap
-            .flatMapLatest { data in
+            .flatMapLatest { data -> Observable<(feedId: Int, isLiked: Bool)> in
                 let (feedId, isLiked) = data
-                if isLiked {
-                    return self.deleteFeedLike(feedId)
-                } else {
-                    AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedLike)
-                    return self.postFeedLike(feedId)
+                
+                // 1. UI 반영
+                var updatedFeeds = self.feedList.value
+                if let index = updatedFeeds.firstIndex(where: { $0.feedId == feedId }) {
+                    updatedFeeds[index].isLiked.toggle()
+                    let value = updatedFeeds[index].isLiked ? 1 : -1
+                    updatedFeeds[index].likeCount += value
+                    HapticManager.shared.generateImpactFeedback(style: .light)
+                    self.feedList.accept(updatedFeeds)
                 }
+                
+                // 2. 서버 api 호출
+                let request: Observable<Void> = isLiked
+                ? self.deleteFeedLike(feedId)
+                : self.postFeedLike(feedId)
+                    .do(onNext: {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedLike)
+                    })
+                
+                // 3. 요청 실패 시 롤백
+                return request
+                    .map { (feedId, isLiked) }
+                    .catch { error in
+                        var rollbackFeeds = self.feedList.value
+                        if let index = rollbackFeeds.firstIndex(where: { $0.feedId == feedId }) {
+                            rollbackFeeds[index].isLiked = isLiked
+                            let delta = isLiked ? 1 : -1
+                            rollbackFeeds[index].likeCount += delta
+                            self.feedList.accept(rollbackFeeds)
+                        }
+                        return .empty()
+                    }
             }
-            .do(onNext: { _ in
-                self.isLoadable = false
-                self.lastFeedId = 0
-            })
-            .flatMapLatest { _ in
-                self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.isLoadable = data.isLoadable
-                if let lastFeed = data.feeds.last {
-                    owner.lastFeedId = lastFeed.feedId
-                }
-                owner.feedList.accept(data.feeds)
-            }, onError: { owner, error in
-                print("Error: \(error)")
-            })
+            .subscribe()
             .disposed(by: disposeBag)
         
         input.feedTableViewVillBeginDragging

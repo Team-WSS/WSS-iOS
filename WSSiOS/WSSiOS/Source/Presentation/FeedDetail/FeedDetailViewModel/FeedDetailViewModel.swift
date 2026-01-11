@@ -237,20 +237,31 @@ final class FeedDetailViewModel: ViewModelType {
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
         input.likeButtonDidTap
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .do(onNext: { _ in
-                AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedDetailLike)
-            })
+            .debounce(.milliseconds(200), scheduler: MainScheduler.instance)
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
-                let request: Observable<Void>
-                request = isLiked ? self.deleteFeedLike(self.feedId) : self.postFeedLike(self.feedId)
-                return request
-                    .do(onNext: {
-                        self.likeButtonState.accept(!isLiked)
-                        let newCount = isLiked ? self.likeCount.value - 1 : self.likeCount.value + 1
-                        self.likeCount.accept(newCount)
+                
+                // UI 반영
+                let newLikedState = !isLiked
+                self.likeButtonState.accept(newLikedState)
+                let newCount = newLikedState ? self.likeCount.value + 1 : self.likeCount.value - 1
+                self.likeCount.accept(newCount)
+                HapticManager.shared.generateImpactFeedback(style: .light)
+                
+                // 서버 전송
+                let request: Observable<Void> = newLikedState
+                ? self.postFeedLike(self.feedId)
+                    .do(onNext: { _ in
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedDetailLike)
                     })
+                : self.deleteFeedLike(self.feedId)
+                
+                return request
+                    .catch { error in
+                        self.likeButtonState.accept(isLiked)
+                        self.likeCount.accept(self.likeCount.value + (isLiked ? 1 : -1))
+                        return .empty()
+                    }
             }
             .subscribe()
             .disposed(by: disposeBag)
@@ -326,58 +337,61 @@ final class FeedDetailViewModel: ViewModelType {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return .empty() }
-
+                
                 if self.isProcessing { return .empty() }
                 self.isProcessing = true
-
+                
                 AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeComment)
-
+                
                 let finishSendingComment: () -> Void = {
                     self.isProcessing = false
                     self.textViewResignFirstResponder.accept(())
+                    
+                    self.initialCommentContent = ""
                     self.updatedCommentContent = ""
+                    
                     self.textViewEmpty.accept(true)
                     self.showPlaceholder.accept(true)
                     self.showLoadingView.accept(false)
                 }
-
+                
                 if self.isCommentEditing {
                     return self.putComment(self.feedId,
                                            self.selectedCommentId,
                                            self.updatedCommentContent)
-                        .flatMapLatest { _ in
-                            self.getSingleFeedComments(self.feedId)
-                                .do(onNext: { newComments in
-                                    self.commentsData.accept(newComments.comments)
-                                    self.showLoadingView.accept(true)
-                                })
-                                .map { _ in () }
-                        }
-                        .do(onNext: {
-                            finishSendingComment()
-                            self.isCommentEditing = false
-                            self.selectedCommentId = 0
-                        }, onError: { _ in
-                            self.isProcessing = false
-                        })
+                    .flatMapLatest { _ in
+                        self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { newComments in
+                                self.commentsData.accept(newComments.comments)
+                                self.showLoadingView.accept(true)
+                            })
+                            .map { _ in () }
+                    }
+                    .do(onNext: {
+                        finishSendingComment()
+                        self.isCommentEditing = false
+                        self.selectedCommentId = 0
+                    }, onError: { _ in
+                        self.isProcessing = false
+                    })
                 } else {
                     return self.postComment(self.feedId,
                                             self.updatedCommentContent)
-                        .flatMapLatest { _ in
-                            self.getSingleFeedComments(self.feedId)
-                                .do(onNext: { newComments in
-                                    self.commentsData.accept(newComments.comments)
-                                    self.showLoadingView.accept(true)
-                                })
-                                .map { _ in () }
-                        }
-                        .do(onNext: {
-                            finishSendingComment()
-                            self.selectedCommentId = 0
-                            self.commentCount.accept(self.commentCount.value + 1)
-                        }, onError: { _ in
-                            self.isProcessing = false
-                        })
+                    .flatMapLatest { _ in
+                        self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { newComments in
+                                self.commentsData.accept(newComments.comments)
+                                self.showLoadingView.accept(true)
+                            })
+                            .map { _ in () }
+                    }
+                    .do(onNext: {
+                        finishSendingComment()
+                        self.selectedCommentId = 0
+                        self.commentCount.accept(self.commentCount.value + 1)
+                    }, onError: { _ in
+                        self.isProcessing = false
+                    })
                 }
             }
             .subscribe()
@@ -436,7 +450,6 @@ final class FeedDetailViewModel: ViewModelType {
                     if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) {
                         let indexPath = IndexPath(row: index, section: 0)
                         owner.showCommentDropdownView.accept((indexPath, isMyComment))
-                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
                     }
                 }
                 owner.selectedCommentId = commentId
@@ -450,18 +463,29 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.hideCommentDropdownView.accept(())
                 switch result {
                 case (.top, true):
+                    // 댓글 수정하기
                     owner.isCommentEditing = true
                     owner.myCommentEditing.accept(())
+                    
+                    // 수정할 때에만 initialCommentContent가 업데이트되도록 한다.
+                    if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == owner.selectedCommentId }) {
+                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
+                    }
                 case (.bottom, true):
+                    // 댓글 삭제하기
                     owner.showCommentDeleteAlertView.accept((owner.deleteComment,
                                                              owner.feedId,
                                                              owner.selectedCommentId))
-                case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
-                                                                              owner.feedId,
-                                                                              owner.selectedCommentId))
-                case (.bottom, false): owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
-                                                                                      owner.feedId,
-                                                                                      owner.selectedCommentId))
+                case (.top, false):
+                    // 스포일러 댓글 신고하기
+                    owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
+                                                              owner.feedId,
+                                                              owner.selectedCommentId))
+                case (.bottom, false):
+                    // 부적절한 댓글 신고하기
+                    owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
+                                                                   owner.feedId,
+                                                                   owner.selectedCommentId))
                 }
             })
             .disposed(by: disposeBag)

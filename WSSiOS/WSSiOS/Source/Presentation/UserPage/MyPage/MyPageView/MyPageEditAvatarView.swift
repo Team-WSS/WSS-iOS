@@ -13,24 +13,28 @@ import Then
 
 final class MyPageEditAvatarView: UIView {
     
-    //랜덤하게 출력
-    private let lottieList: [() -> LottieAnimationView] = [
-        { [Lottie.Home.Sosocat.tail, Lottie.Home.Sosocat.bread].randomElement() ?? Lottie.Home.Sosocat.tail},
-        { [Lottie.Home.Regressor.sword, Lottie.Home.Regressor.greeting].randomElement() ?? Lottie.Home.Regressor.sword},
-        { [Lottie.Home.Villainess.fan, Lottie.Home.Villainess.tea].randomElement() ?? Lottie.Home.Villainess.fan}
-    ]
+    //MARK: - Properties
+    
+    private let circleSize: CGSize = CGSize(width: 6, height: 6)
+    private let profileSize: CGSize = CGSize(width: 50, height: 50)
     
     //MARK: - Components
     
+    private let contentView = UIView()
+    
     private let navigationLabel = UILabel()
     
-    private let contentView = UIView()
-    private var avatarLottieView = LottieAnimationView()
+    private let avatarCharacterImageView = UIImageView()
     private let avatarNameLabel = UILabel()
     private let avatarLineLabel = UILabel()
     
     let avatarImageCollectionView = UICollectionView(frame: .zero,
                                                      collectionViewLayout: UICollectionViewLayout())
+    private let circleStackView = UIStackView()
+    private let firstCircleView = UIView()
+    private let secondCircleView = UIView()
+    
+    private let buttonStackView = UIStackView()
     let changeButton = UIButton()
     private let changeButtonLabel = UILabel()
     let notChangeButton = UIButton()
@@ -61,30 +65,45 @@ final class MyPageEditAvatarView: UIView {
         }
         
         navigationLabel.do {
-            $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.changeAvatar)
+            $0.applyWSSFont(.title2, with: StringLiterals.Navigation.Title.changeAvatar)
             $0.textColor = .wssBlack
         }
         
+        avatarCharacterImageView.do {
+            $0.contentMode = .scaleAspectFit
+        }
+        
         avatarNameLabel.do {
-            //데이터 바인딩이 늦었을 때 레이아웃 달라지는 것을 대비하여 기본값 설정
             $0.applyWSSFont(.headline1, with: StringLiterals.MyPage.EditProfile.defaultAvatarName)
             $0.textColor = .wssBlack
         }
         
         avatarLineLabel.do {
             $0.applyWSSFont(.title3, with: StringLiterals.MyPage.EditProfile.defaultAvatarDescription)
-            $0.textColor = .wssGray300
+            $0.textColor = .wssGray200
         }
         
         avatarImageCollectionView.do {
-            let layout = UICollectionViewFlowLayout()
-            layout.scrollDirection = .horizontal
-            layout.minimumInteritemSpacing = 16
-            layout.itemSize = CGSize(width: 50, height: 50)
-            
-            $0.collectionViewLayout = layout
-            $0.isScrollEnabled = false
-            $0.showsHorizontalScrollIndicator = false
+            $0.collectionViewLayout = pagingCompositionalLayout()
+            $0.alwaysBounceVertical = false
+        }
+        
+        circleStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 8
+            $0.alignment = .center
+            $0.distribution = .equalSpacing
+        }
+        
+        [firstCircleView, secondCircleView].forEach { circle in
+            circle.layer.cornerRadius = circleSize.height / 2
+            circle.backgroundColor = .wssPrimary100
+        }
+        
+        buttonStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 12
+            $0.distribution = .fillEqually
         }
         
         changeButton.do {
@@ -93,17 +112,17 @@ final class MyPageEditAvatarView: UIView {
         }
         
         notChangeButton.do {
-            $0.backgroundColor = .clear
+            $0.backgroundColor = .wssGray70
             $0.layer.cornerRadius = 14
         }
         
         changeButtonLabel.do {
-            $0.applyWSSFont(.body1, with: StringLiterals.MyPage.Modal.changeCharacter)
+            $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Modal.changeCharacter)
             $0.textColor = .wssWhite
         }
         
         notChangeButtonLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Modal.keepOriginally)
+            $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Modal.keepOriginally)
             $0.textColor = .wssGray300
         }
     }
@@ -111,14 +130,18 @@ final class MyPageEditAvatarView: UIView {
     private func setHierarchy() {
         self.addSubview(contentView)
         contentView.addSubviews(navigationLabel,
-                                avatarLottieView,
+                                avatarCharacterImageView,
                                 avatarNameLabel,
                                 avatarLineLabel,
                                 avatarImageCollectionView,
-                                changeButton,
-                                notChangeButton)
-        changeButton.addSubview(changeButtonLabel)
+                                circleStackView,
+                                buttonStackView)
+        circleStackView.addArrangedSubviews(firstCircleView,
+                                            secondCircleView)
+        buttonStackView.addArrangedSubviews(notChangeButton,
+                                            changeButton)
         notChangeButton.addSubview(notChangeButtonLabel)
+        changeButton.addSubview(changeButtonLabel)
     }
     
     private func setLayout() {
@@ -128,66 +151,70 @@ final class MyPageEditAvatarView: UIView {
         }
         
         navigationLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().inset(33)
+            $0.centerX.equalToSuperview()
         }
         
-        avatarLottieView.snp.makeConstraints {
-            $0.top.equalTo(navigationLabel.snp.bottom).offset(36)
+        avatarCharacterImageView.snp.makeConstraints {
+            $0.top.equalTo(navigationLabel.snp.bottom).offset(8)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(250)
         }
         
         avatarNameLabel.snp.makeConstraints {
-            $0.top.equalTo(navigationLabel.snp.bottom).offset(36 + 250 + 28)
+            $0.top.equalTo(avatarCharacterImageView.snp.bottom).offset(18)
             $0.centerX.equalToSuperview()
         }
-        
+
         avatarLineLabel.snp.makeConstraints {
-            $0.top.equalTo(avatarNameLabel.snp.bottom).offset(4)
+            $0.top.equalTo(avatarNameLabel.snp.bottom).offset(6)
             $0.centerX.equalToSuperview()
         }
         
         avatarImageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(avatarLineLabel.snp.bottom).offset(33)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(0)
+            $0.top.equalTo(avatarLineLabel.snp.bottom).offset(35)
+            $0.leading.trailing.equalToSuperview().inset(39)
+            $0.height.equalTo(115)
         }
         
-        changeButton.snp.makeConstraints {
-            $0.top.equalTo(avatarImageCollectionView.snp.bottom).offset(43)
+        circleStackView.snp.makeConstraints {
+            $0.top.equalTo(avatarImageCollectionView.snp.bottom).offset(18)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(6)
+        }
+        
+        firstCircleView.snp.makeConstraints {
+            $0.size.equalTo(self.circleSize)
+        }
+        
+        secondCircleView.snp.makeConstraints {
+            $0.size.equalTo(self.circleSize)
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(53)
-            
-            changeButtonLabel.snp.makeConstraints {
-                $0.center.equalToSuperview()
-            }
         }
         
-        notChangeButton.snp.makeConstraints {
-            $0.top.equalTo(changeButton.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(39)
-            if UIScreen.isSE {
-                $0.bottom.equalToSuperview().inset(10)
-            } else {
-                $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
-            }
-            
-            notChangeButtonLabel.snp.makeConstraints {
-                $0.center.equalToSuperview()
-            }
+        notChangeButtonLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        changeButtonLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     
     //MARK: - Data
     
     func bindData(avatar: AvatarEntity, nickname: String) {
-        
-        avatarLottieView.removeFromSuperview()
-        
         avatarNameLabel.do {
             $0.applyWSSFont(.headline1, with: avatar.avatarName)
+        }
+        
+        avatarCharacterImageView.do {
+            $0.kfSetImage(url: avatar.avatarImageURL)
         }
         
         avatarLineLabel.do {
@@ -195,35 +222,78 @@ final class MyPageEditAvatarView: UIView {
             let formattedLineText = avatarLineText.replacingOccurrences(of: "%s", with: nickname)
             $0.applyWSSFont(.title3, with: formattedLineText)
         }
-        
-        //Lottie 적용
-        let lottieId = avatar.avatarId - 1
-        avatarLottieView = lottieList[lottieId]()
-        avatarLottieView.do {
-            $0.contentMode = .scaleAspectFit
-        }
-        self.addSubview(avatarLottieView)
-        avatarLottieView.snp.makeConstraints {
-            $0.top.equalTo(navigationLabel.snp.bottom).offset(36)
-            $0.centerX.equalToSuperview()
-            $0.size.equalTo(250)
-        }
-        
-        playLottie()
     }
     
-    //MARK: - Custom Method
-    
-    private func playLottie() {
-        avatarLottieView.play()
-        avatarLottieView.loopMode = .playOnce
+    func bindInitialAvatarPage(for index: Int) {
+        let itemsPerPage = 10
+        let page = index / itemsPerPage
+        
+        let itemIndex = IndexPath(item: page * itemsPerPage,
+                                  section: 0)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.avatarImageCollectionView.scrollToItem(
+                at: itemIndex,
+                at: .left,
+                animated: false
+            )
+            
+            self.updatePageIndicator(currentPage: page)
+        }
     }
     
-    func updateCollectionViewWidth(cellCount: Int) {
-        let totalWidth = (50 * cellCount) + (16 * (cellCount - 1))
+    func pagingCompositionalLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(self.profileSize.width),
+            heightDimension: .absolute(self.profileSize.height)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let rowGroupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(self.profileSize.height)
+        )
+        let rowGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: rowGroupSize,
+            subitem: item,
+            count: 5
+        )
+        rowGroup.interItemSpacing = .fixed(14)
+
+        let pageGroupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
         
-        avatarImageCollectionView.snp.updateConstraints {
-            $0.width.equalTo(totalWidth)
+        let pageGroup = NSCollectionLayoutGroup.vertical(
+            layoutSize: pageGroupSize,
+            subitem: rowGroup,
+            count: 2
+        )
+        pageGroup.interItemSpacing = .fixed(14)
+
+        let section = NSCollectionLayoutSection(group: pageGroup)
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        section.visibleItemsInvalidationHandler = { [weak self] _, contentOffset, environment in
+            let pageWidth = environment.container.contentSize.width
+            let currentPage = Int(round(contentOffset.x / pageWidth))
+            self?.updatePageIndicator(currentPage: currentPage)
         }
+
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    private func updatePageIndicator(currentPage: Int) {
+        let activeColor = UIColor.wssPrimary100
+        let inactiveColor = UIColor.wssGray200
+
+        firstCircleView.backgroundColor =
+            currentPage == 0 ? activeColor : inactiveColor
+
+        secondCircleView.backgroundColor =
+            currentPage == 1 ? activeColor : inactiveColor
     }
 }
