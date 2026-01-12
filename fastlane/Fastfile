@@ -3,13 +3,40 @@ default_platform(:ios)
 platform :ios do
 
 app_store_connect_api_key(
-  key_id: ENV.fetch("ASC_KEY_ID"),
-  issuer_id: ENV.fetch("ASC_ISSUER_ID"),
-  key_filepath: ENV.fetch("ASC_KEY_PATH")
+key_id: ENV.fetch("ASC_KEY_ID"),
+issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+key_filepath: ENV.fetch("ASC_KEY_PATH")
 )
 
 ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "180"
 ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "180"
+
+# =====================================
+# yymmddvv build number 생성
+# =====================================
+private_lane :increment_build_number_with_date do |options|
+app_id = options[:app_identifier]
+
+today = Time.now.strftime("%y%m%d")
+
+latest_build = latest_testflight_build_number(
+app_identifier: app_id
+)
+
+if latest_build.to_s.start_with?(today)
+vv = latest_build.to_s[-2..].to_i + 1
+else
+vv = 1
+end
+
+new_build_number = "#{today}#{format('%02d', vv)}"
+
+increment_build_number(
+build_number: new_build_number
+)
+
+UI.message("📦 Build Number set to #{new_build_number}")
+end
 
 # =====================================
 # 공통 빌드 로직
@@ -25,17 +52,19 @@ app_identifier: app_id,
 readonly: true
 )
 
-increment_build_number
+increment_build_number_with_date(
+app_identifier: app_id
+)
 
 build_app(
 scheme: scheme,
 export_method: export_method,
 clean: true,
 export_options: {
-    provisioningProfiles: {
-      app_id => "match AppStore #{app_id}"
-    }
-  }
+provisioningProfiles: {
+app_id => "match AppStore #{app_id}"
+}
+}
 )
 end
 
