@@ -173,5 +173,3 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
         }
     }
 }
-
-

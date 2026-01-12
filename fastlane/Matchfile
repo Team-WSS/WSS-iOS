@@ -1,0 +1,7 @@
+git_url("git@github.com:Team-WSS/WSS-iOS-Certificates.git")
+storage_mode("git")
+type("development")
+
+app_identifier([ENV["APP_IDENTIFIER"]])
+team_id(ENV["TEAM_ID"])
+
