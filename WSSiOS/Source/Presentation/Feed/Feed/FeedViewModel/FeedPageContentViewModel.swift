@@ -350,17 +350,17 @@ final class FeedPageContentViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+    private func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.postSpoilerFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
     
-    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+    private func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.postImpertinenceFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
     
-    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+    private func deleteFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.deleteFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
