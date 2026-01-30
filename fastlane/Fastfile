@@ -17,7 +17,7 @@ ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "180"
 private_lane :increment_build_number_with_date do |options|
 app_id = options[:app_identifier]
 
-today = Time.now.strftime("%y%m%d")
+today = Time.now.strftime("%Y%m%d")
 
 latest_build = latest_testflight_build_number(
 app_identifier: app_id
