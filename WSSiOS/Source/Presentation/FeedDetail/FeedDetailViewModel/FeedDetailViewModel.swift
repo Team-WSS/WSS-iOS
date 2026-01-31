@@ -465,12 +465,13 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, true):
                     // 댓글 수정하기
                     owner.isCommentEditing = true
-                    owner.myCommentEditing.accept(())
                     
                     // 수정할 때에만 initialCommentContent가 업데이트되도록 한다.
                     if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == owner.selectedCommentId }) {
                         owner.initialCommentContent = owner.commentsData.value[index].commentContent
                     }
+                    
+                    owner.myCommentEditing.accept(())
                 case (.bottom, true):
                     // 댓글 삭제하기
                     owner.showCommentDeleteAlertView.accept((owner.deleteComment,
