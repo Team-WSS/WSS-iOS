@@ -65,19 +65,19 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.textContainer.lineFragmentPadding = 0
                 $0.textContainerInset = .zero
             }
-            
-            replyButton.do {
-                $0.setImage(.icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssPrimary100), for: .normal)
-            }
+        }
+        
+        replyButton.do {
+            $0.setImage(.icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssPrimary100), for: .normal)
         }
     }
     
     private func setHierarchy() {
         self.addSubviews(userProfileImageView,
-                         textViewBackgroundView)
+                         textViewBackgroundView,
+                         replyButton)
         
-        textViewBackgroundView.addSubviews(replyWritingTextView,
-                                           replyButton)
+        textViewBackgroundView.addSubview(replyWritingTextView)
         replyWritingTextView.addSubview(replyWritingPlaceHolderLabel)
     }
     
@@ -95,13 +95,14 @@ final class FeedDetailReplyWritingView: UIView {
         textViewBackgroundView.snp.makeConstraints {
             $0.top.equalTo(userProfileImageView.snp.top)
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(userProfileImageView.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview().inset(17)
+            $0.leading.equalTo(userProfileImageView.snp.trailing).offset(10)
+            $0.trailing.equalTo(replyButton.snp.leading).inset(-10)
             $0.height.equalTo(42)
             
             replyWritingTextView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalToSuperview().inset(16)
+                $0.trailing.equalToSuperview().inset(16)
                 
                 let size = CGSize(width: replyWritingTextView.frame.width, height: .infinity)
                 let estimatedHeight = replyWritingTextView.sizeThatFits(size)
@@ -112,13 +113,12 @@ final class FeedDetailReplyWritingView: UIView {
                     $0.centerY.equalToSuperview()
                 }
             }
-            
-            replyButton.snp.makeConstraints {
-                $0.top.equalToSuperview().inset(7)
-                $0.leading.equalTo(replyWritingTextView.snp.trailing)
-                $0.trailing.equalToSuperview().inset(11)
-                $0.size.equalTo(28)
-            }
+        }
+        
+        replyButton.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(17)
+            $0.trailing.equalToSuperview().inset(17)
+            $0.size.equalTo(28)
         }
     }
     
