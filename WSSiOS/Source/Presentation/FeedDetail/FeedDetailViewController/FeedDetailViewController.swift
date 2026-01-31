@@ -210,19 +210,15 @@ final class FeedDetailViewController: UIViewController {
                 self.rootView.replyWritingView.snp.updateConstraints {
                     $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
                 }
-                
                 self.rootView.replyView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().offset(height)
                 }
-                
-                UIView.animate(withDuration: 0.25) {
-                    self.rootView.layoutIfNeeded()
-                } completion: { _ in
-                    owner.rootView.scrollView.setContentOffset(
-                        CGPoint(x: 0, y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height + 20)),
-                        animated: true
-                    )
-                }
+                self.rootView.layoutIfNeeded()
+                owner.rootView.scrollView.setContentOffset(
+                    CGPoint(x: 0,
+                            y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height + 20)),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
         
@@ -517,7 +513,7 @@ final class FeedDetailViewController: UIViewController {
                 owner.pushToUserPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
-
+        
         output.showLoadingView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in
@@ -567,7 +563,7 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         label.sizeToFit()
         let labelHeight = label.frame.height
         let resizedLabelHeight = ceil(labelHeight)
-    
+        
         return resizedLabelHeight
     }
 }
