@@ -103,8 +103,8 @@ final class FeedDetailViewController: UIViewController {
         )
         
         let commentDropdownButtonDidTap = Observable.merge(
-            rootView.replyView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
-            rootView.replyView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+            rootView.replyDropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.replyDropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
         )
         
         let input = FeedDetailViewModel.Input(
@@ -210,19 +210,15 @@ final class FeedDetailViewController: UIViewController {
                 self.rootView.replyWritingView.snp.updateConstraints {
                     $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
                 }
-                
                 self.rootView.replyView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().offset(height)
                 }
-                
-                UIView.animate(withDuration: 0.25) {
-                    self.rootView.layoutIfNeeded()
-                } completion: { _ in
-                    owner.rootView.scrollView.setContentOffset(
-                        CGPoint(x: 0, y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height + 20)),
-                        animated: true
-                    )
-                }
+                self.rootView.layoutIfNeeded()
+                owner.rootView.scrollView.setContentOffset(
+                    CGPoint(x: 0,
+                            y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height + 20)),
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
         
@@ -381,20 +377,20 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentDropdownView
             .subscribe(with: self, onNext: { owner, data in
                 let (indexPath, isMyComment) = data
-                owner.rootView.replyView.showDropdownView(indexPath: indexPath,
-                                                          isMyComment: isMyComment)
+                owner.rootView.showReplyDropdownView(indexPath: indexPath,
+                                                     isMyComment: isMyComment)
             })
             .disposed(by: disposeBag)
         
         output.hideCommentDropdownView
             .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.replyView.hideDropdownView()
+                owner.rootView.hideReplyDropdownView()
             })
             .disposed(by: disposeBag)
         
         output.toggleDropdownView
             .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.replyView.toggleDropdownView()
+                owner.rootView.toggleReplyDropdownView()
             })
             .disposed(by: disposeBag)
         
@@ -461,7 +457,6 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        
         output.showCommentImpertinenceAlertView
             .flatMapLatest { postImpertinenceComment, feedId, commentId in
                 self.presentToAlertViewController(
@@ -506,9 +501,9 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.myCommentEditing
-            .subscribe(with: self, onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, initialContent in
                 owner.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
-                owner.rootView.replyWritingView.setCommentText(owner.viewModel.initialCommentContent)
+                owner.rootView.replyWritingView.setCommentText(initialContent)
             })
             .disposed(by: disposeBag)
         
@@ -517,7 +512,7 @@ final class FeedDetailViewController: UIViewController {
                 owner.pushToUserPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
-
+        
         output.showLoadingView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in
@@ -567,7 +562,7 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         label.sizeToFit()
         let labelHeight = label.frame.height
         let resizedLabelHeight = ceil(labelHeight)
-    
+        
         return resizedLabelHeight
     }
 }

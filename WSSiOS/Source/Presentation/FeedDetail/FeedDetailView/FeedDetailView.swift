@@ -25,6 +25,7 @@ final class FeedDetailView: UIView {
     let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
     let replyWritingView = FeedDetailReplyWritingView()
+    let replyDropdownView = FeedDetailDropdownView()
     private let replyBottomView = UIView()
     
     private let loadingView = WSSLoadingView()
@@ -63,6 +64,10 @@ final class FeedDetailView: UIView {
             $0.isHidden = true
         }
         
+        replyDropdownView.do {
+            $0.isHidden = true
+        }
+        
         replyBottomView.do {
             $0.backgroundColor = .wssWhite
         }
@@ -81,6 +86,7 @@ final class FeedDetailView: UIView {
                          replyWritingView,
                          replyBottomView,
                          dropdownView,
+                         replyDropdownView,
                          loadingView,
                          networkErrorView)
         scrollView.addSubview(contentView)
@@ -110,6 +116,11 @@ final class FeedDetailView: UIView {
         
         dropdownView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.trailing.equalToSuperview().inset(20)
+        }
+        
+        replyDropdownView.snp.makeConstraints {
+            $0.top.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
         }
         
@@ -161,5 +172,36 @@ final class FeedDetailView: UIView {
     
     func showNetworkErrorView() {
         networkErrorView.isHidden = false
+    }
+    
+    //MARK: - Reply Dropdown View Methods
+    
+    func showReplyDropdownView(indexPath: IndexPath, isMyComment: Bool) {
+        replyDropdownView.do {
+            $0.configureDropdown(isMine: isMyComment)
+            $0.isHidden = false
+        }
+        updateReplyDropdownViewLayout(indexPath: indexPath)
+    }
+    
+    func hideReplyDropdownView() {
+        replyDropdownView.isHidden = true
+    }
+    
+    func toggleReplyDropdownView() {
+        replyDropdownView.isHidden.toggle()
+    }
+    
+    func updateReplyDropdownViewLayout(indexPath: IndexPath) {
+        guard let cell = replyView.replyCollectionView.cellForItem(at: indexPath) else { return }
+        
+        let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
+        let numberOfItems = replyView.replyCollectionView.numberOfItems(inSection: indexPath.section)
+        let isLastTwoCells = indexPath.item >= numberOfItems - 2
+        
+        replyDropdownView.snp.updateConstraints {
+            $0.top.equalToSuperview().inset(isLastTwoCells ? cellFrameInSuperview.minY - replyDropdownView.frame.height : cellFrameInSuperview.minY + 40)
+            $0.trailing.equalToSuperview().inset(20)
+        }
     }
 }

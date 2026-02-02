@@ -69,7 +69,7 @@ final class FeedDetailViewModel: ViewModelType {
     let showCommentSpoilerAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     let showCommentImpertinenceAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     var isCommentEditing: Bool = false
-    let myCommentEditing = PublishRelay<Void>()
+    let myCommentEditing = PublishRelay<String>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     let showWithdrawalUserToastView = PublishRelay<Void>()
     
@@ -167,7 +167,7 @@ final class FeedDetailViewModel: ViewModelType {
         // 댓글 드롭다운 내 이벤트
         let showCommentSpoilerAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
-        let myCommentEditing: Observable<Void>
+        let myCommentEditing: Observable<String>
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let showWithdrawalUserToastView: Observable<Void>
         
@@ -465,11 +465,13 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, true):
                     // 댓글 수정하기
                     owner.isCommentEditing = true
-                    owner.myCommentEditing.accept(())
                     
-                    // 수정할 때에만 initialCommentContent가 업데이트되도록 한다.
-                    if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == owner.selectedCommentId }) {
-                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
+                    if let index = owner.commentsData.value.firstIndex(
+                        where: { $0.commentId == owner.selectedCommentId }
+                    ) {
+                        let initialContent = owner.commentsData.value[index].commentContent
+                        owner.myCommentEditing.accept(initialContent)
+                        owner.initialCommentContent = initialContent
                     }
                 case (.bottom, true):
                     // 댓글 삭제하기

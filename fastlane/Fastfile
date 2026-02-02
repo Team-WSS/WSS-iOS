@@ -1,0 +1,117 @@
+default_platform(:ios)
+
+platform :ios do
+
+app_store_connect_api_key(
+key_id: ENV.fetch("ASC_KEY_ID"),
+issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+key_filepath: ENV.fetch("ASC_KEY_PATH")
+)
+
+ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "180"
+ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "180"
+
+# =====================================
+# yymmddvv build number 생성
+# =====================================
+private_lane :increment_build_number_with_date do |options|
+app_id = options[:app_identifier]
+
+today = Time.now.strftime("%Y%m%d")
+
+latest_build = latest_testflight_build_number(
+app_identifier: app_id
+)
+
+if latest_build.to_s.start_with?(today)
+vv = latest_build.to_s[-2..].to_i + 1
+else
+vv = 1
+end
+
+new_build_number = "#{today}#{format('%02d', vv)}"
+
+increment_build_number(
+build_number: new_build_number
+)
+
+UI.message("📦 Build Number set to #{new_build_number}")
+end
+
+# =====================================
+# 공통 빌드 로직
+# =====================================
+private_lane :build_with do |options|
+scheme = options[:scheme]
+app_id = options[:app_identifier]
+export_method = options[:export_method] || "app-store"
+
+match(
+type: "appstore",
+app_identifier: app_id,
+readonly: true
+)
+
+increment_build_number_with_date(
+app_identifier: app_id
+)
+
+build_app(
+scheme: scheme,
+export_method: export_method,
+clean: true,
+export_options: {
+provisioningProfiles: {
+app_id => "match AppStore #{app_id}"
+}
+}
+)
+end
+
+# =====================================
+# Debug → TestFlight (Internal)
+# =====================================
+desc "Debug 스킴 TestFlight 배포"
+lane :debug_beta do
+build_with(
+scheme: "WSSiOS-DEBUG",
+app_identifier: ENV.fetch("APP_IDENTIFIER_DEBUG")
+)
+
+upload_to_testflight(
+app_identifier: ENV.fetch("APP_IDENTIFIER_DEBUG"),
+skip_waiting_for_build_processing: true
+)
+end
+
+# =====================================
+# Release → TestFlight
+# =====================================
+desc "Release 스킴 TestFlight 배포"
+lane :release_beta do
+build_with(
+scheme: "WSSiOS",
+app_identifier: ENV.fetch("APP_IDENTIFIER_RELEASE")
+)
+
+upload_to_testflight(
+skip_waiting_for_build_processing: true
+)
+end
+
+# =====================================
+# Release → App Store 제출
+# =====================================
+desc "Release 스킴 App Store 제출"
+lane :release do
+build_with(
+scheme: "Release",
+app_identifier: ENV.fetch("APP_IDENTIFIER_RELEASE")
+)
+
+deliver(
+submit_for_review: true,
+automatic_release: false
+)
+end
+end

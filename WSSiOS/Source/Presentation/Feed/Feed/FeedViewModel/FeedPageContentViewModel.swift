@@ -97,7 +97,7 @@ final class FeedPageContentViewModel: ViewModelType {
             .withLatestFrom(feedList)
             .flatMapLatest { feedList in
                 self.getFeedData(lastFeedId: self.lastFeedId,
-                                 size: feedList.isEmpty ? nil : feedList.count)
+                                 size: nil)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -279,6 +279,14 @@ final class FeedPageContentViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        feedPageType
+            .skip(1)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.resetFeedPagingState()
+                owner.feedTableViewIsRefreshing.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             feedPageType: feedPageType.asDriver(),
             myFeedCount: myFeedCount.asDriver(),
@@ -342,18 +350,27 @@ final class FeedPageContentViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+    private func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.postSpoilerFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
     
-    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+    private func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.postImpertinenceFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
     
-    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+    private func deleteFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.deleteFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
+    }
+    
+    //MARK: - Method
+    
+    private func resetFeedPagingState() {
+        isLoadable = false
+        isFetching = false
+        lastFeedId = 0
+        feedList.accept([])
     }
 }
