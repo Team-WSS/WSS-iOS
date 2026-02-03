@@ -293,7 +293,8 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        // 댓글 작성
+        // MARK: - 댓글 작성
+        
         input.viewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.endEditing.accept(true)
@@ -333,71 +334,79 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.sendButtonDidTap
+        // MARK: - 댓글 전송
+        
+        let sendCommentRequest = input.sendButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .flatMapLatest { [weak self] _ -> Observable<Void> in
-                guard let self = self else { return .empty() }
+            .withUnretained(self)
+            .filter { owner, _ in owner.isValidCommentContent }
+            .map { owner, _ -> SendCommentRequest in
+                let mode: SendCommentRequest.Mode =
+                owner.isCommentEditing
+                ? .edit(commentId: owner.selectedCommentId)
+                : .create
                 
-                if self.isProcessing { return .empty() }
-                self.isProcessing = true
-                
-                AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeComment)
-                
-                let finishSendingComment: () -> Void = {
-                    self.isProcessing = false
-                    self.textViewResignFirstResponder.accept(())
-                    
-                    self.initialCommentContent = ""
-                    self.updatedCommentContent = ""
-                    
-                    self.textViewEmpty.accept(true)
-                    self.showPlaceholder.accept(true)
-                    self.showLoadingView.accept(false)
-                }
-                
-                if self.isCommentEditing {
-                    return self.putComment(self.feedId,
-                                           self.selectedCommentId,
-                                           self.updatedCommentContent)
-                    .flatMapLatest { _ in
-                        self.getSingleFeedComments(self.feedId)
-                            .do(onNext: { newComments in
-                                self.commentsData.accept(newComments.comments)
-                                self.showLoadingView.accept(true)
-                            })
-                            .map { _ in () }
-                    }
-                    .do(onNext: {
-                        finishSendingComment()
-                        self.isCommentEditing = false
-                        self.selectedCommentId = 0
-                    }, onError: { _ in
-                        self.isProcessing = false
-                    })
-                } else {
-                    return self.postComment(self.feedId,
-                                            self.updatedCommentContent)
-                    .flatMapLatest { _ in
-                        self.getSingleFeedComments(self.feedId)
-                            .do(onNext: { newComments in
-                                self.commentsData.accept(newComments.comments)
-                                self.showLoadingView.accept(true)
-                            })
-                            .map { _ in () }
-                    }
-                    .do(onNext: {
-                        finishSendingComment()
-                        self.selectedCommentId = 0
-                        self.commentCount.accept(self.commentCount.value + 1)
-                    }, onError: { _ in
-                        self.isProcessing = false
-                    })
-                }
+                return SendCommentRequest(
+                    content: owner.updatedCommentContent,
+                    mode: mode
+                )
             }
-            .subscribe()
+            .share()
+        
+        let sendCommentState = sendCommentRequest
+            .flatMapLatest { [weak self] request -> Observable<SendCommentState> in
+                guard let self else { return .empty() }
+                
+                return self.sendComment(request: request)
+                    .flatMapLatest {
+                        self.getSingleFeedComments(self.feedId)
+                            .map { SendCommentState.success($0.comments) }
+                    }
+                    .startWith(.loading)
+                    .catch { .just(.failure($0)) }
+            }
+            .startWith(.idle)
+            .share()
+        
+        // 댓글 작성 관련 UI 업데이트 상태 변화
+        sendCommentState
+            .map { state in
+                if case .loading = state { return true }
+                return false
+            }
+            .bind(to: showLoadingView)
             .disposed(by: disposeBag)
         
-        // 피드 드롭다운
+        sendCommentState
+            .compactMap { state -> [FeedCommentEntity]? in
+                if case let .success(comments) = state {
+                    return comments
+                }
+                return nil
+            }
+            .bind(to: commentsData)
+            .disposed(by: disposeBag)
+
+        sendCommentState
+            .filter {
+                if case .success = $0 { return true }
+                return false
+            }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.isCommentEditing = false
+                owner.selectedCommentId = 0
+                owner.initialCommentContent = ""
+                owner.updatedCommentContent = ""
+                
+                owner.textViewEmpty.accept(true)
+                owner.showPlaceholder.accept(true)
+                owner.textViewResignFirstResponder.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        // MARK: - 피드 드롭다운
+        
         input.dotsButtonDidTap
             .withLatestFrom(showDropdownView)
             .map { !$0 }
@@ -424,7 +433,8 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        // 댓글 드롭다운
+        // MARK: - 댓글 드롭다운
+        
         input.profileViewDidTap
             .subscribe(with: self, onNext: { owner, data in
                 let (commentId, commentUserId ,isMyComment) = data
@@ -551,6 +561,16 @@ final class FeedDetailViewModel: ViewModelType {
     
     //MARK: - API
     
+    private func sendComment(request: SendCommentRequest) -> Observable<Void> {
+        switch request.mode {
+        case .create:
+            return postComment(feedId, request.content)
+            
+        case .edit(let commentId):
+            return putComment(feedId, commentId, request.content)
+        }
+    }
+    
     func getSingleFeed(_ feedId: Int) -> Observable<FeedEntity> {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)
     }
@@ -662,6 +682,23 @@ final class FeedDetailViewModel: ViewModelType {
         } else {
             showNetworkErrorView.accept(())
         }
+    }
+
+    private struct SendCommentRequest {
+        let content: String
+        let mode: Mode
+        
+        enum Mode {
+            case create
+            case edit(commentId: Int)
+        }
+    }
+    
+    private enum SendCommentState {
+        case idle
+        case loading
+        case success([FeedCommentEntity])
+        case failure(Error)
     }
 }
 
