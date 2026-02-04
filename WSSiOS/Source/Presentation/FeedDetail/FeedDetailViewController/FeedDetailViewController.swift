@@ -222,6 +222,17 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.isSendLoading
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { isLoading in
+                if isLoading {
+                    LoadingIndicator.showLoading()
+                } else {
+                    LoadingIndicator.hideLoading()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         rootView.scrollView.rx.tapGesture()
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in

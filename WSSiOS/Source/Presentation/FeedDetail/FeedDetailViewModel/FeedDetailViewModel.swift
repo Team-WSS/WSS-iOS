@@ -47,7 +47,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
-    private var isProcessing: Bool = false
+    private let isSendLoading = BehaviorRelay<Bool>(value: false)
     
     // 피드 드롭다운
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
@@ -150,6 +150,7 @@ final class FeedDetailViewModel: ViewModelType {
         let textViewResignFirstResponder: Observable<Void>
         let sendButtonEnabled: Observable<Bool>
         let textViewEmpty: Observable<Bool>
+        let isSendLoading: Observable<Bool>
         
         // 피드 드롭다운
         let showDropdownView: Driver<Bool>
@@ -346,6 +347,8 @@ final class FeedDetailViewModel: ViewModelType {
                 ? .edit(commentId: owner.selectedCommentId)
                 : .create
                 
+                owner.sendButtonEnabled.accept(false)
+                
                 return SendCommentRequest(
                     content: owner.updatedCommentContent,
                     mode: mode
@@ -369,13 +372,12 @@ final class FeedDetailViewModel: ViewModelType {
             .share()
         
         // 댓글 작성 관련 UI 업데이트 상태 변화
-        sendCommentState
+        let isSendLoading = sendCommentState
             .map { state in
                 if case .loading = state { return true }
                 return false
             }
-            .bind(to: showLoadingView)
-            .disposed(by: disposeBag)
+            .distinctUntilChanged()
         
         sendCommentState
             .compactMap { state -> [FeedCommentEntity]? in
@@ -539,6 +541,7 @@ final class FeedDetailViewModel: ViewModelType {
                       textViewResignFirstResponder: textViewResignFirstResponder.asObservable(),
                       sendButtonEnabled: sendButtonEnabled.asObservable(),
                       textViewEmpty: textViewEmpty.asObservable(),
+                      isSendLoading: isSendLoading.asObservable(),
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView.asObservable(),
