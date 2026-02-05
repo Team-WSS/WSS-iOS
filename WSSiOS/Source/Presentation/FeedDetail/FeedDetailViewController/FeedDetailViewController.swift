@@ -25,7 +25,8 @@ final class FeedDetailViewController: UIViewController {
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     private let commentSpoilerTextDidTap = PublishRelay<Void>()
     private let reloadComments = PublishRelay<Void>()
-    
+    private let toastBottomHeight = BehaviorRelay<CGFloat>(value: 0)
+
     //MARK: - UI Components
     
     private let rootView = FeedDetailView()
@@ -206,12 +207,13 @@ final class FeedDetailViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .skip(1)
             .drive(with: self, onNext: { owner, keyboardHeight in
-                let height = keyboardHeight > 0 ? -keyboardHeight + self.rootView.safeAreaInsets.bottom : 0
+                // 키보드 올라왔을 때 댓글창 위치 설정
+                let layoutOffset = keyboardHeight > 0 ? -keyboardHeight + self.rootView.safeAreaInsets.bottom : 0
                 self.rootView.replyWritingView.snp.updateConstraints {
-                    $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
+                    $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(layoutOffset)
                 }
                 self.rootView.replyView.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().offset(height)
+                    $0.bottom.equalToSuperview().offset(layoutOffset)
                 }
                 self.rootView.layoutIfNeeded()
                 owner.rootView.scrollView.setContentOffset(
@@ -219,6 +221,15 @@ final class FeedDetailViewController: UIViewController {
                             y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height + 20)),
                     animated: true
                 )
+                
+                // 키보드 올라왔을 때 토스트 위치 설정
+                owner.rootView.layoutIfNeeded()
+        
+                let replyView = owner.rootView.replyWritingView
+                let replyTop = replyView.frame.minY
+                let bottomHeight = owner.view.bounds.height - replyTop + 8
+                
+                owner.toastBottomHeight.accept(bottomHeight)
             })
             .disposed(by: disposeBag)
         
@@ -234,8 +245,9 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showNetworkErrorToastView
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showToast(.networkDelay)
+            .withLatestFrom(toastBottomHeight)
+            .subscribe(with: self, onNext: { owner, height in
+                owner.showToast(.networkDelay, bottomHeight: height)
             })
             .disposed(by: disposeBag)
 

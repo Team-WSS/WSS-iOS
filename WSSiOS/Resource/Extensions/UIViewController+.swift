@@ -8,11 +8,12 @@
 import UIKit
 
 import RxSwift
+import RxKeyboard
 import SnapKit
 import Then
 
 extension UIViewController {
-    func showToast(_ toastStatus: ToastStatus) {
+    func showToast(_ toastStatus: ToastStatus, bottomHeight: CGFloat = 124) {
         if let existingToastView = self.view.subviews.first(where: { $0 is WSSToastView }) {
             existingToastView.removeFromSuperview()
         }
@@ -23,7 +24,7 @@ extension UIViewController {
         
         toastView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(view.snp.bottom).offset(-124)
+            $0.bottom.equalTo(view.snp.bottom).offset(-bottomHeight)
         }
         
         UIView.animate(withDuration: 0.3, delay: 3.0, animations: {
