@@ -47,7 +47,8 @@ final class FeedDetailViewModel: ViewModelType {
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
-    private let isSendLoading = BehaviorRelay<Bool>(value: false)
+    private let sendCommentState = BehaviorRelay<SendCommentState>(value: .idle)
+    private let showNetworkErrorToastView = BehaviorRelay<Bool>(value: false)
     
     // 피드 드롭다운
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
@@ -150,7 +151,8 @@ final class FeedDetailViewModel: ViewModelType {
         let textViewResignFirstResponder: Observable<Void>
         let sendButtonEnabled: Observable<Bool>
         let textViewEmpty: Observable<Bool>
-        let isSendLoading: Observable<Bool>
+        let sendCommentState: Observable<SendCommentState>
+        let showNetworkErrorToastView: Observable<Bool>
         
         // 피드 드롭다운
         let showDropdownView: Driver<Bool>
@@ -363,21 +365,16 @@ final class FeedDetailViewModel: ViewModelType {
                 return self.sendComment(request: request)
                     .flatMapLatest {
                         self.getSingleFeedComments(self.feedId)
-                            .map { SendCommentState.success($0.comments) }
                     }
+                    .timeout(.seconds(10), scheduler: MainScheduler.instance)
+                    .map { SendCommentState.success($0.comments) }
                     .startWith(.loading)
-                    .catch { .just(.failure($0)) }
+                    .catch { error in
+                            .just(.failure(error))
+                    }
             }
             .startWith(.idle)
             .share()
-        
-        // 댓글 작성 관련 UI 업데이트 상태 변화
-        let isSendLoading = sendCommentState
-            .map { state in
-                if case .loading = state { return true }
-                return false
-            }
-            .distinctUntilChanged()
         
         sendCommentState
             .compactMap { state -> [FeedCommentEntity]? in
@@ -404,6 +401,20 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.textViewEmpty.accept(true)
                 owner.showPlaceholder.accept(true)
                 owner.textViewResignFirstResponder.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        sendCommentState
+            .compactMap {
+                if case let .failure(error) = $0 {
+                    return error
+                }
+                return nil
+            }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.showNetworkErrorToastView.accept(true)
+                owner.sendButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -541,7 +552,8 @@ final class FeedDetailViewModel: ViewModelType {
                       textViewResignFirstResponder: textViewResignFirstResponder.asObservable(),
                       sendButtonEnabled: sendButtonEnabled.asObservable(),
                       textViewEmpty: textViewEmpty.asObservable(),
-                      isSendLoading: isSendLoading.asObservable(),
+                      sendCommentState: sendCommentState.asObservable(),
+                      showNetworkErrorToastView: showNetworkErrorToastView.asObservable(),
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView.asObservable(),
@@ -697,7 +709,7 @@ final class FeedDetailViewModel: ViewModelType {
         }
     }
     
-    private enum SendCommentState {
+    enum SendCommentState {
         case idle
         case loading
         case success([FeedCommentEntity])

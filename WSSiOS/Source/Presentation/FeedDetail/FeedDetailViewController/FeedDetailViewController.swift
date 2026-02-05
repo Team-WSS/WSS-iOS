@@ -222,17 +222,23 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isSendLoading
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { isLoading in
-                if isLoading {
+        output.sendCommentState
+            .subscribe(onNext: { state in
+                switch state {
+                case .loading:
                     LoadingIndicator.showLoading()
-                } else {
+                default:
                     LoadingIndicator.hideLoading()
                 }
             })
             .disposed(by: disposeBag)
         
+        output.showNetworkErrorToastView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.networkDelay)
+            })
+            .disposed(by: disposeBag)
+
         rootView.scrollView.rx.tapGesture()
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
