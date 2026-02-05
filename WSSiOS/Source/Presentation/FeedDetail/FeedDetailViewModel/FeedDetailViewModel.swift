@@ -366,7 +366,7 @@ final class FeedDetailViewModel: ViewModelType {
                     .flatMapLatest {
                         self.getSingleFeedComments(self.feedId)
                     }
-                    .timeout(.seconds(2), scheduler: MainScheduler.instance)
+                    .timeout(.seconds(10), scheduler: MainScheduler.instance)
                     .map { SendCommentState.success($0.comments) }
                     .startWith(.loading)
                     .catch { error in
