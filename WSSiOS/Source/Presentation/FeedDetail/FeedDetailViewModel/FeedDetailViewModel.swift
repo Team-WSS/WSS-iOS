@@ -48,7 +48,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
     private let sendCommentState = BehaviorRelay<SendCommentState>(value: .idle)
-    private let showNetworkErrorToastView = BehaviorRelay<Bool>(value: false)
+    private let showNetworkErrorToastView = PublishRelay<Void>()
     
     // 피드 드롭다운
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
@@ -152,7 +152,7 @@ final class FeedDetailViewModel: ViewModelType {
         let sendButtonEnabled: Observable<Bool>
         let textViewEmpty: Observable<Bool>
         let sendCommentState: Observable<SendCommentState>
-        let showNetworkErrorToastView: Observable<Bool>
+        let showNetworkErrorToastView: Observable<Void>
         
         // 피드 드롭다운
         let showDropdownView: Driver<Bool>
@@ -413,7 +413,7 @@ final class FeedDetailViewModel: ViewModelType {
             }
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.showNetworkErrorToastView.accept(true)
+                owner.showNetworkErrorToastView.accept(())
                 owner.sendButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
