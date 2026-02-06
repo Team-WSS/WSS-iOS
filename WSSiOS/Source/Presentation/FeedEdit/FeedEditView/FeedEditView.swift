@@ -114,7 +114,7 @@ final class FeedEditView: UIView {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(feedEditPrivateSettingView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview()
         }
         
         loadingView.snp.makeConstraints {
@@ -122,7 +122,8 @@ final class FeedEditView: UIView {
         }
         
         stackView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.top.horizontalEdges.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-30)
             $0.width.equalTo(UIScreen.main.bounds.width)
         }
         
