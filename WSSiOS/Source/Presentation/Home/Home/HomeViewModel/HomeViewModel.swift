@@ -21,6 +21,8 @@ final class HomeViewModel: ViewModelType {
     
     private let isLogined = APIConstants.isLogined
     
+    private let pushToNormalSearchViewController = PublishRelay<Void>()
+    
     // 오늘의 인기작
     private let todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
     
@@ -31,7 +33,6 @@ final class HomeViewModel: ViewModelType {
     // 관심글
     private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
     private let updateInterestView = PublishRelay<(Bool, InterestMessage)>()
-    private let pushToNormalSearchViewController = PublishRelay<Void>()
     private var interestFeedMessage = BehaviorRelay<InterestMessage>(value: .none)
     
     // 취향추천
@@ -60,11 +61,14 @@ final class HomeViewModel: ViewModelType {
         let announcementButtonDidTap: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
+        let searchBarViewDidTap: Observable<UITapGestureRecognizer>
     }
     
     //MARK: - Outputs
     
     struct Output {
+        let pushToNormalSearchViewController: Observable<Void>
+        
         var todayPopularList: Observable<[TodayPopularNovel]>
         
         var realtimePopularList: Observable<[RealtimePopularFeed]>
@@ -72,7 +76,6 @@ final class HomeViewModel: ViewModelType {
         
         var interestList: Observable<[InterestFeed]>
         let updateInterestView: Observable<(Bool, InterestMessage)>
-        let pushToNormalSearchViewController: Observable<Void>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
@@ -182,6 +185,12 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.searchBarViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToNormalSearchViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 AmplitudeManager.shared.track(AmplitudeEvent.Home.homeTodayRanking)
@@ -246,12 +255,12 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        return Output(todayPopularList: todayPopularList.asObservable(),
+        return Output(pushToNormalSearchViewController: pushToNormalSearchViewController.asObservable(),
+                      todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       updateInterestView: updateInterestView.asObservable(),
-                      pushToNormalSearchViewController: pushToNormalSearchViewController.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight.asDriver(),
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
