@@ -158,6 +158,7 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 NotificationCenter.default.post(name: NSNotification.Name("NovelReviewed"), object: nil)
                 owner.popViewController.accept(())
+                AppReviewManager.shared.requestReview()
             }, onError: { owner, error  in
                 print(error)
             })
