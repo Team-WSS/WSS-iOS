@@ -87,7 +87,7 @@ final class HomeView: UIView {
         }
         
         searchBarView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(12)
+            $0.top.equalToSuperview().inset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
         }
@@ -98,17 +98,17 @@ final class HomeView: UIView {
         }
         
         realtimePopularView.snp.makeConstraints {
-            $0.top.equalTo(todayPopularView.snp.bottom).offset(36)
+            $0.top.equalTo(todayPopularView.snp.bottom).offset(32)
             $0.horizontalEdges.equalToSuperview()
         }
         
         interestView.snp.makeConstraints {
-            $0.top.equalTo(realtimePopularView.snp.bottom).offset(36)
+            $0.top.equalTo(realtimePopularView.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview()
         }
         
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(36)
+            $0.top.equalTo(interestView.snp.bottom).offset(40)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }

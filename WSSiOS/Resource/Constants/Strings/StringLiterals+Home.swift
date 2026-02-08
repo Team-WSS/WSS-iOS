@@ -13,8 +13,8 @@ extension StringLiterals {
             static let todayPopular = "+ 오늘의 발견 +"
             static let realtimePopular = "지금 뜨는 글"
             static let interest = "님의 관심글"
-            static let notLoggedInInterest = "관심글"
-            static let recommend = "이 웹소설은 어때요? (•̀ - •́ )ノ📚"
+            static let notLoggedInInterest = "･ :*관심글*: ･"
+            static let recommend = "이 웹소설은 어때요? (´ヮ`)ﾉ📚"
         }
         
         enum SubTitle {
