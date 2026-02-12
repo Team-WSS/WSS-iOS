@@ -20,7 +20,7 @@
 
 ## 📓 About WSS
 > - 📅 2023.12.17 ~ ing
-> - 대학생 연합 IT 벤처 창업 동아리 SOPT 33기 앱잼에서 탄생한 웹소소는 **웹소설 추천 및 커뮤니티 서비스**입니다. 
+> - 대학생 연합 IT 벤처 창업 동아리 SOPT 33기 앱잼에서 탄생한 웹소소는 **웹소설 리뷰 및 커뮤니티 서비스**입니다. 
 
 ### 💫 Brand Value 
 - **Easy**: 쉽게 발견하자
@@ -65,11 +65,22 @@
 
 <br>
 
-## 🧑‍💻 iOS Team Members
-|<img width="250px" alt="지원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/c902ad7d-4a2a-4964-b3e6-76c4ab5fbdb0">|<img width="250px" alt="윤학" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e09c52e1-2876-49c0-9a32-33eb204590ea">|<img width="250px" alt="서연" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/b2b350b4-cf4a-4469-8e3d-320b4a7fd7fa">|<img width="250px" alt="효원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e46f7d9c-41cb-4fcb-8ba5-52acbd208bb3">|
-|:----:|:----:|:----:|:----:|
-|[신지원(이나)](https://github.com/ena-isme)|[이윤학(나기)](https://github.com/Naknakk)|[최서연(구리스)](https://github.com/Guryss)|[전효원(하쿠)](https://github.com/hyowon612)|
-|전체피드, 마이페이지|온보딩, 작품상세|홈, 탐색, 피드상세|작품피드, 피드작성|
+## Core Alumni
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/ena-isme"><img src="https://avatars.githubusercontent.com/u/103318297?v=4" width="100px;" alt=""/><br /><sub><b>신지원</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/hyowon612"><img src="https://avatars.githubusercontent.com/u/68677647?v=4" width="100px;" alt=""/><br /><sub><b>전효원</b></sub></a><br /></td>
+  </tr>
+</table>
+
+## Contributors
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Guryss"><img src="https://avatars.githubusercontent.com/u/102604192?v=4" width="100px;" alt=""/><br /><sub><b>최서연</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Naknakk"><img src="https://avatars.githubusercontent.com/u/87518742?v=4" width="100px;" alt=""/><br /><sub><b>이윤학</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/onesunny2"><img src="https://avatars.githubusercontent.com/u/162902591?v=4" width="100px;" alt=""/><br /><sub><b>이원선</b></sub></a><br /></td>
+  </tr>
+</table>
 
 <br>
 
