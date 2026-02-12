@@ -39,7 +39,7 @@
 <br>
 
 ## 📇 Introduction
-<img src="https://github.com/user-attachments/assets/831611bb-6b01-402a-936b-ce3579f842aa">
+<img src="https://github.com/user-attachments/assets/288fe84d-eb53-4ac6-a7ca-36ffd7fd9367">
 
 <br/>
 <br/>
@@ -65,20 +65,27 @@
 
 <br>
 
-## Core Alumni
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/ena-isme"><img src="https://avatars.githubusercontent.com/u/103318297?v=4" width="100px;" alt=""/><br /><sub><b>신지원</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/hyowon612"><img src="https://avatars.githubusercontent.com/u/68677647?v=4" width="100px;" alt=""/><br /><sub><b>전효원</b></sub></a><br /></td>
-  </tr>
-</table>
 
-## Contributors
+## 🧑‍💻 Contributors
+
+현재 웹소소 iOS 개발을 진행하고 있는 분들 입니다. 
+
 <table>
   <tr>
     <td align="center"><a href="https://github.com/Guryss"><img src="https://avatars.githubusercontent.com/u/102604192?v=4" width="100px;" alt=""/><br /><sub><b>최서연</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/Naknakk"><img src="https://avatars.githubusercontent.com/u/87518742?v=4" width="100px;" alt=""/><br /><sub><b>이윤학</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/onesunny2"><img src="https://avatars.githubusercontent.com/u/162902591?v=4" width="100px;" alt=""/><br /><sub><b>이원선</b></sub></a><br /></td>
+  </tr>
+</table>
+
+## 🧞 Core Alumni
+
+웹소소 iOS 개발에 참여하신 알룸나이 분들 입니다. 
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/ena-isme"><img src="https://avatars.githubusercontent.com/u/103318297?v=4" width="100px;" alt=""/><br /><sub><b>신지원</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/hyowon612"><img src="https://avatars.githubusercontent.com/u/68677647?v=4" width="100px;" alt=""/><br /><sub><b>전효원</b></sub></a><br /></td>
   </tr>
 </table>
 
