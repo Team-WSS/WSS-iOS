@@ -106,7 +106,8 @@ final class HomeViewController: UIViewController {
             tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
             announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
-            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap
+            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
+            searchBarViewDidTap: rootView.searchBarView.rx.tapGesture().when(.recognized).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         

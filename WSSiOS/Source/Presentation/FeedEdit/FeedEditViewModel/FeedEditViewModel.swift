@@ -206,6 +206,7 @@ final class FeedEditViewModel: ViewModelType {
                 owner.backButtonIsAbled.accept(true)
                 NotificationCenter.default.post(name: NotificationName.feedEdited, object: nil)
                 owner.popViewController.accept(())
+                AppReviewManager.shared.requestReview()
             }, onError: { owner, error  in
                 print(error)
             })

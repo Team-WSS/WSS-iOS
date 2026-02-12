@@ -70,8 +70,9 @@ final class MyPageView: UIView {
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
         
         contentView.snp.makeConstraints {

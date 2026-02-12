@@ -17,6 +17,7 @@ final class HomeView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIView()
     let headerView = HomeHeaderView()
+    let searchBarView = SearchBarView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
     let interestView = HomeInterestView()
@@ -54,7 +55,8 @@ final class HomeView: UIView {
                          scrollView,
                          loadingView)
         self.scrollView.addSubview(contentView)
-        contentView.addSubviews(todayPopularView,
+        contentView.addSubviews(searchBarView,
+                                todayPopularView,
                                 realtimePopularView,
                                 interestView,
                                 tasteRecommendView)
@@ -78,28 +80,35 @@ final class HomeView: UIView {
         }
         
         contentView.snp.makeConstraints {
-            $0.top.equalTo(scrollView.contentLayoutGuide).inset(18)
+            $0.top.equalTo(scrollView.contentLayoutGuide)
             $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
             $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
             $0.width.equalTo(scrollView.snp.width)
         }
         
+        searchBarView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(10)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(42)
+        }
+        
         todayPopularView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(searchBarView.snp.bottom).offset(24)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         realtimePopularView.snp.makeConstraints {
-            $0.top.equalTo(todayPopularView.snp.bottom).offset(56)
+            $0.top.equalTo(todayPopularView.snp.bottom).offset(32)
             $0.horizontalEdges.equalToSuperview()
         }
         
         interestView.snp.makeConstraints {
-            $0.top.equalTo(realtimePopularView.snp.bottom).offset(56)
+            $0.top.equalTo(realtimePopularView.snp.bottom).offset(40)
             $0.horizontalEdges.equalToSuperview()
         }
         
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(36)
+            $0.top.equalTo(interestView.snp.bottom).offset(40)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
