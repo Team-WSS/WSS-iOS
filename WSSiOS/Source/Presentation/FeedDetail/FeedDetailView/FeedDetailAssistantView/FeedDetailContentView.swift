@@ -18,9 +18,7 @@ final class FeedDetailContentView: UIView {
     private let contentWrapperView = UIView()
     private let contentLabel = UILabel()
     let addImageView = FeedDetailAddImageView()
-    private let linkNovelWrapperView = UIView()
     let linkNovelView = FeedDetailNovelView()
-    private let reactWrapperView = UIView()
     let reactView = FeedReactView()
     private let dividerView = UIView()
     
@@ -56,36 +54,38 @@ final class FeedDetailContentView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(stackView,
-                         dividerView)
+        self.addSubview(stackView)
         contentWrapperView.addSubview(contentLabel)
-        linkNovelWrapperView.addSubview(linkNovelView)
-        reactWrapperView.addSubview(reactView)
         stackView.addArrangedSubviews(contentWrapperView,
                                       addImageView,
-                                      linkNovelWrapperView,
-                                      reactWrapperView)
+                                      linkNovelView,
+                                      reactView,
+                                      dividerView)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-
-        [contentLabel,  reactView].forEach {
-            $0.snp.makeConstraints {
-                $0.verticalEdges.equalToSuperview()
-                $0.horizontalEdges.equalToSuperview().inset(20)
-            }
+        
+        contentLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+        }
+        
+        addImageView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
         }
         
         linkNovelView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.height.equalTo(123)
+        }
+        
+        reactView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         dividerView.snp.makeConstraints {
-            $0.top.equalTo(stackView.snp.bottom).offset(16)
             $0.height.equalTo(7)
             $0.horizontalEdges.equalToSuperview()
         }
@@ -99,12 +99,14 @@ final class FeedDetailContentView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        if data.hasLinkedNovel {
-            stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
-            guard let novelData = data.novelData else { return }
+        addImageView.isHidden = !data.hasImage
+        if data.hasImage {
+            addImageView.bindImages(imageURLs: data.imageURLs)
+        }
+        
+        linkNovelView.isHidden = !data.hasLinkedNovel
+        if let novelData = data.novelData {
             linkNovelView.bindData(novelData: novelData)
-        } else {
-            linkNovelWrapperView.removeFromSuperview()
         }
         
         reactView.do {
@@ -113,12 +115,20 @@ final class FeedDetailContentView: UIView {
                         commentRating: data.commentCount)
         }
         
-        if data.hasImage {
-            stackView.insertArrangedSubview(addImageView, at: 1)
-            stackView.setCustomSpacing(data.hasLinkedNovel ? 16 : 30, after: addImageView)
-            addImageView.bindImages(imageURLs: data.imageURLs)
-        } else {
-            addImageView.removeFromSuperview()
+        applySpacing(hasImage: data.hasImage,
+                     hasLinkedNovel: data.hasLinkedNovel)
+    }
+    
+    private func applySpacing(hasImage: Bool, hasLinkedNovel: Bool) {
+        stackView.setCustomSpacing(30, after: contentWrapperView)
+        stackView.setCustomSpacing(30, after: addImageView)
+        stackView.setCustomSpacing(30, after: linkNovelView)
+        stackView.setCustomSpacing(30, after: reactView)
+        
+        if hasImage && hasLinkedNovel {
+            stackView.setCustomSpacing(16, after: addImageView)
         }
+        
+        stackView.setCustomSpacing(16, after: reactView)
     }
 }
