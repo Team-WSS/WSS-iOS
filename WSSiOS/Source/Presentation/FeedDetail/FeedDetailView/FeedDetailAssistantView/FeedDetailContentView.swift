@@ -18,9 +18,7 @@ final class FeedDetailContentView: UIView {
     private let contentWrapperView = UIView()
     private let contentLabel = UILabel()
     let addImageView = FeedDetailAddImageView()
-    private let linkNovelWrapperView = UIView()
     let linkNovelView = FeedDetailNovelView()
-    private let reactWrapperView = UIView()
     let reactView = FeedReactView()
     private let dividerView = UIView()
     
@@ -59,31 +57,33 @@ final class FeedDetailContentView: UIView {
         self.addSubviews(stackView,
                          dividerView)
         contentWrapperView.addSubview(contentLabel)
-        linkNovelWrapperView.addSubview(linkNovelView)
-        reactWrapperView.addSubview(reactView)
         stackView.addArrangedSubviews(contentWrapperView,
                                       addImageView,
-                                      linkNovelWrapperView,
-                                      reactWrapperView)
+                                      linkNovelView,
+                                      reactView)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-
-        [contentLabel,  reactView].forEach {
-            $0.snp.makeConstraints {
-                $0.verticalEdges.equalToSuperview()
-                $0.horizontalEdges.equalToSuperview().inset(20)
-            }
+        
+        contentLabel.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        addImageView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
         }
         
         linkNovelView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
+        reactView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+
         dividerView.snp.makeConstraints {
             $0.top.equalTo(stackView.snp.bottom).offset(16)
             $0.height.equalTo(7)
@@ -99,26 +99,26 @@ final class FeedDetailContentView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        if data.hasLinkedNovel {
-            stackView.insertArrangedSubview(linkNovelWrapperView, at: 2)
-            guard let novelData = data.novelData else { return }
-            linkNovelView.bindData(novelData: novelData)
-        } else {
-            linkNovelWrapperView.removeFromSuperview()
-        }
-        
-        reactView.do {
-            $0.bindData(likeRating: data.likeCount,
-                        isLiked: data.isLiked,
-                        commentRating: data.commentCount)
-        }
-        
         if data.hasImage {
             stackView.insertArrangedSubview(addImageView, at: 1)
             stackView.setCustomSpacing(data.hasLinkedNovel ? 16 : 30, after: addImageView)
             addImageView.bindImages(imageURLs: data.imageURLs)
         } else {
             addImageView.removeFromSuperview()
+        }
+        
+        if data.hasLinkedNovel {
+            stackView.insertArrangedSubview(linkNovelView, at: 2)
+            guard let novelData = data.novelData else { return }
+            linkNovelView.bindData(novelData: novelData)
+        } else {
+            linkNovelView.removeFromSuperview()
+        }
+        
+        reactView.do {
+            $0.bindData(likeRating: data.likeCount,
+                        isLiked: data.isLiked,
+                        commentRating: data.commentCount)
         }
     }
 }
