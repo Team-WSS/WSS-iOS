@@ -108,7 +108,7 @@ final class FeedDetailContentView: UIView {
         }
         
         if data.hasLinkedNovel {
-            stackView.insertArrangedSubview(linkNovelView, at: 2)
+            stackView.insertArrangedSubview(linkNovelView, at: data.hasImage ? 2: 1)
             guard let novelData = data.novelData else { return }
             linkNovelView.bindData(novelData: novelData)
         } else {
