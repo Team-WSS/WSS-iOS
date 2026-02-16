@@ -54,13 +54,13 @@ final class FeedDetailContentView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(stackView,
-                         dividerView)
+        self.addSubview(stackView)
         contentWrapperView.addSubview(contentLabel)
         stackView.addArrangedSubviews(contentWrapperView,
                                       addImageView,
                                       linkNovelView,
-                                      reactView)
+                                      reactView,
+                                      dividerView)
     }
     
     private func setLayout() {
@@ -69,7 +69,7 @@ final class FeedDetailContentView: UIView {
         }
         
         contentLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
         }
         
         addImageView.snp.makeConstraints {
@@ -78,14 +78,14 @@ final class FeedDetailContentView: UIView {
         
         linkNovelView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.height.equalTo(123)
         }
         
         reactView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
-
+        
         dividerView.snp.makeConstraints {
-            $0.top.equalTo(stackView.snp.bottom).offset(16)
             $0.height.equalTo(7)
             $0.horizontalEdges.equalToSuperview()
         }
@@ -99,20 +99,14 @@ final class FeedDetailContentView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
+        addImageView.isHidden = !data.hasImage
         if data.hasImage {
-            stackView.insertArrangedSubview(addImageView, at: 1)
-            stackView.setCustomSpacing(data.hasLinkedNovel ? 16 : 30, after: addImageView)
             addImageView.bindImages(imageURLs: data.imageURLs)
-        } else {
-            addImageView.removeFromSuperview()
         }
         
-        if data.hasLinkedNovel {
-            stackView.insertArrangedSubview(linkNovelView, at: data.hasImage ? 2: 1)
-            guard let novelData = data.novelData else { return }
+        linkNovelView.isHidden = !data.hasLinkedNovel
+        if let novelData = data.novelData {
             linkNovelView.bindData(novelData: novelData)
-        } else {
-            linkNovelView.removeFromSuperview()
         }
         
         reactView.do {
@@ -120,5 +114,21 @@ final class FeedDetailContentView: UIView {
                         isLiked: data.isLiked,
                         commentRating: data.commentCount)
         }
+        
+        applySpacing(hasImage: data.hasImage,
+                     hasLinkedNovel: data.hasLinkedNovel)
+    }
+    
+    private func applySpacing(hasImage: Bool, hasLinkedNovel: Bool) {
+        stackView.setCustomSpacing(30, after: contentWrapperView)
+        stackView.setCustomSpacing(30, after: addImageView)
+        stackView.setCustomSpacing(30, after: linkNovelView)
+        stackView.setCustomSpacing(30, after: reactView)
+        
+        if hasImage && hasLinkedNovel {
+            stackView.setCustomSpacing(16, after: addImageView)
+        }
+        
+        stackView.setCustomSpacing(16, after: reactView)
     }
 }

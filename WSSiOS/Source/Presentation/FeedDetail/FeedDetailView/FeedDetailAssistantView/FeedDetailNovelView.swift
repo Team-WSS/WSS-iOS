@@ -80,7 +80,6 @@ final class FeedDetailNovelView: UIView {
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(123)
         }
         
         novelImageView.snp.makeConstraints {
