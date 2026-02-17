@@ -8,8 +8,8 @@ issuer_id: ENV.fetch("ASC_ISSUER_ID"),
 key_filepath: ENV.fetch("ASC_KEY_PATH")
 )
 
-ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "180"
-ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "180"
+ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
 
 # =====================================
 # yymmddvv build number 생성
@@ -20,19 +20,19 @@ app_id = options[:app_identifier]
 today = Time.now.strftime("%Y%m%d")
 
 latest_build = latest_testflight_build_number(
-app_identifier: app_id
+    app_identifier: app_id
 )
 
 if latest_build.to_s.start_with?(today)
-vv = latest_build.to_s[-2..].to_i + 1
+    vv = latest_build.to_s[-2..].to_i + 1
 else
-vv = 1
+    vv = 1
 end
 
 new_build_number = "#{today}#{format('%02d', vv)}"
 
 increment_build_number(
-build_number: new_build_number
+    build_number: new_build_number
 )
 
 UI.message("📦 Build Number set to #{new_build_number}")
@@ -57,14 +57,18 @@ app_identifier: app_id
 )
 
 build_app(
-scheme: scheme,
-export_method: export_method,
-clean: true,
-export_options: {
-provisioningProfiles: {
-app_id => "match AppStore #{app_id}"
-}
-}
+    scheme: scheme,
+    export_method: export_method,
+    clean: false,
+    derived_data_path: "build/DerivedData",
+    xcargs: "-parallelizeTargets -UseModernBuildSystem=YES",
+    export_options: {
+        compileBitcode: false,
+        signingStyle: "manual",
+        provisioningProfiles: {
+            app_id => "match AppStore #{app_id}"
+        }
+    }
 )
 end
 
@@ -80,7 +84,8 @@ app_identifier: ENV.fetch("APP_IDENTIFIER_DEBUG")
 
 upload_to_testflight(
 app_identifier: ENV.fetch("APP_IDENTIFIER_DEBUG"),
-skip_waiting_for_build_processing: true
+skip_waiting_for_build_processing: true,
+distribute_external: false
 )
 end
 
@@ -95,7 +100,9 @@ app_identifier: ENV.fetch("APP_IDENTIFIER_RELEASE")
 )
 
 upload_to_testflight(
-skip_waiting_for_build_processing: true
+app_identifier: ENV.fetch("APP_IDENTIFIER_RELEASE"),
+skip_waiting_for_build_processing: true,
+distribute_external: false
 )
 end
 
@@ -105,7 +112,7 @@ end
 desc "Release 스킴 App Store 제출"
 lane :release do
 build_with(
-scheme: "Release",
+scheme: "WSSiOS",
 app_identifier: ENV.fetch("APP_IDENTIFIER_RELEASE")
 )
 

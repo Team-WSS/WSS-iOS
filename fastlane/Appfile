@@ -2,6 +2,9 @@
 # 기본 앱 정보
 # ===============================
 
-app_identifier(ENV["APP_IDENTIFIER_RELEASE"])
+app_identifier([
+  ENV.fetch("APP_IDENTIFIER_RELEASE"),
+  ENV.fetch("APP_IDENTIFIER_DEBUG")
+])
 apple_id(ENV["APPLE_ID"])
 team_id(ENV["TEAM_ID"])
