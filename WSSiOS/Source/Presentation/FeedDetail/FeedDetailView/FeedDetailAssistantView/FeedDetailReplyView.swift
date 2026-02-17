@@ -53,7 +53,7 @@ final class FeedDetailReplyView: UIView {
     
     private func setLayout() {
         replyCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().inset(40)
             $0.height.equalTo(20)
