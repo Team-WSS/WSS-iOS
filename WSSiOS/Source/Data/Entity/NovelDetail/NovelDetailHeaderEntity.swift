@@ -14,7 +14,7 @@ struct NovelDetailHeaderEntity {
     let novelGenre: String
     let novelGenreImage: String
     let isNovelCompleted: Bool
-    let novelAuthor: String
+    let novelAuthor: [String]
     let interestCount: Int
     let novelRating: Float
     let novelRatingCount: Int
@@ -30,6 +30,10 @@ struct NovelDetailHeaderEntity {
 
 extension NovelDetailHeaderResponse {
     func toEntity() -> NovelDetailHeaderEntity {
+        let authors = self.author
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+        
         return NovelDetailHeaderEntity(
             userNovelID: self.userNovelID,
             novelTitle: self.novelTitle,
@@ -37,7 +41,7 @@ extension NovelDetailHeaderResponse {
             novelGenre: self.novelGenres,
             novelGenreImage: self.novelGenreImage,
             isNovelCompleted: self.isNovelCompleted,
-            novelAuthor: self.author,
+            novelAuthor: authors,
             interestCount: self.interestCount,
             novelRating: round(self.novelRating * 10) / 10,
             novelRatingCount: self.novelRatingCount,

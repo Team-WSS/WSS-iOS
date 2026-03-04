@@ -21,7 +21,11 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     private let stackView = UIStackView()
     
     private let titleLabel = UILabel()
+    
+    private let infoStack = UIStackView()
     private let infoLabel = UILabel()
+    let authorLabel = UILabel()
+    
     private let reviewStack = UIStackView()
     
     private let interestCount = NovelDetailHeaderReviewSummaryElementView()
@@ -45,6 +49,12 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        infoStack.do {
+            $0.axis = .horizontal
+            $0.spacing = 0
+            $0.alignment = .center
+        }
+        
         stackView.do {
             $0.axis = .vertical
             $0.spacing = 6
@@ -79,8 +89,10 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     
     private func setHierarchy() {
         self.addSubview(stackView)
+        infoStack.addArrangedSubviews(infoLabel,
+                                      authorLabel)
         stackView.addArrangedSubviews(titleLabel,
-                                      infoLabel,
+                                      infoStack,
                                       reviewStack)
         reviewStack.addArrangedSubviews(interestCount,
                                         rating,
@@ -91,6 +103,10 @@ final class NovelDetailHeaderNovelInfoView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        infoStack.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
     
     //MARK: - Data
@@ -100,7 +116,8 @@ final class NovelDetailHeaderNovelInfoView: UIView {
         let novelRatingText = "\(data.novelRating) (\(data.novelRatingCount))"
         
         setTitleLabelText(with: data.novelTitle)
-        setInfoLabelText(with: "\(data.novelGenre)  ·  \(novelCompletionText)  ·  \(data.novelAuthor)")
+        setInfoLabelText(with: "\(data.novelGenre)  ·  \(novelCompletionText)  ·  ")
+        setNovelAuthorText(with: data.novelAuthor)
         interestCount.setText(with: "\(data.interestCount)")
         rating.setText(with: novelRatingText)
         feedCount.setText(with: "\(data.feedCount)")
@@ -125,6 +142,24 @@ final class NovelDetailHeaderNovelInfoView: UIView {
             $0.applyWSSFont(.body3, with: text)
             $0.textColor = .wssGray200
             $0.textAlignment = .center
+            $0.numberOfLines = 1
+        }
+    }
+    
+    private func setNovelAuthorText(with authors: [String]) {
+        let result = NSMutableAttributedString()
+        
+        for (index, author) in authors.enumerated() {
+            result.append(authorLabel.makeWSSAttributed(.body3, text: author, underline: true))
+            
+            if index < authors.count - 1 {
+                result.append(authorLabel.makeWSSAttributed(.body3, text: ", ", underline: false))
+            }
+        }
+        
+        authorLabel.do {
+            $0.attributedText = result
+            $0.textColor = .wssGray200
             $0.numberOfLines = 1
         }
     }
