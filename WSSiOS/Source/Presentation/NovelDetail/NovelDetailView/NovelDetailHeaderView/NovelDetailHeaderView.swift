@@ -18,7 +18,7 @@ final class NovelDetailHeaderView: UIView {
     
     private let stackView = UIStackView()
     let coverImageButton = NovelDetailHeaderCoverImageButton()
-    private let novelInfoView = NovelDetailHeaderNovelInfoView()
+    let novelInfoView = NovelDetailHeaderNovelInfoView()
     let reviewResultView = NovelDetailHeaderReviewResultView()
     let interestReviewButton = NovelDetailHeaderInterestFeedWriteButton()
     
