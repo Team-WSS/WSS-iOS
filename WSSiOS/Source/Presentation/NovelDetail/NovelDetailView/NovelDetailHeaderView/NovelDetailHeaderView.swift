@@ -18,7 +18,7 @@ final class NovelDetailHeaderView: UIView {
     
     private let stackView = UIStackView()
     let coverImageButton = NovelDetailHeaderCoverImageButton()
-    let novelInfoView = NovelDetailHeaderNovelInfoView()
+    private let novelInfoView = NovelDetailHeaderNovelInfoView()
     let reviewResultView = NovelDetailHeaderReviewResultView()
     let interestReviewButton = NovelDetailHeaderInterestFeedWriteButton()
     
@@ -90,6 +90,10 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
+    func setAuthorTapHandler(_ handler: @escaping (String) -> Void) {
+        novelInfoView.onAuthorTapped = handler
+    }
+
     func bindData(_ data: NovelDetailHeaderEntity) {
         novelInfoView.bindData(data)
         interestReviewButton.updateInterestButtonState(data.isUserNovelInterest)

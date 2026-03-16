@@ -13,18 +13,23 @@ import Then
 final class NovelDetailHeaderNovelInfoView: UIView {
     
     //MARK: - Properties
-    
+
     private let titleLineLimit = 3
-    
+    private var currentAuthors: [String] = []
+
+    //MARK: - Callbacks
+
+    var onAuthorTapped: ((String) -> Void)?
+
     //MARK: - Components
-    
+
     private let stackView = UIStackView()
-    
+
     private let titleLabel = UILabel()
-    
+
     private let infoStack = UIStackView()
     private let infoLabel = UILabel()
-    let authorLabel = UILabel()
+    private let authorStackView = UIStackView()
     
     private let reviewStack = UIStackView()
     
@@ -49,6 +54,12 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        authorStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 0
+            $0.alignment = .center
+        }
+
         infoStack.do {
             $0.axis = .horizontal
             $0.spacing = 0
@@ -90,7 +101,7 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         infoStack.addArrangedSubviews(infoLabel,
-                                      authorLabel)
+                                      authorStackView)
         stackView.addArrangedSubviews(titleLabel,
                                       infoStack,
                                       reviewStack)
@@ -147,20 +158,30 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     }
     
     private func setNovelAuthorText(with authors: [String]) {
-        let result = NSMutableAttributedString()
-        
+        currentAuthors = authors
+        authorStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
         for (index, author) in authors.enumerated() {
-            result.append(authorLabel.makeWSSAttributed(.body3, text: author, underline: true))
-            
+            let label = UILabel()
+            label.attributedText = label.makeWSSAttributed(.body3, text: author, underline: true)
+            label.textColor = .wssGray200
+            label.isUserInteractionEnabled = true
+            label.tag = index
+            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(authorLabelTapped(_:))))
+            authorStackView.addArrangedSubview(label)
+
             if index < authors.count - 1 {
-                result.append(authorLabel.makeWSSAttributed(.body3, text: ", ", underline: false))
+                let separator = UILabel()
+                separator.attributedText = separator.makeWSSAttributed(.body3, text: ", ", underline: false)
+                separator.textColor = .wssGray200
+                authorStackView.addArrangedSubview(separator)
             }
         }
-        
-        authorLabel.do {
-            $0.attributedText = result
-            $0.textColor = .wssGray200
-            $0.numberOfLines = 1
-        }
+    }
+
+    @objc private func authorLabelTapped(_ sender: UITapGestureRecognizer) {
+        guard let label = sender.view as? UILabel,
+              label.tag < currentAuthors.count else { return }
+        onAuthorTapped?(currentAuthors[label.tag])
     }
 }
