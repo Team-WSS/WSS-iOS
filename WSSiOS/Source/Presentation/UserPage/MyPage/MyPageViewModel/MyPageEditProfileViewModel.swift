@@ -138,6 +138,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
+            .withLatestFrom(changeCompleteButton)
+            .filter { $0 }
             .observe(on: MainScheduler.instance)
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest{ _ -> Observable<Void> in
