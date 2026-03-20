@@ -17,14 +17,11 @@ final class FeedEditViewModel: ViewModelType {
     private let feedRepository: FeedRepository
     private let feedDetailRepository: FeedDetailRepository
     
-    let relevantCategoryList: [NewNovelGenre] = NewNovelGenre.feedEditGenres
-    
     private var isValidFeedContent: Bool = false
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
     
     private let feedId: Int?
-    var newRelevantCategories: [NewNovelGenre] = []
     private var newNovelId: Int?
     private var newFeedContent: String = ""
     
@@ -43,7 +40,6 @@ final class FeedEditViewModel: ViewModelType {
     
     // Output
     private let endEditing = PublishRelay<Bool>()
-    private let categoryListData = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedEditGenres)
     private let popViewController = PublishRelay<Void>()
     private let initialFeedContent = BehaviorRelay<String>(value: "")
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
@@ -73,7 +69,6 @@ final class FeedEditViewModel: ViewModelType {
         self.feedDetailRepository = feedDetailRepository
         
         self.feedId = feedId
-        self.newRelevantCategories = relevantCategories
         self.newNovelId = novelId
         
         self.connectedNovelTitle.accept(novelTitle)
@@ -86,8 +81,6 @@ final class FeedEditViewModel: ViewModelType {
         let completeButtonDidTap: ControlEvent<Void>
         let spoilerButtonDidTap: ControlEvent<Void>
         let publicButtonDidTap: ControlEvent<Void>
-        let categoryCollectionViewItemSelected: Observable<IndexPath>
-        let categoryCollectionViewItemDeselected: Observable<IndexPath>
         let feedContentUpdated: Observable<String>
         let feedContentViewDidBeginEditing: ControlEvent<Void>
         let feedContentViewDidEndEditing: ControlEvent<Void>
@@ -100,7 +93,6 @@ final class FeedEditViewModel: ViewModelType {
     
     struct Output {
         let endEditing: Observable<Bool>
-        let categoryListData: Observable<[NewNovelGenre]>
         let popViewController: Observable<Void>
         let initialFeedContent: Observable<String>
         let isSpoiler: Observable<Bool>
@@ -131,11 +123,6 @@ final class FeedEditViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 guard let data = data else { return }
-                
-                owner.initialRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
-                owner.newRelevantCategories = data.genreCategories.map { NewNovelGenre.withKoreanRawValue(from: $0) }
-                owner.categoryListData.accept(self.relevantCategoryList)
-                
                 owner.initialFeedContent.accept(data.feedContent)
                 
                 owner.initialNovelId = data.novelData?.novelId
@@ -194,9 +181,9 @@ final class FeedEditViewModel: ViewModelType {
             .flatMapLatest { (isSpoiler, isPublic, selectedImages) in
                 Observable.deferred {
                     if let feedId = self.feedId {
-                        self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                        self.putFeed(feedId: feedId, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
                     } else {
-                        self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
+                        self.postFeed(feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler, isPublic: isPublic, images: selectedImages)
                     }
                 }
                 .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .userInitiated))
@@ -226,22 +213,6 @@ final class FeedEditViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, isPublic in
                 owner.isPublic.accept(!isPublic)
                 owner.isPublicChanged = owner.initialIsPublic != owner.isPublic.value
-                owner.checkIfCompleteButtonIsAbled()
-            })
-            .disposed(by: disposeBag)
-        
-        input.categoryCollectionViewItemSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.newRelevantCategories.append(owner.relevantCategoryList[indexPath.item])
-                owner.isRelevantCategoriesChanged = Set(self.initialRelevantCategories ?? []) != Set(self.newRelevantCategories)
-                owner.checkIfCompleteButtonIsAbled()
-            })
-            .disposed(by: disposeBag)
-        
-        input.categoryCollectionViewItemDeselected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.newRelevantCategories.removeAll { $0 == owner.relevantCategoryList[indexPath.item]}
-                owner.isRelevantCategoriesChanged = Set(self.initialRelevantCategories ?? []) != Set(self.newRelevantCategories)
                 owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
@@ -331,7 +302,6 @@ final class FeedEditViewModel: ViewModelType {
             .distinctUntilChanged()
         
         return Output(endEditing: endEditing.asObservable(),
-                      categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
                       initialFeedContent: initialFeedContent.asObservable(),
                       isSpoiler: isSpoiler.asObservable(),
@@ -357,7 +327,9 @@ final class FeedEditViewModel: ViewModelType {
     }
     
     func checkIfCompleteButtonIsAbled() {
-        self.completeButtonIsAbled.accept(self.isValidFeedContent && !self.newRelevantCategories.isEmpty && self.isInitialFeedChanged())
+        self.completeButtonIsAbled.accept(
+            self.isValidFeedContent && self.isInitialFeedChanged()
+        )
     }
     
     //MARK: - API
@@ -367,13 +339,26 @@ final class FeedEditViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
-        feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
-            .observe(on: MainScheduler.instance)
+    private func postFeed(feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        feedRepository.postFeed(
+            feedContent: feedContent,
+            novelId: novelId,
+            isSpoiler: isSpoiler,
+            isPublic: isPublic,
+            images: images
+        )
+        .observe(on: MainScheduler.instance)
     }
     
-    private func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
-        feedRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler, isPublic: isPublic, images: images)
-            .observe(on: MainScheduler.instance)
+    private func putFeed(feedId: Int, feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Observable<Void> {
+        feedRepository.putFeed(
+            feedId: feedId,
+            feedContent: feedContent,
+            novelId: novelId,
+            isSpoiler: isSpoiler,
+            isPublic: isPublic,
+            images: images
+        )
+        .observe(on: MainScheduler.instance)
     }
 }

@@ -83,20 +83,12 @@ final class FeedEditViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.feedEditCategoryView.categoryCollectionView
-            .register(FeedCategoryCollectionViewCell.self,
-                      forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
-        
         rootView.feedEditAddImageView.addImageCollectionView
             .register(FeedAddImageCollectionViewCell.self,
                       forCellWithReuseIdentifier: FeedAddImageCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
-        rootView.feedEditCategoryView.categoryCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
         rootView.feedEditAddImageView.addImageCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -121,8 +113,6 @@ final class FeedEditViewController: UIViewController {
             completeButtonDidTap: rootView.completeButton.rx.tap,
             spoilerButtonDidTap: rootView.feedEditContentView.spoilerView.spoilerButton.rx.tap,
             publicButtonDidTap: rootView.feedEditPrivateSettingView.privateSettingButton.rx.tap,
-            categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
-            categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
             feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
@@ -139,21 +129,6 @@ final class FeedEditViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, endEditing in
                 owner.view.endEditing(endEditing)
             })
-            .disposed(by: disposeBag)
-        
-        output.categoryListData.bind(to: rootView.feedEditCategoryView.categoryCollectionView.rx.items(
-            cellIdentifier: FeedCategoryCollectionViewCell.cellIdentifier,
-            cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
-                let indexPath = IndexPath(item: item, section: 0)
-                
-                if self.feedEditViewModel.newRelevantCategories.contains(element) {
-                    self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                } else {
-                    self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
-                }
-                
-                cell.bindData(category: element)
-            }
             .disposed(by: disposeBag)
         
         output.popViewController
@@ -334,21 +309,8 @@ final class FeedEditViewController: UIViewController {
 
 extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == rootView.feedEditCategoryView.categoryCollectionView {
-            // 카테고리 컬렉션뷰에 대한 셀 사이즈 지정
-            var text: String?
-            
-            text = self.feedEditViewModel.relevantCategoryList[indexPath.item].withKorean
-            
-            guard let unwrappedText = text else {
-                return CGSize(width: 0, height: 0)
-            }
-            
-            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 37)
-        } else {
-            // 이외: 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
-            return CGSize(width: 100, height: 100)
-        }
+        // 첨부 이미지 컬렉션뷰에 대한 셀 사이즈 지정
+        return CGSize(width: 100, height: 100)
     }
 }
+

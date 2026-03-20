@@ -11,8 +11,8 @@ import RxSwift
 
 protocol FeedService {
     func getFeedList(lastFeedId: Int, size: Int, feedsOption: String) -> Single<TotalFeedListResponse>
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
+    func postFeed(feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
+    func putFeed(feedId: Int, feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void>
 }
 
 final class DefaultFeedService: NSObject, Networking, FeedService {
@@ -47,9 +47,8 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         }
     }
     
-    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void> {
-        let feed = FeedContentRequest(relevantCategories: relevantCategories,
-                                      feedContent: feedContent,
+    func postFeed(feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void> {
+        let feed = FeedContentRequest(feedContent: feedContent,
                                       novelId: novelId,
                                       isSpoiler: isSpoiler,
                                       isPublic: isPublic)
@@ -88,10 +87,9 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         }
     }
     
-    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void> {
+    func putFeed(feedId: Int, feedContent: String, novelId: Int?, isSpoiler: Bool, isPublic: Bool, images: [UIImage]) -> Single<Void> {
         
-        let feed = FeedContentRequest(relevantCategories: relevantCategories,
-                                      feedContent: feedContent,
+        let feed = FeedContentRequest(feedContent: feedContent,
                                       novelId: novelId,
                                       isSpoiler: isSpoiler,
                                       isPublic: isPublic)
