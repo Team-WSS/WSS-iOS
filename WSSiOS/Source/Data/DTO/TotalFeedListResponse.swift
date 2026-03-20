@@ -40,7 +40,6 @@ struct TotalFeedResponse: Decodable {
 }
 
 struct FeedContentRequest: Encodable {
-    let relevantCategories: [String]
     let feedContent: String
     let novelId: Int?
     let isSpoiler: Bool
