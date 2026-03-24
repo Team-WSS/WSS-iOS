@@ -130,6 +130,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.nicknameText
             .bind(with: self, onNext: { owner, text in
+                owner.rootView.nicknameTextField.text = text
                 owner.rootView.updateNicknameCount(text: text)
             })
             .disposed(by: disposeBag)
