@@ -67,6 +67,8 @@ final class MyPageEditProfileViewController: UIViewController {
         rootView.genreCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
+
+        rootView.introTextView.delegate = self
     }
     
     //MARK: - Bind
@@ -199,6 +201,37 @@ final class MyPageEditProfileViewController: UIViewController {
                 owner.rootView.bindData(data: data)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+//MARK: - UITextViewDelegate
+
+extension MyPageEditProfileViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView,
+                  shouldChangeTextIn range: NSRange,
+                  replacementText text: String) -> Bool {
+        
+        guard let currentText = textView.text,
+              let stringRange = Range(range, in: currentText) else {
+            return true
+        }
+        
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+
+        let maxLines = 3
+        let lineHeight = textView.font?.lineHeight ?? 0  // 텍스트뷰에 설정된 폰트의 한 줄 높이 계산
+        let maxHeight = lineHeight * CGFloat(maxLines)  // 3줄 일 때 최대 높이 계산
+        
+        // 변경될 텍스트의 실제 렌더링 높이 계산해서 3줄 일 때 최대 높이(maxHeight)를 초과하게 되면 더 써지지 않도록 함
+        let size = CGSize(width: textView.textContainer.size.width, height: .infinity)
+        let boundingRect = (updatedText as NSString).boundingRect(
+            with: size,
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: textView.font as Any],
+            context: nil
+        )
+
+        return boundingRect.height <= maxHeight
     }
 }
 
