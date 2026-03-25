@@ -30,8 +30,7 @@ enum AttractivePoint: String, CaseIterable, Codable {
         switch self {
         case .worldview: .icAttractiveWorldview
         case .material: .icAttractiveMaterial
-        //TODO: - 필력 아이콘 이미지 변경 필요
-        case .writingSkill: .icAttractiveVibe
+        case .writingSkill: .icAttractiveWritingSkill
         case .character: .icAttractiveCharacter
         case .relationship: .icAttractiveRelationship
         case .vibe: .icAttractiveVibe
