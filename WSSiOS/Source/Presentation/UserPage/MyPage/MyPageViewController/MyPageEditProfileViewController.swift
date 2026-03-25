@@ -89,7 +89,10 @@ final class MyPageEditProfileViewController: UIViewController {
             }),
             updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
             textViewBeginEditing: rootView.introTextView.rx.didBeginEditing,
-            genreCellTap: rootView.genreCollectionView.rx.itemSelected
+            genreCellTap: Observable.merge(
+                rootView.genreCollectionView.rx.itemSelected.asObservable(),
+                rootView.genreCollectionView.rx.itemDeselected.asObservable()
+            )
         )
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)

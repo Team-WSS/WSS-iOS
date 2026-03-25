@@ -69,7 +69,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let updateIntroText: Observable<String>
         let textViewBeginEditing: ControlEvent<Void>
         
-        let genreCellTap: ControlEvent<IndexPath>
+        let genreCellTap: Observable<IndexPath>
     }
     
     struct Output {
