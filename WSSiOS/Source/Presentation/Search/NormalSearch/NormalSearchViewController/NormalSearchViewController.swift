@@ -57,7 +57,13 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.rootView.headerView.searchTextField.becomeFirstResponder()
+        if let initialText = viewModel.initialSearchText {
+            rootView.headerView.searchTextField.text = initialText
+            rootView.headerView.searchTextField.sendActions(for: .valueChanged)
+            rootView.headerView.searchTextField.sendActions(for: .editingDidEndOnExit)
+        } else {
+            rootView.headerView.searchTextField.becomeFirstResponder()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -176,13 +182,12 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.inquiryButtonEnabled
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: ExternalLinks.inquiryAddNovel
-) {
+                if let url = URL(string: ExternalLinks.inquiryAddNovel) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
             .disposed(by: disposeBag)
-        
+
         output.normalSearchCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.resultView.updateCollectionViewHeight(height: height)
@@ -219,8 +224,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.resultView.resultCountView.noSearchResultLabel.rx.tapGesture()
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: ExternalLinks.inquiryAddNovel
-) {
+                if let url = URL(string: ExternalLinks.inquiryAddNovel) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })

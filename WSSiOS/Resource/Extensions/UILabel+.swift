@@ -181,3 +181,27 @@ extension TextAttributeSet {
         self.label.attributedText = self.attributedString
     }
 }
+
+// NSAttributedString에 적용하는 확장 함수
+extension TextAttributeSet {
+    func build() -> NSAttributedString {
+        return attributedString
+    }
+}
+
+extension UILabel {
+    func makeWSSAttributed(_ font: WSSFont, text: String, underline: Bool) -> NSAttributedString {
+        self.font = font.font
+        
+        let attr = NSMutableAttributedString(string: text)
+        var set = TextAttributeSet(label: self, attributeString: attr)
+            .lineHeight(font.lineHeightMultiple)
+            .kerning(kerningPixel: font.kerningPixel)
+        
+        if underline {
+            set = set.underlineStyle(.single)
+        }
+        
+        return set.build()
+    }
+}

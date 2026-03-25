@@ -332,8 +332,13 @@ extension UIViewController {
         self.dismiss(animated: false)
     }
     
-    func pushToNormalSearchViewController() {
-        let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
+    func pushToNormalSearchViewController(searchText: String? = nil) {
+        let normalSearchViewController = NormalSearchViewController(
+            viewModel: NormalSearchViewModel(
+                searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                initialSearchText: searchText
+            )
+        )
         normalSearchViewController.navigationController?.isNavigationBarHidden = false
         normalSearchViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(normalSearchViewController, animated: true)

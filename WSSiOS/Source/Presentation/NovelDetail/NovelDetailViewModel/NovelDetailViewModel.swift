@@ -37,7 +37,8 @@ final class NovelDetailViewModel: ViewModelType {
     private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
     private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
     private let novelGenre = BehaviorRelay<[NewNovelGenre]>(value: [])
-    
+    private let pushToAuthorSearchResultViewController = PublishRelay<String>()
+
     // Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
@@ -92,6 +93,7 @@ final class NovelDetailViewModel: ViewModelType {
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
+        let authorLabelDidTap: Observable<String>
         let reviewResultButtonDidTap: Observable<ReadStatus?>
         let interestButtonDidTap: ControlEvent<Void>
         let feedWriteButtonDidTap: ControlEvent<Void>
@@ -135,6 +137,7 @@ final class NovelDetailViewModel: ViewModelType {
         let isUserNovelInterested: Driver<Bool>
         let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
         let pushToReviewViewController: Observable<(isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String)>
+        let pushToAuthorSearchResultViewController: Observable<String>
         
         // Tab
         let selectedTab: Driver<Tab>
@@ -272,7 +275,13 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .asObservable()
-        
+
+        input.authorLabelDidTap
+            .subscribe(with: self, onNext: { owner, authorName in
+                owner.pushToAuthorSearchResultViewController.accept(authorName)
+            })
+            .disposed(by: disposeBag)
+
         input.interestButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
@@ -523,6 +532,7 @@ final class NovelDetailViewModel: ViewModelType {
             isUserNovelInterested: isUserNovelInterested.asDriver(),
             pushTofeedWriteViewController: pushToFeedWriteViewController,
             pushToReviewViewController: pushToReviewViewController,
+            pushToAuthorSearchResultViewController: pushToAuthorSearchResultViewController.asObservable(),
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),

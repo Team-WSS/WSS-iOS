@@ -90,6 +90,10 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
+    func setAuthorTapHandler(_ handler: @escaping (String) -> Void) {
+        novelInfoView.onAuthorTapped = handler
+    }
+
     func bindData(_ data: NovelDetailHeaderEntity) {
         novelInfoView.bindData(data)
         interestReviewButton.updateInterestButtonState(data.isUserNovelInterest)
