@@ -66,10 +66,10 @@ final class NovelReviewAttractivePointView: UIView {
         
         attractivePointCollectionView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(80)
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(32)
-            $0.height.equalTo(84)
+            $0.height.equalTo(35)
         }
     }
 }
