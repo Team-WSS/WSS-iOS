@@ -69,8 +69,11 @@ final class NormalSearchViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(searchRepository: SearchRepository) {
+    let initialSearchText: String?
+    
+    init(searchRepository: SearchRepository, initialSearchText: String? = nil) {
         self.searchRepository = searchRepository
+        self.initialSearchText = initialSearchText
     }
     
     //MARK: - API

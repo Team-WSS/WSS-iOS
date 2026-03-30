@@ -87,7 +87,7 @@ final class FeedDetailContentView: UIView {
         
         dividerView.snp.makeConstraints {
             $0.height.equalTo(7)
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
     

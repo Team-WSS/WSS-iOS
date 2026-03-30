@@ -29,6 +29,9 @@ final class NovelDetailViewController: UIViewController {
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     
+    // NovelDetailHeader
+    private let authorLabelDidTap = PublishRelay<String>()
+
     // NovelDetailFeed
     private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
     private let novelDetailFeedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
@@ -220,6 +223,13 @@ final class NovelDetailViewController: UIViewController {
                 if let url = URL(string: ExternalLinks.inquiry) {
                     UIApplication.shared.open(url, options: [:])
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToAuthorSearchResultViewController
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, authorName in
+                owner.pushToNormalSearchViewController(searchText: authorName)
             })
             .disposed(by: disposeBag)
         
@@ -467,6 +477,10 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Actions
     
     private func bindAction() {
+        rootView.headerView.setAuthorTapHandler { [weak self] author in
+            self?.authorLabelDidTap.accept(author)
+        }
+
         rootView.scrollView.rx.contentOffset
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, offset in
@@ -528,6 +542,7 @@ final class NovelDetailViewController: UIViewController {
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
+            authorLabelDidTap: authorLabelDidTap.asObservable(),
             reviewResultButtonDidTap: reviewResultButtonDidTap,
             interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
             feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
@@ -549,7 +564,7 @@ final class NovelDetailViewController: UIViewController {
     }
     
     //MARK: - Custom Method
-    
+
     private func showLargeNovelCoverImageView(_ isShow: Bool) {
         rootView.largeNovelCoverImageButton.isHidden = !isShow
         self.navigationController?.setNavigationBarHidden(isShow, animated: false)
