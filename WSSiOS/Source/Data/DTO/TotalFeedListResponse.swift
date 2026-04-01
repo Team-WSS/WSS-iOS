@@ -8,7 +8,6 @@
 import Foundation
 
 struct TotalFeedListResponse: Decodable {
-    let category: String
     let isLoadable: Bool
     let feeds: [TotalFeedResponse]
 }
@@ -27,7 +26,6 @@ struct TotalFeedResponse: Decodable {
     let title: String?
     let novelRatingCount: Int?
     let novelRating: Float?
-    let relevantCategories: [String]
     let isSpoiler: Bool
     let isModified: Bool
     let isMyFeed: Bool
