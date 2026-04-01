@@ -23,7 +23,7 @@ extension StringLiterals {
             static let genrePreferenceTitle = "장르 취향"
             static let novelPreferenceTitle = "작품 취향"
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
-            static let privateLabel = "님의 프로필은\n비공개 상태예요"
+            static let privateLabel = "%@님의 프로필은\n비공개 상태예요"
             static let unknownAlertButtonTitle = "확인"
             static let otherProfileLibrary = "통계"
             static let otherProfileFeed = "활동"

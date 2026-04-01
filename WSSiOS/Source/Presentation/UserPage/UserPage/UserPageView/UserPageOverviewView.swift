@@ -115,8 +115,7 @@ final class UserPageOverviewView: UIView {
             view.isHidden = true
         }
         
-        let text = nickname + StringLiterals.MyPage.Profile.privateLabel
-        userPagePrivateView.bindData(nickname: text)
+        userPagePrivateView.bindData(nickname)
         userPagePrivateView.isHidden = false
     }
     

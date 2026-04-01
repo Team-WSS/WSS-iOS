@@ -101,14 +101,13 @@ final class UserPageFeedView: UIView {
     
     func isPrivateUserPage(nickname: String) {
         userPagePrivateView.isHidden = false
+        userPagePrivateView.bindData(nickname)
         
         [userPageFeedTableView,
          showMoreActivityButtonView,
          userPageFeedEmptyView].forEach { view in
             view.isHidden = true
         }
-        let text = nickname + StringLiterals.MyPage.Profile.privateLabel
-        userPagePrivateView.bindData(nickname: text)
     }
     
     func isEmptyFeed() {
