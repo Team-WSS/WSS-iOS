@@ -9,16 +9,14 @@ import Foundation
 import UIKit
 
 struct TotalFeedListEntity {
-    let category: String
     let isLoadable: Bool
     let feeds: [TotalFeedEntity]
 }
 
 extension TotalFeedListResponse {
     func toEntity() -> TotalFeedListEntity {
-        return TotalFeedListEntity(category: self.category,
-                               isLoadable: self.isLoadable,
-                               feeds: self.feeds.map { $0.toEntity() })
+        return TotalFeedListEntity(isLoadable: self.isLoadable,
+                                   feeds: self.feeds.map { $0.toEntity() })
     }
 }
 
@@ -39,7 +37,6 @@ struct TotalFeedEntity {
     let novelGenreImage: UIImage
     let feedWriterNovelRating: Float
     
-    let relevantCategories: String
     let isSpoiler: Bool
     let isModified: Bool
     let isMyFeed: Bool
@@ -53,7 +50,6 @@ struct TotalFeedEntity {
 extension TotalFeedListEntity {
     static func from(userFeedListEntity: UserFeedListEntity, myProfileEntity: MyProfileEntity, userId: Int) -> TotalFeedListEntity {
         TotalFeedListEntity(
-            category: "all",
             isLoadable: userFeedListEntity.isLoadable,
             feeds: userFeedListEntity.feeds.map {
                 TotalFeedEntity(
@@ -71,7 +67,6 @@ extension TotalFeedListEntity {
                     novelGenreColor: $0.novelGenreColor,
                     novelGenreImage: $0.novelGenreImage,
                     feedWriterNovelRating: $0.feedWriterNovelRating,
-                    relevantCategories: $0.relevantCategories.joined(separator: ", "),
                     isSpoiler: $0.isSpoiler,
                     isModified: $0.isModified,
                     isMyFeed: true,
@@ -86,7 +81,6 @@ extension TotalFeedListEntity {
 extension TotalFeedResponse {
     func toEntity() -> TotalFeedEntity {
         let avatarImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
-        let categoryText = self.relevantCategories.joined(separator: ", ")
         let roundedRating: Float
         if let userNovelRating = self.feedWriterNovelRating {
             roundedRating = round(userNovelRating * 10) / 10
@@ -116,7 +110,6 @@ extension TotalFeedResponse {
             novelGenreColor: novelGenreColor,
             novelGenreImage: novelGenreImage,
             feedWriterNovelRating: roundedRating,
-            relevantCategories: categoryText,
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
             isMyFeed: self.isMyFeed,
@@ -130,8 +123,7 @@ extension TotalFeedResponse {
 
 // test repository를 위한 entity 더미 데이터
 extension TotalFeedListEntity {
-    static let dummyFullData = TotalFeedListEntity(category: "all",
-                                                   isLoadable: true,
+    static let dummyFullData = TotalFeedListEntity(isLoadable: true,
                                                    feeds: [
                                                     TotalFeedEntity(feedId: 10003,
                                                                     userId: 31313131,
@@ -147,7 +139,6 @@ extension TotalFeedListEntity {
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
                                                                     feedWriterNovelRating: 3.33,
-                                                                    relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
                                                                     isMyFeed: true,
@@ -169,7 +160,6 @@ extension TotalFeedListEntity {
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
                                                                     feedWriterNovelRating: 3.33,
-                                                                    relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
                                                                     isMyFeed: false,
@@ -191,7 +181,6 @@ extension TotalFeedListEntity {
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
                                                                     feedWriterNovelRating: 3.33,
-                                                                    relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
                                                                     isMyFeed: false,
@@ -213,7 +202,6 @@ extension TotalFeedListEntity {
                                                                     novelGenreColor: .genreColorBL,
                                                                     novelGenreImage: .icGenreLinkBL,
                                                                     feedWriterNovelRating: -1,
-                                                                    relevantCategories: "없을걸",
                                                                     isSpoiler: false,
                                                                     isModified: false,
                                                                     isMyFeed: false,

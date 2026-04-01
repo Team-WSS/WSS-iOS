@@ -26,12 +26,10 @@ final class FeedEditViewModel: ViewModelType {
     private var newFeedContent: String = ""
     
     // 기존 피드 수정
-    private var initialRelevantCategories: [NewNovelGenre]?
     private var initialIsSpoiler: Bool?
     private var initialIsPublic: Bool?
     private var initialNovelId: Int?
     private var initialAddImages: [UIImage]?
-    private var isRelevantCategoriesChanged: Bool = false
     private var isFeedContentChanged: Bool = false
     private var isSpoilerChanged: Bool = false
     private var isPublicChanged: Bool = false
@@ -62,7 +60,6 @@ final class FeedEditViewModel: ViewModelType {
     init(feedRepository: FeedRepository,
          feedDetailRepository: FeedDetailRepository,
          feedId: Int? = nil,
-         relevantCategories: [NewNovelGenre] = [],
          novelId: Int? = nil,
          novelTitle: String? = nil) {
         self.feedRepository = feedRepository
@@ -323,7 +320,7 @@ final class FeedEditViewModel: ViewModelType {
     // MARK: - Custom Method
     
     func isInitialFeedChanged() -> Bool {
-        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged || isAddImagesChanged : true
+        return feedId != nil ? isFeedContentChanged || isSpoilerChanged || isPublicChanged || isNovelIdChanged || isAddImagesChanged : true
     }
     
     func checkIfCompleteButtonIsAbled() {

@@ -236,7 +236,6 @@ extension UIViewController {
     }
     
     func pushToFeedEditViewController(feedId: Int? = nil,
-                                      relevantCategories: [NewNovelGenre] = [],
                                       novelId: Int? = nil,
                                       novelTitle: String? = nil) {
         let viewController = FeedEditViewController(
@@ -248,7 +247,6 @@ extension UIViewController {
                     feedDetailService: DefaultFeedDetailService()
                 ),
                 feedId: feedId,
-                relevantCategories: relevantCategories,
                 novelId: novelId,
                 novelTitle: novelTitle
             )

@@ -27,7 +27,6 @@ struct UserFeedResponse: Decodable {
     let title: String?
     let novelRating: Float?
     let novelRatingCount: Int?
-    let relevantCategories: [String]
     let isPublic: Bool
     let genre: String?
     let feedWriterNovelRating: Float?
