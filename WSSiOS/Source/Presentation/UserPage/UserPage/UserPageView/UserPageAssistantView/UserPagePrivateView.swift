@@ -68,9 +68,11 @@ final class UserPagePrivateView: UIView {
         }
     }
     
-    func bindData(nickname: String) {
+    func bindData(_ nickname: String) {
         isPrivateDescriptionLabel.do {
-            $0.applyWSSFont(.body2, with: nickname)
+            let privateDescription = String(format: StringLiterals.MyPage.Profile.privateLabel, nickname)
+           
+            $0.applyWSSFont(.body2, with: privateDescription)
         }
     }
 }
