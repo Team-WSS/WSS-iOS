@@ -21,8 +21,7 @@ final class UserPageFeedView: UIView {
     private let showMoreActivityButtonView = UIView()
     let userPageFeedDetailButton = UIButton()
     private let userPageFeedDetailButtonLabel = UILabel()
-    private let paddingViewAfterButton = UIView()
-    
+
     private let userPagePrivateView = UserPagePrivateView()
     private let userPageFeedEmptyView = UserPageFeedEmptyView()
     
@@ -58,10 +57,6 @@ final class UserPageFeedView: UIView {
             }
         }
         
-        paddingViewAfterButton.do {
-            $0.backgroundColor = .wssWhite
-        }
-        
         userPagePrivateView.isHidden = true
         userPageFeedEmptyView.isHidden = true
     }
@@ -70,7 +65,6 @@ final class UserPageFeedView: UIView {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(userPageFeedTableView,
                                       showMoreActivityButtonView,
-                                      paddingViewAfterButton,
                                       userPagePrivateView,
                                       userPageFeedEmptyView)
         showMoreActivityButtonView.addSubview(userPageFeedDetailButton)
@@ -79,7 +73,8 @@ final class UserPageFeedView: UIView {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(40)
         }
         
         userPageFeedDetailButton.snp.makeConstraints {
@@ -91,11 +86,6 @@ final class UserPageFeedView: UIView {
         
         userPageFeedDetailButtonLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
-        }
-        
-        paddingViewAfterButton.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.height.equalTo(40)
         }
         
         userPagePrivateView.snp.makeConstraints {
@@ -114,7 +104,6 @@ final class UserPageFeedView: UIView {
         
         [userPageFeedTableView,
          showMoreActivityButtonView,
-         paddingViewAfterButton,
          userPageFeedEmptyView].forEach { view in
             view.isHidden = true
         }
@@ -126,28 +115,13 @@ final class UserPageFeedView: UIView {
         userPageFeedEmptyView.isHidden = false
         
         [userPageFeedTableView,
-         showMoreActivityButtonView,
-         paddingViewAfterButton].forEach { view in
+         showMoreActivityButtonView].forEach { view in
             view.isHidden = true
         }
     }
     
     func showMoreButton(isShow: Bool) {
         showMoreActivityButtonView.isHidden = !isShow
-        paddingViewAfterButton.isHidden = !isShow
-        
-        if isShow {
-            paddingViewAfterButton.snp.makeConstraints {
-                $0.width.equalToSuperview()
-                $0.height.equalTo(40)
-            }
-        } else {
-            paddingViewAfterButton.snp.makeConstraints {
-                $0.width.bottom.equalToSuperview()
-                $0.height.greaterThanOrEqualTo(40)
-            }
-        }
-        
         self.stackView.layoutIfNeeded()
     }
 }
