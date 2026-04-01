@@ -345,6 +345,10 @@ final class UserPageViewModel: ViewModelType {
         return Observable.zip(genrePreferences, novelPreferences)
             .do(onNext: { [weak self] genre, novel in
                 guard let self else { return }
+                
+                // 비공개 유저일 때는 취향분석 empty 처리하지 않음
+                guard self.profileDataRelay.value.isProfilePublic else { return }
+                
                 let isGenreEmpty = genre.genreTotalCount == 0
                 let isNovelEmpty = novel.attractivePoints.isEmpty && novel.keywords.isEmpty
                 self.isPrefernecesEmptyRelay.accept((isGenreEmpty, isNovelEmpty))
@@ -363,7 +367,9 @@ final class UserPageViewModel: ViewModelType {
             })
             .map { _ in Void() }
             .catch { [weak self] error in
-                self?.isPrefernecesEmptyRelay.accept((true, true))
+                if self?.profileDataRelay.value.isProfilePublic == true {
+                    self?.isPrefernecesEmptyRelay.accept((true, true))
+                }
                 return .just(Void())
             }
     }
@@ -384,7 +390,10 @@ final class UserPageViewModel: ViewModelType {
                 guard let self else { return }
                 
                 if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(())
+                    // 비공개 유저일 때는 피드가 빈 것이 아니라 비공개 상태이므로 empty 처리하지 않음
+                    if self.profileDataRelay.value.isProfilePublic {
+                        self.isEmptyFeedRelay.accept(())
+                    }
                 } else {
                     
                     //5개까지만 활동뷰에 바인딩
@@ -395,7 +404,9 @@ final class UserPageViewModel: ViewModelType {
                 }
             })
             .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(())
+                if self?.profileDataRelay.value.isProfilePublic == true {
+                    self?.isEmptyFeedRelay.accept(())
+                }
                 return .just([])
             }
             .map { _ in Void() }
