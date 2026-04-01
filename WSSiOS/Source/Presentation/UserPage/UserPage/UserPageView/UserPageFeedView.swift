@@ -87,18 +87,11 @@ final class UserPageFeedView: UIView {
         userPageFeedDetailButtonLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-        
-        userPagePrivateView.snp.makeConstraints {
-            $0.height.equalTo(450)
-        }
-        
-        userPageFeedEmptyView.snp.makeConstraints {
-            $0.height.equalTo(450)
-        }
     }
     
     //MARK: - Data
     
+    // 비공개 유저일 때
     func isPrivateUserPage(nickname: String) {
         userPagePrivateView.isHidden = false
         userPagePrivateView.bindData(nickname)
@@ -110,6 +103,7 @@ final class UserPageFeedView: UIView {
         }
     }
     
+    // 공개 + 작성 글이 없을 때
     func isEmptyFeed() {
         userPageFeedEmptyView.isHidden = false
         
@@ -121,6 +115,5 @@ final class UserPageFeedView: UIView {
     
     func showMoreButton(isShow: Bool) {
         showMoreActivityButtonView.isHidden = !isShow
-        self.stackView.layoutIfNeeded()
     }
 }
