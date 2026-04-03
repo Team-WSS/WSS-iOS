@@ -139,6 +139,16 @@ extension TextAttributeSet {
         return self
     }
     
+    func partialFont(font: UIFont, rangeString: String) -> TextAttributeSet {
+        let nsString = self.attributedString.string as NSString
+        let range = nsString.range(of: rangeString)
+        
+        if range.location != NSNotFound {
+            self.attributedString.addAttribute(.font, value: font, range: range)
+        }
+        return self
+    }
+    
     func partialColor(color: UIColor, rangeString: String) -> TextAttributeSet {
         let nsString = self.attributedString.string as NSString
         let range = nsString.range(of: rangeString)
