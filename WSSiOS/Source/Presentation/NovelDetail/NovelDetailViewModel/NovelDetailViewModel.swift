@@ -38,7 +38,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
     private let novelGenre = BehaviorRelay<[NewNovelGenre]>(value: [])
     private let pushToAuthorSearchResultViewController = PublishRelay<String>()
-
+    
     // Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
@@ -70,7 +70,11 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(novelDetailRepository: NovelDetailRepository, feedDetailRepository: FeedDetailRepository, novelId: Int = 0) {
+    init(
+        novelDetailRepository: NovelDetailRepository,
+        feedDetailRepository: FeedDetailRepository,
+        novelId: Int = 0
+    ) {
         self.novelDetailRepository = novelDetailRepository
         self.feedDetailRepository = feedDetailRepository
         self.novelId = novelId
@@ -135,7 +139,7 @@ final class NovelDetailViewModel: ViewModelType {
         // NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
-        let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
+        let pushTofeedWriteViewController: Observable<(novelId: Int, novelTitle: String)>
         let pushToReviewViewController: Observable<(isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String)>
         let pushToAuthorSearchResultViewController: Observable<String>
         
@@ -275,13 +279,13 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .asObservable()
-
+        
         input.authorLabelDidTap
             .subscribe(with: self, onNext: { owner, authorName in
                 owner.pushToAuthorSearchResultViewController.accept(authorName)
             })
             .disposed(by: disposeBag)
-
+        
         input.interestButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
@@ -308,8 +312,7 @@ final class NovelDetailViewModel: ViewModelType {
                 AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelWriteButton)
             })
             .map { _ in
-                (genre: self.novelGenre.value,
-                 novelId: self.novelId,
+                (novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
         
@@ -319,8 +322,7 @@ final class NovelDetailViewModel: ViewModelType {
                 AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelWriteFloatingButton)
             })
             .map { _ in
-                (genre: self.novelGenre.value,
-                 novelId: self.novelId,
+                (novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
         

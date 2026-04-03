@@ -25,7 +25,6 @@ struct FeedResponse: Decodable {
     var title: String?
     var novelRatingCount: Int?
     var novelRating: Float?
-    var relevantCategories: [String]
     
     var isSpoiler: Bool
     var isModified: Bool
@@ -74,7 +73,6 @@ extension FeedResponse {
                                                 likeCount: 1,
                                                 isLiked: true,
                                                 commentCount: 2,
-                                                relevantCategories: [],
                                                 isSpoiler: false,
                                                 isModified: false,
                                                 isMyFeed: true,
@@ -90,7 +88,6 @@ extension FeedResponse {
                                                  likeCount: 1,
                                                  isLiked: true,
                                                  commentCount: 2,
-                                                 relevantCategories: [],
                                                  isSpoiler: false,
                                                  isModified: false,
                                                  isMyFeed: true,
@@ -107,7 +104,6 @@ extension FeedResponse {
                                                likeCount: 1,
                                                isLiked: true,
                                                commentCount: 2,
-                                               relevantCategories: [],
                                                isSpoiler: false,
                                                isModified: false,
                                                isMyFeed: true,
@@ -129,7 +125,6 @@ extension FeedResponse {
                                                   title: "웹소설 제목",
                                                   novelRatingCount: 10,
                                                   novelRating: 1.2,
-                                                  relevantCategories: [],
                                                   isSpoiler: false,
                                                   isModified: false,
                                                   isMyFeed: true,

@@ -42,7 +42,12 @@ final class FeedEditContentSpoilerView: UIView {
         }
         
         spoilerNoticeLabel.do {
-            $0.applyWSSFont(.body3, with: "잠깐, 스포일러가 있나요?")
+            $0.applyWSSFont(.body3, with: StringLiterals.FeedEdit.spoilrSetting)
+            $0.makeAttribute(with: StringLiterals.FeedEdit.spoilrSetting)?
+                .lineHeight(WSSFont.body3.lineHeightMultiple)
+                .kerning(kerningPixel: WSSFont.body3.kerningPixel)
+                .partialFont(font: UIFont(name: "Pretendard-SemiBold", size: 14)!, rangeString: "스포일러")
+                .applyAttribute()
             $0.textColor = .wssGray200
         }
         

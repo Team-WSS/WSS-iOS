@@ -90,7 +90,7 @@ final class FeedEditContentView: UIView {
         feedTextWrapperView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(5)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(309)
+            $0.height.equalTo(335)
         }
         
         spoilerView.snp.makeConstraints {

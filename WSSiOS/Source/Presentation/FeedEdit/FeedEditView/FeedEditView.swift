@@ -20,8 +20,6 @@ final class FeedEditView: UIView {
     private let stackView = UIStackView()
     // 비공개 설정
     let feedEditPrivateSettingView = FeedEditPrivateSettingView()
-    // 장르 카테고리
-    let feedEditCategoryView = FeedEditCategoryView()
     // 작품 피드 작성
     let feedEditContentView = FeedEditContentView()
     // 작품 이미지 첨부
@@ -97,8 +95,7 @@ final class FeedEditView: UIView {
         
         scrollView.addSubview(stackView)
         
-        stackView.addArrangedSubviews(feedEditCategoryView,
-                                      feedEditContentView,
+        stackView.addArrangedSubviews(feedEditContentView,
                                       feedEditAddImageView,
                                       novelConnectStackView)
         novelConnectStackView.addArrangedSubviews(feedEditNovelConnectView,
@@ -126,8 +123,6 @@ final class FeedEditView: UIView {
             $0.bottom.equalTo(scrollView.contentLayoutGuide).offset(-30)
             $0.width.equalTo(UIScreen.main.bounds.width)
         }
-        
-        stackView.setCustomSpacing(12, after: feedEditCategoryView)
     }
     
     //MARK: - Custom Method

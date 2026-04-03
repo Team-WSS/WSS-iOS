@@ -20,7 +20,6 @@ struct FeedEntity {
     let likeCount: Int
     let isLiked: Bool
     let commentCount: Int
-    let genreCategories: [String]
     
     // 피드 연결 작품 관련
     let hasLinkedNovel: Bool
@@ -57,7 +56,6 @@ extension FeedResponse {
                           likeCount: self.likeCount,
                           isLiked: self.isLiked,
                           commentCount: self.commentCount,
-                          genreCategories: self.relevantCategories,
                           hasLinkedNovel: hasLinkedNovel,
                           novelData: novelData,
                           isSpoiler: self.isSpoiler,
