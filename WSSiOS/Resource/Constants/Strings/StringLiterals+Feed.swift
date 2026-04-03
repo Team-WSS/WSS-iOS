@@ -55,7 +55,7 @@ extension StringLiterals {
         
         enum Filter {
             static let title = "글 찾기 필터"
-            static let genre = "장르"
+            static let genre = "카테고리"
             static let visibliltyOption = "공개여부"
             static let bottomButton = "해당하는 글 보기"
         }

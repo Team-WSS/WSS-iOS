@@ -71,7 +71,7 @@ enum NewNovelGenre: String, CaseIterable {
         case .bl:
             return "BL"
         case .etc:
-            return "기타"
+            return "그 외"
         case .error:
             return "error"
         }
