@@ -334,7 +334,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
 
         if self.userNickname.value == profileData?.nickname &&
             self.userIntro.value == profileData?.introdution &&
-            self.userGenre.value == profileData?.genrePreferences &&
+            Set(self.userGenre.value) == Set(profileData?.genrePreferences ?? []) &&
             self.userImage.value == profileData?.avatarImageURL {
             
             self.changeCompleteButton.accept(self.checkDuplicatedButton.value && isIntroValid)
