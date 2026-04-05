@@ -68,7 +68,9 @@ final class MyPageEditProfileViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
 
-        rootView.introTextView.delegate = self
+        rootView.introTextView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
