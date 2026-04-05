@@ -140,7 +140,6 @@ final class MyPageEditProfileView: UIView {
             }
             
             introTextView.do {
-                $0.font = .Body2
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 14
                 $0.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
