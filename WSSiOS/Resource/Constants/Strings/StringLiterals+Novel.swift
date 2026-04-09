@@ -107,13 +107,15 @@ extension StringLiterals {
             static let endDate = "종료 날짜"
         }
         
+        static let rating = "별점"
+        
         enum AttractivePoint {
             static let attractivePoint = "매력포인트"
         }
         
         enum Keyword {
             static let keyword = "키워드"
-            static let placeholder = "키워드로 작품을 소개해 봐요"
+            static let placeholder = "작품을 나타내는 키워드는?"
         }
         
         enum KeywordSearch {

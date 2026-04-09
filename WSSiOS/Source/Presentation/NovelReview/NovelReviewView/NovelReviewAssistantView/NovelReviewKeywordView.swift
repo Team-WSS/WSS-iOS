@@ -42,7 +42,7 @@ final class NovelReviewKeywordView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.NovelReview.Keyword.keyword)
+            $0.applyWSSFont(.title3, with: StringLiterals.NovelReview.Keyword.keyword)
             $0.textColor = .wssBlack
         }
         

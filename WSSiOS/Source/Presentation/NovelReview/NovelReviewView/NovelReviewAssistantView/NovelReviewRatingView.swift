@@ -14,6 +14,7 @@ final class NovelReviewRatingView: UIView {
     
     //MARK: - Components
     
+    let titleLabel = UILabel()
     let starImageStackView = UIStackView()
     lazy var starImageViews: [UIImageView] = createStars()
     
@@ -38,6 +39,10 @@ final class NovelReviewRatingView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
+        titleLabel.do {
+            $0.applyWSSFont(.title3, with: StringLiterals.NovelReview.rating)
+            $0.textColor = .wssBlack
+        }
         starImageStackView.do {
             $0.axis = .horizontal
             $0.spacing = 10
@@ -45,16 +50,21 @@ final class NovelReviewRatingView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(starImageStackView)
+        self.addSubviews(titleLabel,
+                         starImageStackView)
         starImageViews.forEach {
             starImageStackView.addArrangedSubview($0)
         }
     }
     
     private func setLayout() {
-        starImageStackView.snp.makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().inset(25)
+        }
+        starImageStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(14)
             $0.bottom.equalToSuperview().inset(34)
             $0.width.equalTo(190)
             $0.height.equalTo(30)
