@@ -59,15 +59,10 @@ final class NovelReviewViewController: UIViewController {
     
     private func register() {
         rootView.novelReviewStatusView.statusCollectionView.register(NovelReviewStatusCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier)
-        rootView.novelReviewAttractivePointView.attractivePointCollectionView.register(NovelReviewAttractivePointCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier)
         rootView.novelReviewKeywordView.selectedKeywordCollectionView.register(NovelReviewSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
-        rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
         rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -103,8 +98,11 @@ final class NovelReviewViewController: UIViewController {
                     let width = starImageStackView.frame.width
                     return (location, width)
                 },
-            attractivePointCollectionViewItemSelected: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.itemSelected.asObservable(),
-            attractivePointCollectionViewItemDeselected: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.itemDeselected.asObservable(),
+            attractivePointButtonDidTap: Observable.merge(
+                rootView.novelReviewAttractivePointView.attractivePointOptionButtons.map { button in
+                    button.rx.tap.map { button.attractivePoint }
+                }
+            ),
             keywordSearchViewDidTap: rootView.novelReviewKeywordView.keywordSearchBarView.rx.tapGesture().when(.recognized).asObservable(),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
@@ -148,7 +146,7 @@ final class NovelReviewViewController: UIViewController {
                 owner.rootView.novelReviewStatusView.bindData(readStatus: readStatus,
                                                               startDate: startDateEndDate[0],
                                                               endDate: startDateEndDate[1])
-
+                
             })
             .disposed(by: disposeBag)
         
@@ -158,22 +156,14 @@ final class NovelReviewViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.attractivePointListData
-            .bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
-                let indexPath = IndexPath(item: item, section: 0)
-                
-                if self.novelReviewViewModel.selectedAttractivePointList.contains(element.rawValue) {
-                    self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                } else {
-                    self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
-                }
-                cell.bindData(attractivePoint: element)
-            }
+        output.selectedAttractivePointsData
+            .subscribe(with: self, onNext: { owner, selectedPoints in
+                owner.rootView.novelReviewAttractivePointView.updateButtons(selectedOptions: selectedPoints)
+            })
             .disposed(by: disposeBag)
         
         output.isAttractivePointCountOverLimit
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.selectionOverLimit(count: 3))
             })
             .disposed(by: disposeBag)
@@ -188,7 +178,7 @@ final class NovelReviewViewController: UIViewController {
             .bind(to: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
                 cell.bindData(keyword: element)
             }
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         output.selectedKeywordCollectionViewHeight
             .subscribe(with: self, onNext: { owner, height in
@@ -217,19 +207,7 @@ final class NovelReviewViewController: UIViewController {
 extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if collectionView == self.rootView.novelReviewAttractivePointView.attractivePointCollectionView {
-            var text: String?
-            
-            let attractivePointList = AttractivePoint.allCases.map { $0.koreanString }
-            text = attractivePointList[indexPath.item]
-            
-            guard let unwrappedText = text else {
-                return CGSize(width: 0, height: 0)
-            }
-            
-            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 37)
-        } else if collectionView == self.rootView.novelReviewKeywordView.selectedKeywordCollectionView {
+        if collectionView == self.rootView.novelReviewKeywordView.selectedKeywordCollectionView {
             var text: String?
             
             text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item].keywordName

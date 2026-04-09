@@ -15,7 +15,10 @@ final class NovelReviewAttractivePointView: UIView {
     //MARK: - Components
     
     private let titleLabel = UILabel()
-    let attractivePointCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let stackView = UIStackView()
+    let attractivePointOptionButtons = AttractivePoint.allCases.map {
+        LibraryFilterAttractivePointOptionButton($0)
+    }
     
     //MARK: - Life Cycle
     
@@ -39,23 +42,24 @@ final class NovelReviewAttractivePointView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.NovelReview.AttractivePoint.attractivePoint)
+            $0.applyWSSFont(.title3, with: StringLiterals.NovelReview.AttractivePoint.attractivePoint)
             $0.textColor = .wssBlack
         }
         
-        attractivePointCollectionView.do {
-            let layout = CenterAlignedCollectionViewFlowLayout()
-            layout.minimumInteritemSpacing = 6
-
-            $0.collectionViewLayout = layout
-            $0.isScrollEnabled = false
-            $0.allowsMultipleSelection = true
+        stackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 0
+            $0.distribution = .fillEqually
         }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel, 
-                         attractivePointCollectionView)
+                         stackView)
+        
+        attractivePointOptionButtons.forEach {
+            stackView.addArrangedSubview($0)
+        }
     }
     
     private func setLayout() {
@@ -64,12 +68,18 @@ final class NovelReviewAttractivePointView: UIView {
             $0.top.equalToSuperview().inset(25)
         }
         
-        attractivePointCollectionView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(80)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-            $0.bottom.equalToSuperview().inset(32)
-            $0.height.equalTo(84)
+        stackView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(14)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(25)
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateButtons(selectedOptions: [AttractivePoint]) {
+        attractivePointOptionButtons.forEach {
+            $0.updateButton(selectedOptions: selectedOptions)
         }
     }
 }

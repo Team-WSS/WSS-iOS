@@ -23,10 +23,11 @@ final class NovelReviewViewModel: ViewModelType {
     let novelTitle: String
     
     private var isNovelReviewExist: Bool = false
-
+    
     private var startDate: Date?
     private var endDate: Date?
     var selectedAttractivePointList: [String] = []
+    private let selectedAttractivePointsData = BehaviorRelay<[AttractivePoint]>(value: [])
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
@@ -44,8 +45,8 @@ final class NovelReviewViewModel: ViewModelType {
     private let presentNovelDateSelectModalViewController = PublishRelay<(ReadStatus, Date?, Date?)>()
     private let startDateEndDateData = PublishRelay<[Date?]>()
     private let starRating = BehaviorRelay<Float>(value: 0.0)
-    private let attractivePointListData = PublishRelay<[AttractivePoint]>()
-    private let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
+
+    private let isAttractivePointCountOverLimit = PublishRelay<Void>()
     private let presentNovelKeywordSelectModalViewController = PublishRelay<[KeywordData]>()
     let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
     private let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -69,8 +70,7 @@ final class NovelReviewViewModel: ViewModelType {
         let dateLabelTapGesture: Observable<UITapGestureRecognizer>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
-        let attractivePointCollectionViewItemSelected: Observable<IndexPath>
-        let attractivePointCollectionViewItemDeselected: Observable<IndexPath>
+        let attractivePointButtonDidTap: Observable<AttractivePoint>
         let keywordSearchViewDidTap: Observable<UITapGestureRecognizer>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
@@ -87,8 +87,8 @@ final class NovelReviewViewModel: ViewModelType {
         let presentNovelDateSelectModalViewController: Observable<(ReadStatus, Date?, Date?)>
         let startDateEndDateData: Observable<[Date?]>
         let starRating: Observable<Float>
-        let attractivePointListData: Observable<[AttractivePoint]>
-        let isAttractivePointCountOverLimit: Observable<IndexPath>
+        let selectedAttractivePointsData: Observable<[AttractivePoint]>
+        let isAttractivePointCountOverLimit: Observable<Void>
         let presentNovelKeywordSelectModalViewController: Observable<[KeywordData]>
         let selectedKeywordListData: Observable<[KeywordData]>
         let selectedKeywordCollectionViewHeight: Observable<CGFloat>
@@ -110,10 +110,12 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.starRating.accept(data.userNovelRating)
                 owner.selectedKeywordListData.accept(data.keywords)
                 owner.selectedAttractivePointList = data.attractivePoints
+                owner.selectedAttractivePointsData.accept(
+                    data.attractivePoints.compactMap { AttractivePoint(rawValue: $0) }
+                )
                 
                 owner.readStatusData.accept(owner.readStatus)
                 owner.readStatusListData.accept(ReadStatus.allCases)
-                owner.attractivePointListData.accept(AttractivePoint.allCases)
             })
             .disposed(by: disposeBag)
         
@@ -128,7 +130,7 @@ final class NovelReviewViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest {
                 AmplitudeManager.shared.track(AmplitudeEvent.Novel.rateNovel)
-
+                
                 let startDateString = self.readStatus != .quit ? self.startDate.map { self.dateFormatter.string(from: $0) } : nil
                 let endDateString = self.readStatus != .watching ? self.endDate.map { self.dateFormatter.string(from: $0) } : nil
                 let keywordIdList = self.selectedKeywordListData.value.map { $0.keywordId }
@@ -174,8 +176,8 @@ final class NovelReviewViewModel: ViewModelType {
         input.dateLabelTapGesture
             .subscribe(with: self, onNext: { owner, _ in
                 owner.presentNovelDateSelectModalViewController.accept((owner.readStatus,
-                                                                         owner.startDate,
-                                                                         owner.endDate))
+                                                                        owner.startDate,
+                                                                        owner.endDate))
             })
             .disposed(by: disposeBag)
         
@@ -198,19 +200,19 @@ final class NovelReviewViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.attractivePointCollectionViewItemSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                if owner.selectedAttractivePointList.count >= owner.attractivePointLimit {
-                    owner.isAttractivePointCountOverLimit.accept(indexPath)
+        input.attractivePointButtonDidTap
+            .subscribe(with: self, onNext: { owner, attractivePoint in
+                if owner.selectedAttractivePointList.contains(attractivePoint.rawValue) {
+                    owner.selectedAttractivePointList.removeAll { $0 == attractivePoint.rawValue }
+                } else if owner.selectedAttractivePointList.count >= owner.attractivePointLimit {
+                    owner.isAttractivePointCountOverLimit.accept(())
+                    return
                 } else {
-                    owner.selectedAttractivePointList.append(AttractivePoint.allCases[indexPath.item].rawValue)
+                    owner.selectedAttractivePointList.append(attractivePoint.rawValue)
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        input.attractivePointCollectionViewItemDeselected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.selectedAttractivePointList.removeAll { $0 == AttractivePoint.allCases[indexPath.item].rawValue }
+                owner.selectedAttractivePointsData.accept(
+                    owner.selectedAttractivePointList.compactMap { AttractivePoint(rawValue: $0) }
+                )
             })
             .disposed(by: disposeBag)
         
@@ -263,14 +265,14 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.popViewController.accept(())
             })
             .disposed(by: disposeBag)
-
+        
         return Output(popViewController: popViewController.asObservable(),
                       readStatusListData: readStatusListData.asObservable(),
                       readStatusData: readStatusData.asObservable(),
                       presentNovelDateSelectModalViewController: presentNovelDateSelectModalViewController.asObservable(),
                       startDateEndDateData: startDateEndDateData.asObservable(),
                       starRating: starRating.asObservable(),
-                      attractivePointListData: attractivePointListData.asObservable(),
+                      selectedAttractivePointsData: selectedAttractivePointsData.asObservable(),
                       isAttractivePointCountOverLimit: isAttractivePointCountOverLimit.asObservable(),
                       presentNovelKeywordSelectModalViewController: presentNovelKeywordSelectModalViewController.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
@@ -298,19 +300,19 @@ final class NovelReviewViewModel: ViewModelType {
     }
     
     private func putNovelReview(novelId: Int,
-                                 userNovelRating: Float,
-                                 status: String,
-                                 startDate: String?,
-                                 endDate: String?,
-                                 attractivePoints: [String],
-                                 keywordIds: [Int]) -> Observable<Void> {
+                                userNovelRating: Float,
+                                status: String,
+                                startDate: String?,
+                                endDate: String?,
+                                attractivePoints: [String],
+                                keywordIds: [Int]) -> Observable<Void> {
         novelReviewRepository.putNovelReview(novelId: novelId,
-                                              userNovelRating: userNovelRating,
-                                              status: status,
-                                              startDate: startDate,
-                                              endDate: endDate,
-                                              attractivePoints: attractivePoints,
-                                              keywordIds: keywordIds)
+                                             userNovelRating: userNovelRating,
+                                             status: status,
+                                             startDate: startDate,
+                                             endDate: endDate,
+                                             attractivePoints: attractivePoints,
+                                             keywordIds: keywordIds)
         .observe(on: MainScheduler.instance)
     }
     
