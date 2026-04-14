@@ -143,10 +143,8 @@ final class WSSTabBarController: UITabBarController {
 }
 
 extension WSSTabBarController: UITabBarControllerDelegate {
-    
-    //MARK: - Delegate
-    
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        
         guard let selectedIndex = viewControllers?.firstIndex(of: viewController) else {
             return true
         }
@@ -156,26 +154,36 @@ extension WSSTabBarController: UITabBarControllerDelegate {
             return false
         }
         
-        if let navigationController = viewController as? UINavigationController,
-           let viewController = navigationController.viewControllers.first {
-            
-            switch viewController {
+        if tabBarController.selectedViewController === viewController {
+            if let navigationController = viewController as? UINavigationController,
+               let rootVC = navigationController.viewControllers.first {
                 
-            case let homeViewController as HomeViewController:
-                homeViewController.scrollToTop()
-                
-            case let feedViewController as FeedViewController:
-                if tabBarController.selectedViewController == navigationController {
-                    feedViewController.scrollToTop()
+                switch rootVC {
+                case let homeVC as HomeViewController:
+                    homeVC.scrollToTop()
+                    
+                case let feedVC as FeedViewController:
+                    feedVC.scrollToTop()
+                    
+                case let myPageVC as MyPageViewController:
+                    myPageVC.scrollToTop()
+                    
+                default:
+                    break
                 }
-                
-            case let myPageViewController as MyPageViewController:
-                myPageViewController.scrollToTop()
-                
-            default:
-                break
             }
+            return false
         }
+        
+        viewController.view.alpha = 0
+        viewController.view.transform = CGAffineTransform(scaleX: 0.99, y: 0.99)
+        
+        UIView.transition(with: tabBarController.view,
+                          duration: 0.2,
+                          options: [.transitionCrossDissolve, .curveEaseOut],
+                          animations: {
+            viewController.view.alpha = 1
+        })
         
         return true
     }

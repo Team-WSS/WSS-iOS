@@ -69,7 +69,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let updateIntroText: Observable<String>
         let textViewBeginEditing: ControlEvent<Void>
         
-        let genreCellTap: ControlEvent<IndexPath>
+        let genreCellTap: Observable<IndexPath>
     }
     
     struct Output {
@@ -138,6 +138,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
+            .withLatestFrom(changeCompleteButton)
+            .filter { $0 }
             .observe(on: MainScheduler.instance)
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest{ _ -> Observable<Void> in
@@ -332,7 +334,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
 
         if self.userNickname.value == profileData?.nickname &&
             self.userIntro.value == profileData?.introdution &&
-            self.userGenre.value == profileData?.genrePreferences &&
+            Set(self.userGenre.value) == Set(profileData?.genrePreferences ?? []) &&
             self.userImage.value == profileData?.avatarImageURL {
             
             self.changeCompleteButton.accept(self.checkDuplicatedButton.value && isIntroValid)

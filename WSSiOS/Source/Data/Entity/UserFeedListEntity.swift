@@ -37,8 +37,7 @@ struct UserFeedEntity {
     let novelGenreColor: UIColor
     let novelGenreImage: UIImage
     let feedWriterNovelRating: Float
-    
-    let relevantCategories: [String]
+
     let isPublic: Bool
     
     let thumbnailImage: URL?
@@ -56,10 +55,6 @@ extension UserFeedResponse {
         }
         
         let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
-        let translatedGenres = self.relevantCategories.compactMap {
-            NewNovelGenre(rawValue: $0)?.withKorean
-        }
-        
         let genre = NewNovelGenre(rawValue: self.genre ?? "")
         let novelGenreColor = genre?.linkColor ?? .genreColorR
         let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
@@ -78,7 +73,6 @@ extension UserFeedResponse {
                               novelGenreColor: novelGenreColor,
                               novelGenreImage: novelGenreImage,
                               feedWriterNovelRating: roundedRating,
-                              relevantCategories: translatedGenres,
                               isPublic: isPublic,
                               thumbnailImage: thumbnailImageURL,
                               hasImage: hasImage,

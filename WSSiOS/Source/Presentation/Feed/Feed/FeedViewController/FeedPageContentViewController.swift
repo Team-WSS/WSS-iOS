@@ -54,7 +54,8 @@ final class FeedPageContentViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        reloadFeed.accept(())
+        super.viewWillAppear(animated)
+        
         showTabBar()
     }
     

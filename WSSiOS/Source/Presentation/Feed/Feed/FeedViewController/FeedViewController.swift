@@ -150,7 +150,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
               let currentVC = pageViewController.viewControllers?.first else { return }
         
         if let scrollView = currentVC.view.subviews.compactMap({ $0 as? UIScrollView }).first {
-            scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.contentInset.top), animated: true)
+            scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.adjustedContentInset.top), animated: true)
         }
     }
 }

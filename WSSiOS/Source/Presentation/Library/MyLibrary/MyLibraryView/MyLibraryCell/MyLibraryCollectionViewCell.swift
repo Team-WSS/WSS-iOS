@@ -43,6 +43,7 @@ final class MyLibraryCollectionViewCell: UICollectionViewCell {
         novelImageView.do {
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
         
         readStatusTagView.do {

@@ -8,7 +8,7 @@
 import Foundation
 
 enum FeedEdit {
-    static let imageMaxCount = 5;
+    static let imageMaxCount = 5
 }
 
 extension StringLiterals {
@@ -16,6 +16,7 @@ extension StringLiterals {
         static let complete = "완료"
         static let edit = "수정"
         static let setPrivate = "나만 보는 기록"
+        static let spoilrSetting = "잠깐, 스포일러가 있나요?"
         
         enum Category {
             static let category = "기록 작성"
@@ -55,7 +56,7 @@ extension StringLiterals {
         
         enum Filter {
             static let title = "글 찾기 필터"
-            static let genre = "장르"
+            static let genre = "카테고리"
             static let visibliltyOption = "공개여부"
             static let bottomButton = "해당하는 글 보기"
         }

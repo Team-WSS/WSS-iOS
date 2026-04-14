@@ -67,7 +67,7 @@ final class NovelReviewStatusView: UIView {
     
     private func setLayout() {
         statusCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(45)
+            $0.top.equalToSuperview().inset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(315)
             $0.height.equalTo(78)
