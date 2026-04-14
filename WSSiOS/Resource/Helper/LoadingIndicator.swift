@@ -7,31 +7,41 @@
 
 import UIKit
 
-class LoadingIndicator {
+final class LoadingIndicator {
+    
+    private static var overlayTag = 999_999
+    
+    private static var keyWindow: UIWindow? {
+        UIApplication.shared
+            .connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+    }
+    
     static func showLoading() {
         DispatchQueue.main.async {
-            // 최상단에 있는 window 객체 획득
-            guard let window = UIApplication.shared.windows.last else { return }
+            guard let window = keyWindow else { return }
             
-            let loadingIndicatorView: UIActivityIndicatorView
-            if let existedView = window.subviews.first(where: { $0 is UIActivityIndicatorView } ) as? UIActivityIndicatorView {
-                loadingIndicatorView = existedView
-            } else {
-                loadingIndicatorView = UIActivityIndicatorView(style: .large)
-                /// 다른 UI가 눌리지 않도록 indicatorView의 크기를 full로 할당
-                loadingIndicatorView.frame = window.frame
-                loadingIndicatorView.color = .wssPrimary100
-                window.addSubview(loadingIndicatorView)
-            }
+            if window.viewWithTag(overlayTag) != nil { return }
             
-            loadingIndicatorView.startAnimating()
+            let overlay = UIView(frame: window.bounds)
+            overlay.tag = overlayTag
+            
+            let indicator = UIActivityIndicatorView(style: .large)
+            indicator.color = .wssPrimary100
+            indicator.center = overlay.center
+            indicator.startAnimating()
+            
+            overlay.addSubview(indicator)
+            window.addSubview(overlay)
         }
     }
     
     static func hideLoading() {
         DispatchQueue.main.async {
-            guard let window = UIApplication.shared.windows.last else { return }
-            window.subviews.filter({ $0 is UIActivityIndicatorView }).forEach { $0.removeFromSuperview() }
+            guard let window = keyWindow else { return }
+            window.viewWithTag(overlayTag)?.removeFromSuperview()
         }
     }
 }

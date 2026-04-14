@@ -2,6 +2,9 @@ git_url("git@github.com:Team-WSS/WSS-iOS-Certificates.git")
 storage_mode("git")
 type("development")
 
-app_identifier([ENV["APP_IDENTIFIER"]])
+app_identifier([
+  ENV.fetch("APP_IDENTIFIER_RELEASE"),
+  ENV.fetch("APP_IDENTIFIER_DEBUG")
+])
 team_id(ENV["TEAM_ID"])
 
