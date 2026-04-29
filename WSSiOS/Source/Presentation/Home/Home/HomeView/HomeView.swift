@@ -18,6 +18,7 @@ final class HomeView: UIView {
     private let contentView = UIView()
     let headerView = HomeHeaderView()
     let searchBarView = SearchBarView()
+    let induceDetailSearchView = HomeInduceDetailSearchView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
     let interestView = HomeInterestView()
@@ -56,6 +57,7 @@ final class HomeView: UIView {
                          loadingView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(searchBarView,
+                                induceDetailSearchView,
                                 todayPopularView,
                                 realtimePopularView,
                                 interestView,
@@ -92,8 +94,13 @@ final class HomeView: UIView {
             $0.height.equalTo(42)
         }
         
+        induceDetailSearchView.snp.makeConstraints {
+            $0.top.equalTo(searchBarView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
         todayPopularView.snp.makeConstraints {
-            $0.top.equalTo(searchBarView.snp.bottom).offset(24)
+            $0.top.equalTo(induceDetailSearchView.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
         }
         
