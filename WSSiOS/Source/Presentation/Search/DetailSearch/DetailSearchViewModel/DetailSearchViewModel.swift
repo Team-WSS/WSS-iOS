@@ -55,7 +55,7 @@ final class DetailSearchViewModel: ViewModelType {
         let closeButtonDidTap: ControlEvent<Void>
         let infoTabDidTap: Observable<UITapGestureRecognizer>
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
-        let resetButtonDidTap: ControlEvent<Void>
+        let resetViewDidTap: Observable<UITapGestureRecognizer>
         let searchNovelButtonDidTap: ControlEvent<Void>
         let updateDetailSearchResultData: Observable<Notification>
         
@@ -83,7 +83,7 @@ final class DetailSearchViewModel: ViewModelType {
     
     struct Output {
         // 전체
-        let dismissModalViewController: Observable<Void>
+        let popViewController: Observable<Void>
         let selectedTab: Driver<DetailSearchTab>
         let showInfoNewImageView: Observable<Bool>
         let showKeywordNewImageView: Observable<Bool>
@@ -162,22 +162,24 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.resetButtonDidTap
+        input.resetViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                // 정보뷰
-                owner.selectedGenreList = []
-                owner.selectedGenreListData.accept(owner.selectedGenreList)
-                owner.resetSelectedInfoData.accept(())
-                owner.selectedCompletedStatus.accept(nil)
-                owner.selectedNovelRatingStatus.accept(nil)
-                
-                // 키워드뷰
-                owner.selectedKeywordList = []
-                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
-                owner.enteredText.accept("")
-                owner.keywordSearchResultListData.accept([])
-                owner.showEmptyView.accept(false)
-                owner.showCategoryListView.accept(true)
+                if owner.selectedTab.value == .info {
+                    // 정보뷰
+                    owner.selectedGenreList = []
+                    owner.selectedGenreListData.accept(owner.selectedGenreList)
+                    owner.resetSelectedInfoData.accept(())
+                    owner.selectedCompletedStatus.accept(nil)
+                    owner.selectedNovelRatingStatus.accept(nil)
+                } else {
+                    // 키워드뷰
+                    owner.selectedKeywordList = []
+                    owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+                    owner.enteredText.accept("")
+                    owner.keywordSearchResultListData.accept([])
+                    owner.showEmptyView.accept(false)
+                    owner.showCategoryListView.accept(true)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -372,7 +374,7 @@ final class DetailSearchViewModel: ViewModelType {
             .map { $0.count > 0 }
             .asObservable()
         
-        return Output(dismissModalViewController: dismissModalViewController.asObservable(),
+        return Output(popViewController: dismissModalViewController.asObservable(),
                       selectedTab: selectedTab.asDriver(),
                       showInfoNewImageView: showInfoNewImageView,
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),

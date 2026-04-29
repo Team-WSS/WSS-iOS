@@ -14,17 +14,13 @@ final class DetailSearchView: UIView {
     
     //MARK: - UI Components
     
-    private let backgroundView = UIView()
-    let cancelModalButton = UIButton()
-    
     let detailSearchHeaderView = DetailSearchHeaderView()
     let detailSearchInfoView = DetailSearchInfoView()
     let detailSearchKeywordView = DetailSearchKeywordView()
-    let detailSearchBottomView = WSSSearchBottomActionView()
     
-    // Home Indicator 배경
-    private let backgroundBottomView = UIView()
-    
+    let detailSearchButton = UIButton()
+    private let detailSearchButtonLabel = UILabel()
+ 
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -39,69 +35,59 @@ final class DetailSearchView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setUI() {
-        backgroundView.do {
+        self.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 15
-            $0.layer.maskedCorners = [.layerMinXMinYCorner,
-                                      .layerMaxXMinYCorner]
         }
         
-        cancelModalButton.do {
-            $0.setImage(.icCancelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+        detailSearchButton.do {
+            $0.backgroundColor = .wssPrimary100
+            $0.layer.cornerRadius = 14
+            $0.isEnabled = true
         }
         
-        backgroundBottomView.do {
-            $0.backgroundColor = .wssWhite
+        detailSearchButtonLabel.do {
+            $0.applyWSSFont(.title1, with: "작품 찾기")
+            $0.textColor = .wssWhite
         }
     }
     
     private func setHierarchy() {
-        backgroundView.addSubviews(cancelModalButton,
-                                   detailSearchHeaderView,
-                                   detailSearchInfoView,
-                                   detailSearchKeywordView,
-                                   detailSearchBottomView)
-        self.addSubviews(backgroundView,
-                         backgroundBottomView)
+        self.addSubviews(detailSearchHeaderView,
+                         detailSearchInfoView,
+                         detailSearchKeywordView,
+                         detailSearchButton)
+        detailSearchButton.addSubview(detailSearchButtonLabel)
     }
     
     private func setLayout() {
-        backgroundView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(82)
-            $0.leading.trailing.bottom.equalToSuperview()
-            
-            cancelModalButton.snp.makeConstraints {
-                $0.size.equalTo(25)
-                $0.top.trailing.equalToSuperview().inset(20)
-            }
-            
-            detailSearchHeaderView.snp.makeConstraints {
-                $0.top.leading.equalToSuperview().inset(34)
-            }
-            
-            detailSearchKeywordView.snp.makeConstraints {
-                $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
-                $0.leading.trailing.equalToSuperview()
-                $0.bottom.equalTo(detailSearchBottomView.snp.top)
-            }
-            
-            detailSearchInfoView.snp.makeConstraints {
-                $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
-                $0.leading.trailing.equalToSuperview()
-                $0.bottom.equalTo(detailSearchBottomView.snp.top)
-            }
-            
-            detailSearchBottomView.snp.makeConstraints {
-                $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
-                $0.leading.trailing.equalToSuperview()
-            }
+        detailSearchHeaderView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.leading.equalToSuperview().inset(6)
+            $0.trailing.equalToSuperview().inset(16)
         }
         
-        backgroundBottomView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide.snp.bottomMargin)
-            $0.horizontalEdges.bottom.equalToSuperview()
+        detailSearchKeywordView.snp.makeConstraints {
+            $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(detailSearchButton.snp.top).offset(-10)
+        }
+
+        detailSearchInfoView.snp.makeConstraints {
+            $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(detailSearchButton.snp.top).offset(-10)
+        }
+
+        detailSearchButton.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-10)
+            $0.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        detailSearchButtonLabel.snp.makeConstraints {
+            $0.verticalEdges.equalTo(detailSearchButton).inset(14)
+            $0.centerX.equalToSuperview()
         }
     }
     

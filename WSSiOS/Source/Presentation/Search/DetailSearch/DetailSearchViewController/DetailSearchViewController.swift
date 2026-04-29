@@ -102,11 +102,11 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         
         let input = DetailSearchViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            closeButtonDidTap: rootView.cancelModalButton.rx.tap,
+            closeButtonDidTap: rootView.detailSearchHeaderView.backButton.rx.tap,
             infoTabDidTap: rootView.detailSearchHeaderView.infoLabel.rx.tapGesture().when(.recognized).asObservable(),
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
-            resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
-            searchNovelButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
+            resetViewDidTap: rootView.detailSearchHeaderView.resetStackView.rx.tapGesture().when(.recognized),
+            searchNovelButtonDidTap: rootView.detailSearchButton.rx.tap,
             updateDetailSearchResultData: NotificationCenter.default.rx.notification(Notification.Name("PushToUpateDetailSearchResult")).asObservable(),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
@@ -128,9 +128,9 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         // 전체
-        output.dismissModalViewController
+        output.popViewController
             .bind(with: self, onNext: { owner, _ in
-                owner.dismissModalViewController()
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
