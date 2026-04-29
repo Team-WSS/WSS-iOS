@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "mdi_book-plus-outline.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
