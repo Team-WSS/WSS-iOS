@@ -42,6 +42,7 @@ final class HomeViewModel: ViewModelType {
     
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let pushToAnnouncementViewController = PublishRelay<Void>()
+    private let pushToDetailSearchViewController = PublishRelay<Void>()
     let showInduceLoginModalView = PublishRelay<Void>()
     
     private let showLoadingView = PublishRelay<Bool>()
@@ -62,6 +63,7 @@ final class HomeViewModel: ViewModelType {
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
         let searchBarViewDidTap: Observable<UITapGestureRecognizer>
+        let indunceDetailSearchViewDidTap: Observable<UITapGestureRecognizer>
     }
     
     //MARK: - Outputs
@@ -84,6 +86,7 @@ final class HomeViewModel: ViewModelType {
         
         let pushToNovelDetailViewController: Observable<Int>
         let pushToAnnouncementViewController: Observable<Void>
+        let pushToDetailSearchViewController: Observable<Void>
         let showInduceLoginModalView: Observable<Void>
         let showLoadingView: Observable<Bool>
         let showUpdateVersionAlertView: Observable<Void>
@@ -191,6 +194,12 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.indunceDetailSearchViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToDetailSearchViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 AmplitudeManager.shared.track(AmplitudeEvent.Home.homeTodayRanking)
@@ -267,6 +276,7 @@ extension HomeViewModel {
                       pushToMyPageEditViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
+                      pushToDetailSearchViewController: pushToDetailSearchViewController.asObservable(),
                       showInduceLoginModalView: showInduceLoginModalView.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
                       showUpdateVersionAlertView: showUpdateVersionAlertView.asObservable(),

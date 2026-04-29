@@ -306,9 +306,9 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func presentToDetailSearchViewController(selectedKeywordList: [KeywordData],
-                                             previousViewInfo: PreviousViewType,
-                                             selectedFilteredQuery: SearchFilterQuery) {
+    func pushToDetailSearchViewController(selectedKeywordList: [KeywordData],
+                                          previousViewInfo: PreviousViewType,
+                                          selectedFilteredQuery: SearchFilterQuery) {
         let detailSearchViewController = DetailSearchViewController(
             viewModel: DetailSearchViewModel(
                 keywordRepository: DefaultKeywordRepository(
@@ -316,7 +316,10 @@ extension UIViewController {
                 selectedKeywordList: selectedKeywordList,
                 previousViewInfo: previousViewInfo,
                 selectedFilteredQuery: selectedFilteredQuery))
-        self.presentModalViewController(detailSearchViewController)
+        detailSearchViewController.navigationController?.isNavigationBarHidden = true
+        detailSearchViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(detailSearchViewController,
+                                                      animated: true)
     }
     
     func presentInduceLoginViewController() {
@@ -363,8 +366,8 @@ extension UIViewController {
     
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
-                userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
+            userRepository: DefaultUserInfoRepository(
+                userService: DefaultUserService()
             )
         )
         viewController.hidesBottomBarWhenPushed = true
@@ -373,7 +376,7 @@ extension UIViewController {
     
     func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
         let viewController = UserLibraryViewController(userId: userId)
-
+        
         viewController.setPageIndex(target: pageIndex)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)

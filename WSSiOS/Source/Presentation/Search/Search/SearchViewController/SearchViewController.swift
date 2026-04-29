@@ -81,7 +81,7 @@ final class SearchViewController: UIViewController {
         
         output.pushToDetailSearchViewController
             .bind(with: self, onNext: { owner, _ in
-                owner.presentToDetailSearchViewController(selectedKeywordList: [],
+                owner.pushToDetailSearchViewController(selectedKeywordList: [],
                                                           previousViewInfo: .search,
                                                           selectedFilteredQuery: SearchFilterQuery(keywords: [],
                                                                                                    genres: [],

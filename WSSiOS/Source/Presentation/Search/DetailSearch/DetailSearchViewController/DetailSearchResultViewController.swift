@@ -124,7 +124,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         
         output.presentDetailSearchModal
             .subscribe(with: self, onNext: { owner, data in
-                owner.presentToDetailSearchViewController(selectedKeywordList: data.keywords,
+                owner.pushToDetailSearchViewController(selectedKeywordList: data.keywords,
                                                           previousViewInfo: .resultSearchBar,
                                                           selectedFilteredQuery: data)
             })

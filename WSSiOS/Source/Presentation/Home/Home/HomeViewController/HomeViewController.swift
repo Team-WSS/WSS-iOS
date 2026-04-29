@@ -107,7 +107,8 @@ final class HomeViewController: UIViewController {
             announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
-            searchBarViewDidTap: rootView.searchBarView.rx.tapGesture().when(.recognized).asObservable()
+            searchBarViewDidTap: rootView.searchBarView.rx.tapGesture().when(.recognized).asObservable(),
+            indunceDetailSearchViewDidTap: rootView.induceDetailSearchView.rx.tapGesture().when(.recognized)
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -217,6 +218,19 @@ final class HomeViewController: UIViewController {
         output.showInduceLoginModalView
             .bind(with: self, onNext: { owner, _ in
                 owner.presentInduceLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToDetailSearchViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToDetailSearchViewController(
+                    selectedKeywordList: [],
+                    previousViewInfo: .search,
+                    selectedFilteredQuery: SearchFilterQuery(keywords: [],
+                                                             genres: [],
+                                                             isCompleted: nil,
+                                                             novelRating: nil)
+                )
             })
             .disposed(by: disposeBag)
         
