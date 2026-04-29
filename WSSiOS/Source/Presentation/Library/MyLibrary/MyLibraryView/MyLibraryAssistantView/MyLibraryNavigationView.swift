@@ -13,8 +13,9 @@ import Then
 final class MyLibraryNavigationView: UIView {
     
     //MARK: - Components
-    
+
     private let navigationTitle = UILabel()
+    let libraryAddButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -39,20 +40,30 @@ final class MyLibraryNavigationView: UIView {
             $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.library)
             $0.textColor = .wssBlack
         }
+
+        libraryAddButton.do {
+            $0.setImage(.mdiBookPlusOutline, for: .normal)
+        }
     }
-    
+
     private func setHierarchy() {
-        addSubviews(navigationTitle)
+        addSubviews(navigationTitle, libraryAddButton)
     }
-    
+
     private func setLayout() {
         self.snp.makeConstraints {
             $0.height.equalTo(56)
         }
-        
+
         navigationTitle.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
+        }
+
+        libraryAddButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.size.equalTo(24)
         }
     }
 }
