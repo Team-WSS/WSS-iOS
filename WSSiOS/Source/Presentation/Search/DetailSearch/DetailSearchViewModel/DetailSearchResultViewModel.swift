@@ -18,7 +18,7 @@ final class DetailSearchResultViewModel: ViewModelType {
     
     // API 쿼리
     var keywords: [KeywordData]
-    var genres: [NovelGenre]
+    var genres: [NewNovelGenre]
     var isCompleted: Bool?
     var novelRating: Float?
     
@@ -64,7 +64,7 @@ final class DetailSearchResultViewModel: ViewModelType {
     
     init(searchRepository: SearchRepository,
          keywords: [KeywordData],
-         genres: [NovelGenre],
+         genres: [NewNovelGenre],
          isCompleted: Bool?,
          novelRating: Float?) {
         self.searchRepository = searchRepository
@@ -175,7 +175,7 @@ final class DetailSearchResultViewModel: ViewModelType {
                 
                 if let userInfo = notification.userInfo {
                     let keywords = userInfo["keywords"] as? [KeywordData]
-                    let genres = userInfo["genres"] as? [NovelGenre]
+                    let genres = userInfo["genres"] as? [NewNovelGenre]
                     let isCompleted = userInfo["isCompleted"] as? Bool
                     let novelRating = userInfo["novelRating"] as? Float
                     
@@ -233,7 +233,7 @@ final class DetailSearchResultViewModel: ViewModelType {
 
 struct SearchFilterQuery {
     let keywords: [KeywordData]
-    let genres: [NovelGenre]
+    let genres: [NewNovelGenre]
     let isCompleted: Bool?
     let novelRating: Float?
 }

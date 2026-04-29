@@ -241,4 +241,5 @@ extension NewNovelGenre {
     static let feedMaleGenres: [NewNovelGenre] = [.all, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .romance, .romanceFantasy, .bl, .etc]
     static let feedFemaleGenres: [NewNovelGenre] = [.all, .romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .etc]
     static let feedFilterGenres: [NewNovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl, .etc]
+    static let detailSearchGenres: [NewNovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl]
 }

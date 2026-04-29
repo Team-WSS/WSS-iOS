@@ -122,7 +122,7 @@ final class DetailSearchInfoView: UIView {
         genreCollectionView.snp.makeConstraints {
             $0.top.equalTo(genreTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(84)
+            $0.height.equalTo(88)
         }
         
         statusTitleLabel.snp.makeConstraints {

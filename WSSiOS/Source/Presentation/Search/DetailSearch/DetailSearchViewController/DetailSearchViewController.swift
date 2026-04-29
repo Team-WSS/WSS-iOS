@@ -165,7 +165,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
                     self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath,
                                                                                         animated: false)
                 }
-                cell.bindData(genre: element.toKorean)
+                cell.bindData(genre: element.withKorean)
             }
             .disposed(by: disposeBag)
         
@@ -329,7 +329,7 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == rootView.detailSearchInfoView.genreCollectionView {
             var text: String?
             
-            let novelGenreList = NovelGenre.allCases.map { $0.toKorean }
+            let novelGenreList = NewNovelGenre.detailSearchGenres.map { $0.withKorean }
             text = novelGenreList[indexPath.item]
             
             guard let unwrappedText = text else {
@@ -337,7 +337,7 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 35)
+            return CGSize(width: width, height: 37)
         }
         else if collectionView ==  rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView{
             var text: String?

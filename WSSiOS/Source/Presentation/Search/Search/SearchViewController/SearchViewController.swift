@@ -95,7 +95,7 @@ final class SearchViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, notification in
                 if let userInfo = notification.userInfo {
                     let keywords = userInfo["keywords"] as? [KeywordData]
-                    let genres = userInfo["genres"] as? [NovelGenre]
+                    let genres = userInfo["genres"] as? [NewNovelGenre]
                     let isCompleted = userInfo["isCompleted"] as? Bool
                     let novelRating = userInfo["novelRating"] as? Float
                     
