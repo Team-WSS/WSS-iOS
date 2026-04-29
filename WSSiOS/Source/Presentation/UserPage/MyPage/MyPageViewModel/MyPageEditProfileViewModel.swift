@@ -26,7 +26,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     private var avatarId: Int = -1
     
     // 고정값
-    private let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
+    private let genreList: [String] = NovelGenre.myPageEditGenres.map { $0.withKorean }
     private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     static let nicknameLimit = 10
     static let introLimit = 50
@@ -293,7 +293,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.genreCellTap
             .bind(with: self, onNext: { owner, indexPath in
                 let cellContent = owner.genreList[indexPath.row]
-                let toEnglish = NewNovelGenre.withKoreanRawValue(from: cellContent).rawValue
+                let toEnglish = NovelGenre.withKoreanRawValue(from: cellContent).rawValue
                 let update = owner.checkGenreToUpdateCell(owner.userGenre.value, toEnglish)
                 
                 var updatedGenres = owner.userGenre.value
@@ -314,7 +314,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private func checkGenreToMakeTuple(_ totalGenre: [String], _ myGenre: [String]) -> [(String, Bool)] {
         let toKorean = myGenre.compactMap { genre in
-            NewNovelGenre(rawValue: genre)?.withKorean
+            NovelGenre(rawValue: genre)?.withKorean
         }
     
         return totalGenre.map { genre in

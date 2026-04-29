@@ -27,9 +27,9 @@ final class DetailSearchViewModel: ViewModelType {
     private let pushToUpdateDetailSearchResultViewControllerNotificationName = Notification.Name("PushToUpdateDetailSearchResult")
     
     // 정보
-    private var selectedGenreList: [NewNovelGenre] = []
-    let selectedGenreListData = BehaviorRelay<[NewNovelGenre]>(value: [])
-    private let genreListData = PublishRelay<[NewNovelGenre]>()
+    private var selectedGenreList: [NovelGenre] = []
+    let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
+    private let genreListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
     private let resetSelectedInfoData = PublishRelay<Void>()
@@ -89,7 +89,7 @@ final class DetailSearchViewModel: ViewModelType {
         let showKeywordNewImageView: Observable<Bool>
         
         // 정보
-        let genreListData: Observable<[NewNovelGenre]>
+        let genreListData: Observable<[NovelGenre]>
         let selectedCompletedStatus: Driver<CompletedStatus?>
         let selectedNovelRatingStatus: Driver<NovelRatingStatus?>
         let resetSelectedInfoData: Observable<Void>
@@ -122,7 +122,7 @@ final class DetailSearchViewModel: ViewModelType {
         // 전체
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
-                owner.genreListData.accept(NewNovelGenre.detailSearchGenres)
+                owner.genreListData.accept(NovelGenre.detailSearchGenres)
                 owner.selectedGenreListData.accept(owner.selectedFilteredQuery.genres)
                 owner.selectedKeywordListData.accept(owner.selectedFilteredQuery.keywords)
                 owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { CompletedStatus(isCompleted: $0) })
@@ -187,7 +187,7 @@ final class DetailSearchViewModel: ViewModelType {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 let keywords = owner.selectedKeywordList
-                let genres: [NewNovelGenre] = owner.selectedGenreListData.value
+                let genres: [NovelGenre] = owner.selectedGenreListData.value
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
                 let novelRating = owner.selectedNovelRatingStatus.value?.toFloat
                 
@@ -215,7 +215,7 @@ final class DetailSearchViewModel: ViewModelType {
         input.genreColletionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList = owner.selectedGenreListData.value
-                owner.selectedGenreList.append(NewNovelGenre.allCases[indexPath.row])
+                owner.selectedGenreList.append(NovelGenre.allCases[indexPath.row])
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
@@ -223,7 +223,7 @@ final class DetailSearchViewModel: ViewModelType {
         input.genreColletionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList = owner.selectedGenreListData.value
-                owner.selectedGenreList.removeAll { $0 == NewNovelGenre.allCases[indexPath.row] }
+                owner.selectedGenreList.removeAll { $0 == NovelGenre.allCases[indexPath.row] }
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)

@@ -20,7 +20,7 @@ final class FeedFilterViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let initialFilterOption: FeedFilterOption
     let filterOption = PublishSubject<FeedFilterOption>()
-    private let genreOptions = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedFilterGenres)
+    private let genreOptions = BehaviorRelay<[NovelGenre]>(value: NovelGenre.feedFilterGenres)
     private let visibilityOptions = BehaviorRelay<[FeedVisibilityOption]>(value: FeedVisibilityOption.allCases)
     
     //MARK: - Components
@@ -110,7 +110,7 @@ final class FeedFilterViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, _ in
             let selectedIndexPaths = owner.rootView.genreView.genreCollectionView.indexPathsForSelectedItems ?? []
             let selectedGenres = selectedIndexPaths.map { indexPath in
-                NewNovelGenre.feedFilterGenres[indexPath.row]
+                NovelGenre.feedFilterGenres[indexPath.row]
             }
             
             owner.genreOptions.accept(selectedGenres)
@@ -119,7 +119,7 @@ final class FeedFilterViewController: UIViewController {
     }
     
     private func bindOutput() {
-        Observable<[NewNovelGenre]>.just(NewNovelGenre.feedFilterGenres)
+        Observable<[NovelGenre]>.just(NovelGenre.feedFilterGenres)
             .bind(to: rootView.genreView.genreCollectionView.rx.items(
                 cellIdentifier: FeedFilterGenreCollectionViewCell.cellIdentifier,
                 cellType: FeedFilterGenreCollectionViewCell .self)) { item, element, cell in
@@ -178,7 +178,7 @@ extension FeedFilterViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        let novelGenreList = NewNovelGenre.feedFilterGenres.map { $0.withKorean }
+        let novelGenreList = NovelGenre.feedFilterGenres.map { $0.withKorean }
         text = novelGenreList[indexPath.item]
         
         guard let unwrappedText = text else {

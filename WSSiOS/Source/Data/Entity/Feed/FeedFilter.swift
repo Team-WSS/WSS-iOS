@@ -33,6 +33,6 @@ enum FeedVisibilityOption: CaseIterable {
 }
 
 struct FeedFilterOption: Equatable {
-    var genres: [NewNovelGenre] = NewNovelGenre.feedFilterGenres
+    var genres: [NovelGenre] = NovelGenre.feedFilterGenres
     var visibilityOptions: [FeedVisibilityOption] = [.public, .private]
 }

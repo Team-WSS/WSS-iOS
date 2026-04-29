@@ -55,7 +55,7 @@ extension UserFeedResponse {
         }
         
         let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
-        let genre = NewNovelGenre(rawValue: self.genre ?? "")
+        let genre = NovelGenre(rawValue: self.genre ?? "")
         let novelGenreColor = genre?.linkColor ?? .genreColorR
         let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
         let thumbnailImageURL = KingFisherRxHelper.makeImageURLString(path: self.thumbnailUrl ?? "")

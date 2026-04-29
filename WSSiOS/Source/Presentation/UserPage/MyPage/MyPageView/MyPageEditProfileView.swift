@@ -334,7 +334,8 @@ final class MyPageEditProfileView: UIView {
             
             genreCollectionView.snp.makeConstraints {
                 $0.top.equalTo(genreDescriptionLabel.snp.bottom).offset(14)
-                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.leading.equalToSuperview().inset(20)
+                $0.trailing.equalToSuperview().inset(30)
                 $0.bottom.equalToSuperview()
             }
         }
@@ -348,11 +349,11 @@ final class MyPageEditProfileView: UIView {
         
         completeButton.snp.makeConstraints {
             $0.width.equalTo(48)
-            $0.height.equalTo(42)
+            $0.height.equalTo(42).priority(.high)
         }
-        
+
         backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
+            $0.size.equalTo(44).priority(.high)
         }
     }
 }

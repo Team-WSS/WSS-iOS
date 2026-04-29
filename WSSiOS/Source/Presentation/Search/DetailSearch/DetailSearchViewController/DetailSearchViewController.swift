@@ -329,7 +329,7 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == rootView.detailSearchInfoView.genreCollectionView {
             var text: String?
             
-            let novelGenreList = NewNovelGenre.detailSearchGenres.map { $0.withKorean }
+            let novelGenreList = NovelGenre.detailSearchGenres.map { $0.withKorean }
             text = novelGenreList[indexPath.item]
             
             guard let unwrappedText = text else {

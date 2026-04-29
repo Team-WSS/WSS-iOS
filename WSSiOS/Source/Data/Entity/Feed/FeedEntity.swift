@@ -74,7 +74,7 @@ extension FeedResponse {
                   let title = self.title,
                   let rating = self.novelRating,
                   let genreRaw = self.novelGenre,
-                  let genre = NewNovelGenre(rawValue: genreRaw),
+                  let genre = NovelGenre(rawValue: genreRaw),
                   let description = self.novelDescription,
                   let thumbnailPath = self.novelThumbnailImage,
                   let thumbnailURL = KingFisherRxHelper.makeImageURLString(path: thumbnailPath)
