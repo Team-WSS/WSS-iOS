@@ -231,6 +231,13 @@ final class MyLibraryViewController: UIViewController {
                 HapticManager.shared.generateSelectionFeedback()
             })
             .disposed(by: disposeBag)
+
+        rootView.navigationView.libraryAddButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.pushToNormalSearchViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
