@@ -27,6 +27,12 @@ final class DetailSearchInfoView: UIView {
     
     /// 평점
     private let ratingTitleLabel = UILabel()
+    let ratingSlider = WSSRangeSlider()
+    private let ratingValueLabel = UILabel()
+    private let ratingMinLabelBackgroundView = UIView()
+    private let ratingMinLabel = UILabel()
+    private let ratingMaxLabelBackgroundView = UIView()
+    private let ratingMaxLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -76,16 +82,50 @@ final class DetailSearchInfoView: UIView {
             $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.rating)
             $0.textColor = .wssBlack
         }
+
+        ratingValueLabel.do {
+            $0.applyWSSFont(.title2, with: "0.0 ~ 5.0")
+            $0.textColor = .wssPrimary100
+        }
+
+        ratingSlider.do {
+            $0.minimumValue = 0.0
+            $0.maximumValue = 5.0
+            $0.step = 0.5
+            $0.setValues(lower: 0.0, upper: 5.0)
+        }
+
+        ratingMinLabel.do {
+            $0.applyWSSFont(.body2, with: "0.0")
+            $0.textColor = .wssPrimary100
+        }
+
+        [ratingMinLabelBackgroundView,
+         ratingMaxLabelBackgroundView].forEach {
+            $0.backgroundColor = .wssGray50
+            $0.layer.cornerRadius = 8
+        }
+
+        ratingMaxLabel.do {
+            $0.applyWSSFont(.body2, with: "5.0")
+            $0.textColor = .wssPrimary100
+        }
     }
     
     private func setHierarchy() {
         completedStatusButtons.forEach { statusStackView.addArrangedSubview($0) }
+        ratingMinLabelBackgroundView.addSubview(ratingMinLabel)
+        ratingMaxLabelBackgroundView.addSubview(ratingMaxLabel)
         
         self.addSubviews(genreTitleLabel,
                          genreCollectionView,
                          statusTitleLabel,
                          statusStackView,
-                         ratingTitleLabel)
+                         ratingTitleLabel,
+                         ratingValueLabel,
+                         ratingMinLabelBackgroundView,
+                         ratingSlider,
+                         ratingMaxLabelBackgroundView)
     }
     
     private func setLayout() {
@@ -115,6 +155,40 @@ final class DetailSearchInfoView: UIView {
             $0.top.equalTo(statusStackView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
+
+        ratingValueLabel.snp.makeConstraints {
+            $0.centerY.equalTo(ratingTitleLabel)
+            $0.trailing.equalToSuperview().inset(20)
+        }
+
+        ratingMinLabelBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(ratingTitleLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalTo(50)
+            $0.height.equalTo(38)
+            
+            ratingMinLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
+        }
+
+        ratingSlider.snp.makeConstraints {
+            $0.centerY.equalTo(ratingMinLabel)
+            $0.leading.equalTo(ratingMinLabelBackgroundView.snp.trailing).offset(17)
+            $0.trailing.equalTo(ratingMaxLabelBackgroundView.snp.leading).offset(-17)
+            $0.height.equalTo(16)
+        }
+
+        ratingMaxLabelBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(ratingMinLabelBackgroundView.snp.top)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(50)
+            $0.height.equalTo(38)
+            
+            ratingMaxLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
+        }
     }
     
     func updateCompletedKeyword(_ selectedCompletedStatus: PublicationStatus?) {
@@ -127,5 +201,14 @@ final class DetailSearchInfoView: UIView {
         genreCollectionView.indexPathsForSelectedItems?.forEach { indexPath in
             genreCollectionView.deselectItem(at: indexPath, animated: false)
         }
+    }
+
+    func updateRatingLabels(lower: CGFloat, upper: CGFloat) {
+        let lowerText = String(format: "%.1f", lower)
+        let upperText = String(format: "%.1f", upper)
+        ratingMinLabel.applyWSSFont(.body2, with: lowerText)
+        ratingMaxLabel.applyWSSFont(.body2, with: upperText)
+        ratingValueLabel.applyWSSFont(.body2, with: "\(lowerText) ~ \(upperText)")
+        ratingValueLabel.textColor = .wssPrimary100
     }
 }

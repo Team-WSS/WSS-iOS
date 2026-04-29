@@ -31,7 +31,8 @@ final class DetailSearchViewModel: ViewModelType {
     let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
     private let genreListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<PublicationStatus?>(value: nil)
-    private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
+    private let selectedRatingLower = BehaviorRelay<CGFloat>(value: 0.0)
+    private let selectedRatingUpper = BehaviorRelay<CGFloat>(value: 5.0)
     private let resetSelectedInfoData = PublishRelay<Void>()
     
     // 키워드
@@ -63,6 +64,7 @@ final class DetailSearchViewModel: ViewModelType {
         let genreColletionViewItemSelected: Observable<IndexPath>
         let genreColletionViewItemDeselected: Observable<IndexPath>
         let publicationStatusButtonDidTap: Observable<PublicationStatus>
+        let ratingSliderValueChanged: Observable<(CGFloat, CGFloat)>
         
         // 키워드
         let updatedEnteredText: Observable<String>
@@ -89,6 +91,7 @@ final class DetailSearchViewModel: ViewModelType {
         // 정보
         let genreListData: Observable<[NovelGenre]>
         let selectedPublicationStatus: Driver<PublicationStatus?>
+        let ratingRange: Driver<(CGFloat, CGFloat)>
         let resetSelectedInfoData: Observable<Void>
         
         // 키워드
@@ -123,7 +126,6 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.selectedGenreListData.accept(owner.selectedFilteredQuery.genres)
                 owner.selectedKeywordListData.accept(owner.selectedFilteredQuery.keywords)
                 owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { PublicationStatus(isCompleted: $0) })
-                owner.selectedNovelRatingStatus.accept(owner.selectedFilteredQuery.novelRating.map { NovelRatingStatus(toFloat: $0) })
             })
             .disposed(by: disposeBag)
         
@@ -167,7 +169,8 @@ final class DetailSearchViewModel: ViewModelType {
                     owner.selectedGenreListData.accept(owner.selectedGenreList)
                     owner.resetSelectedInfoData.accept(())
                     owner.selectedCompletedStatus.accept(nil)
-                    owner.selectedNovelRatingStatus.accept(nil)
+                    owner.selectedRatingLower.accept(0.0)
+                    owner.selectedRatingUpper.accept(5.0)
                 } else {
                     // 키워드뷰
                     owner.selectedKeywordList = []
@@ -186,13 +189,15 @@ final class DetailSearchViewModel: ViewModelType {
                 let keywords = owner.selectedKeywordList
                 let genres: [NovelGenre] = owner.selectedGenreListData.value
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
-                let novelRating = owner.selectedNovelRatingStatus.value?.toFloat
-                
+                let ratingLower = owner.selectedRatingLower.value
+                let ratingUpper = owner.selectedRatingUpper.value
+
                 let userInfo: [AnyHashable: Any] = [
                     "keywords": keywords,
                     "genres": genres,
                     "isCompleted": isCompleted as Any,
-                    "novelRating": novelRating as Any
+                    "ratingLower": ratingLower,
+                    "ratingUpper": ratingUpper
                 ]
                 
                 if owner.previousViewInfo == .search {
@@ -232,6 +237,13 @@ final class DetailSearchViewModel: ViewModelType {
                 } else {
                     owner.selectedCompletedStatus.accept(selectedCompletedStatus)
                 }
+            })
+            .disposed(by: disposeBag)
+
+        input.ratingSliderValueChanged
+            .subscribe(with: self, onNext: { owner, range in
+                owner.selectedRatingLower.accept(range.0)
+                owner.selectedRatingUpper.accept(range.1)
             })
             .disposed(by: disposeBag)
 
@@ -349,11 +361,14 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let ratingRange = Observable
+            .combineLatest(selectedRatingLower, selectedRatingUpper)
+
         let showInfoNewImageView = Observable
             .combineLatest(
                 selectedGenreListData.map { $0.count > 0 },
                 selectedCompletedStatus.map { $0 != nil },
-                selectedNovelRatingStatus.map { $0 != nil }
+                ratingRange.map { $0 != 0.0 || $1 != 5.0 }
             )
             .map { $0 || $1 || $2 }
         
@@ -367,6 +382,7 @@ final class DetailSearchViewModel: ViewModelType {
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreListData: genreListData.asObservable(),
                       selectedPublicationStatus: selectedCompletedStatus.asDriver(),
+                      ratingRange: ratingRange.asDriver(onErrorJustReturn: (0.0, 5.0)),
                       resetSelectedInfoData: resetSelectedInfoData.asObservable(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),

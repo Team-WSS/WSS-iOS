@@ -94,6 +94,11 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
                     button.rx.tap.map { button.status }
                 })
         
+        let ratingSlider = rootView.detailSearchInfoView.ratingSlider
+        let ratingSliderValueChanged = ratingSlider.rx.controlEvent(.valueChanged)
+            .map { (ratingSlider.lowerValue, ratingSlider.upperValue) }
+            .asObservable()
+
         let input = DetailSearchViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.detailSearchHeaderView.backButton.rx.tap,
@@ -105,6 +110,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
             publicationStatusButtonDidTap: completedStatusButtonDidTap,
+            ratingSliderValueChanged: ratingSliderValueChanged,
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
@@ -169,6 +175,13 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        output.ratingRange
+            .drive(with: self, onNext: { owner, range in
+                owner.rootView.detailSearchInfoView.ratingSlider.setValues(lower: range.0, upper: range.1)
+                owner.rootView.detailSearchInfoView.updateRatingLabels(lower: range.0, upper: range.1)
+            })
+            .disposed(by: disposeBag)
+
         output.resetSelectedInfoData
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.detailSearchInfoView.resetAllStates()
