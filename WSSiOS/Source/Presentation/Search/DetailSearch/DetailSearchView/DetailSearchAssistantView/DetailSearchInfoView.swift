@@ -23,15 +23,10 @@ final class DetailSearchInfoView: UIView {
     private let statusTitleLabel = UILabel()
     
     private let statusStackView = UIStackView()
-    let completedStatusButtons = CompletedStatus.allCases.map { DetailSearchCompletedStatusButton(status: $0) }
+    let completedStatusButtons = PublicationStatus.allCases.map { DetailSearchCompletedStatusButton(status: $0) }
     
     /// 평점
     private let ratingTitleLabel = UILabel()
-    
-    private let ratingTopStackView = UIStackView()
-    private let ratingBottomStackView = UIStackView()
-    
-    let novelRatingStatusButtons = NovelRatingStatus.allCases.map { WSSNovelRatingStatusButton(status: $0) }
     
     //MARK: - Life Cycle
     
@@ -81,36 +76,16 @@ final class DetailSearchInfoView: UIView {
             $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.rating)
             $0.textColor = .wssBlack
         }
-        
-        ratingTopStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 11
-            $0.distribution = .fillEqually
-        }
-        
-        ratingBottomStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 11
-            $0.distribution = .fillEqually
-        }
     }
     
     private func setHierarchy() {
         completedStatusButtons.forEach { statusStackView.addArrangedSubview($0) }
         
-        let topRowButtons = Array(novelRatingStatusButtons.prefix(2))
-        let bottomRowButtons = Array(novelRatingStatusButtons.suffix(2))
-        
-        topRowButtons.forEach { ratingTopStackView.addArrangedSubview($0) }
-        bottomRowButtons.forEach { ratingBottomStackView.addArrangedSubview($0) }
-        
         self.addSubviews(genreTitleLabel,
                          genreCollectionView,
                          statusTitleLabel,
                          statusStackView,
-                         ratingTitleLabel,
-                         ratingTopStackView,
-                         ratingBottomStackView)
+                         ratingTitleLabel)
     }
     
     private func setLayout() {
@@ -140,29 +115,11 @@ final class DetailSearchInfoView: UIView {
             $0.top.equalTo(statusStackView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
-        
-        ratingTopStackView.snp.makeConstraints {
-            $0.top.equalTo(ratingTitleLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(43)
-        }
-        
-        ratingBottomStackView.snp.makeConstraints {
-            $0.top.equalTo(ratingTopStackView.snp.bottom).offset(10)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(43)
-        }
     }
     
-    func updateCompletedKeyword(_ selectedCompletedStatus: CompletedStatus?) {
+    func updateCompletedKeyword(_ selectedCompletedStatus: PublicationStatus?) {
         completedStatusButtons.forEach {
             $0.updateButton(selectedCompletedStatus: selectedCompletedStatus)
-        }
-    }
-    
-    func updateNovelRatingKeyword(_ selectedNovelRatingStatus: NovelRatingStatus?) {
-        novelRatingStatusButtons.forEach {
-            $0.updateButton(selectedNovelRatingStatus: selectedNovelRatingStatus)
         }
     }
     

@@ -94,12 +94,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
                     button.rx.tap.map { button.status }
                 })
         
-        let novelRatingStatusButtonDidTap = Observable.merge(
-            rootView.detailSearchInfoView.novelRatingStatusButtons
-                .map { button in
-                    button.rx.tap.map { button.status }
-                })
-        
         let input = DetailSearchViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.detailSearchHeaderView.backButton.rx.tap,
@@ -110,8 +104,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             updateDetailSearchResultData: NotificationCenter.default.rx.notification(Notification.Name("PushToUpateDetailSearchResult")).asObservable(),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
-            completedButtonDidTap: completedStatusButtonDidTap,
-            novelRatingButtonDidTap: novelRatingStatusButtonDidTap,
+            publicationStatusButtonDidTap: completedStatusButtonDidTap,
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
@@ -170,15 +163,9 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         
-        output.selectedCompletedStatus
+        output.selectedPublicationStatus
             .drive(with: self, onNext: { owner, selectedCompletedStatus in
                 owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
-            })
-            .disposed(by: disposeBag)
-        
-        output.selectedNovelRatingStatus
-            .drive(with: self, onNext: { owner, selectedNovelRatingStatus in
-                owner.rootView.detailSearchInfoView.updateNovelRatingKeyword(selectedNovelRatingStatus)
             })
             .disposed(by: disposeBag)
         

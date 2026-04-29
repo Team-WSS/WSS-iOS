@@ -30,7 +30,7 @@ final class DetailSearchViewModel: ViewModelType {
     private var selectedGenreList: [NovelGenre] = []
     let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
     private let genreListData = PublishRelay<[NovelGenre]>()
-    private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
+    private var selectedCompletedStatus = BehaviorRelay<PublicationStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
     private let resetSelectedInfoData = PublishRelay<Void>()
     
@@ -62,9 +62,7 @@ final class DetailSearchViewModel: ViewModelType {
         // 정보
         let genreColletionViewItemSelected: Observable<IndexPath>
         let genreColletionViewItemDeselected: Observable<IndexPath>
-        
-        let completedButtonDidTap: Observable<CompletedStatus>
-        let novelRatingButtonDidTap: Observable<NovelRatingStatus>
+        let publicationStatusButtonDidTap: Observable<PublicationStatus>
         
         // 키워드
         let updatedEnteredText: Observable<String>
@@ -90,8 +88,7 @@ final class DetailSearchViewModel: ViewModelType {
         
         // 정보
         let genreListData: Observable<[NovelGenre]>
-        let selectedCompletedStatus: Driver<CompletedStatus?>
-        let selectedNovelRatingStatus: Driver<NovelRatingStatus?>
+        let selectedPublicationStatus: Driver<PublicationStatus?>
         let resetSelectedInfoData: Observable<Void>
         
         // 키워드
@@ -125,7 +122,7 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.genreListData.accept(NovelGenre.detailSearchGenres)
                 owner.selectedGenreListData.accept(owner.selectedFilteredQuery.genres)
                 owner.selectedKeywordListData.accept(owner.selectedFilteredQuery.keywords)
-                owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { CompletedStatus(isCompleted: $0) })
+                owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { PublicationStatus(isCompleted: $0) })
                 owner.selectedNovelRatingStatus.accept(owner.selectedFilteredQuery.novelRating.map { NovelRatingStatus(toFloat: $0) })
             })
             .disposed(by: disposeBag)
@@ -228,7 +225,7 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.completedButtonDidTap
+        input.publicationStatusButtonDidTap
             .subscribe(with: self, onNext: { owner, selectedCompletedStatus in
                 if owner.selectedCompletedStatus.value == selectedCompletedStatus {
                     owner.selectedCompletedStatus.accept(nil)
@@ -237,17 +234,7 @@ final class DetailSearchViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
-        
-        input.novelRatingButtonDidTap
-            .subscribe(with: self, onNext: { owner, selectedNovelRatingStatus in
-                if owner.selectedNovelRatingStatus.value == selectedNovelRatingStatus {
-                    owner.selectedNovelRatingStatus.accept(nil)
-                } else {
-                    owner.selectedNovelRatingStatus.accept(selectedNovelRatingStatus)
-                }
-            })
-            .disposed(by: disposeBag)
-        
+
         // 키워드
         input.updatedEnteredText
             .subscribe(with: self, onNext: { owner, text in
@@ -379,8 +366,7 @@ final class DetailSearchViewModel: ViewModelType {
                       showInfoNewImageView: showInfoNewImageView,
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreListData: genreListData.asObservable(),
-                      selectedCompletedStatus: selectedCompletedStatus.asDriver(),
-                      selectedNovelRatingStatus: selectedNovelRatingStatus.asDriver(),
+                      selectedPublicationStatus: selectedCompletedStatus.asDriver(),
                       resetSelectedInfoData: resetSelectedInfoData.asObservable(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
