@@ -42,7 +42,7 @@ final class MyLibraryNavigationView: UIView {
         }
 
         libraryAddButton.do {
-            $0.setImage(.mdiBookPlusOutline, for: .normal)
+            $0.setImage(.icBookPlus, for: .normal)
         }
     }
 
