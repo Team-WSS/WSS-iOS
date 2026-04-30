@@ -7,25 +7,25 @@
 
 import Foundation
 
-enum CompletedStatus: String, CaseIterable {
+enum PublicationStatus: String, CaseIterable {
+    case onGoing
     case completed
-    case notCompleted
     
     var description: String {
         switch self {
+        case .onGoing: return "연재중"
         case .completed: return "완결작"
-        case .notCompleted: return "연재중"
         }
     }
     
     var isCompleted: Bool {
         switch self {
+        case .onGoing: return false
         case .completed: return true
-        case .notCompleted: return false
         }
     }
     
     init(isCompleted: Bool) {
-        self = isCompleted ? .completed : .notCompleted
+        self = isCompleted ? .completed : .onGoing
     }
 }

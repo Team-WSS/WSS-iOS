@@ -14,7 +14,8 @@ protocol SearchService {
     func searchNormalNovels(query: String, page: Int, size: Int) -> Single<NormalSearchNovels>
     func searchDetailNovels(genres: [String],
                             isCompleted: Bool?,
-                            novelRating: Float?,
+                            lowerNovelRating: Float,
+                            upperNovelRating: Float,
                             keywordIds: [Int],
                             page: Int,
                             size: Int) -> Single<DetailSearchNovels>
@@ -70,7 +71,8 @@ extension DefaultSearchService: SearchService {
     
     func searchDetailNovels(genres: [String],
                             isCompleted: Bool?,
-                            novelRating: Float?,
+                            lowerNovelRating: Float,
+                            upperNovelRating: Float,
                             keywordIds: [Int],
                             page: Int,
                             size: Int) -> Single<DetailSearchNovels> {
@@ -79,17 +81,15 @@ extension DefaultSearchService: SearchService {
             URLQueryItem(name: "genres", value: genres.joined(separator: ",")),
             URLQueryItem(name: "keywordIds", value: keywordIds.map { String($0) }.joined(separator: ",")),
             URLQueryItem(name: "page", value: String(page)),
-            URLQueryItem(name: "size", value: String(size))
+            URLQueryItem(name: "size", value: String(size)),
+            URLQueryItem(name: "lowerNovelRating", value: String(lowerNovelRating)),
+            URLQueryItem(name: "upperNovelRating", value: String(upperNovelRating))
         ]
         
         if let isCompleted = isCompleted {
             detailSearchQueryItems.append(URLQueryItem(name: "isCompleted", value: String(isCompleted)))
         }
-        
-        if let novelRating = novelRating {
-            detailSearchQueryItems.append(URLQueryItem(name: "novelRating", value: String(novelRating)))
-        }
-        
+
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.detailSearch,

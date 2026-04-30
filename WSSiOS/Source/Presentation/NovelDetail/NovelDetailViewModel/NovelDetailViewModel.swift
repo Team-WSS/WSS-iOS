@@ -36,7 +36,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
     private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
-    private let novelGenre = BehaviorRelay<[NewNovelGenre]>(value: [])
+    private let novelGenre = BehaviorRelay<[NovelGenre]>(value: [])
     private let pushToAuthorSearchResultViewController = PublishRelay<String>()
     
     // Tab
@@ -570,7 +570,7 @@ final class NovelDetailViewModel: ViewModelType {
                 
                 owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
                     .map{ String($0) }
-                    .map { NewNovelGenre.withKoreanRawValue(from: $0) })
+                    .map { NovelGenre.withKoreanRawValue(from: $0) })
             }, onFailure: { owner, error in
                 owner.showNetworkErrorView.accept(true)
                 print("Error: \(error)")

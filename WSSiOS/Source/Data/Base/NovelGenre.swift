@@ -8,33 +8,6 @@
 import UIKit
 
 enum NovelGenre: String, CaseIterable {
-    case romance, romanceFantasy, fantasy, modernFantasy, wuxia, BL, lightNovel, mystery, drama
-    
-    var toKorean: String {
-        switch self {
-        case .romanceFantasy:
-            return "로판"
-        case .romance:
-            return "로맨스"
-        case .fantasy:
-            return "판타지"
-        case .modernFantasy:
-            return "현판"
-        case .drama:
-            return "드라마"
-        case .lightNovel:
-            return "라노벨"
-        case .wuxia:
-            return "무협"
-        case .mystery:
-            return "미스터리"
-        case .BL:
-            return "BL"
-        }
-    }
-}
-
-enum NewNovelGenre: String, CaseIterable {
     case all = "all"
     case fantasy = "fantasy"
     case modernFantasy = "modernFantasy"
@@ -77,7 +50,7 @@ enum NewNovelGenre: String, CaseIterable {
         }
     }
     
-    static func withKoreanRawValue(from genre: String) -> NewNovelGenre {
+    static func withKoreanRawValue(from genre: String) -> NovelGenre {
         switch genre {
         case "전체":
             return .all
@@ -236,9 +209,11 @@ enum NewNovelGenre: String, CaseIterable {
     }
 }
 
-extension NewNovelGenre {
-    static let onboardingGenres: [NewNovelGenre] = [.romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .lightNovel, .drama, .mystery]
-    static let feedMaleGenres: [NewNovelGenre] = [.all, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .romance, .romanceFantasy, .bl, .etc]
-    static let feedFemaleGenres: [NewNovelGenre] = [.all, .romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .etc]
-    static let feedFilterGenres: [NewNovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl, .etc]
+extension NovelGenre {
+    static let onboardingGenres: [NovelGenre] = [.romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .lightNovel, .drama, .mystery]
+    static let feedMaleGenres: [NovelGenre] = [.all, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .romance, .romanceFantasy, .bl, .etc]
+    static let feedFemaleGenres: [NovelGenre] = [.all, .romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .etc]
+    static let feedFilterGenres: [NovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl, .etc]
+    static let detailSearchGenres: [NovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl]
+    static let myPageEditGenres: [NovelGenre] = [.romance, .romanceFantasy, .fantasy, .modernFantasy, .wuxia, .bl, .lightNovel, .mystery, .drama]
 }

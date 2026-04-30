@@ -81,39 +81,14 @@ final class SearchViewController: UIViewController {
         
         output.pushToDetailSearchViewController
             .bind(with: self, onNext: { owner, _ in
-                owner.presentToDetailSearchViewController(selectedKeywordList: [],
-                                                          previousViewInfo: .search,
-                                                          selectedFilteredQuery: SearchFilterQuery(keywords: [],
-                                                                                                   genres: [],
-                                                                                                   isCompleted: nil,
-                                                                                                   novelRating: nil))
+                owner.pushToDetailSearchViewController()
             })
             .disposed(by: disposeBag)
         
         output.pushToDetailSearchResultView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, notification in
-                if let userInfo = notification.userInfo {
-                    let keywords = userInfo["keywords"] as? [KeywordData]
-                    let genres = userInfo["genres"] as? [NovelGenre]
-                    let isCompleted = userInfo["isCompleted"] as? Bool
-                    let novelRating = userInfo["novelRating"] as? Float
-                    
-                    let detailSearchResultViewModel = DetailSearchResultViewModel(
-                        searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
-                        keywords: keywords ?? [],
-                        genres: genres ?? [],
-                        isCompleted: isCompleted,
-                        novelRating: novelRating
-                    )
-
-                    let detailSearchResultViewController = DetailSearchResultViewController(viewModel: detailSearchResultViewModel)
-                    
-                    detailSearchResultViewController.navigationController?.isNavigationBarHidden = false
-                    detailSearchResultViewController.hidesBottomBarWhenPushed = true
-                    
-                    owner.navigationController?.pushViewController(detailSearchResultViewController, animated: true)
-                }
+                
             })
             .disposed(by: disposeBag)
         

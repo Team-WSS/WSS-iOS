@@ -56,6 +56,10 @@ extension UIViewController {
         self.navigationItem.title = title
         self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
         self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
+        if #available(iOS 26.0, *) {
+            self.navigationItem.leftBarButtonItem?.hidesSharedBackground = true
+            self.navigationItem.rightBarButtonItem?.hidesSharedBackground = true
+        }
         setNavigationBarVisibleBeforeScroll(isVisible: isVisibleBeforeScroll)
     }
     
@@ -69,7 +73,7 @@ extension UIViewController {
             ]
             $0.shadowColor = .clear
         }
-        
+
         let whiteAppearance = UINavigationBarAppearance().then {
             $0.configureWithOpaqueBackground()
             $0.backgroundColor = .white
@@ -80,7 +84,7 @@ extension UIViewController {
             ]
             $0.shadowColor = .clear
         }
-        
+
         navigationItem.standardAppearance = whiteAppearance
         navigationItem.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
     }
@@ -306,17 +310,18 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func presentToDetailSearchViewController(selectedKeywordList: [KeywordData],
-                                             previousViewInfo: PreviousViewType,
-                                             selectedFilteredQuery: SearchFilterQuery) {
+    func pushToDetailSearchViewController() {
         let detailSearchViewController = DetailSearchViewController(
             viewModel: DetailSearchViewModel(
                 keywordRepository: DefaultKeywordRepository(
-                    keywordService: DefaultKeywordService()),
-                selectedKeywordList: selectedKeywordList,
-                previousViewInfo: previousViewInfo,
-                selectedFilteredQuery: selectedFilteredQuery))
-        self.presentModalViewController(detailSearchViewController)
+                    keywordService: DefaultKeywordService()
+                )
+            )
+        )
+        detailSearchViewController.navigationController?.isNavigationBarHidden = true
+        detailSearchViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(detailSearchViewController,
+                                                      animated: true)
     }
     
     func presentInduceLoginViewController() {
@@ -363,8 +368,8 @@ extension UIViewController {
     
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
-                userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
+            userRepository: DefaultUserInfoRepository(
+                userService: DefaultUserService()
             )
         )
         viewController.hidesBottomBarWhenPushed = true
@@ -373,7 +378,7 @@ extension UIViewController {
     
     func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
         let viewController = UserLibraryViewController(userId: userId)
-
+        
         viewController.setPageIndex(target: pageIndex)
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)

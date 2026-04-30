@@ -51,5 +51,7 @@ extension StringLiterals {
         static let placeHolder = "키워드를 검색하세요"
         
         static let empty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
+        
+        static let applyOption = "장르, 연재상태, 별점, 키워드 적용"
     }
 }

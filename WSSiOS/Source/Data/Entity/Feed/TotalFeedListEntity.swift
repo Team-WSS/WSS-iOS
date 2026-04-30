@@ -91,7 +91,7 @@ extension TotalFeedResponse {
         let thumbnailImageURL = URL(string: self.thumbnailUrl ?? "")
         let hasImage = self.thumbnailUrl != nil && self.imageCount > 0
         
-        let genre = NewNovelGenre(rawValue: self.genreName ?? "")
+        let genre = NovelGenre(rawValue: self.genreName ?? "")
         let novelGenreColor = genre?.linkColor ?? .genreColorR
         let novelGenreImage = genre?.linkImage ?? .icGenreLinkR
         

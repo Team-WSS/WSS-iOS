@@ -10,16 +10,12 @@ import UIKit
 enum WSSTabBarItem: Int, CaseIterable {
     
     case home = 0
-    case search, feed, library, myPage
+    case feed, library, myPage
     
     var normalItemImage: UIImage {
         switch self {
         case .home:
             return .icNavigateHome
-                .withRenderingMode(.alwaysOriginal)
-                .withTintColor(.wssGray200)
-        case .search:
-            return .icNavigateSearch
                 .withRenderingMode(.alwaysOriginal)
                 .withTintColor(.wssGray200)
         case .feed:
@@ -43,10 +39,6 @@ enum WSSTabBarItem: Int, CaseIterable {
             return .icNavigateHomeSelected
                 .withRenderingMode(.alwaysOriginal)
                 .withTintColor(.wssBlack)
-        case .search:
-            return .icNavigateSearchSelected
-                .withRenderingMode(.alwaysOriginal)
-                .withTintColor(.wssBlack)
         case .feed:
             return .icNavigateFeedSelected
                 .withRenderingMode(.alwaysOriginal)
@@ -66,8 +58,6 @@ enum WSSTabBarItem: Int, CaseIterable {
         switch self {
         case .home:
             return StringLiterals.Tabbar.Title.home
-        case .search:
-            return StringLiterals.Tabbar.Title.search
         case .feed:
             return StringLiterals.Tabbar.Title.feed
         case .library:
@@ -90,9 +80,6 @@ enum WSSTabBarItem: Int, CaseIterable {
                 notificationRepository: DefaultNotificationRepository(
                     notificationService: DefaultNotificationService())
             ))
-            
-        case .search:
-            return SearchViewController(viewModel: SearchViewModel())
             
         case .feed:
             return FeedViewController()

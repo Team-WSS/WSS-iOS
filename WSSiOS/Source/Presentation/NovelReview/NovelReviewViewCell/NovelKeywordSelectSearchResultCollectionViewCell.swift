@@ -46,7 +46,6 @@ final class NovelKeywordSelectSearchResultCollectionViewCell: UICollectionViewCe
     private func setLayout() {
         keywordLink.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(35)
         }
     }
     

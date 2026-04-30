@@ -18,9 +18,9 @@ final class HomeView: UIView {
     private let contentView = UIView()
     let headerView = HomeHeaderView()
     let searchBarView = SearchBarView()
+    let induceDetailSearchView = HomeInduceDetailSearchView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
-    let interestView = HomeInterestView()
     let tasteRecommendView = HomeTasteRecommendView()
     
     let loadingView = WSSLoadingView()
@@ -56,9 +56,9 @@ final class HomeView: UIView {
                          loadingView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(searchBarView,
+                                induceDetailSearchView,
                                 todayPopularView,
                                 realtimePopularView,
-                                interestView,
                                 tasteRecommendView)
     }
     
@@ -92,8 +92,13 @@ final class HomeView: UIView {
             $0.height.equalTo(42)
         }
         
+        induceDetailSearchView.snp.makeConstraints {
+            $0.top.equalTo(searchBarView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
         todayPopularView.snp.makeConstraints {
-            $0.top.equalTo(searchBarView.snp.bottom).offset(24)
+            $0.top.equalTo(induceDetailSearchView.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
         }
         
@@ -102,13 +107,8 @@ final class HomeView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        interestView.snp.makeConstraints {
-            $0.top.equalTo(realtimePopularView.snp.bottom).offset(40)
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(40)
+            $0.top.equalTo(realtimePopularView.snp.bottom).offset(40)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
