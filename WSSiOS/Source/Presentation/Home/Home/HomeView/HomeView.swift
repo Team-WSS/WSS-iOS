@@ -21,7 +21,6 @@ final class HomeView: UIView {
     let induceDetailSearchView = HomeInduceDetailSearchView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
-    let interestView = HomeInterestView()
     let tasteRecommendView = HomeTasteRecommendView()
     
     let loadingView = WSSLoadingView()
@@ -60,7 +59,6 @@ final class HomeView: UIView {
                                 induceDetailSearchView,
                                 todayPopularView,
                                 realtimePopularView,
-                                interestView,
                                 tasteRecommendView)
     }
     
@@ -109,13 +107,8 @@ final class HomeView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        interestView.snp.makeConstraints {
-            $0.top.equalTo(realtimePopularView.snp.bottom).offset(40)
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(40)
+            $0.top.equalTo(realtimePopularView.snp.bottom).offset(40)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }

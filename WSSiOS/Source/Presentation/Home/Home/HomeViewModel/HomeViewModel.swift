@@ -30,11 +30,6 @@ final class HomeViewModel: ViewModelType {
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
     private let realtimePopularDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
     
-    // 관심글
-    private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
-    private let updateInterestView = PublishRelay<(Bool, InterestMessage)>()
-    private var interestFeedMessage = BehaviorRelay<InterestMessage>(value: .none)
-    
     // 취향추천
     private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
     private let updateTasteRecommendView = PublishRelay<(Bool, Bool)>()
@@ -56,11 +51,9 @@ final class HomeViewModel: ViewModelType {
         let viewWillAppearEvent: Observable<Void>
         let viewDidLoadEvent: Observable<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
-        let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
         let announcementButtonDidTap: ControlEvent<Void>
-        let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
         let searchBarViewDidTap: Observable<UITapGestureRecognizer>
         let indunceDetailSearchViewDidTap: Observable<UITapGestureRecognizer>
@@ -75,9 +68,6 @@ final class HomeViewModel: ViewModelType {
         
         var realtimePopularList: Observable<[RealtimePopularFeed]>
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
-        
-        var interestList: Observable<[InterestFeed]>
-        let updateInterestView: Observable<(Bool, InterestMessage)>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
@@ -141,16 +131,9 @@ extension HomeViewModel {
                 let message = InterestMessage(rawValue: interestFeeds.message)
                 
                 if owner.isLogined {
-                    owner.interestList.accept(interestFeeds.recommendFeeds)
-                    owner.updateInterestView.accept((true, message ?? .none))
-                    owner.interestFeedMessage.accept(message ?? .none)
-                    
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
                 } else {
-                    owner.updateInterestView.accept((false, message ?? .none))
-                    owner.interestFeedMessage.accept(.none)
-                    
                     owner.updateTasteRecommendView.accept((false, true))
                 }
                 
@@ -182,8 +165,6 @@ extension HomeViewModel {
                 UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
                 UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
-                owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
-                
                 owner.getTermSetting(disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
@@ -211,15 +192,7 @@ extension HomeViewModel {
                 }
             })
             .disposed(by: disposeBag)
-        
-        input.interestCellSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                AmplitudeManager.shared.track(AmplitudeEvent.Home.homeLoveFeedlist)
-                let novelId = owner.interestList.value[indexPath.row].novelId
-                owner.pushToNovelDetailViewController.accept(novelId)
-            })
-            .disposed(by: disposeBag)
-        
+
         input.tasteRecommendCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 AmplitudeManager.shared.track(AmplitudeEvent.Home.homePreferNovellist)
@@ -242,17 +215,6 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        input.registerInterestNovelButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                AmplitudeManager.shared.track(AmplitudeEvent.Home.homeToLoveButton)
-                if owner.isLogined {
-                    owner.pushToNormalSearchViewController.accept(())
-                } else {
-                    owner.showInduceLoginModalView.accept(())
-                }
-            })
-            .disposed(by: disposeBag)
-        
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 AmplitudeManager.shared.track(AmplitudeEvent.Home.homeToPreferButton)
@@ -268,8 +230,6 @@ extension HomeViewModel {
                       todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
-                      interestList: interestList.asObservable(),
-                      updateInterestView: updateInterestView.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight.asDriver(),
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),

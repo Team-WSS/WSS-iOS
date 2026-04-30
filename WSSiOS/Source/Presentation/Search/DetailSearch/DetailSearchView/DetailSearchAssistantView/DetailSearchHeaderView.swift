@@ -17,6 +17,7 @@ enum DetailSearchTab {
 final class DetailSearchHeaderView: UIView {
     
     //MARK: - UI Components
+    
     let backButton = UIButton()
     
     let infoLabel = UILabel()
