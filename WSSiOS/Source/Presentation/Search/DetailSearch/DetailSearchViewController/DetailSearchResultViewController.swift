@@ -41,10 +41,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        setNavigationBar()
+
         swipeBackGesture()
-        
         AmplitudeManager.shared.track(AmplitudeEvent.Search.seekResult)
     }
     
@@ -59,11 +57,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         
         viewDidLoadEvent.accept(())
     }
-    
-    private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
+
     private func registerCell() {
         rootView.novelView.resultNovelCollectionView.register(HomeTasteRecommendCollectionViewCell.self,
                                                               forCellWithReuseIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier)
