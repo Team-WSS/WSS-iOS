@@ -103,7 +103,6 @@ final class MyPageEditProfileViewController: UIViewController {
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
-                    print(element)
                     cell.bindData(genre: element.0)
                     cell.updateCell(isSelected: element.1)
                 }
@@ -246,7 +245,7 @@ extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
+        let genreList: [String] = NovelGenre.myPageEditGenres.map { $0.withKorean }
         text = genreList[indexPath.item]
         
         guard let unwrappedText = text else {
@@ -254,6 +253,6 @@ extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
         }
         
         let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-        return CGSize(width: width, height: 35)
+        return CGSize(width: width, height: 37)
     }
 }

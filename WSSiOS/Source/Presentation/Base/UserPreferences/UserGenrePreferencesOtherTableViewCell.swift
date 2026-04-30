@@ -68,7 +68,7 @@ final class UserGenrePreferencesOtherTableViewCell: UITableViewCell {
     
     func bindData(data: UserGenrePreferencesEntity) {
         genreImageView.kfSetImage(url: data.genreImageURL)
-        let koreanGenre = NewNovelGenre(rawValue: data.genreName)?.withKorean
+        let koreanGenre = NovelGenre(rawValue: data.genreName)?.withKorean
         genreLabel.applyWSSFont(.title3, with: koreanGenre)
         countLabel.applyWSSFont(.body5, with: String(data.genreCount) + "편")
     }

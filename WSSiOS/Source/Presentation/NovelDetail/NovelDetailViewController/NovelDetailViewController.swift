@@ -61,7 +61,7 @@ final class NovelDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         registerCell()
         delegate()
         bindViewModel()
@@ -74,13 +74,14 @@ final class NovelDetailViewController: UIViewController {
         viewWillAppearEvent.accept(())
         setNavigationBar()
         swipeBackGesture()
-        self.hidesBottomBarWhenPushed = true
     }
     
     //MARK: - UI
     
     private func setNavigationBar() {
         self.setWSSNavigationBar(title: navigationTitle, left: rootView.backButton, right: rootView.headerDropDownButton, isVisibleBeforeScroll: false)
+        setContentScrollView(rootView.scrollView, for: .top)
+        self.hidesBottomBarWhenPushed = true
     }
     
     //MARK: - Bind

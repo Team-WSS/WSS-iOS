@@ -70,7 +70,7 @@ final class UserGenrePreferencesTopView: UIView {
     
     func bindData(data: UserGenrePreferencesEntity) {
         topGenreImageView.kfSetImage(url: data.genreImageURL)
-        let koreanGenre = NewNovelGenre(rawValue: data.genreName)?.withKorean
+        let koreanGenre = NovelGenre(rawValue: data.genreName)?.withKorean
         topGenreTitleLabel.applyWSSFont(.title3, with: koreanGenre)
         topGenreCountLabel.applyWSSFont(.body5, with: String(data.genreCount) + "편")
     }

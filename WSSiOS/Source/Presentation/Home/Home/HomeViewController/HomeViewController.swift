@@ -81,11 +81,7 @@ final class HomeViewController: UIViewController {
         rootView.realtimePopularView.realtimePopularCollectionView.register(
             HomeRealtimePopularCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier)
-        
-        rootView.interestView.interestCollectionView.register(
-            HomeInterestCollectionViewCell.self,
-            forCellWithReuseIdentifier: HomeInterestCollectionViewCell.cellIdentifier)
-        
+
         rootView.tasteRecommendView.tasteRecommendCollectionView.register(
             HomeTasteRecommendCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier)
@@ -101,13 +97,12 @@ final class HomeViewController: UIViewController {
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
-            interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
             tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
             announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
-            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
-            searchBarViewDidTap: rootView.searchBarView.rx.tapGesture().when(.recognized).asObservable()
+            searchBarViewDidTap: rootView.searchBarView.rx.tapGesture().when(.recognized).asObservable(),
+            indunceDetailSearchViewDidTap: rootView.induceDetailSearchView.rx.tapGesture().when(.recognized)
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -144,25 +139,6 @@ final class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, realtimePopularItems in
                 owner.rootView.realtimePopularView.configureDots(numberOfItems: realtimePopularItems.count)
-            })
-            .disposed(by: disposeBag)
-        
-        // 관심글
-        output.interestList
-            .bind(to: rootView.interestView.interestCollectionView.rx.items(
-                cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
-                cellType: HomeInterestCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
-        
-        output.updateInterestView
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                let isLogined = data.0
-                let message = data.1
-                let nickname = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userNickname)
-                owner.rootView.interestView.updateView(isLogined, message, nickname)
             })
             .disposed(by: disposeBag)
         
@@ -217,6 +193,12 @@ final class HomeViewController: UIViewController {
         output.showInduceLoginModalView
             .bind(with: self, onNext: { owner, _ in
                 owner.presentInduceLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToDetailSearchViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToDetailSearchViewController()
             })
             .disposed(by: disposeBag)
         
