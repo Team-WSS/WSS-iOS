@@ -84,7 +84,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelResultCellSelected: rootView.novelView.resultNovelCollectionView.rx.itemSelected,
             viewDidLoadEvent: self.viewDidLoadEvent.asObservable(),
-            novelCollectionViewReachedBottom: observeReachedBottom(rootView.novelView.scrollView)
+            novelCollectionViewReachedBottom: observeReachedBottom(rootView.novelView.scrollView),
+            searchBarViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized)
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)

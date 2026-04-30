@@ -40,6 +40,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         let novelResultCellSelected: ControlEvent<IndexPath>
         let viewDidLoadEvent: Observable<Void>
         let novelCollectionViewReachedBottom: Observable<Bool>
+        let searchBarViewDidTap: Observable<UITapGestureRecognizer>
     }
     
     struct Output {
@@ -136,6 +137,12 @@ final class DetailSearchResultViewModel: ViewModelType {
                 let newData = owner.filteredNovelsData.value + data.novels
                 owner.filteredNovelsData.accept(newData)
                 owner.isLoadable = data.isLoadable
+            })
+            .disposed(by: disposeBag)
+        
+        input.searchBarViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popViewController.accept(())
             })
             .disposed(by: disposeBag)
         
