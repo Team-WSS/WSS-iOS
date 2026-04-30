@@ -62,7 +62,7 @@ extension UserFeedResponse {
         
         return UserFeedEntity(feedId: self.feedId,
                               feedContent: self.feedContent,
-                              createdDate: self.formattedDate(),
+                              createdDate: self.createdDate,
                               isSpoiler: self.isSpoiler,
                               isModified: self.isModified,
                               isLiked: self.isLiked,
@@ -77,21 +77,6 @@ extension UserFeedResponse {
                               thumbnailImage: thumbnailImageURL,
                               hasImage: hasImage,
                               imageCount: self.imageCount)
-    }
-    
-    private func formattedDate() -> String {
-        let inputDateFormatter = DateFormatter()
-        inputDateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        guard let date = inputDateFormatter.date(from: self.createdDate) else {
-            return ""
-        }
-        
-        let outputDateFormatter = DateFormatter()
-        outputDateFormatter.locale = Locale(identifier: "ko_KR")
-        outputDateFormatter.dateFormat = "M월 d일"
-        
-        return outputDateFormatter.string(from: date)
     }
 }
 
