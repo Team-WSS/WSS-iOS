@@ -83,10 +83,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelResultCellSelected: rootView.novelView.resultNovelCollectionView.rx.itemSelected,
-            searchHeaderViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidLoadEvent: self.viewDidLoadEvent.asObservable(),
-            novelCollectionViewReachedBottom: observeReachedBottom(rootView.novelView.scrollView),
-            updateDetailSearchResultNotification: NotificationCenter.default.rx.notification(Notification.Name("PushToUpdateDetailSearchResult"))
+            novelCollectionViewReachedBottom: observeReachedBottom(rootView.novelView.scrollView)
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -119,14 +117,6 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
                 owner.pushToNovelDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
-        output.presentDetailSearchModal
-            .subscribe(with: self, onNext: { owner, data in
-                owner.pushToDetailSearchViewController(selectedKeywordList: data.keywords,
-                                                          previousViewInfo: .resultSearchBar,
-                                                          selectedFilteredQuery: data)
             })
             .disposed(by: disposeBag)
         

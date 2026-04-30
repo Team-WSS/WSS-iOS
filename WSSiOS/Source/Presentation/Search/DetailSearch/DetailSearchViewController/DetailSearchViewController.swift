@@ -106,7 +106,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
             resetViewDidTap: rootView.detailSearchHeaderView.resetStackView.rx.tapGesture().when(.recognized),
             searchNovelButtonDidTap: rootView.detailSearchButton.rx.tap,
-            updateDetailSearchResultData: NotificationCenter.default.rx.notification(Notification.Name("PushToUpateDetailSearchResult")).asObservable(),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
             publicationStatusButtonDidTap: completedStatusButtonDidTap,
@@ -148,6 +147,18 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         output.showKeywordNewImageView
             .bind(with: self, onNext: { owner, show in
                 owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = show ? false : true
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToResultViewController
+            .subscribe(with: self, onNext: { owner, filterQuery in
+                let viewModel = DetailSearchResultViewModel(
+                    searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                    option: filterQuery
+                )
+                let viewController = DetailSearchResultViewController(viewModel: viewModel)
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         

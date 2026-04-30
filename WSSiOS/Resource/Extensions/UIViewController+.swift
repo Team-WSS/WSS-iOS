@@ -306,16 +306,14 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToDetailSearchViewController(selectedKeywordList: [KeywordData],
-                                          previousViewInfo: PreviousViewType,
-                                          selectedFilteredQuery: SearchFilterQuery) {
+    func pushToDetailSearchViewController() {
         let detailSearchViewController = DetailSearchViewController(
             viewModel: DetailSearchViewModel(
                 keywordRepository: DefaultKeywordRepository(
-                    keywordService: DefaultKeywordService()),
-                selectedKeywordList: selectedKeywordList,
-                previousViewInfo: previousViewInfo,
-                selectedFilteredQuery: selectedFilteredQuery))
+                    keywordService: DefaultKeywordService()
+                )
+            )
+        )
         detailSearchViewController.navigationController?.isNavigationBarHidden = true
         detailSearchViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(detailSearchViewController,

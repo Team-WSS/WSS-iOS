@@ -223,14 +223,7 @@ final class HomeViewController: UIViewController {
         
         output.pushToDetailSearchViewController
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToDetailSearchViewController(
-                    selectedKeywordList: [],
-                    previousViewInfo: .search,
-                    selectedFilteredQuery: SearchFilterQuery(keywords: [],
-                                                             genres: [],
-                                                             isCompleted: nil,
-                                                             novelRating: nil)
-                )
+                owner.pushToDetailSearchViewController()
             })
             .disposed(by: disposeBag)
         

@@ -17,14 +17,11 @@ final class DetailSearchViewModel: ViewModelType {
     //MARK: - Properties
     
     private let keywordRepository: KeywordRepository
-    private let previousViewInfo: PreviousViewType
-    private let selectedFilteredQuery: SearchFilterQuery
-    
+
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
     let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
-    private let pushToDetailSearchResultViewControllerNotificationName = Notification.Name("PushToDetailSearchResult")
-    private let pushToUpdateDetailSearchResultViewControllerNotificationName = Notification.Name("PushToUpdateDetailSearchResult")
+    let pushToResultViewController = PublishRelay<SearchFilterQuery>()
     
     // 정보
     private var selectedGenreList: [NovelGenre] = []
@@ -37,7 +34,7 @@ final class DetailSearchViewModel: ViewModelType {
     
     // 키워드
     var keywordSearchResultList: [KeywordData] = []
-    var selectedKeywordList: [KeywordData]
+    var selectedKeywordList: [KeywordData] = []
     let keywordLimit: Int = 20
     
     private let enteredText = BehaviorRelay<String>(value: "")
@@ -58,7 +55,6 @@ final class DetailSearchViewModel: ViewModelType {
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
         let resetViewDidTap: Observable<UITapGestureRecognizer>
         let searchNovelButtonDidTap: ControlEvent<Void>
-        let updateDetailSearchResultData: Observable<Notification>
         
         // 정보
         let genreColletionViewItemSelected: Observable<IndexPath>
@@ -87,6 +83,7 @@ final class DetailSearchViewModel: ViewModelType {
         let selectedTab: Driver<DetailSearchTab>
         let showInfoNewImageView: Observable<Bool>
         let showKeywordNewImageView: Observable<Bool>
+        let pushToResultViewController: Observable<SearchFilterQuery>
         
         // 정보
         let genreListData: Observable<[NovelGenre]>
@@ -108,14 +105,8 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(keywordRepository: KeywordRepository,
-         selectedKeywordList: [KeywordData],
-         previousViewInfo: PreviousViewType,
-         selectedFilteredQuery: SearchFilterQuery) {
+    init(keywordRepository: KeywordRepository) {
         self.keywordRepository = keywordRepository
-        self.selectedKeywordList = selectedKeywordList
-        self.previousViewInfo = previousViewInfo
-        self.selectedFilteredQuery = selectedFilteredQuery
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -123,9 +114,6 @@ final class DetailSearchViewModel: ViewModelType {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
                 owner.genreListData.accept(NovelGenre.detailSearchGenres)
-                owner.selectedGenreListData.accept(owner.selectedFilteredQuery.genres)
-                owner.selectedKeywordListData.accept(owner.selectedFilteredQuery.keywords)
-                owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { PublicationStatus(isCompleted: $0) })
             })
             .disposed(by: disposeBag)
         
@@ -189,30 +177,21 @@ final class DetailSearchViewModel: ViewModelType {
                 let keywords = owner.selectedKeywordList
                 let genres: [NovelGenre] = owner.selectedGenreListData.value
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
-                let ratingLower = owner.selectedRatingLower.value
-                let ratingUpper = owner.selectedRatingUpper.value
+                let lowernovelRating = Float(owner.selectedRatingLower.value)
+                let uppernovelRating = Float(owner.selectedRatingUpper.value)
 
-                let userInfo: [AnyHashable: Any] = [
-                    "keywords": keywords,
-                    "genres": genres,
-                    "isCompleted": isCompleted as Any,
-                    "ratingLower": ratingLower,
-                    "ratingUpper": ratingUpper
-                ]
-                
-                if owner.previousViewInfo == .search {
-                    NotificationCenter.default.post(name: owner.pushToDetailSearchResultViewControllerNotificationName,
-                                                    object: nil,
-                                                    userInfo: userInfo)
-                    owner.dismissModalViewController.accept(())
-                } else {
-                    NotificationCenter.default.post(name: owner.pushToUpdateDetailSearchResultViewControllerNotificationName,
-                                                    object: nil,
-                                                    userInfo: userInfo)
-                    owner.dismissModalViewController.accept(())
-                }
+                let filterQuery = SearchFilterQuery(
+                    keywords: keywords,
+                    genres: genres,
+                    isCompleted: isCompleted,
+                    lowerNovelRating: lowernovelRating,
+                    upperNovelRating: uppernovelRating
+                )
+                owner.pushToResultViewController.accept(filterQuery)
             })
             .disposed(by: disposeBag)
+        
+        // MARK: - 정보
         
         input.genreColletionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -247,7 +226,8 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
 
-        // 키워드
+        // MARK: - 키워드
+        
         input.updatedEnteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.enteredText.accept(text)
@@ -353,7 +333,7 @@ final class DetailSearchViewModel: ViewModelType {
         input.contactButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if let url = URL(string: ExternalLinks.inquiryAddNovel
-) {
+                ) {
                     if UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
@@ -380,6 +360,7 @@ final class DetailSearchViewModel: ViewModelType {
                       selectedTab: selectedTab.asDriver(),
                       showInfoNewImageView: showInfoNewImageView,
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
+                      pushToResultViewController: pushToResultViewController.asObservable(),
                       genreListData: genreListData.asObservable(),
                       selectedPublicationStatus: selectedCompletedStatus.asDriver(),
                       ratingRange: ratingRange.asDriver(onErrorJustReturn: (0.0, 5.0)),
@@ -401,9 +382,4 @@ final class DetailSearchViewModel: ViewModelType {
         keywordRepository.searchKeyword(query: query)
             .observe(on: MainScheduler.instance)
     }
-}
-
-enum PreviousViewType {
-    case search
-    case resultSearchBar
 }

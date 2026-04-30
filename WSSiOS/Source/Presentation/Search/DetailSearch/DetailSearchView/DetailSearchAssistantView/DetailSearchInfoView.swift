@@ -191,6 +191,8 @@ final class DetailSearchInfoView: UIView {
         }
     }
     
+    //MARK: - Custom Method
+    
     func updateCompletedKeyword(_ selectedCompletedStatus: PublicationStatus?) {
         completedStatusButtons.forEach {
             $0.updateButton(selectedCompletedStatus: selectedCompletedStatus)
