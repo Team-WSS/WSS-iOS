@@ -129,7 +129,7 @@ final class FeedEditView: UIView {
     
     func showAddImages(hasImage: Bool) {
         if hasImage {
-            stackView.insertArrangedSubview(feedEditAddImageView, at: 2)
+            stackView.insertArrangedSubview(feedEditAddImageView, at: 1)
             stackView.setCustomSpacing(14, after: feedEditContentView)
         } else {
             feedEditAddImageView.removeFromSuperview()
