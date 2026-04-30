@@ -20,8 +20,7 @@ final class SearchView: UIView {
     private let titleLabel = UILabel()
     let searchbarView = SearchBarView()
     let searchDetailInduceView = SearchDetailInduceView()
-    let sosopickView = SearchSosoPickView()
-    
+
     private let loadingView = WSSLoadingView()
     
     // MARK: - Life Cycle
@@ -61,8 +60,7 @@ final class SearchView: UIView {
                          searchbarView,
                          loadingView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(searchDetailInduceView,
-                                sosopickView)
+        contentView.addSubviews(searchDetailInduceView)
     }
     
     private func setLayout() {
@@ -94,11 +92,7 @@ final class SearchView: UIView {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(256)
-        }
-        
-        sosopickView.snp.makeConstraints {
-            $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(24)
         }
         
         loadingView.snp.makeConstraints {
