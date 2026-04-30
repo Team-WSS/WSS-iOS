@@ -56,6 +56,10 @@ extension UIViewController {
         self.navigationItem.title = title
         self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
         self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
+        if #available(iOS 26.0, *) {
+            self.navigationItem.leftBarButtonItem?.hidesSharedBackground = true
+            self.navigationItem.rightBarButtonItem?.hidesSharedBackground = true
+        }
         setNavigationBarVisibleBeforeScroll(isVisible: isVisibleBeforeScroll)
     }
     
@@ -69,7 +73,7 @@ extension UIViewController {
             ]
             $0.shadowColor = .clear
         }
-        
+
         let whiteAppearance = UINavigationBarAppearance().then {
             $0.configureWithOpaqueBackground()
             $0.backgroundColor = .white
@@ -80,7 +84,7 @@ extension UIViewController {
             ]
             $0.shadowColor = .clear
         }
-        
+
         navigationItem.standardAppearance = whiteAppearance
         navigationItem.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
     }
