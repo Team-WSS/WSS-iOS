@@ -14,7 +14,7 @@ final class MyLibraryView: UIView {
     
     //MARK: - Components
     
-    private let navigationView = MyLibraryNavigationView()
+    let navigationView = MyLibraryNavigationView()
     let headerView = MyLibraryHeaderView()
     let libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let libraryTableView = UITableView(frame: .zero, style: .plain)
