@@ -36,20 +36,38 @@ final class DetailSearchResultHeaderView: UIView {
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }
-        
+
         backgroundView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
-            
+
             headerLabel.do {
-                $0.applyWSSFont(.body4, with: StringLiterals.DetailSearch.applyOption)
+                $0.applyWSSFont(.body4, with: "별점 적용")
                 $0.textColor = .wssGray200
             }
-            
+
             controllerImageView.do {
                 $0.image = .icController.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack)
             }
         }
+    }
+
+    func updateHeaderLabel(with option: SearchFilterQuery) {
+        var appliedFilters: [String] = []
+
+        if !option.genres.isEmpty {
+            appliedFilters.append(StringLiterals.DetailSearch.genre)
+        }
+        if option.isCompleted != nil {
+            appliedFilters.append(StringLiterals.DetailSearch.serialStatus)
+        }
+        appliedFilters.append(StringLiterals.DetailSearch.rating)
+        if !option.keywords.isEmpty {
+            appliedFilters.append(StringLiterals.DetailSearch.keyword)
+        }
+
+        let text = appliedFilters.joined(separator: ", ") + " 적용"
+        headerLabel.applyWSSFont(.body4, with: text)
     }
     
     private func setHierarchy() {

@@ -54,7 +54,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
 
         bindViewModel()
         bindAction()
-        
+
+        rootView.headerView.updateHeaderLabel(with: viewModel.option)
         viewDidLoadEvent.accept(())
     }
 
