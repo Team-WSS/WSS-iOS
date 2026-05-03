@@ -56,7 +56,7 @@ final class HomeViewModel: ViewModelType {
         let announcementButtonDidTap: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
         let searchBarViewDidTap: Observable<UITapGestureRecognizer>
-        let indunceDetailSearchViewDidTap: Observable<UITapGestureRecognizer>
+        let induceDetailSearchViewDidTap: Observable<UITapGestureRecognizer>
     }
     
     //MARK: - Outputs
@@ -175,9 +175,13 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        input.indunceDetailSearchViewDidTap
+        input.induceDetailSearchViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.pushToDetailSearchViewController.accept(())
+                if owner.isLogined {
+                    owner.pushToDetailSearchViewController.accept(())
+                } else {
+                    owner.showInduceLoginModalView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         

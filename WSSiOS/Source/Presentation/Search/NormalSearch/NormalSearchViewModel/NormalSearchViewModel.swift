@@ -17,6 +17,8 @@ final class NormalSearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    private let isLogined = APIConstants.isLogined
+    
     // API 쿼리
     private let searchText = BehaviorRelay<String>(value: "")
     private var currentPage: Int = 0
@@ -34,7 +36,6 @@ final class NormalSearchViewModel: ViewModelType {
     private let showLoadingView = PublishRelay<Bool>()
 
     // 소소픽
-    private let isLogined = APIConstants.isLogined
     private let sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
     private let presentToInduceLoginView = PublishRelay<Void>()
     
@@ -122,7 +123,6 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Methods
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-
         getSosoPickNovels()
             .subscribe(with: self, onNext: { owner, data in
                 owner.sosoPickList.accept(data.sosoPicks)
@@ -196,8 +196,12 @@ final class NormalSearchViewModel: ViewModelType {
         input.normalSearchCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 AmplitudeManager.shared.track(AmplitudeEvent.Search.clickSearchResult)
-                let novelId = owner.normalSearchList.value[indexPath.row].novelId
-                owner.pushToNovelDetailViewController.accept(novelId)
+                if owner.isLogined {
+                    let novelId = owner.normalSearchList.value[indexPath.row].novelId
+                    owner.pushToNovelDetailViewController.accept(novelId)
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
