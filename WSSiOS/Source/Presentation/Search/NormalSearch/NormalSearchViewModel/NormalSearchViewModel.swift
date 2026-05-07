@@ -38,9 +38,12 @@ final class NormalSearchViewModel: ViewModelType {
     // 소소픽
     private let sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
     private let presentToInduceLoginView = PublishRelay<Void>()
+
+    // 최근 검색어
+    private let recentSearchList = BehaviorRelay<[RecentSearch]>(value: [])
     
     //MARK: - Inputs
-    
+
     struct Input {
         let searchTextUpdated: ControlProperty<String>
         let searchTextFieldEditingDidBegin: ControlEvent<Void>
@@ -55,10 +58,14 @@ final class NormalSearchViewModel: ViewModelType {
         let reachedBottom: Observable<Bool>
         let normalSearchCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
         let sosoPickCellSelected: ControlEvent<IndexPath>
+        let viewWillAppear: Observable<Void>
+        let recentSearchTagSelected: ControlEvent<IndexPath>
+        let recentSearchDeleteAllButtonDidTap: ControlEvent<Void>
+        let recentSearchDeleteButtonDidTap: Observable<Int>
     }
-    
+
     //MARK: - Outputs
-    
+
     struct Output {
         let resultCount: Observable<Int>
         let normalSearchList: Observable<[SearchNovel]>
@@ -74,6 +81,9 @@ final class NormalSearchViewModel: ViewModelType {
         let showLoadingView: Observable<Bool>
         let sosoPickList: Observable<[SosoPickNovel]>
         let presentToInduceLoginView: Observable<Void>
+        let recentSearchList: Observable<[RecentSearch]>
+        let showRecentSearchView: Driver<Bool>
+        let fillSearchTextField: Observable<String>
     }
     
     //MARK: - init
@@ -221,6 +231,48 @@ final class NormalSearchViewModel: ViewModelType {
         let endEditing = input.normalSearchCollectionViewSwipeGesture
             .map { _ in () }
         
+        // 최근 검색어 로직
+        input.viewWillAppear
+            .filter { self.isLogined }
+            .flatMapLatest { _ in
+                self.searchRepository.getRecentSearches()
+                    .catchAndReturn([])
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.recentSearchList.accept(data)
+            })
+            .disposed(by: disposeBag)
+
+        input.recentSearchDeleteButtonDidTap
+            .do(onNext: { id in
+                var list = self.recentSearchList.value
+                list.removeAll { $0.id == id }
+                self.recentSearchList.accept(list)
+            })
+            .flatMapLatest { id in
+                self.searchRepository.deleteRecentSearch(id: id)
+                    .catchAndReturn(())
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+
+        input.recentSearchDeleteAllButtonDidTap
+            .do(onNext: { self.recentSearchList.accept([]) })
+            .flatMapLatest { self.searchRepository.deleteAllRecentSearches().catchAndReturn(()) }
+            .subscribe()
+            .disposed(by: disposeBag)
+
+        let fillSearchTextField = input.recentSearchTagSelected
+            .withLatestFrom(recentSearchList) { indexPath, list in list[indexPath.row].keyword }
+
+        let showRecentSearchView = Observable.combineLatest(
+            recentSearchList.map { !$0.isEmpty },
+            input.searchTextUpdated.map { $0.isEmpty },
+            normalSearchList.map { $0.isEmpty }
+        )
+        .map { $0 && $1 && $2 }
+        .asDriver(onErrorJustReturn: false)
+
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
                       scrollToTop: returnKeyEnabled.asObservable(),
@@ -234,6 +286,9 @@ final class NormalSearchViewModel: ViewModelType {
                       endEditing: endEditing,
                       showLoadingView: showLoadingView.asObservable(),
                       sosoPickList: sosoPickList.asObservable(),
-                      presentToInduceLoginView: presentToInduceLoginView.asObservable())
+                      presentToInduceLoginView: presentToInduceLoginView.asObservable(),
+                      recentSearchList: recentSearchList.asObservable(),
+                      showRecentSearchView: showRecentSearchView,
+                      fillSearchTextField: fillSearchTextField.asObservable())
     }
 }

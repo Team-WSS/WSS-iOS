@@ -14,12 +14,15 @@ import RxGesture
 final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
-    
+
     private let viewModel: NormalSearchViewModel
     private let disposeBag = DisposeBag()
-    
+    private let viewWillAppearRelay = PublishRelay<Void>()
+    private let deleteRecentSearchRelay = PublishRelay<Int>()
+    private var currentRecentKeywords: [RecentSearch] = []
+
     //MARK: - Components
-    
+
     private let rootView = NormalSearchView()
     private let emptyView = NormalSearchEmptyView()
     
@@ -40,9 +43,10 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         setNavigationBar()
         swipeBackGesture()
+        viewWillAppearRelay.accept(())
     }
     
     override func viewDidLoad() {
@@ -89,10 +93,14 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.sosoPickView.sosopickCollectionView.register(
             SosoPickCollectionViewCell.self,
             forCellWithReuseIdentifier: SosoPickCollectionViewCell.cellIdentifier)
+        rootView.recentSearchView.recentTagCollectionView.register(
+            NormalSearchRecentTagCell.self,
+            forCellWithReuseIdentifier: NormalSearchRecentTagCell.cellIdentifier)
     }
-    
+
     private func setDelegate() {
         rootView.headerView.searchTextField.delegate = self
+        rootView.recentSearchView.recentTagCollectionView.delegate = self
     }
     
     private func bindViewModel() {
@@ -118,7 +126,11 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected,
             reachedBottom: reachedBottom,
             normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture,
-            sosoPickCellSelected: rootView.sosoPickView.sosopickCollectionView.rx.itemSelected)
+            sosoPickCellSelected: rootView.sosoPickView.sosopickCollectionView.rx.itemSelected,
+            viewWillAppear: viewWillAppearRelay.asObservable(),
+            recentSearchTagSelected: rootView.recentSearchView.recentTagCollectionView.rx.itemSelected,
+            recentSearchDeleteAllButtonDidTap: rootView.recentSearchView.deleteAllButton.rx.tap,
+            recentSearchDeleteButtonDidTap: deleteRecentSearchRelay.asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -241,6 +253,34 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
                 owner.presentInduceLoginViewController()
             })
             .disposed(by: disposeBag)
+
+        output.recentSearchList
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] list in
+                self?.currentRecentKeywords = list
+            })
+            .bind(to: rootView.recentSearchView.recentTagCollectionView.rx.items(
+                cellIdentifier: NormalSearchRecentTagCell.cellIdentifier,
+                cellType: NormalSearchRecentTagCell.self)) { [weak self] _, recentSearch, cell in
+                    cell.bindData(keyword: recentSearch.keyword)
+                    cell.deleteAction = { self?.deleteRecentSearchRelay.accept(recentSearch.id) }
+                }
+            .disposed(by: disposeBag)
+
+        output.showRecentSearchView
+            .drive(with: self, onNext: { owner, shouldShow in
+                owner.rootView.recentSearchView.isHidden = !shouldShow
+            })
+            .disposed(by: disposeBag)
+
+        output.fillSearchTextField
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, keyword in
+                owner.rootView.headerView.searchTextField.text = keyword
+                owner.rootView.headerView.searchTextField.sendActions(for: .valueChanged)
+                owner.rootView.headerView.searchTextField.sendActions(for: .editingDidEndOnExit)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction() {
@@ -266,11 +306,24 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
 }
 
 extension NormalSearchViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, 
+    func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
         return newText.count <= 30
+    }
+}
+
+extension NormalSearchViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard collectionView == rootView.recentSearchView.recentTagCollectionView,
+              indexPath.row < currentRecentKeywords.count else { return .zero }
+        let keyword = currentRecentKeywords[indexPath.row].keyword
+        let textWidth = (keyword as NSString).size(withAttributes: [.font: UIFont.Body2]).width
+        let width = ceil(textWidth) + 13 * 2 + 6 + 16
+        return CGSize(width: min(width, UIScreen.main.bounds.width - 40), height: 35)
     }
 }
