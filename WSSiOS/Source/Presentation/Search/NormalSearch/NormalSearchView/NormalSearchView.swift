@@ -17,6 +17,7 @@ final class NormalSearchView: UIView {
     let headerView = NormalSearchHeaderView()
     private let contentStackView = UIStackView()
     let recentSearchView = NormalSearchRecentView()
+    let genreView = NormalSearchGenreView()
     let sosoPickView = SearchSosoPickView()
     let resultView = NormalSearchResultView()
     let emptyView = NormalSearchEmptyView()
@@ -44,6 +45,7 @@ final class NormalSearchView: UIView {
             $0.spacing = 32
         }
         recentSearchView.isHidden = true
+        genreView.isHidden = true
         resultView.isHidden = true
         emptyView.isHidden = true
         loadingView.isHidden = true
@@ -55,7 +57,7 @@ final class NormalSearchView: UIView {
                          resultView,
                          emptyView,
                          loadingView)
-        contentStackView.addArrangedSubviews(recentSearchView, sosoPickView)
+        contentStackView.addArrangedSubviews(recentSearchView, genreView, sosoPickView)
     }
 
     private func setLayout() {

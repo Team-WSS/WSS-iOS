@@ -62,6 +62,8 @@ final class NormalSearchViewModel: ViewModelType {
         let recentSearchTagSelected: ControlEvent<IndexPath>
         let recentSearchDeleteAllButtonDidTap: ControlEvent<Void>
         let recentSearchDeleteButtonDidTap: Observable<Int>
+        let genreSelected: ControlEvent<IndexPath>
+        let genreHeaderDidTap: ControlEvent<Void>
     }
 
     //MARK: - Outputs
@@ -84,6 +86,9 @@ final class NormalSearchViewModel: ViewModelType {
         let recentSearchList: Observable<[RecentSearch]>
         let showRecentSearchView: Driver<Bool>
         let fillSearchTextField: Observable<String>
+        let pushToGenreSearchResult: Observable<NovelGenre>
+        let pushToDetailSearch: Observable<Void>
+        let showGenreView: Driver<Bool>
     }
     
     //MARK: - init
@@ -267,11 +272,19 @@ final class NormalSearchViewModel: ViewModelType {
 
         let showRecentSearchView = Observable.combineLatest(
             recentSearchList.map { !$0.isEmpty },
-            input.searchTextUpdated.map { $0.isEmpty },
             normalSearchList.map { $0.isEmpty }
         )
-        .map { $0 && $1 && $2 }
+        .map { $0 && $1 }
         .asDriver(onErrorJustReturn: false)
+
+        let pushToGenreSearchResult = input.genreSelected
+            .map { NovelGenre.normalSearchGenres[$0.row] }
+
+        let pushToDetailSearch = input.genreHeaderDidTap.asObservable()
+
+        let showGenreView = normalSearchList
+            .map { $0.isEmpty }
+            .asDriver(onErrorJustReturn: true)
 
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
@@ -289,6 +302,9 @@ final class NormalSearchViewModel: ViewModelType {
                       presentToInduceLoginView: presentToInduceLoginView.asObservable(),
                       recentSearchList: recentSearchList.asObservable(),
                       showRecentSearchView: showRecentSearchView,
-                      fillSearchTextField: fillSearchTextField.asObservable())
+                      fillSearchTextField: fillSearchTextField.asObservable(),
+                      pushToGenreSearchResult: pushToGenreSearchResult.asObservable(),
+                      pushToDetailSearch: pushToDetailSearch,
+                      showGenreView: showGenreView)
     }
 }

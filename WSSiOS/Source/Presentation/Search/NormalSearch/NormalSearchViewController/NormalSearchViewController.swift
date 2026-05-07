@@ -96,11 +96,15 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.recentSearchView.recentTagCollectionView.register(
             NormalSearchRecentTagCell.self,
             forCellWithReuseIdentifier: NormalSearchRecentTagCell.cellIdentifier)
+        rootView.genreView.genreCollectionView.register(
+            NormalSearchGenreCell.self,
+            forCellWithReuseIdentifier: NormalSearchGenreCell.cellIdentifier)
     }
 
     private func setDelegate() {
         rootView.headerView.searchTextField.delegate = self
         rootView.recentSearchView.recentTagCollectionView.delegate = self
+        rootView.genreView.genreCollectionView.delegate = self
     }
     
     private func bindViewModel() {
@@ -130,7 +134,9 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             viewWillAppear: viewWillAppearRelay.asObservable(),
             recentSearchTagSelected: rootView.recentSearchView.recentTagCollectionView.rx.itemSelected,
             recentSearchDeleteAllButtonDidTap: rootView.recentSearchView.deleteAllButton.rx.tap,
-            recentSearchDeleteButtonDidTap: deleteRecentSearchRelay.asObservable())
+            recentSearchDeleteButtonDidTap: deleteRecentSearchRelay.asObservable(),
+            genreSelected: rootView.genreView.genreCollectionView.rx.itemSelected,
+            genreHeaderDidTap: rootView.genreView.headerButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -281,6 +287,48 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.headerView.searchTextField.sendActions(for: .editingDidEndOnExit)
             })
             .disposed(by: disposeBag)
+
+        Observable.just(NovelGenre.normalSearchGenres)
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.genreView.genreCollectionView.rx.items(
+                cellIdentifier: NormalSearchGenreCell.cellIdentifier,
+                cellType: NormalSearchGenreCell.self)) { _, genre, cell in
+                    cell.bindData(genre: genre)
+                }
+            .disposed(by: disposeBag)
+
+        output.pushToGenreSearchResult
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, genre in
+                let filterQuery = SearchFilterQuery(
+                    keywords: [],
+                    genres: [genre],
+                    isCompleted: nil,
+                    lowerNovelRating: 0.0,
+                    upperNovelRating: 5.0
+                )
+                let viewModel = DetailSearchResultViewModel(
+                    searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                    option: filterQuery
+                )
+                let viewController = DetailSearchResultViewController(viewModel: viewModel)
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        output.pushToDetailSearch
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToDetailSearchViewController()
+            })
+            .disposed(by: disposeBag)
+
+        output.showGenreView
+            .drive(with: self, onNext: { owner, shouldShow in
+                owner.rootView.genreView.isHidden = !shouldShow
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction() {
@@ -319,6 +367,9 @@ extension NormalSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == rootView.genreView.genreCollectionView {
+            return CGSize(width: 44, height: 69)
+        }
         guard collectionView == rootView.recentSearchView.recentTagCollectionView,
               indexPath.row < currentRecentKeywords.count else { return .zero }
         let keyword = currentRecentKeywords[indexPath.row].keyword
