@@ -34,6 +34,7 @@ final class NormalSearchRecentTagCell: UICollectionViewCell {
         setLayout()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -66,7 +67,6 @@ final class NormalSearchRecentTagCell: UICollectionViewCell {
 
         deleteButton.do {
             $0.setImage(.icKeywordCancel, for: .normal)
-            $0.isUserInteractionEnabled = true
         }
     }
 
