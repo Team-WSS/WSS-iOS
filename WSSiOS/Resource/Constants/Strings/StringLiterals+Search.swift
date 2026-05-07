@@ -14,6 +14,7 @@ extension StringLiterals {
 
         static let recentSearchTitle = "최근 검색어"
         static let deleteAll = "전체삭제"
+        static let genreSearchTitle = "장르별 검색"
         
         static let induceTitle = "뭐 읽을지 고민될 땐?"
         static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
