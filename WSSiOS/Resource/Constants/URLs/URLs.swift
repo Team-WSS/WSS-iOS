@@ -191,6 +191,11 @@ enum URLs {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
         static let detailSearch = "/novels/filtered"
+        static let recentSearch = "/novels/recent-searches"
+        static func deleteRecentSearchKeyword(id: Int) -> String {
+            return "/novels/recent-searches/\(id)"
+        }
+        static let deleteAllRecentSearchKeywords = "/novels/recent-searches"
     }
     
     enum Keyword {
