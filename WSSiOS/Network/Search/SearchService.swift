@@ -35,7 +35,7 @@ extension DefaultSearchService: SearchService {
                                               body: nil)
             NetworkLogger.log(request: request)
             return tokenCheckURLSession.rx.data(request: request)
-                .map { try self.decode(data: $0, to: [RecentSearch].self) }
+                .map { try self.decode(data: $0, to: RecentSearches.self).recentSearches }
                 .asSingle()
         } catch {
             return Single.error(error)

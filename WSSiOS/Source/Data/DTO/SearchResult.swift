@@ -54,6 +54,10 @@ struct SearchNovel: Codable {
 }
 
 /// 최근 검색어 조회 API
+struct RecentSearches: Codable {
+    let recentSearches: [RecentSearch]
+}
+
 struct RecentSearch: Codable {
     let id: Int
     let keyword: String
