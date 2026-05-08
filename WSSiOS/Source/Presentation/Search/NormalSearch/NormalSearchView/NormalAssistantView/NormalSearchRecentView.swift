@@ -66,7 +66,7 @@ final class NormalSearchRecentView: UIView {
 
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(8)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
 
@@ -79,7 +79,7 @@ final class NormalSearchRecentView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(35)
-            $0.bottom.equalToSuperview().inset(12)
+            $0.bottom.equalToSuperview()
         }
     }
 }

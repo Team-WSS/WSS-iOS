@@ -66,7 +66,7 @@ final class NormalSearchGenreView: UIView {
 
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(8)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
 
@@ -85,7 +85,7 @@ final class NormalSearchGenreView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(69)
-            $0.bottom.equalToSuperview().inset(12)
+            $0.bottom.equalToSuperview()
         }
     }
 }
