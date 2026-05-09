@@ -15,7 +15,7 @@ extension StringLiterals {
             static let interest = "님의 관심글"
             static let notLoggedInInterest = "･ :*관심글*: ･"
             static let recommend = "이 웹소설은 어때요? (´ヮ`)ﾉ📚"
-            static let detailSearchBanner = "뭐 읽을지 고민될 땐 ?"
+            static let detailSearchBanner = "뭐 읽을지 고민될 때"
         }
         
         enum SubTitle {

@@ -17,7 +17,9 @@ final class HomeInduceDetailSearchView: UIView {
     private let imageView = UIImageView()
     
     private let labelStackView = UIStackView()
+    private let titleStackView = UIStackView()
     private let titleLabel = UILabel()
+    private let titleNavigateImageView = UIImageView()
     private let subTitleLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -52,9 +54,29 @@ final class HomeInduceDetailSearchView: UIView {
             $0.spacing = 4
         }
         
+        titleStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 6
+            $0.alignment = .firstBaseline
+        }
+        
         titleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.Home.Title.detailSearchBanner)
             $0.textColor = .wssBlack
+            
+            $0.setContentHuggingPriority(.required, for: .horizontal)
+        }
+        
+        titleNavigateImageView.do {
+            $0.image = .icNavigateRight
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssBlack)
+            
+            $0.contentMode = .left
+            $0.clipsToBounds = false
+            
+            $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         }
         
         subTitleLabel.do {
@@ -66,8 +88,10 @@ final class HomeInduceDetailSearchView: UIView {
     private func setHierachy() {
         self.addSubviews(imageView,
                          labelStackView)
-        labelStackView.addArrangedSubviews(titleLabel,
+        labelStackView.addArrangedSubviews(titleStackView,
                                            subTitleLabel)
+        titleStackView.addArrangedSubviews (titleLabel,
+                                            titleNavigateImageView)
     }
     
     private func setLayout() {
@@ -79,7 +103,7 @@ final class HomeInduceDetailSearchView: UIView {
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().offset(14)
         }
-        
+
         labelStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
             $0.leading.equalToSuperview().inset(20)
