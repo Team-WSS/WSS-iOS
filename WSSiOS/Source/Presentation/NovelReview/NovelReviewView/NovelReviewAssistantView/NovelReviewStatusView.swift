@@ -14,7 +14,8 @@ final class NovelReviewStatusView: UIView {
     
     //MARK: - Components
     
-    let statusCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let statusCollectionView = UICollectionView(frame: .zero,
+                                                collectionViewLayout: UICollectionViewLayout())
     let dateLabel = UILabel()
     private let dateFormatter = DateFormatter()
     

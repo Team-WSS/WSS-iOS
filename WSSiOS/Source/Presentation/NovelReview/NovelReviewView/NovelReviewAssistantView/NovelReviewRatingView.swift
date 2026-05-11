@@ -43,6 +43,7 @@ final class NovelReviewRatingView: UIView {
             $0.applyWSSFont(.title3, with: StringLiterals.NovelReview.rating)
             $0.textColor = .wssBlack
         }
+        
         starImageStackView.do {
             $0.axis = .horizontal
             $0.spacing = 10
@@ -84,6 +85,8 @@ final class NovelReviewRatingView: UIView {
             let starImageView = UIImageView().then {
                 $0.isUserInteractionEnabled = true
                 $0.image = .icLargeStarEmpty
+                    .withRenderingMode(.alwaysOriginal)
+                    .withTintColor(.wssGray80)
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }
@@ -103,6 +106,8 @@ final class NovelReviewRatingView: UIView {
                 imageView.image = .icLargeStarHalf
             default:
                 imageView.image = .icLargeStarEmpty
+                    .withRenderingMode(.alwaysOriginal)
+                    .withTintColor(.wssGray80)
             }
         }
     }
