@@ -11,14 +11,15 @@ import RxSwift
 import RxCocoa
 
 final class DetailSearchResultViewModel: ViewModelType {
-    
+
     //MARK: - Properties
-    
+
     private let searchRepository: SearchRepository
-    
-    // 검색 필터 옵션 
+
+    // 검색 필터 옵션
     var option: SearchFilterQuery
-    
+    let entryType: EntryType
+
     // 무한 스크롤
     private var currentPage: Int = 0
     private var isLoadable: Bool = false
@@ -54,9 +55,11 @@ final class DetailSearchResultViewModel: ViewModelType {
     }
     
     init(searchRepository: SearchRepository,
-         option: SearchFilterQuery) {
+         option: SearchFilterQuery,
+         entryType: EntryType) {
         self.searchRepository = searchRepository
         self.option = option
+        self.entryType = entryType
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -169,5 +172,19 @@ final class DetailSearchResultViewModel: ViewModelType {
                                                upperNovelRating: upperNovelRating,
                                                keywordIds: keywordIds,
                                                page: page)
+    }
+}
+
+extension DetailSearchResultViewModel {
+    enum EntryType {
+        case fullOption
+        case genreOnly
+
+        var placeholder: String {
+            switch self {
+            case .fullOption: return StringLiterals.DetailSearch.applyOption
+            case .genreOnly: return StringLiterals.DetailSearch.applyGenre
+            }
+        }
     }
 }

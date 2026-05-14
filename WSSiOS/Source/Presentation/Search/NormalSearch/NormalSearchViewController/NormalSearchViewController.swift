@@ -309,7 +309,8 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
                 )
                 let viewModel = DetailSearchResultViewModel(
                     searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
-                    option: filterQuery
+                    option: filterQuery,
+                    entryType: .genreOnly
                 )
                 let viewController = DetailSearchResultViewController(viewModel: viewModel)
                 viewController.hidesBottomBarWhenPushed = true

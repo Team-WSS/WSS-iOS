@@ -102,4 +102,8 @@ final class DetailSearchResultHeaderView: UIView {
             }
         }
     }
+
+    func bindPlaceholder(_ text: String) {
+        headerLabel.applyWSSFont(.body4, with: text)
+    }
 }

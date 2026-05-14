@@ -57,5 +57,6 @@ extension StringLiterals {
         static let empty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
         
         static let applyOption = "장르, 연재상태, 별점, 키워드 적용"
+        static let applyGenre = "장르 적용"
     }
 }

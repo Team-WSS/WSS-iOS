@@ -157,7 +157,14 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.pushToResultViewController
             .subscribe(with: self, onNext: { owner, filterQuery in
-                owner.pushToDetailSearchResultViewController(option: filterQuery)
+                let viewModel = DetailSearchResultViewModel(
+                    searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                    option: filterQuery,
+                    entryType: .fullOption
+                )
+                let viewController = DetailSearchResultViewController(viewModel: viewModel)
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
