@@ -196,7 +196,7 @@ final class DetailSearchViewModel: ViewModelType {
         input.genreColletionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList = owner.selectedGenreListData.value
-                owner.selectedGenreList.append(NovelGenre.allCases[indexPath.row])
+                owner.selectedGenreList.append(NovelGenre.detailSearchGenres[indexPath.row])
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
@@ -204,7 +204,7 @@ final class DetailSearchViewModel: ViewModelType {
         input.genreColletionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList = owner.selectedGenreListData.value
-                owner.selectedGenreList.removeAll { $0 == NovelGenre.allCases[indexPath.row] }
+                owner.selectedGenreList.removeAll { $0 == NovelGenre.detailSearchGenres[indexPath.row] }
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)

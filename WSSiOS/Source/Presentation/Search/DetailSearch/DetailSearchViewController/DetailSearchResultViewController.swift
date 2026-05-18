@@ -44,6 +44,9 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
 
         swipeBackGesture()
         AmplitudeManager.shared.track(AmplitudeEvent.Search.seekResult)
+        
+        self.navigationController?.setNavigationBarHidden(true,
+                                                          animated: true)
     }
     
     override func viewDidLoad() {
@@ -54,7 +57,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
 
         bindViewModel()
         bindAction()
-        
+
+        rootView.headerView.updateHeaderLabel(with: viewModel.option)
         viewDidLoadEvent.accept(())
     }
 

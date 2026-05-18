@@ -82,8 +82,8 @@ extension DefaultSearchService: SearchService {
             URLQueryItem(name: "keywordIds", value: keywordIds.map { String($0) }.joined(separator: ",")),
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "size", value: String(size)),
-            URLQueryItem(name: "lowerNovelRating", value: String(lowerNovelRating)),
-            URLQueryItem(name: "upperNovelRating", value: String(upperNovelRating))
+            URLQueryItem(name: "novelRatingStart", value: String(lowerNovelRating)),
+            URLQueryItem(name: "novelRatingEnd", value: String(upperNovelRating))
         ]
         
         if let isCompleted = isCompleted {

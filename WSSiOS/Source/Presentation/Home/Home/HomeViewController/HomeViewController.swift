@@ -102,7 +102,7 @@ final class HomeViewController: UIViewController {
             announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
             searchBarViewDidTap: rootView.searchBarView.rx.tapGesture().when(.recognized).asObservable(),
-            indunceDetailSearchViewDidTap: rootView.induceDetailSearchView.rx.tapGesture().when(.recognized)
+            induceDetailSearchViewDidTap: rootView.induceDetailSearchView.rx.tapGesture().when(.recognized)
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         

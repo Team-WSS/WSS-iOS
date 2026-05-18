@@ -324,6 +324,20 @@ extension UIViewController {
                                                       animated: true)
     }
     
+    func pushToDetailSearchResultViewController(option: SearchFilterQuery) {
+        let detailSearchResultViewController = DetailSearchResultViewController(
+            viewModel: DetailSearchResultViewModel(
+                searchRepository: DefaultSearchRepository(
+                    searchService: DefaultSearchService()),
+                option: option
+            )
+        )
+        detailSearchResultViewController.navigationController?.isNavigationBarHidden = true
+        detailSearchResultViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(detailSearchResultViewController,
+                                                      animated: true)
+    }
+    
     func presentInduceLoginViewController() {
         let viewController = InduceLoginViewController()
         viewController.modalPresentationStyle = .overFullScreen
