@@ -39,7 +39,7 @@ final class UserLibraryStatusView: UIView {
     
     private func setUI() {
         userLibraryStatusStackView.do {
-            $0.backgroundColor = .wssGray50
+            $0.backgroundColor = .wssPrimary20
             $0.layer.cornerRadius = 14
             $0.axis = .horizontal
             $0.distribution = .fillEqually
@@ -56,8 +56,8 @@ final class UserLibraryStatusView: UIView {
         readStatusButtons = StringLiterals.ReviewerStatus.allCases.enumerated().map { index, status in
             createLibraryStatusSectionView (
                 countLabel: countLabels[index],
-                text: status.rawValue,
-                addLine: index == 0)
+                text: status.rawValue
+            )
         }
     }
     
@@ -77,18 +77,19 @@ final class UserLibraryStatusView: UIView {
     
     //MARK: - Custom Method
     
-    private func createLibraryStatusSectionView(countLabel: UILabel, text: String, addLine: Bool = false) -> UIButton {
+    private func createLibraryStatusSectionView(countLabel: UILabel, text: String) -> UIButton {
         let statusButton = UIButton()
         let textLabel = UILabel()
         
         countLabel.do {
             $0.applyWSSFont(.title2, with: "0")
+            $0.textColor = .wssPrimary100
             $0.textAlignment = .center
         }
         
         textLabel.do {
             $0.applyWSSFont(.body5, with: text)
-            $0.textColor = .wssGray200
+            $0.textColor = .wssBlack
             $0.textAlignment = .center
         }
         
@@ -103,20 +104,6 @@ final class UserLibraryStatusView: UIView {
         textLabel.snp.makeConstraints {
             $0.top.equalTo(countLabel.snp.bottom).offset(2)
             $0.centerX.equalToSuperview()
-        }
-        
-        if addLine {
-            let dividerView = UIView().then {
-                $0.backgroundColor = .wssGray70
-            }
-            
-            statusButton.addSubview(dividerView)
-            
-            dividerView.snp.makeConstraints {
-                $0.centerY.trailing.equalToSuperview()
-                $0.height.equalTo(40)
-                $0.width.equalTo(1)
-            }
         }
         
         return statusButton
