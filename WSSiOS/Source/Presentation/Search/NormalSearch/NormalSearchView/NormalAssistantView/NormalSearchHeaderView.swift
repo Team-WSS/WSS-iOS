@@ -48,7 +48,7 @@ final class NormalSearchHeaderView: UIView {
             $0.tintColor = .wssBlack
             $0.backgroundColor = .wssGray50
             $0.textColor = .wssBlack
-            $0.placeholder = StringLiterals.NovelReview.KeywordSearch.placeholder
+            $0.placeholder = StringLiterals.Search.searchbar
             $0.font = .Body4
             $0.layer.cornerRadius = 14
             $0.layer.borderColor = UIColor.wssGray70.cgColor

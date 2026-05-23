@@ -15,9 +15,10 @@ final class NormalSearchView: UIView {
     //MARK: - Components
     
     let headerView = NormalSearchHeaderView()
+    let sosoPickView = SearchSosoPickView()
     let resultView = NormalSearchResultView()
     let emptyView = NormalSearchEmptyView()
-    
+
     let loadingView = WSSLoadingView()
     
     // MARK: - Life Cycle
@@ -44,6 +45,7 @@ final class NormalSearchView: UIView {
 
     private func setHierarchy() {
         self.addSubviews(headerView,
+                         sosoPickView,
                          resultView,
                          emptyView,
                          loadingView)
@@ -54,7 +56,12 @@ final class NormalSearchView: UIView {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(1)
             $0.leading.trailing.equalToSuperview()
         }
-        
+
+        sosoPickView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+        }
+
         resultView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()

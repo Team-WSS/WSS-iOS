@@ -34,7 +34,7 @@ final class OnboardingViewModel: ViewModelType {
     private let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // GenrePreference
-    private let selectedGenres = BehaviorRelay<[NewNovelGenre]>(value: [])
+    private let selectedGenres = BehaviorRelay<[NovelGenre]>(value: [])
     private let isGenrePreferenceNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // Total
@@ -71,7 +71,7 @@ final class OnboardingViewModel: ViewModelType {
         let selectedBirth: Observable<Int?>
         
         // GenrePreference
-        let genreButtonDidTap: Observable<NewNovelGenre>
+        let genreButtonDidTap: Observable<NovelGenre>
         
         // Total
         let viewDidLoadEvent: Observable<Void>
@@ -97,7 +97,7 @@ final class OnboardingViewModel: ViewModelType {
         let isBirthGenderNextButtonEnabled: Driver<Bool>
         
         // GenrePrefernece
-        let selectedGenres: Driver<[NewNovelGenre]>
+        let selectedGenres: Driver<[NovelGenre]>
         let isGenrePreferenceNextButtonEnabled: Driver<Bool>
         
         // Total

@@ -17,7 +17,7 @@ final class OnboardingGenrePreferenceView: UIView {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     
-    let genreButtons: [OnboardingGenreButtonView] = NewNovelGenre.onboardingGenres
+    let genreButtons: [OnboardingGenreButtonView] = NovelGenre.onboardingGenres
         .map { OnboardingGenreButtonView(genre: $0) }
     
     let totalGenreStackView = UIStackView()
@@ -113,7 +113,7 @@ final class OnboardingGenrePreferenceView: UIView {
     
     // MARK: - Custom Method
     
-    func updateGenreButtons(selectedGenres: [NewNovelGenre]) {
+    func updateGenreButtons(selectedGenres: [NovelGenre]) {
         genreButtons.forEach {
             $0.updateButton(selectedGenres: selectedGenres)
         }

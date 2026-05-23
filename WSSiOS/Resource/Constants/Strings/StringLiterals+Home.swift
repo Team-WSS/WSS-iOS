@@ -15,11 +15,13 @@ extension StringLiterals {
             static let interest = "님의 관심글"
             static let notLoggedInInterest = "･ :*관심글*: ･"
             static let recommend = "이 웹소설은 어때요? (´ヮ`)ﾉ📚"
+            static let detailSearchBanner = "뭐 읽을지 고민될 때"
         }
         
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최신 글이에요"
             static let recommend = "선호 장르를 기반으로 추천해드려요"
+            static let detailSearchBanner = "장르, 연재상태, 별점, 키워드로 작품 찾기"
         }
         
         enum Login {

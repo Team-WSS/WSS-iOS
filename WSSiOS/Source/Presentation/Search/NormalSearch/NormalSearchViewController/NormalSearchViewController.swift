@@ -86,6 +86,9 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.resultView.normalSearchCollectionView.register(
             NormalSearchCollectionViewCell.self,
             forCellWithReuseIdentifier: NormalSearchCollectionViewCell.cellIdentifier)
+        rootView.sosoPickView.sosopickCollectionView.register(
+            SosoPickCollectionViewCell.self,
+            forCellWithReuseIdentifier: SosoPickCollectionViewCell.cellIdentifier)
     }
     
     private func setDelegate() {
@@ -114,7 +117,8 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"),
             normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected,
             reachedBottom: reachedBottom,
-            normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture)
+            normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture,
+            sosoPickCellSelected: rootView.sosoPickView.sosopickCollectionView.rx.itemSelected)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -140,16 +144,19 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
                     owner.rootView.emptyView.isHidden = true
                     owner.rootView.resultView.isHidden = true
                     owner.rootView.resultView.resultCountView.isHidden = true
+                    owner.rootView.sosoPickView.isHidden = false
                 }
-                else if novels.isEmpty && !(owner.rootView.headerView.searchTextField.text == "") {
+                else if novels.isEmpty {
                     owner.rootView.emptyView.isHidden = false
                     owner.rootView.resultView.isHidden = true
                     owner.rootView.resultView.resultCountView.isHidden = true
+                    owner.rootView.sosoPickView.isHidden = true
                 }
                 else {
                     owner.rootView.emptyView.isHidden = true
                     owner.rootView.resultView.isHidden = false
                     owner.rootView.resultView.resultCountView.isHidden = false
+                    owner.rootView.sosoPickView.isHidden = true
                 }
             })
             .disposed(by: disposeBag)
@@ -216,6 +223,22 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in
                 owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+
+        output.sosoPickList
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.sosoPickView.sosopickCollectionView.rx.items(
+                cellIdentifier: SosoPickCollectionViewCell.cellIdentifier,
+                cellType: SosoPickCollectionViewCell.self)) { _, element, cell in
+                    cell.bindData(data: element)
+                }
+            .disposed(by: disposeBag)
+
+        output.presentToInduceLoginView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentInduceLoginViewController()
             })
             .disposed(by: disposeBag)
     }

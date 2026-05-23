@@ -10,6 +10,7 @@ import UIKit
 enum AttractivePoint: String, CaseIterable, Codable {
     case worldview = "worldview"
     case material = "material"
+    case writingSkill = "writingskill"
     case character = "character"
     case relationship = "relationship"
     case vibe = "vibe"
@@ -18,6 +19,7 @@ enum AttractivePoint: String, CaseIterable, Codable {
         switch self {
         case .worldview: "세계관"
         case .material: "소재"
+        case .writingSkill: "필력"
         case .character: "캐릭터"
         case .relationship: "관계"
         case .vibe: "분위기"
@@ -28,6 +30,7 @@ enum AttractivePoint: String, CaseIterable, Codable {
         switch self {
         case .worldview: .icAttractiveWorldview
         case .material: .icAttractiveMaterial
+        case .writingSkill: .icAttractiveWritingSkill
         case .character: .icAttractiveCharacter
         case .relationship: .icAttractiveRelationship
         case .vibe: .icAttractiveVibe

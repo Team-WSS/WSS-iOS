@@ -14,7 +14,7 @@ final class DetailSearchCompletedStatusButton: UIButton {
     
     //MARK: - Properties
     
-    let status: CompletedStatus
+    let status: PublicationStatus
     
     //MARK: - Components
     
@@ -22,7 +22,7 @@ final class DetailSearchCompletedStatusButton: UIButton {
     
     //MARK: - Life Cycle
     
-    init(status: CompletedStatus) {
+    init(status: PublicationStatus) {
         self.status = status
         super.init(frame: .zero)
         
@@ -63,7 +63,7 @@ final class DetailSearchCompletedStatusButton: UIButton {
     
     // MARK: - Custom Method
     
-    func updateButton(selectedCompletedStatus: CompletedStatus?) {
+    func updateButton(selectedCompletedStatus: PublicationStatus?) {
         let isSelected = selectedCompletedStatus == status
         
         self.do {

@@ -41,11 +41,12 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        setNavigationBar()
+
         swipeBackGesture()
-        
         AmplitudeManager.shared.track(AmplitudeEvent.Search.seekResult)
+        
+        self.navigationController?.setNavigationBarHidden(true,
+                                                          animated: true)
     }
     
     override func viewDidLoad() {
@@ -56,14 +57,11 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
 
         bindViewModel()
         bindAction()
-        
+
+        rootView.headerView.updateHeaderLabel(with: viewModel.option)
         viewDidLoadEvent.accept(())
     }
-    
-    private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
+
     private func registerCell() {
         rootView.novelView.resultNovelCollectionView.register(HomeTasteRecommendCollectionViewCell.self,
                                                               forCellWithReuseIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier)
@@ -83,10 +81,9 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelResultCellSelected: rootView.novelView.resultNovelCollectionView.rx.itemSelected,
-            searchHeaderViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidLoadEvent: self.viewDidLoadEvent.asObservable(),
             novelCollectionViewReachedBottom: observeReachedBottom(rootView.novelView.scrollView),
-            updateDetailSearchResultNotification: NotificationCenter.default.rx.notification(Notification.Name("PushToUpdateDetailSearchResult"))
+            searchBarViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized)
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -119,14 +116,6 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
                 owner.pushToNovelDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
-        output.presentDetailSearchModal
-            .subscribe(with: self, onNext: { owner, data in
-                owner.presentToDetailSearchViewController(selectedKeywordList: data.keywords,
-                                                          previousViewInfo: .resultSearchBar,
-                                                          selectedFilteredQuery: data)
             })
             .disposed(by: disposeBag)
         

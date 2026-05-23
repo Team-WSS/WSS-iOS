@@ -44,7 +44,7 @@ final class NovelReviewStatusCollectionViewCell: UICollectionViewCell {
     private func setUI() {
         statusImageView.do {
             $0.contentMode = .scaleAspectFit
-            $0.tintColor = .wssGray200
+            $0.tintColor = .wssGray80
         }
         
         titleLabel.do {
@@ -77,7 +77,8 @@ final class NovelReviewStatusCollectionViewCell: UICollectionViewCell {
         switch status {
         case .watching:
             statusImageView.do {
-                $0.image = UIImage(resource: .icNovelReviewWatching).withRenderingMode(.alwaysTemplate)
+                $0.image = UIImage(resource: .icNovelReviewWatching)
+                    .withRenderingMode(.alwaysTemplate)
             }
             
             titleLabel.do {
@@ -85,7 +86,8 @@ final class NovelReviewStatusCollectionViewCell: UICollectionViewCell {
             }
         case .watched:
             statusImageView.do {
-                $0.image = UIImage(resource: .icNovelReviewWatched).withRenderingMode(.alwaysTemplate)
+                $0.image = UIImage(resource: .icNovelReviewWatched)
+                    .withRenderingMode(.alwaysTemplate)
             }
             
             titleLabel.do {
@@ -93,7 +95,8 @@ final class NovelReviewStatusCollectionViewCell: UICollectionViewCell {
             }
         case .quit:
             statusImageView.do {
-                $0.image = UIImage(resource: .icNovelReviewQuit).withRenderingMode(.alwaysTemplate)
+                $0.image = UIImage(resource: .icNovelReviewQuit)
+                    .withRenderingMode(.alwaysTemplate)
             }
             
             titleLabel.do {
@@ -106,7 +109,7 @@ final class NovelReviewStatusCollectionViewCell: UICollectionViewCell {
     
     private func updateTintColor(isSelected: Bool) {
         statusImageView.do {
-            $0.tintColor = isSelected ? .wssPrimary100 : .wssGray200
+            $0.tintColor = isSelected ? .wssPrimary100 : .wssGray80
         }
         
         titleLabel.do {

@@ -14,7 +14,7 @@ final class OnboardingGenreButtonView: UIView {
     
     //MARK: - Properties
     
-    let genre: NewNovelGenre
+    let genre: NovelGenre
     
     private let buttonPaddingSum: CGFloat = 126
     private var buttonSize: CGFloat {
@@ -34,7 +34,7 @@ final class OnboardingGenreButtonView: UIView {
     
     //MARK: - Life Cycle
     
-    init(genre: NewNovelGenre) {
+    init(genre: NovelGenre) {
         self.genre = genre
         super.init(frame: .zero)
         
@@ -108,7 +108,7 @@ final class OnboardingGenreButtonView: UIView {
     
     // MARK: - Custom Method
     
-    func updateButton(selectedGenres: [NewNovelGenre]) {
+    func updateButton(selectedGenres: [NovelGenre]) {
         let isSelected = selectedGenres.contains(genre)
         
         genreButton.do {

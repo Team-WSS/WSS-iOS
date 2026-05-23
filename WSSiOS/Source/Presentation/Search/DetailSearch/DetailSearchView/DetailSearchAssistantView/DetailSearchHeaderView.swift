@@ -18,11 +18,17 @@ final class DetailSearchHeaderView: UIView {
     
     //MARK: - UI Components
     
+    let backButton = UIButton()
+    
     let infoLabel = UILabel()
     let newInfoImageView = UIImageView()
     let keywordLabel = UILabel()
     let newKeywordImageView = UIImageView()
     let underLineView = UIView()
+    
+    let resetStackView = UIStackView()
+    private let resetImageView = UIImageView()
+    private let resetLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -40,6 +46,15 @@ final class DetailSearchHeaderView: UIView {
     }
     
     private func setUI() {
+        backButton.do {
+            $0.setImage(
+                .icNavigateLeft
+                    .withRenderingMode(.alwaysOriginal)
+                    .withTintColor(.wssBlack),
+                for: .normal
+            )
+        }
+        
         infoLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.DetailSearch.info)
             $0.textColor = .wssPrimary100
@@ -58,19 +73,48 @@ final class DetailSearchHeaderView: UIView {
             $0.image = .icSearchNew.withTintColor(.wssPrimary100)
             $0.isHidden = true
         }
+        
+        resetStackView.do {
+            $0.axis = .horizontal
+            $0.spacing  = 4
+        }
+        
+        resetImageView.do {
+            $0.image = .icReload
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray300)
+            $0.contentMode = .scaleAspectFit
+        }
+        
+        resetLabel.do {
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.reload)
+            $0.textColor = .wssGray300
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(infoLabel,
+        self.addSubviews(backButton,
+                         infoLabel,
                          newInfoImageView,
                          keywordLabel,
                          newKeywordImageView,
-                         underLineView)
+                         underLineView,
+                         resetStackView)
+        
+        resetStackView.addArrangedSubviews(resetImageView,
+                                           resetLabel)
     }
     
     private func setLayout() {
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(44)
+            $0.leading.equalToSuperview().inset(6)
+            $0.top.bottom.equalToSuperview()
+        }
+        
         infoLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top.equalToSuperview().inset(7)
+            $0.leading.equalTo(backButton.snp.trailing).offset(14)
         }
         
         newInfoImageView.snp.makeConstraints {
@@ -82,7 +126,6 @@ final class DetailSearchHeaderView: UIView {
         keywordLabel.snp.makeConstraints {
             $0.top.equalTo(infoLabel.snp.top)
             $0.leading.equalTo(infoLabel.snp.trailing).offset(29.5)
-            $0.trailing.equalToSuperview()
         }
         
         newKeywordImageView.snp.makeConstraints {
@@ -95,7 +138,15 @@ final class DetailSearchHeaderView: UIView {
             $0.top.equalTo(keywordLabel.snp.bottom).offset(6)
             $0.horizontalEdges.equalTo(infoLabel.snp.horizontalEdges)
             $0.height.equalTo(2)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(4)
+        }
+        
+        resetStackView.snp.makeConstraints {
+            $0.trailing.centerY.equalToSuperview()
+            
+            resetImageView.snp.makeConstraints {
+                $0.size.equalTo(14)
+            }
         }
     }
     
@@ -121,14 +172,14 @@ final class DetailSearchHeaderView: UIView {
                     $0.top.equalTo(self.infoLabel.snp.bottom).offset(6)
                     $0.horizontalEdges.equalTo(self.infoLabel.snp.horizontalEdges)
                     $0.height.equalTo(2)
-                    $0.bottom.equalToSuperview()
+                    $0.bottom.equalToSuperview().inset(4)
                 }
             case .keyword:
                 self.underLineView.snp.remakeConstraints {
                     $0.top.equalTo(self.keywordLabel.snp.bottom).offset(6)
                     $0.horizontalEdges.equalTo(self.keywordLabel.snp.horizontalEdges)
                     $0.height.equalTo(2)
-                    $0.bottom.equalToSuperview()
+                    $0.bottom.equalToSuperview().inset(4)
                 }
             }
             self.layoutIfNeeded()

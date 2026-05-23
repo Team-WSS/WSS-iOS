@@ -17,6 +17,8 @@ final class NormalSearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    private let isLogined = APIConstants.isLogined
+    
     // API 쿼리
     private let searchText = BehaviorRelay<String>(value: "")
     private var currentPage: Int = 0
@@ -29,9 +31,13 @@ final class NormalSearchViewModel: ViewModelType {
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let normalSearchList = BehaviorRelay<[SearchNovel]>(value: [])
     private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
-    
+
     // 로딩
     private let showLoadingView = PublishRelay<Bool>()
+
+    // 소소픽
+    private let sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
+    private let presentToInduceLoginView = PublishRelay<Void>()
     
     //MARK: - Inputs
     
@@ -48,6 +54,7 @@ final class NormalSearchViewModel: ViewModelType {
         let normalSearchCellSelected: ControlEvent<IndexPath>
         let reachedBottom: Observable<Bool>
         let normalSearchCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
+        let sosoPickCellSelected: ControlEvent<IndexPath>
     }
     
     //MARK: - Outputs
@@ -65,6 +72,8 @@ final class NormalSearchViewModel: ViewModelType {
         let isSearchTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
         let showLoadingView: Observable<Bool>
+        let sosoPickList: Observable<[SosoPickNovel]>
+        let presentToInduceLoginView: Observable<Void>
     }
     
     //MARK: - init
@@ -78,6 +87,10 @@ final class NormalSearchViewModel: ViewModelType {
     
     //MARK: - API
     
+    private func getSosoPickNovels() -> Observable<SosoPickNovels> {
+        return searchRepository.getSosoPickNovels()
+    }
+
     private func getNormalSearchList(query: String, page: Int) -> Observable<NormalSearchNovels> {
         return searchRepository.getSearchNovels(query: query, page: page)
             .do(
@@ -110,7 +123,26 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Methods
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
+        getSosoPickNovels()
+            .subscribe(with: self, onNext: { owner, data in
+                owner.sosoPickList.accept(data.sosoPicks)
+            }, onError: { _, error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+
+        input.sosoPickCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.sosoPick)
+                if owner.isLogined {
+                    let novelId = owner.sosoPickList.value[indexPath.row].novelId
+                    owner.pushToNovelDetailViewController.accept(novelId)
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+
         let searchRequest = Observable.merge(input.returnKeyDidTap.asObservable(),
                                              input.searchButtonDidTap.asObservable())
             .withLatestFrom(input.searchTextUpdated)
@@ -164,8 +196,12 @@ final class NormalSearchViewModel: ViewModelType {
         input.normalSearchCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 AmplitudeManager.shared.track(AmplitudeEvent.Search.clickSearchResult)
-                let novelId = owner.normalSearchList.value[indexPath.row].novelId
-                owner.pushToNovelDetailViewController.accept(novelId)
+                if owner.isLogined {
+                    let novelId = owner.normalSearchList.value[indexPath.row].novelId
+                    owner.pushToNovelDetailViewController.accept(novelId)
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -196,6 +232,8 @@ final class NormalSearchViewModel: ViewModelType {
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       isSearchTextFieldEditing: isSearchTextFieldEditing.asObservable(),
                       endEditing: endEditing,
-                      showLoadingView: showLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable(),
+                      sosoPickList: sosoPickList.asObservable(),
+                      presentToInduceLoginView: presentToInduceLoginView.asObservable())
     }
 }
