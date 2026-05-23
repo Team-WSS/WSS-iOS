@@ -177,9 +177,17 @@ final class WSSRangeSlider: UIControl {
         let snappedValue = snapToStep(rawValue)
 
         if isDraggingLower {
-            lowerValue = min(snappedValue, upperValue)
+            let newValue = min(snappedValue, upperValue)
+            if newValue != lowerValue {
+                lowerValue = newValue
+                HapticManager.shared.generateSelectionFeedback()
+            }
         } else if isDraggingUpper {
-            upperValue = max(snappedValue, lowerValue)
+            let newValue = max(snappedValue, lowerValue)
+            if newValue != upperValue {
+                upperValue = newValue
+                HapticManager.shared.generateSelectionFeedback()
+            }
         }
 
         sendActions(for: .valueChanged)
