@@ -7,15 +7,29 @@
 
 import UIKit
 
+import UIImageViewAlignedSwift
+import RxSwift
+
 final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - UI Components
+    //MARK: - Properties
+    
+    private let blurRadius: CGFloat = 12
+    
+    //MARK: - Components
+  
+    /// 셀 배경
+    private let backgroundNovelImageView = UIImageViewAligned()
+    private let gradation = UIImageView()
     
     /// 소설 정보
-    private let backgroundImageView = UIImageView()
-    private let bestTagImageView = UIImageView()
+    private let novelStackView = UIStackView()
     private let novelTitleLabel = UILabel()
+    private let novelAuthorandCompletedLabel = UILabel()
+    private let keywordStackView = UIStackView()
     private let novelImageView = UIImageView()
+    private let novelGenreBackgroundView = UIImageView()
+    private let novelGenreImageView = UIImageView()
     
     /// 유저 피드 글 정보
     private let blurBackgroundView = UIView()
@@ -44,36 +58,66 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setUI() {
-        backgroundImageView.do {
-            $0.image = .imgTodayPopularBackground
-            $0.contentMode = .scaleAspectFit
-            $0.layer.cornerRadius = 14
+        self.layer.cornerRadius = 14
+        self.clipsToBounds = true
+
+        backgroundNovelImageView.do {
+            $0.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: blurRadius)
+            $0.contentMode = .scaleAspectFill
+            $0.alignment = .top
             $0.clipsToBounds = true
+            
+            gradation.do {
+                $0.image = .imgNovelBg
+                $0.contentMode = .scaleToFill
+                $0.clipsToBounds = true
+            }
         }
         
-        bestTagImageView.do {
-            $0.image = .imgBest
+        novelStackView.do {
+            $0.axis = .vertical
+            $0.spacing = 4
         }
         
+        keywordStackView.do {
+            $0.axis = .vertical
+            $0.spacing = 4
+            $0.alignment = .leading
+        }
+
         novelTitleLabel.do {
             $0.textColor = .wssBlack
+            $0.numberOfLines = 2
+        }
+        
+        novelAuthorandCompletedLabel.do {
+            $0.textColor = .wssGray200
             $0.numberOfLines = 1
         }
         
         novelImageView.do {
             $0.image = .imgLoadingThumbnail
-            $0.layer.cornerRadius = 9
+            $0.layer.cornerRadius = 5.65
             $0.layer.shadowColor = UIColor.wssBlack.cgColor
-            $0.layer.shadowOpacity = 0.1
-            $0.layer.shadowRadius = 15.44
-            $0.layer.shadowOffset = CGSize(width: 0, height: 2.06)
+            $0.layer.shadowRadius = 10.59
+            $0.layer.shadowOffset = CGSize(width: 0, height: 1.41)
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
         
+        novelGenreBackgroundView.do {
+            $0.contentMode = .scaleAspectFit
+            $0.image = .icGenreBackground
+        }
+        
+        novelGenreImageView.do {
+            $0.contentMode = .scaleAspectFit
+            $0.image = .icGenreRF
+        }
+        
         blurBackgroundView.do {
             $0.frame = UIScreen.main.bounds
-            $0.backgroundColor = .wssWhite.withAlphaComponent(0.3)
+            $0.backgroundColor = .wssWhite.withAlphaComponent(0.7)
             let blurEffect = UIBlurEffect(style: .regular)
             let visualEffectView = UIVisualEffectView(effect: blurEffect)
             visualEffectView.frame = $0.bounds
@@ -110,11 +154,18 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        self.addSubview(backgroundImageView)
-        backgroundImageView.addSubviews(bestTagImageView,
-                                        novelTitleLabel,
-                                        novelImageView,
-                                        blurBackgroundView)
+        self.addSubviews(backgroundNovelImageView,
+                         novelStackView,
+                         novelImageView,
+                         novelGenreBackgroundView,
+                         keywordStackView,
+                         blurBackgroundView)
+        backgroundNovelImageView.addSubview(gradation)
+        novelStackView.addArrangedSubviews(
+            novelTitleLabel,
+            novelAuthorandCompletedLabel
+        )
+        novelGenreBackgroundView.addSubview(novelGenreImageView)
         blurBackgroundView.addSubviews(userProfileView,
                                        introductionImageView,
                                        commentTitleLabel,
@@ -124,32 +175,47 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     }
     
     private func setLayout() {
-        backgroundImageView.snp.makeConstraints {
+        backgroundNovelImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        bestTagImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.centerX.equalToSuperview()
+        gradation.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-        
-        novelTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(bestTagImageView.snp.bottom).offset(7)
-            $0.centerX.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(20)
+
+        novelStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(33)
+            $0.leading.equalToSuperview().inset(19)
         }
         
         novelImageView.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(15)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(127)
-            $0.height.equalTo(188)
+            $0.top.equalTo(novelStackView.snp.top)
+            $0.leading.equalTo(novelStackView.snp.trailing).offset(14)
+            $0.trailing.equalToSuperview().inset(22)
+            $0.width.equalTo(117)
+            $0.height.equalTo(171)
+        }
+        
+        novelGenreBackgroundView.snp.makeConstraints {
+            $0.trailing.bottom.equalTo(novelImageView)
+            $0.size.equalTo(56)
+        }
+
+        novelGenreImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(4)
+            $0.bottom.equalToSuperview().inset(5)
+            $0.size.equalTo(25)
         }
         
         blurBackgroundView.snp.makeConstraints {
             $0.height.equalTo(139)
             $0.bottom.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
+        }
+        
+        keywordStackView.snp.makeConstraints {
+            $0.bottom.equalTo(blurBackgroundView.snp.top).offset(-22)
+            $0.leading.equalToSuperview().inset(19)
         }
         
         userProfileView.snp.makeConstraints {
@@ -184,24 +250,59 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: TodayPopularNovel) {
+    func bindData(data: TodayDiscoveryNovel) {
         self.novelTitleLabel.do {
-            $0.applyWSSFont(.title2, with: data.title)
+            $0.applyWSSFont(.title2, with: data.title.truncateText(maxLength: 17))
             $0.lineBreakMode = .byTruncatingTail
-            $0.textAlignment = .center
+            $0.textAlignment = .left
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
+        self.novelAuthorandCompletedLabel.do {
+            let author = data.author.truncateText(maxLength: 5)
+            let completed = data.isNovelCompleted ? "완결작" : "연재작"
+            $0.applyWSSFont(.body3, with: "\(author) · \(completed)")
+        }
+        
+        keywordStackView.arrangedSubviews.forEach {
+            keywordStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+        keywordStackView.isHidden = data.keywords.isEmpty
+        data.keywords.forEach { keyword in
+            let chip = HomeTodayDiscoveryKeywordChip()
+            chip.setText(keyword)
+            keywordStackView.addArrangedSubview(chip)
         }
         self.novelImageView.kfSetImage(url: data.novelImage)
+        self.novelGenreImageView.kfSetImage(url: makeBucketImageURLString(path: data.novelGenreImage))
+        self.commentContentLabel.do {
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.lineBreakMode = .byTruncatingTail
+        }
         
-        if let avatarImage = data.avatarImage {
+        // TODO: - 뷰가 처음 보여질 때 로드될 수 있도록 수정
+        KingFisherRxHelper.kingFisherImage(urlString: data.novelImage)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, image in
+                owner.backgroundNovelImageView.image = image.asBlurredBannerImage(radius: self.blurRadius)
+            }
+            .dispose()
+        
+        // 대응하는 피드가 존재할 경우
+        if let feedContent = data.feedContent,
+        let avatarImage = data.avatarImage,
+        let nickname = data.nickname {
             self.userProfileView.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
             self.userProfileView.isHidden = false
             self.introductionImageView.isHidden = true
-            
+            self.commentTitleLabel.applyWSSFont(.title2, with: "\(nickname)\(StringLiterals.Home.TodayPopular.feed)")
             self.commentTitleLabel.snp.remakeConstraints {
                 $0.top.equalTo(userProfileView.snp.top)
                 $0.leading.equalTo(userProfileView.snp.trailing).offset(10)
             }
+            self.commentContentLabel.applyWSSFont(.label1, with: feedContent)
         }
+        // 대응하는 피드 존재 X -> 작품 설명
         else {
             self.userProfileView.isHidden = true
             self.introductionImageView.isHidden = false
@@ -210,20 +311,8 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
                 $0.top.equalTo(introductionImageView.snp.top).offset(-2)
                 $0.leading.equalTo(introductionImageView.snp.trailing).offset(8)
             }
-        }
-        
-        self.commentTitleLabel.do {
-            if let nickname = data.nickname {
-                $0.applyWSSFont(.title2, with: "\(nickname)\(StringLiterals.Home.TodayPopular.feed)")
-            }
-            else {
-                $0.applyWSSFont(.title2, with: StringLiterals.Home.TodayPopular.introduction)
-            }
-        }
-        self.commentContentLabel.do {
-            $0.applyWSSFont(.label1, with: data.feedContent)
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.lineBreakMode = .byTruncatingTail
+            self.commentTitleLabel.applyWSSFont(.title2, with: StringLiterals.Home.TodayPopular.introduction)
+            self.commentContentLabel.applyWSSFont(.label1, with: data.novelDescription)
         }
     }
 }
