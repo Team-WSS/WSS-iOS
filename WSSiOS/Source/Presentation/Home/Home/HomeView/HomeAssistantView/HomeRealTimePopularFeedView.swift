@@ -14,15 +14,11 @@ final class HomeRealTimePopularFeedView: UIView {
     
     //MARK: - UI Components
     
-    let feedContentLabel = UILabel()
-    
-    private let likeImageView = UIImageView()
-    private let likeCountLabel = UILabel()
-    private let likeStackView = UIStackView()
-    
-    private let commentImageView = UIImageView()
-    private let commentCountLabel = UILabel()
-    private let commentStackView = UIStackView()
+    private let contentStackView = UIStackView()
+    private let novelTitleLabel = UILabel()
+    private let feedContentLabel = UILabel()
+    private let novelImageView = UIImageView()
+    private let novelGenreImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -40,85 +36,78 @@ final class HomeRealTimePopularFeedView: UIView {
     }
     
     private func setUI() {
-        likeImageView.do {
-            $0.image = .icThumbUp.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
-            $0.contentMode = .scaleAspectFit
-        }
-        
-        likeCountLabel.do {
-            $0.textColor = .wssGray200
-        }
-        
-        likeStackView.do {
-            $0.axis = .horizontal
+        contentStackView.do {
+            $0.axis = .vertical
             $0.spacing = 4
-            $0.alignment = .center
         }
         
-        commentImageView.do {
-            $0.image = .icComment.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
+        novelTitleLabel.do {
+            $0.textColor = .wssBlack
+        }
+        
+        feedContentLabel.do {
+            $0.textColor = .wssBlack
+        }
+        
+        novelImageView.do {
+            $0.contentMode = .scaleAspectFill
+            $0.image = .imgLoadingThumbnail
+            $0.layer.cornerRadius = 8
+            $0.clipsToBounds = true
+        }
+        
+        novelGenreImageView.do {
             $0.contentMode = .scaleAspectFit
-        }
-        
-        commentCountLabel.do {
-            $0.textColor = .wssGray200
-        }
-        
-        commentStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 4
-            $0.alignment = .center
+            $0.image = .icGenreBackground
         }
     }
     
     private func setHierarchy() {
-        likeStackView.addArrangedSubviews(likeImageView,
-                                          likeCountLabel)
-        commentStackView.addArrangedSubviews(commentImageView,
-                                             commentCountLabel)
-        self.addSubviews(feedContentLabel,
-                         likeStackView,
-                         commentStackView)
+        self.addSubviews(contentStackView,
+                         novelImageView)
+        contentStackView.addArrangedSubviews(novelTitleLabel,
+                                             feedContentLabel)
+        novelImageView.addSubview(novelGenreImageView)
     }
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(98)
+            $0.height.equalTo(90)
         }
         
-        feedContentLabel.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+        contentStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(7)
+            $0.leading.equalToSuperview()
         }
         
-        likeStackView.snp.makeConstraints {
-            $0.leading.bottom.equalToSuperview()
-            $0.height.equalTo(19)
-            
-            likeImageView.snp.makeConstraints {
-                $0.size.equalTo(16)
-            }
+        novelImageView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalTo(contentStackView.snp.trailing).offset(20)
+            $0.trailing.equalToSuperview()
+            $0.width.equalTo(64)
         }
         
-        commentStackView.snp.makeConstraints {
-            $0.bottom.equalTo(likeStackView.snp.bottom)
-            $0.leading.equalTo(likeStackView.snp.trailing).offset(18)
-            $0.height.equalTo(19)
-            $0.bottom.equalToSuperview()
-            
-            commentImageView.snp.makeConstraints {
-                $0.size.equalTo(16)
-            }
+        novelGenreImageView.snp.makeConstraints {
+            $0.trailing.bottom.equalToSuperview()
+            $0.size.equalTo(30)
         }
     }
     
     func bindData(data: RealtimePopularFeed) {
+        novelTitleLabel.do {
+            //TODO: - novel Title로 수정
+            $0.applyWSSFont(.title3,
+                            with: data.feedContent)
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        
         feedContentLabel.do {
             if data.isSpoiler {
-                $0.applyWSSFont(.body2, with: StringLiterals.Home.RealTimePopular.spoiler)
+                $0.applyWSSFont(.body5, with: StringLiterals.Home.RealTimePopular.spoiler)
                 $0.textColor = .wssSecondary100
             }
             else {
-                $0.applyWSSFont(.body3, with: data.feedContent)
+                $0.applyWSSFont(.body5, with: data.feedContent)
                 $0.textColor = .wssBlack
             }
             $0.numberOfLines = 3
@@ -126,7 +115,13 @@ final class HomeRealTimePopularFeedView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        likeCountLabel.applyWSSFont(.body4, with: String(data.feedLikeCount))
-        commentCountLabel.applyWSSFont(.body4, with: String(data.feedCommentCount))
+        novelImageView.do {
+            $0.kfSetImage(url: data.novelImage)
+        }
+        
+        //TODO: - 작품 장르 매핑 추가 필요
+        novelGenreImageView.do {
+            $0.image = .icGenremarkMT
+        }
     }
 }

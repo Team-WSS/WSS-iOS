@@ -123,12 +123,12 @@ extension HomeViewModel {
                 
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
-                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
+                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 2)
                     .map { index in
-                        Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
+                        Array(realtimeFeeds.popularFeeds[index..<min(index + 2, realtimeFeeds.popularFeeds.count)])
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
-                let message = InterestMessage(rawValue: interestFeeds.message)
+                _ = InterestMessage(rawValue: interestFeeds.message)
                 
                 if owner.isLogined {
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
