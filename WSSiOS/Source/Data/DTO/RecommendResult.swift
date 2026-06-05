@@ -7,18 +7,24 @@
 
 import Foundation
 
-// 오늘의 인기작
-struct TodayPopularNovels: Codable {
-    var popularNovels: [TodayPopularNovel]
+// 오늘의 발견
+struct TodayDiscoveryNovels: Decodable {
+    var popularNovels: [TodayDiscoveryNovel]
 }
 
-struct TodayPopularNovel: Codable {
-    var novelId: Int
-    var title: String
-    var novelImage: String
-    var avatarImage: String?
-    var nickname: String?
-    var feedContent: String
+struct TodayDiscoveryNovel: Decodable {
+    let novelId: Int
+    let title: String
+    let novelImage: String
+    let avatarImage: String?
+    let nickname: String?
+    let feedContent: String?
+    let author: String
+    let isNovelCompleted: Bool
+    let novelGenres: [String]
+    let novelGenreImage: String
+    let keywords: [String]
+    let novelDescription: String
 }
 
 // 지금 뜨는 수다글

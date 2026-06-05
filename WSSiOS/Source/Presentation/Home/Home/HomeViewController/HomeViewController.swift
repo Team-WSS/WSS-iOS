@@ -106,7 +106,7 @@ final class HomeViewController: UIViewController {
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        // 오늘의 인기작
+        // 오늘의 발견
         output.todayPopularList
             .bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
                 cellIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier,

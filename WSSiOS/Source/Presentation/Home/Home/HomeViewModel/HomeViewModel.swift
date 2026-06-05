@@ -24,7 +24,7 @@ final class HomeViewModel: ViewModelType {
     private let pushToNormalSearchViewController = PublishRelay<Void>()
     
     // 오늘의 인기작
-    private let todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
+    private let todayPopularList = BehaviorRelay<[TodayDiscoveryNovel]>(value: [])
     
     // 지금 뜨는 수다글
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
@@ -64,7 +64,7 @@ final class HomeViewModel: ViewModelType {
     struct Output {
         let pushToNormalSearchViewController: Observable<Void>
         
-        var todayPopularList: Observable<[TodayPopularNovel]>
+        var todayPopularList: Observable<[TodayDiscoveryNovel]>
         
         var realtimePopularList: Observable<[RealtimePopularFeed]>
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
@@ -256,7 +256,7 @@ extension HomeViewModel {
     }
     
     // 오늘의 인기작 조회
-    func getTodayPopularNovels() -> Observable<TodayPopularNovels> {
+    func getTodayPopularNovels() -> Observable<TodayDiscoveryNovels> {
         return recommendRepository.getTodayPopularNovels()
     }
     
