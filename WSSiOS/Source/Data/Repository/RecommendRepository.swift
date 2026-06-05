@@ -198,15 +198,67 @@ struct TestRecommendRepository: RecommendRepository {
     
     func getRealtimePopularFeeds() -> Observable<RealtimePopularFeeds> {
         return Observable.just(RealtimePopularFeeds(popularFeeds: [
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false),
-            RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false)]))
+            RealtimePopularFeed(
+                        feedId: 1,
+                        feedContent: "결말 스포 안 할게. 그냥 꼭 봐… 마지막 20화 몰아보는데 손에서 폰을 못 내려놓았다. 다 보고 나니까 초반 장면들이 전부 다르게 보이는 작품이었다",
+                        likeCount: 124,
+                        commentCount: 18,
+                        isSpoiler: false,
+                        isPublic: true,
+                        novelImage: "https://i.pinimg.com/736x/23/69/d1/2369d18fb97c531a041b70c9efbb369a.jpg",
+                        novelGenreImage: "/icGenre/romance-fantasy"
+                    ),
+                    RealtimePopularFeed(
+                        feedId: 2,
+                        feedContent: "오늘 올라온 회차 미쳤다...",
+                        likeCount: 358,
+                        commentCount: 52,
+                        isSpoiler: true,
+                        isPublic: true,
+                        novelImage: "https://i.pinimg.com/736x/d2/10/71/d210716c07f6828e724db047a78104a9.jpg",
+                        novelGenreImage: "/icGenre/fantasy"
+                    ),
+                    RealtimePopularFeed(
+                        feedId: 3,
+                        feedContent: "작가님 필력 미쳤다. 같은 장면을 다른 인물 시점으로 보여주는데 느낌이 완전히 달라져서 다시 읽게 됨. 대사 하나로 관계 역전시키는 연출이 특히 좋았고, 감정 묘사가 과하지 않은데도 여운이 길게 남는다.",
+                        likeCount: 89,
+                        commentCount: 7,
+                        isSpoiler: false,
+                        isPublic: true,
+                        novelImage: "https://i.pinimg.com/1200x/d8/11/23/d811239a4735c383b0ac27ec4168174c.jpg",
+                        novelGenreImage: "/icGenre/romance"
+                    ),
+                    RealtimePopularFeed(
+                        feedId: 4,
+                        feedContent: "정주행하다가 새벽 4시 됨. 한 화만 더 보자 하고 넘겼는데 계속 엔딩을 궁금하게 끊어서 멈출 타이밍이 없었다. 로맨스, 사건, 세계관 떡밥 비율이 균형 좋아서 취향 안 타고 추천하기 괜찮은 작품이라고 생각함.",
+                        likeCount: 241,
+                        commentCount: 21,
+                        isSpoiler: false,
+                        isPublic: true,
+                        novelImage: "https://i.pinimg.com/736x/d4/bc/12/d4bc128496f42f4a14dbdb4e4bedaeb3.jpg",
+                        novelGenreImage: "/icGenre/romance-fantasy"
+                    ),
+                    RealtimePopularFeed(
+                        feedId: 5,
+                        feedContent: "무협 안 좋아하는데도 재밌게 읽는 중",
+                        likeCount: 77,
+                        commentCount: 5,
+                        isSpoiler: false,
+                        isPublic: true,
+                        novelImage: "https://i.pinimg.com/736x/df/8b/fc/df8bfc3d40960397f79fd119b88d35a3.jpg",
+                        novelGenreImage: "/icGenre/wuxia"
+                    ),
+                    RealtimePopularFeed(
+                        feedId: 6,
+                        feedContent: "주인공이 개복치임(병약) 소재 사용이 너무 과해서 거북할 정도로 많이 나왔고 주인공이 좀 많이 지능이 모자람(잘 쳐줘도 청소년~유딩 수준의 정신연령같음)\n\n솔직히 설정이나 밀어주는 방식은 괜찮았는데 이 사용이 너무 과하더군요\n뭐 아이돌물 좋아하시면 찍먹은 괜찮을듯\n",
+                        likeCount: 512,
+                        commentCount: 103,
+                        isSpoiler: true,
+                        isPublic: true,
+                        novelImage: "https://i.pinimg.com/1200x/78/87/7b/78877b376f8f629f9454a47c0d9e91f7.jpg",
+                        novelGenreImage: "/icGenre/fantasy"
+                    )
+        ]))
     }
     
     func getInterestFeeds() -> Observable<InterestFeeds> {

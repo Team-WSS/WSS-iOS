@@ -28,22 +28,19 @@ struct TodayDiscoveryNovel: Decodable {
 }
 
 // 지금 뜨는 수다글
-struct RealtimePopularFeeds: Codable {
+struct RealtimePopularFeeds: Decodable {
     var popularFeeds: [RealtimePopularFeed]
 }
 
-struct RealtimePopularFeed: Codable {
-    var feedId: Int
-    var feedContent: String
-    var feedLikeCount: Int
-    var feedCommentCount: Int
-    var isSpoiler: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case feedId, feedContent, isSpoiler
-        case feedLikeCount = "likeCount"
-        case feedCommentCount = "commentCount"
-    }
+struct RealtimePopularFeed: Decodable {
+    let feedId: Int
+    let feedContent: String
+    let likeCount: Int
+    let commentCount: Int
+    let isSpoiler: Bool
+    let isPublic: Bool
+    let novelImage: String
+    let novelGenreImage: String
 }
 
 // 관심글
