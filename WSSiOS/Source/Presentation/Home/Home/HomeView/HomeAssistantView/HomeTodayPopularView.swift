@@ -47,7 +47,7 @@ final class HomeTodayPopularView: UIView {
         todayPopularCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 10
-            $0.itemSize = CGSize(width: 292, height: 377)
+            $0.itemSize = CGSize(width: 292, height: 362)
             $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             todayPopularCollectionView.setCollectionViewLayout($0, animated: false)
         }
