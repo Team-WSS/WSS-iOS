@@ -13,12 +13,13 @@ import RxCocoa
 final class NormalSearchViewModel: ViewModelType {
     
     //MARK: - Properties
-    
+
     private let searchRepository: SearchRepository
+    private let keywordRepository: KeywordRepository
     private let disposeBag = DisposeBag()
-    
+
     private let isLogined = APIConstants.isLogined
-    
+
     // API 쿼리
     private let searchText = BehaviorRelay<String>(value: "")
     private var currentPage: Int = 0
@@ -41,6 +42,9 @@ final class NormalSearchViewModel: ViewModelType {
 
     // 최근 검색어
     private let recentSearchList = BehaviorRelay<[RecentSearch]>(value: [])
+
+    // 인기 키워드
+    private let popularKeywordList = BehaviorRelay<[KeywordData]>(value: [])
     
     //MARK: - Inputs
 
@@ -64,6 +68,8 @@ final class NormalSearchViewModel: ViewModelType {
         let recentSearchDeleteButtonDidTap: Observable<Int>
         let genreSelected: ControlEvent<IndexPath>
         let genreHeaderDidTap: ControlEvent<Void>
+        let popularKeywordSelected: ControlEvent<IndexPath>
+        let popularKeywordHeaderDidTap: ControlEvent<Void>
     }
 
     //MARK: - Outputs
@@ -89,14 +95,21 @@ final class NormalSearchViewModel: ViewModelType {
         let pushToGenreSearchResult: Observable<NovelGenre>
         let pushToDetailSearch: Observable<Void>
         let showGenreView: Driver<Bool>
+        let popularKeywordList: Observable<[KeywordData]>
+        let pushToKeywordSearchResult: Observable<KeywordData>
+        let pushToDetailSearchKeywordTab: Observable<Void>
+        let showPopularKeywordView: Driver<Bool>
     }
     
     //MARK: - init
     
     let initialSearchText: String?
     
-    init(searchRepository: SearchRepository, initialSearchText: String? = nil) {
+    init(searchRepository: SearchRepository,
+         keywordRepository: KeywordRepository,
+         initialSearchText: String? = nil) {
         self.searchRepository = searchRepository
+        self.keywordRepository = keywordRepository
         self.initialSearchText = initialSearchText
     }
     
@@ -286,6 +299,27 @@ final class NormalSearchViewModel: ViewModelType {
             .map { $0.isEmpty }
             .asDriver(onErrorJustReturn: true)
 
+        // 인기 키워드 로직
+        input.viewWillAppear
+            .filter { self.isLogined }
+            .flatMapLatest { _ in
+                self.keywordRepository.getPopularKeywords()
+                    .catchAndReturn([])
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.popularKeywordList.accept(data)
+            })
+            .disposed(by: disposeBag)
+
+        let pushToKeywordSearchResult = input.popularKeywordSelected
+            .withLatestFrom(popularKeywordList) { indexPath, list in list[indexPath.row] }
+
+        let pushToDetailSearchKeywordTab = input.popularKeywordHeaderDidTap.asObservable()
+
+        let showPopularKeywordView = normalSearchList
+            .map { $0.isEmpty }
+            .asDriver(onErrorJustReturn: true)
+
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
                       scrollToTop: returnKeyEnabled.asObservable(),
@@ -305,6 +339,10 @@ final class NormalSearchViewModel: ViewModelType {
                       fillSearchTextField: fillSearchTextField.asObservable(),
                       pushToGenreSearchResult: pushToGenreSearchResult.asObservable(),
                       pushToDetailSearch: pushToDetailSearch,
-                      showGenreView: showGenreView)
+                      showGenreView: showGenreView,
+                      popularKeywordList: popularKeywordList.asObservable(),
+                      pushToKeywordSearchResult: pushToKeywordSearchResult.asObservable(),
+                      pushToDetailSearchKeywordTab: pushToDetailSearchKeywordTab,
+                      showPopularKeywordView: showPopularKeywordView)
     }
 }

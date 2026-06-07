@@ -20,6 +20,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     private let viewWillAppearRelay = PublishRelay<Void>()
     private let deleteRecentSearchRelay = PublishRelay<Int>()
     private var currentRecentKeywords: [RecentSearch] = []
+    private var currentPopularKeywords: [KeywordData] = []
 
     //MARK: - Components
 
@@ -99,12 +100,16 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.genreView.genreCollectionView.register(
             NormalSearchGenreCell.self,
             forCellWithReuseIdentifier: NormalSearchGenreCell.cellIdentifier)
+        rootView.popularKeywordView.keywordCollectionView.register(
+            NormalSearchPopularKeywordCell.self,
+            forCellWithReuseIdentifier: NormalSearchPopularKeywordCell.cellIdentifier)
     }
 
     private func setDelegate() {
         rootView.headerView.searchTextField.delegate = self
         rootView.recentSearchView.recentTagCollectionView.delegate = self
         rootView.genreView.genreCollectionView.delegate = self
+        rootView.popularKeywordView.keywordCollectionView.delegate = self
     }
     
     private func bindViewModel() {
@@ -136,7 +141,9 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             recentSearchDeleteAllButtonDidTap: rootView.recentSearchView.deleteAllButton.rx.tap,
             recentSearchDeleteButtonDidTap: deleteRecentSearchRelay.asObservable(),
             genreSelected: rootView.genreView.genreCollectionView.rx.itemSelected,
-            genreHeaderDidTap: rootView.genreView.headerButton.rx.tap)
+            genreHeaderDidTap: rootView.genreView.headerButton.rx.tap,
+            popularKeywordSelected: rootView.popularKeywordView.keywordCollectionView.rx.itemSelected,
+            popularKeywordHeaderDidTap: rootView.popularKeywordView.headerButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -330,6 +337,62 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.genreView.isHidden = !shouldShow
             })
             .disposed(by: disposeBag)
+
+        output.popularKeywordList
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] list in
+                self?.currentPopularKeywords = list
+            })
+            .bind(to: rootView.popularKeywordView.keywordCollectionView.rx.items(
+                cellIdentifier: NormalSearchPopularKeywordCell.cellIdentifier,
+                cellType: NormalSearchPopularKeywordCell.self)) { _, keyword, cell in
+                    cell.bindData(keyword: keyword)
+                }
+            .disposed(by: disposeBag)
+
+        rootView.popularKeywordView.keywordCollectionView.rx
+            .observe(CGSize.self, "contentSize")
+            .compactMap { $0?.height }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.popularKeywordView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+
+        output.pushToKeywordSearchResult
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, keyword in
+                let filterQuery = SearchFilterQuery(
+                    keywords: [keyword],
+                    genres: [],
+                    isCompleted: nil,
+                    lowerNovelRating: 0.0,
+                    upperNovelRating: 5.0
+                )
+                let viewModel = DetailSearchResultViewModel(
+                    searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                    option: filterQuery,
+                    entryType: .keywordOnly
+                )
+                let viewController = DetailSearchResultViewController(viewModel: viewModel)
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        output.pushToDetailSearchKeywordTab
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToDetailSearchViewController(initialTab: .keyword)
+            })
+            .disposed(by: disposeBag)
+
+        output.showPopularKeywordView
+            .drive(with: self, onNext: { owner, shouldShow in
+                owner.rootView.popularKeywordView.isHidden = !shouldShow
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindAction() {
@@ -370,6 +433,13 @@ extension NormalSearchViewController: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == rootView.genreView.genreCollectionView {
             return CGSize(width: 44, height: 69)
+        }
+        if collectionView == rootView.popularKeywordView.keywordCollectionView {
+            guard indexPath.row < currentPopularKeywords.count else { return .zero }
+            let name = currentPopularKeywords[indexPath.row].keywordName
+            let textWidth = (name as NSString).size(withAttributes: [.font: UIFont.Body3]).width
+            let width = ceil(textWidth) + 13 * 2
+            return CGSize(width: width, height: 35)
         }
         guard collectionView == rootView.recentSearchView.recentTagCollectionView,
               indexPath.row < currentRecentKeywords.count else { return .zero }
