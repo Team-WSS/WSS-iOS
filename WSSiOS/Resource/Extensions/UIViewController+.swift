@@ -310,12 +310,13 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToDetailSearchViewController() {
+    func pushToDetailSearchViewController(initialTab: DetailSearchTab = .info) {
         let detailSearchViewController = DetailSearchViewController(
             viewModel: DetailSearchViewModel(
                 keywordRepository: DefaultKeywordRepository(
                     keywordService: DefaultKeywordService()
-                )
+                ),
+                initialTab: initialTab
             )
         )
         detailSearchViewController.navigationController?.isNavigationBarHidden = true
@@ -339,6 +340,7 @@ extension UIViewController {
         let normalSearchViewController = NormalSearchViewController(
             viewModel: NormalSearchViewModel(
                 searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()),
                 initialSearchText: searchText
             )
         )
