@@ -122,10 +122,12 @@ extension HomeViewModel {
                 let isNotificationUnread = data.4
                 
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
+                
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
-                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 2)
+                let limitedFeeds = Array(realtimeFeeds.popularFeeds.prefix(6))
+                let groupedData = stride(from: 0, to: limitedFeeds.count, by: 2)
                     .map { index in
-                        Array(realtimeFeeds.popularFeeds[index..<min(index + 2, realtimeFeeds.popularFeeds.count)])
+                        Array(limitedFeeds[index..<min(index + 2, limitedFeeds.count)])
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
                 _ = InterestMessage(rawValue: interestFeeds.message)
