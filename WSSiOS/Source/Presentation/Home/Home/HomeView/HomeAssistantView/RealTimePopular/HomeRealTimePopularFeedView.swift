@@ -95,9 +95,8 @@ final class HomeRealTimePopularFeedView: UIView {
     
     func bindData(data: RealtimePopularFeed) {
         novelTitleLabel.do {
-            //TODO: - novel Title로 수정
             $0.applyWSSFont(.title3,
-                            with: data.feedContent)
+                            with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
         }
         
@@ -119,9 +118,10 @@ final class HomeRealTimePopularFeedView: UIView {
             $0.kfSetImage(url: data.novelImage)
         }
         
-        //TODO: - 작품 장르 매핑 추가 필요
         novelGenreImageView.do {
-            $0.image = .icGenremarkMT
+            $0.image = NovelGenre.allCases
+                .first(where: { $0.rawValue == data.novelGenre })?
+                .markImage
         }
     }
 }

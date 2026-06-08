@@ -205,8 +205,9 @@ struct TestRecommendRepository: RecommendRepository {
                         commentCount: 18,
                         isSpoiler: false,
                         isPublic: true,
+                        novelTitle: "짝사랑 상실의 순기능",
                         novelImage: "https://i.pinimg.com/736x/23/69/d1/2369d18fb97c531a041b70c9efbb369a.jpg",
-                        novelGenreImage: "/icGenre/romance-fantasy"
+                        novelGenre: "romanceFantasy"
                     ),
                     RealtimePopularFeed(
                         feedId: 2,
@@ -215,8 +216,9 @@ struct TestRecommendRepository: RecommendRepository {
                         commentCount: 52,
                         isSpoiler: true,
                         isPublic: true,
+                        novelTitle: "미국 천재 감정사가 트럭 몰고 보물 주워서 인생역전",
                         novelImage: "https://i.pinimg.com/736x/d2/10/71/d210716c07f6828e724db047a78104a9.jpg",
-                        novelGenreImage: "/icGenre/fantasy"
+                        novelGenre: "fantasy"
                     ),
                     RealtimePopularFeed(
                         feedId: 3,
@@ -225,8 +227,9 @@ struct TestRecommendRepository: RecommendRepository {
                         commentCount: 7,
                         isSpoiler: false,
                         isPublic: true,
-                        novelImage: "https://i.pinimg.com/1200x/d8/11/23/d811239a4735c383b0ac27ec4168174c.jpg",
-                        novelGenreImage: "/icGenre/romance"
+                        novelTitle: "메스가키 성녀님과 여행하는 용사가 되었다",
+                        novelImage: "https://img.ridicdn.net/cover/6038052326/xxlarge#1",
+                        novelGenre: "drama"
                     ),
                     RealtimePopularFeed(
                         feedId: 4,
@@ -235,8 +238,9 @@ struct TestRecommendRepository: RecommendRepository {
                         commentCount: 21,
                         isSpoiler: false,
                         isPublic: true,
+                        novelTitle: "주인공 혼자 다 해 먹는 헌터물에 빙의했다",
                         novelImage: "https://i.pinimg.com/736x/d4/bc/12/d4bc128496f42f4a14dbdb4e4bedaeb3.jpg",
-                        novelGenreImage: "/icGenre/romance-fantasy"
+                        novelGenre: "lightNovel"
                     ),
                     RealtimePopularFeed(
                         feedId: 5,
@@ -245,8 +249,9 @@ struct TestRecommendRepository: RecommendRepository {
                         commentCount: 5,
                         isSpoiler: false,
                         isPublic: true,
+                        novelTitle: "몽중인 - 꿈속의 암살자",
                         novelImage: "https://i.pinimg.com/736x/df/8b/fc/df8bfc3d40960397f79fd119b88d35a3.jpg",
-                        novelGenreImage: "/icGenre/wuxia"
+                        novelGenre: "wuxia"
                     ),
                     RealtimePopularFeed(
                         feedId: 6,
@@ -255,8 +260,9 @@ struct TestRecommendRepository: RecommendRepository {
                         commentCount: 103,
                         isSpoiler: true,
                         isPublic: true,
+                        novelTitle: "캐니언 섬의 부적절한 생존법",
                         novelImage: "https://i.pinimg.com/1200x/78/87/7b/78877b376f8f629f9454a47c0d9e91f7.jpg",
-                        novelGenreImage: "/icGenre/fantasy"
+                        novelGenre: "BL"
                     )
         ]))
     }

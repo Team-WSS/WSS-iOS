@@ -40,8 +40,10 @@ struct RealtimePopularFeed: Decodable {
     let commentCount: Int
     let isSpoiler: Bool
     let isPublic: Bool
+
+    let novelTitle: String
     let novelImage: String
-    let novelGenreImage: String
+    let novelGenre: String
 }
 
 // 관심글
