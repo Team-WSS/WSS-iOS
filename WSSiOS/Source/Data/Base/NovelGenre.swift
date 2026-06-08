@@ -216,4 +216,5 @@ extension NovelGenre {
     static let feedFilterGenres: [NovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl, .etc]
     static let detailSearchGenres: [NovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .mystery, .drama, .lightNovel, .bl]
     static let myPageEditGenres: [NovelGenre] = [.romance, .romanceFantasy, .fantasy, .modernFantasy, .wuxia, .bl, .lightNovel, .mystery, .drama]
+    static let normalSearchGenres: [NovelGenre] = [.fantasy, .modernFantasy, .romanceFantasy, .romance, .wuxia, .bl, .lightNovel, .drama, .mystery]
 }

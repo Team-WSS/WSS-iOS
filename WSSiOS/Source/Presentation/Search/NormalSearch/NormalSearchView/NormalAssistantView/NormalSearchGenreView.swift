@@ -1,8 +1,8 @@
 //
-//  NormalSearchRecentView.swift
+//  NormalSearchGenreView.swift
 //  WSSiOS
 //
-//  Created by onesunny2 on 5/6/25.
+//  Created by onesunny2 on 5/8/25.
 //
 
 import UIKit
@@ -10,13 +10,14 @@ import UIKit
 import SnapKit
 import Then
 
-final class NormalSearchRecentView: UIView {
+final class NormalSearchGenreView: UIView {
 
     //MARK: - Components
 
     private let titleLabel = UILabel()
-    let deleteAllButton = UIButton()
-    let recentTagCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private let chevronImageView = UIImageView()
+    let headerButton = UIButton()
+    let genreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
     //MARK: - Life Cycle
 
@@ -37,20 +38,19 @@ final class NormalSearchRecentView: UIView {
 
     private func setUI() {
         titleLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Search.recentSearchTitle)
+            $0.applyWSSFont(.title2, with: StringLiterals.Search.genreSearchTitle)
             $0.textColor = .wssBlack
         }
 
-        deleteAllButton.do {
-            $0.setTitle(StringLiterals.Search.deleteAll, for: .normal)
-            $0.setTitleColor(.wssGray200, for: .normal)
-            $0.titleLabel?.font = .Body4
+        chevronImageView.do {
+            $0.image = .icChevronRightMini
+            $0.contentMode = .scaleAspectFit
         }
 
-        recentTagCollectionView.do {
+        genreCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
-            layout.minimumInteritemSpacing = 8
+            layout.minimumInteritemSpacing = 12
             layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
 
             $0.collectionViewLayout = layout
@@ -61,7 +61,7 @@ final class NormalSearchRecentView: UIView {
     }
 
     private func setHierarchy() {
-        self.addSubviews(titleLabel, deleteAllButton, recentTagCollectionView)
+        self.addSubviews(titleLabel, chevronImageView, headerButton, genreCollectionView)
     }
 
     private func setLayout() {
@@ -70,15 +70,21 @@ final class NormalSearchRecentView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
 
-        deleteAllButton.snp.makeConstraints {
+        chevronImageView.snp.makeConstraints {
             $0.centerY.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().inset(20)
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(3)
+            $0.size.equalTo(16)
         }
 
-        recentTagCollectionView.snp.makeConstraints {
+        headerButton.snp.makeConstraints {
+            $0.top.leading.bottom.equalTo(titleLabel)
+            $0.trailing.equalTo(chevronImageView)
+        }
+
+        genreCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(35)
+            $0.height.equalTo(69)
             $0.bottom.equalToSuperview()
         }
     }
