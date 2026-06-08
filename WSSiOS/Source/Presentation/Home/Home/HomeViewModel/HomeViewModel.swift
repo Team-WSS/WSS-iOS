@@ -104,22 +104,19 @@ extension HomeViewModel {
             .flatMapLatest {
                 let todayPopularNovelsObservable = self.getTodayPopularNovels()
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
-                let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
                 let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
                 
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
-                                      interestFeedsObservable,
                                       tasteRecommendNovelsObservable,
                                       isNotificationUnreadObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let todayPopularNovels = data.0
                 let realtimeFeeds = data.1
-                let interestFeeds = data.2
-                let tasteRecommendNovels = data.3
-                let isNotificationUnread = data.4
+                let tasteRecommendNovels = data.2
+                let isNotificationUnread = data.3
                 
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
                 
@@ -130,8 +127,7 @@ extension HomeViewModel {
                         Array(limitedFeeds[index..<min(index + 2, limitedFeeds.count)])
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
-                _ = InterestMessage(rawValue: interestFeeds.message)
-                
+
                 if owner.isLogined {
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
@@ -267,7 +263,7 @@ extension HomeViewModel {
         return recommendRepository.getRealtimePopularFeeds()
     }
     
-    // 관심글 조회
+    // 관심글 조회 - Deprecated
     func getInterestFeeds() -> Observable<InterestFeeds> {
         return recommendRepository.getInterestFeeds()
     }
