@@ -14,7 +14,8 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
-    private let blurRadius: CGFloat = 12
+    private let blurRadius: CGFloat = 8
+    private var disposeBag = DisposeBag()
     
     //MARK: - Components
   
@@ -27,6 +28,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     private let novelTitleLabel = UILabel()
     private let novelAuthorandCompletedLabel = UILabel()
     private let keywordStackView = UIStackView()
+    private let novelImageContainerView = UIView()
     private let novelImageView = UIImageView()
     private let novelGenreBackgroundView = UIImageView()
     private let novelGenreImageView = UIImageView()
@@ -53,6 +55,20 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        novelImageContainerView.layer.shadowPath = UIBezierPath(
+            roundedRect: novelImageContainerView.bounds,
+            cornerRadius: 5.65
+        ).cgPath
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+        backgroundNovelImageView.image = nil
     }
     
     //MARK: - UI
@@ -95,12 +111,17 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             $0.numberOfLines = 1
         }
         
+        novelImageContainerView.do {
+            $0.backgroundColor = .clear
+            $0.layer.shadowColor = UIColor.wssBlack.cgColor
+            $0.layer.shadowOpacity = 0.1
+            $0.layer.shadowRadius = 10.59
+            $0.layer.shadowOffset = CGSize(width: 0, height: 1.41)
+        }
+        
         novelImageView.do {
             $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 5.65
-            $0.layer.shadowColor = UIColor.wssBlack.cgColor
-            $0.layer.shadowRadius = 10.59
-            $0.layer.shadowOffset = CGSize(width: 0, height: 1.41)
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
@@ -156,11 +177,12 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     private func setHierarchy() {
         self.addSubviews(backgroundNovelImageView,
                          novelStackView,
-                         novelImageView,
+                         novelImageContainerView,
                          novelGenreBackgroundView,
                          keywordStackView,
                          blurBackgroundView)
         backgroundNovelImageView.addSubview(gradation)
+        novelImageContainerView.addSubview(novelImageView)
         novelStackView.addArrangedSubviews(
             novelTitleLabel,
             novelAuthorandCompletedLabel
@@ -188,12 +210,16 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().inset(19)
         }
         
-        novelImageView.snp.makeConstraints {
+        novelImageContainerView.snp.makeConstraints {
             $0.top.equalTo(novelStackView.snp.top)
             $0.leading.equalTo(novelStackView.snp.trailing).offset(14)
             $0.trailing.equalToSuperview().inset(22)
             $0.width.equalTo(117)
             $0.height.equalTo(171)
+        }
+        
+        novelImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         novelGenreBackgroundView.snp.makeConstraints {
@@ -202,7 +228,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
 
         novelGenreImageView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(4)
+            $0.trailing.equalToSuperview().inset(3)
             $0.bottom.equalToSuperview().inset(5)
             $0.size.equalTo(25)
         }
@@ -274,19 +300,21 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             keywordStackView.addArrangedSubview(chip)
         }
         self.novelImageView.kfSetImage(url: data.novelImage)
-        self.novelGenreImageView.kfSetImage(url: makeBucketImageURLString(path: data.novelGenreImage))
+       
+        self.novelGenreImageView.image = NovelGenre.allCases
+            .first(where: { $0.rawValue == data.genreName })?.image
+        
         self.commentContentLabel.do {
             $0.lineBreakStrategy = .hangulWordPriority
             $0.lineBreakMode = .byTruncatingTail
         }
         
-        // TODO: - 뷰가 처음 보여질 때 로드될 수 있도록 수정
         KingFisherRxHelper.kingFisherImage(urlString: data.novelImage)
             .observe(on: MainScheduler.instance)
             .bind(with: self) { owner, image in
-                owner.backgroundNovelImageView.image = image.asBlurredBannerImage(radius: self.blurRadius)
+                owner.backgroundNovelImageView.image = image.asBlurredBannerImage(radius: owner.blurRadius)
             }
-            .dispose()
+            .disposed(by: disposeBag)
         
         // 대응하는 피드가 존재할 경우
         if let feedContent = data.feedContent,
