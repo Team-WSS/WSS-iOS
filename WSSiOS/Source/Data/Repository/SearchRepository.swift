@@ -18,6 +18,9 @@ protocol SearchRepository {
                                upperNovelRating: Float,
                                keywordIds: [Int],
                                page: Int) -> Observable<DetailSearchNovels>
+    func getRecentSearches() -> Observable<[RecentSearch]>
+    func deleteRecentSearch(id: Int) -> Observable<Void>
+    func deleteAllRecentSearches() -> Observable<Void>
 }
 
 struct DefaultSearchRepository: SearchRepository {
@@ -51,5 +54,17 @@ struct DefaultSearchRepository: SearchRepository {
                                                 keywordIds: keywordIds,
                                                 page: page,
                                                 size: searchSize).asObservable()
+    }
+
+    func getRecentSearches() -> Observable<[RecentSearch]> {
+        return searchService.getRecentSearches().asObservable()
+    }
+
+    func deleteRecentSearch(id: Int) -> Observable<Void> {
+        return searchService.deleteRecentSearch(id: id).asObservable()
+    }
+
+    func deleteAllRecentSearches() -> Observable<Void> {
+        return searchService.deleteAllRecentSearches().asObservable()
     }
 }

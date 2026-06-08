@@ -19,11 +19,59 @@ protocol SearchService {
                             keywordIds: [Int],
                             page: Int,
                             size: Int) -> Single<DetailSearchNovels>
+    func getRecentSearches() -> Single<[RecentSearch]>
+    func deleteRecentSearch(id: Int) -> Single<Void>
+    func deleteAllRecentSearches() -> Single<Void>
 }
 
 final class DefaultSearchService: NSObject, Networking { }
 
 extension DefaultSearchService: SearchService {
+    func getRecentSearches() -> Single<[RecentSearch]> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.Search.recentSearch,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0, to: RecentSearches.self).recentSearches }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+
+    func deleteRecentSearch(id: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Search.deleteRecentSearchKeyword(id: id),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+
+    func deleteAllRecentSearches() -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Search.deleteAllRecentSearchKeywords,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+
     func getSosopicks() -> Single<SosoPickNovels> {
         do {
             let request = try makeHTTPRequest(method: .get,

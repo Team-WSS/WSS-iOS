@@ -45,10 +45,20 @@ struct SearchNovel: Codable {
     var interestCount: Int
     var novelRating: Float
     var novelRatingCount: Int
-    
+
     enum CodingKeys: String, CodingKey {
         case novelId, novelImage, interestCount, novelRating, novelRatingCount
         case novelTitle = "title"
         case novelAuthor = "author"
     }
+}
+
+/// 최근 검색어 조회 API
+struct RecentSearches: Codable {
+    let recentSearches: [RecentSearch]
+}
+
+struct RecentSearch: Codable {
+    let id: Int
+    let keyword: String
 }
