@@ -59,10 +59,10 @@ struct TestRecommendRepository: RecommendRepository {
                 """,
                 author: "김캐롤",
                 isNovelCompleted: true,
-                novelGenres: ["romanceFantasy"],
-                novelGenreImage: "/icGenre/romance-fantasy",
+                genreName: "romance",
                 keywords: [],
-                novelDescription: "노예였던 과거를 숨긴 채 완벽한 레이디가 되려는 오브리의 이야기."
+                novelDescription: "노예였던 과거를 숨긴 채 완벽한 레이디가 되려는 오브리의 이야기.",
+                novelGenres: []
             ),
 
             TodayDiscoveryNovel(
@@ -74,10 +74,10 @@ struct TestRecommendRepository: RecommendRepository {
                 feedContent: nil,
                 author: "황도톨",
                 isNovelCompleted: true,
-                novelGenres: ["romanceFantasy"],
-                novelGenreImage: "/icGenre/romance-fantasy",
+                genreName: "drama",
                 keywords: ["빙의"],
-                novelDescription: "소설 속 엑스트라가 된 주인공의 생존기."
+                novelDescription: "소설 속 엑스트라가 된 주인공의 생존기.",
+                novelGenres: []
             ),
 
             TodayDiscoveryNovel(
@@ -89,10 +89,10 @@ struct TestRecommendRepository: RecommendRepository {
                 feedContent: "정치 싸움이 진짜 재밌음.",
                 author: "한민트",
                 isNovelCompleted: false,
-                novelGenres: ["romanceFantasy"],
-                novelGenreImage: "/icGenre/romance-fantasy",
+                genreName: "romanceFantasy",
                 keywords: ["회귀", "정치"],
-                novelDescription: "과거를 되돌린 악녀의 복수와 성장."
+                novelDescription: "과거를 되돌린 악녀의 복수와 성장.",
+                novelGenres: []
             ),
 
             TodayDiscoveryNovel(
@@ -104,10 +104,10 @@ struct TestRecommendRepository: RecommendRepository {
                 feedContent: nil,
                 author: "싱숑",
                 isNovelCompleted: true,
-                novelGenres: ["fantasy"],
-                novelGenreImage: "/icGenre/fantasy",
+                genreName: "fantasy",
                 keywords: [],
-                novelDescription: "소설의 결말을 아는 유일한 독자의 이야기."
+                novelDescription: "소설의 결말을 아는 유일한 독자의 이야기.",
+                novelGenres: []
             ),
 
             TodayDiscoveryNovel(
@@ -119,10 +119,10 @@ struct TestRecommendRepository: RecommendRepository {
                 feedContent: "청명이 입만 열면 웃김ㅋㅋ",
                 author: "비가",
                 isNovelCompleted: false,
-                novelGenres: ["martialArts"],
-                novelGenreImage: "/icGenre/martial-arts",
+                genreName: "wuxia",
                 keywords: ["무협"],
-                novelDescription: "몰락한 화산파를 다시 일으키는 이야기."
+                novelDescription: "몰락한 화산파를 다시 일으키는 이야기.",
+                novelGenres: []
             ),
 
             // 작가명 6자 이상
@@ -138,10 +138,10 @@ struct TestRecommendRepository: RecommendRepository {
                 """,
                 author: "DS백프로덕션",
                 isNovelCompleted: false,
-                novelGenres: ["modernFantasy"],
-                novelGenreImage: "/icGenre/modern-fantasy",
+                genreName: "mystery",
                 keywords: ["아이돌", "시스템"],
-                novelDescription: "살기 위해 아이돌 데뷔를 해야 하는 주인공."
+                novelDescription: "살기 위해 아이돌 데뷔를 해야 하는 주인공.",
+                novelGenres: []
             ),
 
             // 작가명 8자 이상 + feedContent nil
@@ -154,10 +154,10 @@ struct TestRecommendRepository: RecommendRepository {
                 feedContent: nil,
                 author: "김수지로맨스작가",
                 isNovelCompleted: true,
-                novelGenres: ["romanceFantasy"],
-                novelGenreImage: "/icGenre/romance-fantasy",
+                genreName: "BL",
                 keywords: ["순애", "성장"],
-                novelDescription: "말더듬이 귀족 영애와 기사 리프탄의 이야기."
+                novelDescription: "말더듬이 귀족 영애와 기사 리프탄의 이야기.",
+                novelGenres: []
             ),
 
             TodayDiscoveryNovel(
@@ -169,10 +169,10 @@ struct TestRecommendRepository: RecommendRepository {
                 feedContent: "성장형 먼치킨의 정석.",
                 author: "추공",
                 isNovelCompleted: true,
-                novelGenres: ["modernFantasy"],
-                novelGenreImage: "/icGenre/modern-fantasy",
+                genreName: "modernFantasy",
                 keywords: [],
-                novelDescription: "최약체 헌터가 최강으로 성장하는 이야기."
+                novelDescription: "최약체 헌터가 최강으로 성장하는 이야기.",
+                novelGenres: []
             ),
 
             // 아주 긴 작가명
@@ -188,10 +188,10 @@ struct TestRecommendRepository: RecommendRepository {
                 """,
                 author: "리아란판타지스튜디오",
                 isNovelCompleted: true,
-                novelGenres: ["romanceFantasy"],
-                novelGenreImage: "/icGenre/romance-fantasy",
+                genreName: "lightNovel",
                 keywords: ["입양"],
-                novelDescription: "괴물 공작가에 입양된 소녀의 성장 이야기."
+                novelDescription: "괴물 공작가에 입양된 소녀의 성장 이야기.",
+                novelGenres: []
             )
         ]))
     }

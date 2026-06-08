@@ -21,10 +21,11 @@ struct TodayDiscoveryNovel: Decodable {
     let feedContent: String?
     let author: String
     let isNovelCompleted: Bool
-    let novelGenres: [String]
-    let novelGenreImage: String
+    let genreName: String
     let keywords: [String]
     let novelDescription: String
+    // TODO: - 필드 삭제 예정
+    let novelGenres: [String]
 }
 
 // 지금 뜨는 수다글
