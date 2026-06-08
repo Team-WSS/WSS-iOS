@@ -284,10 +284,11 @@ final class NormalSearchViewModel: ViewModelType {
             .withLatestFrom(recentSearchList) { indexPath, list in list[indexPath.row].keyword }
 
         let showRecentSearchView = Observable.combineLatest(
+            searchText.asObservable(),
             recentSearchList.map { !$0.isEmpty },
             normalSearchList.map { $0.isEmpty }
         )
-        .map { $0 && $1 }
+        .map { text, hasRecent, novelsEmpty in text.isEmpty && hasRecent && novelsEmpty }
         .asDriver(onErrorJustReturn: false)
 
         let pushToGenreSearchResult = input.genreSelected
@@ -295,9 +296,12 @@ final class NormalSearchViewModel: ViewModelType {
 
         let pushToDetailSearch = input.genreHeaderDidTap.asObservable()
 
-        let showGenreView = normalSearchList
-            .map { $0.isEmpty }
-            .asDriver(onErrorJustReturn: true)
+        let showGenreView = Observable.combineLatest(
+            searchText.asObservable(),
+            normalSearchList.map { $0.isEmpty }
+        )
+        .map { text, novelsEmpty in text.isEmpty && novelsEmpty }
+        .asDriver(onErrorJustReturn: true)
 
         // 인기 키워드 로직
         input.viewWillAppear
@@ -316,9 +320,12 @@ final class NormalSearchViewModel: ViewModelType {
 
         let pushToDetailSearchKeywordTab = input.popularKeywordHeaderDidTap.asObservable()
 
-        let showPopularKeywordView = normalSearchList
-            .map { $0.isEmpty }
-            .asDriver(onErrorJustReturn: true)
+        let showPopularKeywordView = Observable.combineLatest(
+            searchText.asObservable(),
+            normalSearchList.map { $0.isEmpty }
+        )
+        .map { text, novelsEmpty in text.isEmpty && novelsEmpty }
+        .asDriver(onErrorJustReturn: true)
 
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
