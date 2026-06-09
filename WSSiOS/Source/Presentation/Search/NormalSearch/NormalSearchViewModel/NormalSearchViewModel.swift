@@ -45,6 +45,12 @@ final class NormalSearchViewModel: ViewModelType {
 
     // 인기 키워드
     private let popularKeywordList = BehaviorRelay<[KeywordData]>(value: [])
+
+    // 장르별 / 키워드 검색
+    private let pushToGenreSearchResultRelay = PublishRelay<NovelGenre>()
+    private let pushToDetailSearchRelay = PublishRelay<Void>()
+    private let pushToKeywordSearchResultRelay = PublishRelay<KeywordData>()
+    private let pushToDetailSearchKeywordTabRelay = PublishRelay<Void>()
     
     //MARK: - Inputs
 
@@ -291,10 +297,28 @@ final class NormalSearchViewModel: ViewModelType {
         .map { text, hasRecent, novelsEmpty in text.isEmpty && hasRecent && novelsEmpty }
         .asDriver(onErrorJustReturn: false)
 
-        let pushToGenreSearchResult = input.genreSelected
-            .map { NovelGenre.normalSearchGenres[$0.row] }
+        input.genreSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                if owner.isLogined {
+                    owner.pushToGenreSearchResultRelay.accept(NovelGenre.normalSearchGenres[indexPath.row])
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
 
-        let pushToDetailSearch = input.genreHeaderDidTap.asObservable()
+        input.genreHeaderDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                if owner.isLogined {
+                    owner.pushToDetailSearchRelay.accept(())
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+
+        let pushToGenreSearchResult = pushToGenreSearchResultRelay.asObservable()
+        let pushToDetailSearch = pushToDetailSearchRelay.asObservable()
 
         let showGenreView = Observable.combineLatest(
             searchText.asObservable(),
@@ -315,10 +339,29 @@ final class NormalSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
 
-        let pushToKeywordSearchResult = input.popularKeywordSelected
+        input.popularKeywordSelected
             .withLatestFrom(popularKeywordList) { indexPath, list in list[indexPath.row] }
+            .subscribe(with: self, onNext: { owner, keyword in
+                if owner.isLogined {
+                    owner.pushToKeywordSearchResultRelay.accept(keyword)
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
 
-        let pushToDetailSearchKeywordTab = input.popularKeywordHeaderDidTap.asObservable()
+        input.popularKeywordHeaderDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                if owner.isLogined {
+                    owner.pushToDetailSearchKeywordTabRelay.accept(())
+                } else {
+                    owner.presentToInduceLoginView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+
+        let pushToKeywordSearchResult = pushToKeywordSearchResultRelay.asObservable()
+        let pushToDetailSearchKeywordTab = pushToDetailSearchKeywordTabRelay.asObservable()
 
         let showPopularKeywordView = Observable.combineLatest(
             searchText.asObservable(),
