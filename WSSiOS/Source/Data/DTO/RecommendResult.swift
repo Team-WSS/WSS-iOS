@@ -7,37 +7,43 @@
 
 import Foundation
 
-// 오늘의 인기작
-struct TodayPopularNovels: Codable {
-    var popularNovels: [TodayPopularNovel]
+// 오늘의 발견
+struct TodayDiscoveryNovels: Decodable {
+    var popularNovels: [TodayDiscoveryNovel]
 }
 
-struct TodayPopularNovel: Codable {
-    var novelId: Int
-    var title: String
-    var novelImage: String
-    var avatarImage: String?
-    var nickname: String?
-    var feedContent: String
+struct TodayDiscoveryNovel: Decodable {
+    let novelId: Int
+    let title: String
+    let novelImage: String
+    let avatarImage: String?
+    let nickname: String?
+    let feedContent: String?
+    let author: String
+    let isNovelCompleted: Bool
+    let genreName: String
+    let keywords: [String]
+    let novelDescription: String
+    // TODO: - 필드 삭제 예정
+    let novelGenres: [String]
 }
 
 // 지금 뜨는 수다글
-struct RealtimePopularFeeds: Codable {
+struct RealtimePopularFeeds: Decodable {
     var popularFeeds: [RealtimePopularFeed]
 }
 
-struct RealtimePopularFeed: Codable {
-    var feedId: Int
-    var feedContent: String
-    var feedLikeCount: Int
-    var feedCommentCount: Int
-    var isSpoiler: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case feedId, feedContent, isSpoiler
-        case feedLikeCount = "likeCount"
-        case feedCommentCount = "commentCount"
-    }
+struct RealtimePopularFeed: Decodable {
+    let feedId: Int
+    let feedContent: String
+    let likeCount: Int
+    let commentCount: Int
+    let isSpoiler: Bool
+    let isPublic: Bool
+
+    let novelTitle: String
+    let novelImage: String
+    let novelGenre: String
 }
 
 // 관심글

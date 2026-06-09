@@ -25,14 +25,11 @@ final class HomeRealtimePopularView: UIView {
     private let realtimePopularCollectionViewLayout = UICollectionViewFlowLayout()
     
     private let backgroundView = UIView()
-    private let topDividerView = UIView()
-    private let bottomDividerView = UIView()
+    private let dividerView = UIView()
     
     private let dotStackView = UIStackView()
     private var dotImageViews: [UIImageView] = []
-    
-    private var scrollView = UIScrollView()
-    
+
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -75,18 +72,18 @@ final class HomeRealtimePopularView: UIView {
         realtimePopularCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 0
-            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 414)
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 245)
             realtimePopularCollectionView.setCollectionViewLayout($0, animated: false)
         }
         
         backgroundView.do {
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
+            $0.layer.borderColor = UIColor.wssGray80.cgColor
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 14
         }
         
-        [topDividerView, bottomDividerView].forEach {
-            $0.backgroundColor = .wssGray70
+        dividerView.do {
+            $0.backgroundColor = .wssGray80
         }
         
         dotStackView.do {
@@ -99,8 +96,7 @@ final class HomeRealtimePopularView: UIView {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
         backgroundView.addSubviews(realtimePopularCollectionView,
-                                   topDividerView,
-                                   bottomDividerView)
+                                   dividerView)
         self.addSubviews(titleStackView,
                          backgroundView,
                          dotStackView)
@@ -115,21 +111,15 @@ final class HomeRealtimePopularView: UIView {
         backgroundView.snp.makeConstraints {
             $0.top.equalTo(titleStackView.snp.bottom).offset(14)
             $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.height.equalTo(414)
+            $0.height.equalTo(245)
             
             realtimePopularCollectionView.snp.makeConstraints {
                 $0.top.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(414)
+                $0.height.equalTo(245)
             }
             
-            topDividerView.snp.makeConstraints {
-                $0.top.equalToSuperview().inset(138)
-                $0.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(1)
-            }
-            
-            bottomDividerView.snp.makeConstraints {
-                $0.bottom.equalToSuperview().inset(138)
+            dividerView.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
                 $0.horizontalEdges.equalToSuperview()
                 $0.height.equalTo(1)
             }

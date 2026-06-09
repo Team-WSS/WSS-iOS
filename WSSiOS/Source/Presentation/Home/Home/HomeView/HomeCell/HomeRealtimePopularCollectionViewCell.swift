@@ -16,7 +16,6 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     
     let firstFeedView = HomeRealTimePopularFeedView()
     let secondFeedView = HomeRealTimePopularFeedView()
-    let thirdFeedView = HomeRealTimePopularFeedView()
     
     //MARK: - Properties
     
@@ -40,29 +39,25 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setHierarchy() {
-        self.addSubviews(firstFeedView, secondFeedView, thirdFeedView)
+        self.addSubviews(firstFeedView,
+                         secondFeedView)
     }
     
     private func setLayout() {
         firstFeedView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().offset(16)
+            $0.horizontalEdges.equalToSuperview().inset(28)
         }
         
         secondFeedView.snp.makeConstraints {
-            $0.top.equalTo(firstFeedView.snp.bottom).offset(40)
-            $0.horizontalEdges.equalToSuperview().inset(20)
-        }
-        
-        thirdFeedView.snp.makeConstraints {
-            $0.top.equalTo(secondFeedView.snp.bottom).offset(40)
-            $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(20)
+            $0.top.equalTo(firstFeedView.snp.bottom).offset(32)
+            $0.horizontalEdges.equalToSuperview().inset(28)
+            $0.bottom.equalToSuperview().inset(16)
         }
     }
     
     private func setupTapGesture() {
-        let feedViews = [firstFeedView, secondFeedView, thirdFeedView]
+        let feedViews = [firstFeedView, secondFeedView]
         
         for (index, feedView) in feedViews.enumerated() {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(feedViewTapped(_:)))
@@ -79,7 +74,7 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: [RealtimePopularFeed]) {
-        let feedViews = [firstFeedView, secondFeedView, thirdFeedView]
+        let feedViews = [firstFeedView, secondFeedView]
         
         for (index, feedView) in feedViews.enumerated() {
             if data.indices.contains(index) {

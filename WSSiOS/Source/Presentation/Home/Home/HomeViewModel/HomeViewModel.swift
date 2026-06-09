@@ -24,7 +24,7 @@ final class HomeViewModel: ViewModelType {
     private let pushToNormalSearchViewController = PublishRelay<Void>()
     
     // 오늘의 인기작
-    private let todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
+    private let todayPopularList = BehaviorRelay<[TodayDiscoveryNovel]>(value: [])
     
     // 지금 뜨는 수다글
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
@@ -64,7 +64,7 @@ final class HomeViewModel: ViewModelType {
     struct Output {
         let pushToNormalSearchViewController: Observable<Void>
         
-        var todayPopularList: Observable<[TodayPopularNovel]>
+        var todayPopularList: Observable<[TodayDiscoveryNovel]>
         
         var realtimePopularList: Observable<[RealtimePopularFeed]>
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
@@ -104,32 +104,30 @@ extension HomeViewModel {
             .flatMapLatest {
                 let todayPopularNovelsObservable = self.getTodayPopularNovels()
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
-                let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
                 let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
                 
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
-                                      interestFeedsObservable,
                                       tasteRecommendNovelsObservable,
                                       isNotificationUnreadObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let todayPopularNovels = data.0
                 let realtimeFeeds = data.1
-                let interestFeeds = data.2
-                let tasteRecommendNovels = data.3
-                let isNotificationUnread = data.4
+                let tasteRecommendNovels = data.2
+                let isNotificationUnread = data.3
                 
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
+                
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
-                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
+                let limitedFeeds = Array(realtimeFeeds.popularFeeds.prefix(6))
+                let groupedData = stride(from: 0, to: limitedFeeds.count, by: 2)
                     .map { index in
-                        Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
+                        Array(limitedFeeds[index..<min(index + 2, limitedFeeds.count)])
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
-                let message = InterestMessage(rawValue: interestFeeds.message)
-                
+
                 if owner.isLogined {
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
@@ -256,7 +254,7 @@ extension HomeViewModel {
     }
     
     // 오늘의 인기작 조회
-    func getTodayPopularNovels() -> Observable<TodayPopularNovels> {
+    func getTodayPopularNovels() -> Observable<TodayDiscoveryNovels> {
         return recommendRepository.getTodayPopularNovels()
     }
     
@@ -265,7 +263,7 @@ extension HomeViewModel {
         return recommendRepository.getRealtimePopularFeeds()
     }
     
-    // 관심글 조회
+    // 관심글 조회 - Deprecated
     func getInterestFeeds() -> Observable<InterestFeeds> {
         return recommendRepository.getInterestFeeds()
     }
