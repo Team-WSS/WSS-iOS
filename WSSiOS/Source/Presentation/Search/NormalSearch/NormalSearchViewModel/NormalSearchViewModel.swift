@@ -329,7 +329,6 @@ final class NormalSearchViewModel: ViewModelType {
 
         // 인기 키워드 로직
         input.viewWillAppear
-            .filter { self.isLogined }
             .flatMapLatest { _ in
                 self.keywordRepository.getPopularKeywords()
                     .catchAndReturn([])

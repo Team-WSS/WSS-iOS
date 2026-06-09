@@ -50,12 +50,12 @@ final class DefaultKeywordService: NSObject, Networking, KeywordService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Keyword.popularKeyword,
                                               queryItems: queryItems,
-                                              headers: APIConstants.accessTokenHeader,
+                                              headers: APIConstants.noTokenHeader,
                                               body: nil)
 
             NetworkLogger.log(request: request)
 
-            return tokenCheckURLSession.rx.data(request: request)
+            return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: PopularKeywords.self).keywords }
                 .asSingle()
 
