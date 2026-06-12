@@ -200,6 +200,7 @@ enum URLs {
     
     enum Keyword {
         static let searchKeyword = "/keywords"
+        static let popularKeyword = "/keywords/popular"
     }
     
     enum MyLibrary {

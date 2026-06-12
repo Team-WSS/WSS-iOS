@@ -179,11 +179,13 @@ extension DetailSearchResultViewModel {
     enum EntryType {
         case fullOption
         case genreOnly
+        case keywordOnly
 
         var placeholder: String {
             switch self {
             case .fullOption: return StringLiterals.DetailSearch.applyOption
             case .genreOnly: return StringLiterals.DetailSearch.applyGenre
+            case .keywordOnly: return StringLiterals.DetailSearch.applyKeyword
             }
         }
     }

@@ -20,7 +20,7 @@ final class DetailSearchViewModel: ViewModelType {
 
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
-    let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
+    let selectedTab: BehaviorRelay<DetailSearchTab>
     let pushToResultViewController = PublishRelay<SearchFilterQuery>()
     
     // 정보
@@ -105,8 +105,10 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(keywordRepository: KeywordRepository) {
+    init(keywordRepository: KeywordRepository,
+         initialTab: DetailSearchTab = .info) {
         self.keywordRepository = keywordRepository
+        self.selectedTab = BehaviorRelay(value: initialTab)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
