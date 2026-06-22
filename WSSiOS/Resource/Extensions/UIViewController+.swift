@@ -393,13 +393,22 @@ extension UIViewController {
         return viewController.filterOption.asObservable()
     }
     
-    func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption) -> Observable<LibraryFilterOption> {
+    func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption,
+                                            initialTab: LibraryFilterTab = .readStatus) -> Observable<LibraryFilterOption> {
         let viewController = LibraryFilterViewController(
-            viewModel: LibraryFilterViewModel(libraryFilterOption: selectedFilterOption)
+            viewModel: LibraryFilterViewModel(libraryFilterOption: selectedFilterOption,
+                                              initialTab: initialTab)
         )
         self.presentModalViewController(viewController)
 
         return viewController.filterOption.asObservable()
+    }
+
+    func presentLibrarySortBottomSheet(_ currentSort: LibrarySortType) -> Observable<LibrarySortType> {
+        let viewController = LibrarySortBottomSheetViewController(currentSort: currentSort)
+        self.presentModalViewController(viewController)
+
+        return viewController.selectedSort.asObservable()
     }
     
     func pushToUserPageFeedDetailViewController(userId: Int, userData: UserProfileEntity) {

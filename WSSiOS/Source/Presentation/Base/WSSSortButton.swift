@@ -72,7 +72,7 @@ final class WSSSortButton: UIButton {
     
     //MARK: - Custom Method
     
-    func updateSortButton(sortType: SortType) {
+    func updateSortButton(sortType: LibrarySortType) {
         sortButtonLabel.applyWSSFont(.body3, with: sortType.text)
     }
 }

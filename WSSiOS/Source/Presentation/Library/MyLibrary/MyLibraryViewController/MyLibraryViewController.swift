@@ -191,11 +191,19 @@ final class MyLibraryViewController: UIViewController {
             rootView.libraryCollectionView.rx.itemSelected.asObservable(),
             rootView.libraryTableView.rx.itemSelected.asObservable()
         )
-        
+
+        let sortTypeSelected = rootView.headerView.sortButton.rx.tap
+            .withLatestFrom(viewModel.sortType)
+            .observe(on: MainScheduler.instance)
+            .flatMapLatest { [weak self] current -> Observable<LibrarySortType> in
+                guard let self else { return .empty() }
+                return self.presentLibrarySortBottomSheet(current)
+            }
+
         return MyLibraryViewModel.Input(
             viewWillAppear: viewWillAppear.asObservable(),
             interestFilterButtonDidTap: rootView.headerView.filterHeaderView.interestFilterButton.rx.tap,
-            sortButtonDidTap: rootView.headerView.sortButton.rx.tap,
+            sortTypeSelected: sortTypeSelected,
             layoutToggleButtonDidTap: rootView.headerView.layoutToggleButton.rx.tap,
             collectionViewDidReachBottom: collectionViewDidReachBottom,
             tableViewDidReachBottom: tableViewDidReachBottom,
@@ -205,15 +213,20 @@ final class MyLibraryViewController: UIViewController {
     }
     
     private func bindAction() {
+        let filterHeaderView = rootView.headerView.filterHeaderView
         Observable.merge(
-            rootView.headerView.filterHeaderView.readStatusFilterButton.rx.tap.asObservable(),
-            rootView.headerView.filterHeaderView.starRatingFilterButton.rx.tap.asObservable(),
-            rootView.headerView.filterHeaderView.attractivePointFilterButton.rx.tap.asObservable()
+            filterHeaderView.readStatusFilterButton.rx.tap.map { LibraryFilterTab.readStatus },
+            filterHeaderView.genreFilterButton.rx.tap.map { LibraryFilterTab.genre },
+            filterHeaderView.publicationStatusFilterButton.rx.tap.map { LibraryFilterTab.publicationStatus },
+            filterHeaderView.starRatingFilterButton.rx.tap.map { LibraryFilterTab.rating },
+            filterHeaderView.attractivePointFilterButton.rx.tap.map { LibraryFilterTab.attractivePoint },
+            filterHeaderView.keywordFilterButton.rx.tap.map { LibraryFilterTab.keyword }
         )
-        .withLatestFrom(viewModel.filterOption)
+        .withLatestFrom(viewModel.filterOption) { tab, option in (tab, option) }
         .observe(on: MainScheduler.instance)
-        .flatMap { filterOption in
-            self.presentLibraryFilterViewController(filterOption)
+        .flatMap { [weak self] tab, option -> Observable<LibraryFilterOption> in
+            guard let self else { return .empty() }
+            return self.presentLibraryFilterViewController(option, initialTab: tab)
         }
         .distinctUntilChanged()
         .bind(to: viewModel.filterOption)

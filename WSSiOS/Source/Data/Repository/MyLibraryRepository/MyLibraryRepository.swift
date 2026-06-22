@@ -13,7 +13,7 @@ protocol MyLibraryRepository {
     func getNovelList(filterOption: LibraryFilterOption,
                       lastUserNovelId: Int,
                       size: Int,
-                      sortType: SortType) -> Single<MyLibraryEntity>
+                      sortType: LibrarySortType) -> Single<MyLibraryEntity>
 }
 
 struct DefaultMyLibraryRepository: MyLibraryRepository {
@@ -27,12 +27,15 @@ struct DefaultMyLibraryRepository: MyLibraryRepository {
     func getNovelList(filterOption: LibraryFilterOption,
                       lastUserNovelId: Int,
                       size: Int,
-                      sortType: SortType) -> Single<MyLibraryEntity> {
+                      sortType: LibrarySortType) -> Single<MyLibraryEntity> {
         let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        // TODO: v2(/novels/v2) 연결 시 sortType.queryValue 사용. v1은 RECENT/OLD만 지원하므로
+        //       새 정렬 4종(제목순/날짜순/별점순)은 그때까지 최신순(RECENT)으로 떨어진다.
+        let sortCriteria = sortType == .createdAsc ? "OLD" : "RECENT"
         var queryItem = MyLibraryNovelListQuery(
             lastUserNovelId: lastUserNovelId,
             size: size,
-            sortType: sortType.queryText)
+            sortType: sortCriteria)
         queryItem.isInterest = filterOption.interestedOption ? true : nil
         queryItem.novelRating = filterOption.starRatingOption.map { $0.toFloat }
         if !filterOption.readStatusOptions.isEmpty {

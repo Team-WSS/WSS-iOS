@@ -10,12 +10,20 @@ extension StringLiterals {
         enum FilterButton {
             static let interest = "관심"
             static let readStatus = "읽기상태"
+            static let genre = "장르"
+            static let publicationStatus = "연재상태"
             static let starRating = "별점"
+            static let ratingEmpty = "별점 없음"
             static let attractivePoint = "매력포인트"
+            static let keyword = "키워드"
         }
         
         static func novelCountText(_ count: Int) -> String {
             return "\(count)개"
+        }
+
+        enum Sort {
+            static let title = "정렬"
         }
         
         enum Filter {

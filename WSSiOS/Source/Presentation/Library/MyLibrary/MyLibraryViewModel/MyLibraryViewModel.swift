@@ -19,7 +19,7 @@ final class MyLibraryViewModel: ViewModelType {
     
     //Rx
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
-    private let sortType = BehaviorRelay<SortType>(value: .newest)
+    let sortType = BehaviorRelay<LibrarySortType>(value: .createdDesc)
     private let layoutType = BehaviorRelay<LayoutType>(value: .grid)
     private let novelCount = BehaviorRelay<Int>(value: 0)
     
@@ -50,7 +50,7 @@ final class MyLibraryViewModel: ViewModelType {
     struct Input {
         let viewWillAppear: Observable<Void>
         let interestFilterButtonDidTap: ControlEvent<Void>
-        let sortButtonDidTap: ControlEvent<Void>
+        let sortTypeSelected: Observable<LibrarySortType>
         let layoutToggleButtonDidTap: ControlEvent<Void>
         let collectionViewDidReachBottom: Observable<Void>
         let tableViewDidReachBottom: Observable<Void>
@@ -60,7 +60,7 @@ final class MyLibraryViewModel: ViewModelType {
     
     struct Output {
         let selectedFilterOption: Driver<LibraryFilterOption>
-        let selectedSortType: Driver<SortType>
+        let selectedSortType: Driver<LibrarySortType>
         let selectedLayoutType: Driver<LayoutType>
         let novelCount: Driver<Int>
         let libraryNovelList: Observable<[MyLibraryNovel]>
@@ -113,9 +113,7 @@ final class MyLibraryViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.sortButtonDidTap
-            .withLatestFrom(sortType)
-            .map { $0.toggle() }
+        input.sortTypeSelected
             .bind(to: sortType)
             .disposed(by: disposeBag)
         
@@ -232,7 +230,7 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, size: Int = 12, sortType: SortType) -> Observable<MyLibraryEntity> {
+    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, size: Int = 12, sortType: LibrarySortType) -> Observable<MyLibraryEntity> {
         return self.myLibraryRepository.getNovelList(
             filterOption: filterOption,
             lastUserNovelId: lastUserNovelId,
@@ -284,7 +282,7 @@ final class MyLibraryViewModel: ViewModelType {
         }
     }
     
-    private func saveSortType(_ sortType: SortType) {
+    private func saveSortType(_ sortType: LibrarySortType) {
         UserDefaults.standard.set(sortType.text,
                                   forKey: StringLiterals.UserDefault.librarySortOption)
     }
@@ -299,12 +297,12 @@ final class MyLibraryViewModel: ViewModelType {
         }
     }
     
-    private func loadSortType() -> SortType {
+    private func loadSortType() -> LibrarySortType {
         if let savedData = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.librarySortOption),
-           let sortType = SortType.fromText(savedData) {
+           let sortType = LibrarySortType.fromText(savedData) {
             return sortType
         } else {
-            return SortType.newest
+            return LibrarySortType.createdDesc
         }
     }
 }

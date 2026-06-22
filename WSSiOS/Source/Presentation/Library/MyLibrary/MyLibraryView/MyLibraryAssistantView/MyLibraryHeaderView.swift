@@ -46,7 +46,7 @@ final class MyLibraryHeaderView: UIView {
         }
         
         sortButton.do {
-            $0.updateSortButton(sortType: .newest)
+            $0.updateSortButton(sortType: .createdDesc)
         }
         
         layoutToggleButton.do {
