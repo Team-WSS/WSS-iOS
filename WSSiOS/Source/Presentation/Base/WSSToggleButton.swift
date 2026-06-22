@@ -24,10 +24,10 @@ final class WSSToggleButton: UIButton {
     private var animationDuration: TimeInterval = 0.20
     
     // 각 View의 Size
-    private var toggleSize: CGSize = CGSize(width: 32, height: 32)
-    private var barViewSize: CGSize = CGSize(width: 30.9, height: 16.55)
-    private var circleViewSize: CGSize = CGSize(width: 11.03, height: 11.03)
-    private var onCircleInset: CGFloat = 2.76
+    private var toggleSize: CGSize = CGSize(width: 42, height: 42)
+    private var barViewSize: CGSize = CGSize(width: 40, height: 22)
+    private var circleViewSize: CGSize = CGSize(width: 18, height: 18)
+    private var onCircleInset: CGFloat = 2
     private var offCircleInset: CGFloat {
         self.barViewSize.width - self.circleViewSize.width - onCircleInset
     }
