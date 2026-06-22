@@ -7,170 +7,161 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
-import SnapKit
-import Then
+import RxCocoa
 
 final class LibraryFilterViewController: UIViewController {
-    
+
     //MARK: - Properties
-    
+
+    private let libraryFilterViewModel: LibraryFilterViewModel
     private let disposeBag = DisposeBag()
-    private let initialFilterOption: LibraryFilterOption
+
     let filterOption = PublishSubject<LibraryFilterOption>()
-    private let readStatusOptions = BehaviorRelay<[ReadStatus]>(value: [])
-    private let attractivePointOptions = BehaviorRelay<[AttractivePoint]>(value: [])
-    private let ratingOption = BehaviorRelay<NovelRatingStatus?>(value: nil)
-    
+
     //MARK: - Components
-    
+
     private let rootView = LibraryFilterView()
-    
+
     //MARK: - Life Cycle
-    
-    init(libraryFilterOption: LibraryFilterOption) {
-        self.initialFilterOption = libraryFilterOption
-        readStatusOptions.accept(libraryFilterOption.readStatusOptions)
-        attractivePointOptions.accept(libraryFilterOption.attractivePointOptions)
-        ratingOption.accept(libraryFilterOption.starRatingOption)
-        
+
+    init(viewModel: LibraryFilterViewModel) {
+        self.libraryFilterViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         view = rootView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        bindInput()
-        bindOutput()
-        bindAction()
+
+        bindViewModel()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
+
     //MARK: - Bind
-    
-    private func bindInput() {
-        Observable.from(rootView.readStatusView.readStatusOptionButtons)
-            .flatMap { button in
-                button.rx.tap.map { button.readStatus }
-            }
-            .withLatestFrom(readStatusOptions) { ($0, $1) }
-            .map { (tapped, currentOptions) in
-                var updated = currentOptions
-                
-                if let index = currentOptions.firstIndex(of: tapped) {
-                    updated.remove(at: index)
-                } else {
-                    updated.append(tapped)
+
+    private func bindViewModel() {
+        let input = LibraryFilterViewModel.Input(
+            tabTapped: Observable.merge(
+                rootView.tabBarView.tabButtons.map { button in
+                    button.rx.tap.map { button.tab }
                 }
-                return updated
-            }
-            .bind(to: readStatusOptions)
-            .disposed(by: disposeBag)
-        
-        Observable.from(rootView.attractivePointView.attractivePointOptionButtons)
-            .flatMap { button in
-                button.rx.tap.map { button.attractivePoint }
-            }
-            .withLatestFrom(attractivePointOptions) { ($0, $1) }
-            .map { (tapped, currentOptions) in
-                var updated = currentOptions
-                
-                if let index = currentOptions.firstIndex(of: tapped) {
-                    updated.remove(at: index)
-                } else {
-                    updated.append(tapped)
+            ),
+            readStatusButtonTapped: Observable.merge(
+                rootView.readStatusView.readStatusOptionButtons.map { button in
+                    button.rx.tap.map { button.readStatus }
                 }
-                return updated
-            }
-            .bind(to: attractivePointOptions)
-            .disposed(by: disposeBag)
-        
-        Observable.from(rootView.ratingView.novelRatingStatusButtons)
-            .flatMap { button in
-                button.rx.tap.map { button.status }
-            }
-            .withLatestFrom(ratingOption) { tappedButton, currentOption in
-                if tappedButton == currentOption {
-                    return nil
-                } else {
-                    return tappedButton
+            ),
+            attractivePointButtonTapped: Observable.merge(
+                rootView.attractivePointView.attractivePointOptionButtons.map { button in
+                    button.rx.tap.map { button.attractivePoint }
                 }
-            }
-            .bind(to: ratingOption)
-            .disposed(by: disposeBag)
-        
-        rootView.bottomActionView.resetButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.readStatusOptions.accept([])
-                owner.attractivePointOptions.accept([])
-                owner.ratingOption.accept(nil)
+            ),
+            publicationStatusButtonTapped: Observable.merge(
+                rootView.publicationStatusView.statusButtons.map { button in
+                    button.rx.tap.map { button.status }
+                }
+            ),
+            genreSelected: rootView.genreView.collectionView.rx.itemSelected.asObservable(),
+            keywordSelected: rootView.keywordView.collectionView.rx.itemSelected.asObservable(),
+            ratingChanged: rootView.ratingView.ratingChanged,
+            notRatedTapped: rootView.ratingView.notRatedTapped,
+            chipSelected: rootView.selectedChipsView.collectionView.rx.itemSelected.asObservable(),
+            resetButtonDidTap: rootView.bottomActionView.resetButton.rx.tap,
+            dismissButtonDidTap: rootView.dismissButton.rx.tap,
+            searchButtonDidTap: rootView.bottomActionView.searchButton.rx.tap
+        )
+
+        let output = libraryFilterViewModel.transform(from: input, disposeBag: disposeBag)
+
+        output.selectedTab
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, selectedTab in
+                owner.rootView.showTab(selectedTab)
+                owner.rootView.tabBarView.updateSelectedTab(selectedTab)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindOutput() {
-        readStatusOptions
-            .asDriver()
+
+        output.readStatusOptions
+            .asDriver(onErrorDriveWith: .empty())
             .drive(with: self, onNext: { owner, selectedOptions in
                 owner.rootView.readStatusView.updateButtons(selectedOptions: selectedOptions)
             })
             .disposed(by: disposeBag)
-        
-        attractivePointOptions
-            .asDriver()
+
+        output.genreOptions
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, selectedGenres in
+                owner.rootView.genreView.updateSelection(selectedGenres)
+            })
+            .disposed(by: disposeBag)
+
+        output.publicationStatusOptions
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, selectedOptions in
+                owner.rootView.publicationStatusView.updateSelection(selectedOptions)
+            })
+            .disposed(by: disposeBag)
+
+        output.attractivePointOptions
+            .asDriver(onErrorDriveWith: .empty())
             .drive(with: self, onNext: { owner, selectedOptions in
                 owner.rootView.attractivePointView.updateButtons(selectedOptions: selectedOptions)
             })
             .disposed(by: disposeBag)
-        
-        ratingOption
-            .asDriver()
-            .drive(with: self, onNext: { owner, selectedOption in
-                owner.rootView.ratingView.updateButtons(selectedOption: selectedOption)
+
+        output.keywordListData
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, keywords in
+                owner.rootView.keywordView.setKeywords(keywords)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindAction() {
-        rootView.dismissButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                owner.filterOption.onNext(owner.initialFilterOption)
-                owner.filterOption.onCompleted()
-                owner.dismissModalViewController()
+
+        output.keywordSelection
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, selectedKeywords in
+                owner.rootView.keywordView.updateSelection(selectedKeywords)
             })
             .disposed(by: disposeBag)
-        
-        let resultFilterOption = Observable.combineLatest(
-            readStatusOptions,
-            attractivePointOptions,
-            ratingOption
-        ) { readStatusOptions, attractivePointOptions, ratingOption in
-            LibraryFilterOption(interestedOption: self.initialFilterOption.interestedOption,
-                                readStatusOptions: readStatusOptions,
-                                attractivePointOptions: attractivePointOptions,
-                                starRatingOption: ratingOption)
-        }
-        
-        rootView.bottomActionView.searchButton.rx.tap
-            .withLatestFrom(resultFilterOption)
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, filterOption in
-                owner.filterOption.onNext(filterOption)
-                print(filterOption)
+
+        output.ratingState
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, ratingState in
+                let (minimumRating, maximumRating, isNotStarRated) = ratingState
+                owner.rootView.ratingView.setNotRated(isNotStarRated)
+
+                if !isNotStarRated {
+                    owner.rootView.ratingView.setValues(lower: minimumRating,
+                                                        upper: maximumRating)
+                }
+            })
+            .disposed(by: disposeBag)
+
+        output.selectedChips
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, chips in
+                owner.rootView.updateChips(chips)
+            })
+            .disposed(by: disposeBag)
+
+        output.activeTabs
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, activeTabs in
+                owner.rootView.tabBarView.updateDots(activeTabs)
+            })
+            .disposed(by: disposeBag)
+
+        output.dismissWithResult
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(with: self, onNext: { owner, result in
+                owner.filterOption.onNext(result)
                 owner.filterOption.onCompleted()
                 owner.dismissModalViewController()
             })

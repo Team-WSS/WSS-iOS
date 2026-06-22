@@ -13,8 +13,7 @@ import Then
 final class LibraryFilterReadStatusView: UIView {
     
     //MARK: - UI Components
-    
-    private let titleLabel = UILabel()
+
     private let readStatusOptionStackView = UIStackView()
     let readStatusOptionButtons = ReadStatus.allCases.map {
         LibraryFilterReadStatusOptionButton($0)
@@ -37,11 +36,6 @@ final class LibraryFilterReadStatusView: UIView {
     }
     
     private func setUI() {
-        titleLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.MyLibrary.Filter.readStatus)
-            $0.textColor = .wssBlack
-        }
-        
         readStatusOptionStackView.do {
             $0.axis = .horizontal
             $0.spacing = 0
@@ -55,8 +49,7 @@ final class LibraryFilterReadStatusView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         readStatusOptionStackView)
+        self.addSubviews(readStatusOptionStackView)
         dividerViews.forEach {
             self.addSubview($0)
         }
@@ -66,13 +59,8 @@ final class LibraryFilterReadStatusView: UIView {
     }
     
     private func setLayout() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
         readStatusOptionStackView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(54)
             $0.bottom.equalToSuperview()

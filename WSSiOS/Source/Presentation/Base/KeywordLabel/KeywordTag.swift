@@ -50,7 +50,7 @@ final class KeywordTag: UIView {
         
         contentStackView.do {
             $0.axis = .horizontal
-            $0.spacing = 6
+            $0.spacing = 5
             $0.alignment = .center
             
             eraseButton.do {
@@ -76,12 +76,12 @@ final class KeywordTag: UIView {
         }
         
         contentStackView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(13)
+            $0.horizontalEdges.equalToSuperview().inset(9)
             $0.centerY.equalToSuperview()
         }
         
         eraseButton.snp.makeConstraints {
-            $0.size.equalTo(16)
+            $0.size.equalTo(15)
         }
     }
     

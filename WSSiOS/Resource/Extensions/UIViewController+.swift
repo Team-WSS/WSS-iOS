@@ -394,9 +394,11 @@ extension UIViewController {
     }
     
     func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption) -> Observable<LibraryFilterOption> {
-        let viewController = LibraryFilterViewController(libraryFilterOption: selectedFilterOption)
+        let viewController = LibraryFilterViewController(
+            viewModel: LibraryFilterViewModel(libraryFilterOption: selectedFilterOption)
+        )
         self.presentModalViewController(viewController)
-        
+
         return viewController.filterOption.asObservable()
     }
     

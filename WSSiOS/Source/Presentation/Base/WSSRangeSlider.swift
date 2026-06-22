@@ -19,6 +19,8 @@ final class WSSRangeSlider: UIControl {
 
     var step: CGFloat = 0.5
 
+    private(set) var sliderEnabled = true
+
     private let thumbSize: CGFloat = 16
     private let trackHeight: CGFloat = 4
 
@@ -150,6 +152,8 @@ final class WSSRangeSlider: UIControl {
     //MARK: - Touch Handling
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        guard sliderEnabled else { return false }
+
         let location = touch.location(in: self)
 
         let lowerDistance = abs(location.x - lowerThumbView.center.x)
@@ -204,5 +208,21 @@ final class WSSRangeSlider: UIControl {
     func setValues(lower: CGFloat, upper: CGFloat) {
         lowerValue = max(minimumValue, min(lower, maximumValue))
         upperValue = max(minimumValue, min(upper, maximumValue))
+    }
+
+    /// 슬라이더 활성/비활성 상태 전환. 비활성 시 트랙/레인지/틱/썸을 회색 처리하고 터치를 무시한다.
+    func setEnabled(_ enabled: Bool) {
+        sliderEnabled = enabled
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
+        trackLayer.backgroundColor = (enabled ? UIColor.wssPrimary50 : UIColor.wssGray70).cgColor
+        rangeLayer.backgroundColor = (enabled ? UIColor.wssPrimary100 : UIColor.wssGray200).cgColor
+        tickLayers.forEach {
+            $0.backgroundColor = (enabled ? UIColor.wssPrimary100 : UIColor.wssGray100).cgColor
+        }
+
+        CATransaction.commit()
     }
 }

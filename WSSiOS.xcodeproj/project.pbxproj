@@ -34,9 +34,19 @@
 		B9C8AC4D2DDF646800F2076A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AGENTS.md,
+				CLAUDE.md,
 				Debug.xcconfig,
 				Info.plist,
+				Network/AGENTS.md,
+				Network/CLAUDE.md,
 				Release.xcconfig,
+				Resource/AGENTS.md,
+				Resource/CLAUDE.md,
+				Source/Data/AGENTS.md,
+				Source/Data/CLAUDE.md,
+				Source/Presentation/AGENTS.md,
+				Source/Presentation/CLAUDE.md,
 			);
 			target = 2CD229172B42E685005400BE /* WSSiOS */;
 		};

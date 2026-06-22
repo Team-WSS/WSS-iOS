@@ -23,6 +23,26 @@ extension StringLiterals {
             static let readStatus = "읽기 상태"
             static let attractivePoint = "매력포인트"
             static let rating = "별점"
+
+            // 탭 타이틀
+            static let tabReadStatus = "읽기상태"
+            static let tabGenre = "장르"
+            static let tabPublicationStatus = "연재 상태"
+            static let tabRating = "별점"
+            static let tabAttractivePoint = "매력포인트"
+            static let tabKeyword = "키워드"
+
+            // 별점 탭
+            static let notRatedOnly = "별점 등록 안 된 작품만 보기"
+
+            // 키워드 탭
+            static func registeredKeywordCount(_ count: Int) -> String {
+                if count == 0 {
+                    return "등록된 키워드가 없습니다"
+                } else {
+                    return "등록한 키워드 \(count)개"
+                }
+            }
         }
         
         enum Empty {
