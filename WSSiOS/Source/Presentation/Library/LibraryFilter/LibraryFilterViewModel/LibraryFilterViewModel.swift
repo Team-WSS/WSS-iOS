@@ -14,6 +14,7 @@ final class LibraryFilterViewModel: ViewModelType {
 
     //MARK: - Properties
 
+    private let repository: MyLibraryRepository
     private let initialFilterOption: LibraryFilterOption
 
     private let selectedTab: BehaviorRelay<LibraryFilterTab>
@@ -29,13 +30,7 @@ final class LibraryFilterViewModel: ViewModelType {
     /// 선택한 순서대로 칩을 노출하기 위한 선택 순서 추적 (탭 순서와 무관)
     private let chipOrder: BehaviorRelay<[LibraryFilterChip.Category]>
 
-    // TODO: 서버 키워드 칩 목록 API 연동 후 교체
-    private let keywordListData = BehaviorRelay<[KeywordData]>(
-        value: ["웹툰화", "드라마화", "차원이동", "회귀", "빙의", "환생", "정통", "신화", "삼국지", "성장", "모험", "게임", "헌터/레이드", "성좌", "던전", "좀비", "히어로/빌런", "TS", "상태창/시스템", "탑등반", "신/종교", "초능력", "마법/정령"]
-            .enumerated()
-            .map { KeywordData(keywordId: $0.offset,
-                               keywordName: $0.element) }
-    )
+    private let keywordListData = BehaviorRelay<[KeywordData]>(value: [])
 
     // Output
 
@@ -46,7 +41,9 @@ final class LibraryFilterViewModel: ViewModelType {
     //MARK: - Life Cycle
 
     init(libraryFilterOption: LibraryFilterOption,
-         initialTab: LibraryFilterTab = .readStatus) {
+         initialTab: LibraryFilterTab = .readStatus,
+         repository: MyLibraryRepository) {
+        self.repository = repository
         self.initialFilterOption = libraryFilterOption
         self.selectedTab = BehaviorRelay(value: initialTab)
 
@@ -63,6 +60,7 @@ final class LibraryFilterViewModel: ViewModelType {
     }
 
     struct Input {
+        let viewWillAppear: Observable<Void>
         let tabTapped: Observable<LibraryFilterTab>
         let readStatusButtonTapped: Observable<ReadStatus>
         let attractivePointButtonTapped: Observable<AttractivePoint>
@@ -92,6 +90,16 @@ final class LibraryFilterViewModel: ViewModelType {
     }
 
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewWillAppear
+            .flatMapLatest { [weak self] _ -> Observable<[KeywordData]> in
+                guard let self else { return .just([]) }
+                return self.repository.getLibraryKeywords()
+                    .asObservable()
+                    .catchAndReturn([])
+            }
+            .bind(to: keywordListData)
+            .disposed(by: disposeBag)
+
         input.tabTapped
             .bind(to: selectedTab)
             .disposed(by: disposeBag)

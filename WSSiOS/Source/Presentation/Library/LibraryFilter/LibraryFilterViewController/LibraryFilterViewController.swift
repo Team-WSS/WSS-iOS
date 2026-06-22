@@ -17,6 +17,8 @@ final class LibraryFilterViewController: UIViewController {
     private let libraryFilterViewModel: LibraryFilterViewModel
     private let disposeBag = DisposeBag()
 
+    private let viewWillAppearRelay = PublishRelay<Void>()
+
     let filterOption = PublishSubject<LibraryFilterOption>()
 
     //MARK: - Components
@@ -45,10 +47,17 @@ final class LibraryFilterViewController: UIViewController {
         bindViewModel()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewWillAppearRelay.accept(())
+    }
+
     //MARK: - Bind
 
     private func bindViewModel() {
         let input = LibraryFilterViewModel.Input(
+            viewWillAppear: viewWillAppearRelay.asObservable(),
             tabTapped: Observable.merge(
                 rootView.tabBarView.tabButtons.map { button in
                     button.rx.tap.map { button.tab }

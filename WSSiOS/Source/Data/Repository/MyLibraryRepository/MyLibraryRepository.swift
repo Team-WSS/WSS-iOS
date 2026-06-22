@@ -14,6 +14,7 @@ protocol MyLibraryRepository {
                       cursor: String?,
                       size: Int,
                       sortType: LibrarySortType) -> Single<MyLibraryEntity>
+    func getLibraryKeywords() -> Single<[KeywordData]>
 }
 
 struct DefaultMyLibraryRepository: MyLibraryRepository {
@@ -61,5 +62,10 @@ struct DefaultMyLibraryRepository: MyLibraryRepository {
         }
 
         return myLibraryService.getNovelList(userId: userId, queryItem: queryItem).map { $0.toEntity() }
+    }
+
+    func getLibraryKeywords() -> Single<[KeywordData]> {
+        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        return myLibraryService.getLibraryKeywords(userId: userId).map { $0.keywords }
     }
 }

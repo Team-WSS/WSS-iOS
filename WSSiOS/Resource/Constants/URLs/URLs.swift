@@ -208,5 +208,8 @@ enum URLs {
         static func getMyLibrarList(userId: Int) -> String {
             return "\(myLibraryBasePath)/\(userId)/novels/v2"
         }
+        static func getLibraryKeywords(userId: Int) -> String {
+            return "\(myLibraryBasePath)/\(userId)/novels/keywords"
+        }
     }
 }

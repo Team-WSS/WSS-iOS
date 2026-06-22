@@ -394,10 +394,12 @@ extension UIViewController {
     }
     
     func presentLibraryFilterViewController(_ selectedFilterOption: LibraryFilterOption,
-                                            initialTab: LibraryFilterTab = .readStatus) -> Observable<LibraryFilterOption> {
+                                            initialTab: LibraryFilterTab = .readStatus,
+                                            repository: MyLibraryRepository) -> Observable<LibraryFilterOption> {
         let viewController = LibraryFilterViewController(
             viewModel: LibraryFilterViewModel(libraryFilterOption: selectedFilterOption,
-                                              initialTab: initialTab)
+                                              initialTab: initialTab,
+                                              repository: repository)
         )
         self.presentModalViewController(viewController)
 

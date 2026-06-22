@@ -226,7 +226,9 @@ final class MyLibraryViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .flatMap { [weak self] tab, option -> Observable<LibraryFilterOption> in
             guard let self else { return .empty() }
-            return self.presentLibraryFilterViewController(option, initialTab: tab)
+            return self.presentLibraryFilterViewController(option,
+                                                           initialTab: tab,
+                                                           repository: self.viewModel.myLibraryRepository)
         }
         .distinctUntilChanged()
         .bind(to: viewModel.filterOption)
