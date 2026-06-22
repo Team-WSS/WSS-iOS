@@ -41,7 +41,7 @@ final class LibraryFilterSelectedChipsView: UIView {
         collectionView.do {
             guard let layout = $0.collectionViewLayout as? UICollectionViewFlowLayout else { return }
             layout.scrollDirection = .horizontal
-            layout.minimumInteritemSpacing = 6
+            layout.minimumInteritemSpacing = 4
             layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             
             $0.backgroundColor = .clear
@@ -121,7 +121,7 @@ extension LibraryFilterSelectedChipsView: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = chips[indexPath.item].title
-        let textWidth = (text as NSString).size(withAttributes: [.font: WSSFont.body2.font]).width
-        return CGSize(width: textWidth + 38, height: 35)
+        let textWidth = (text as NSString).size(withAttributes: [.font: WSSFont.body5.font]).width
+        return CGSize(width: textWidth + 38, height: 32)
     }
 }

@@ -16,7 +16,7 @@ final class KeywordTag: UIView {
     
     //MARK: - Properties
     
-    private var labelHeight: CGFloat = 35
+    private var labelHeight: CGFloat = 32
     
     //MARK: - Components
     
@@ -89,7 +89,7 @@ final class KeywordTag: UIView {
     
     func setText(_ text: String) {
         keywordLabel.do {
-            $0.applyWSSFont(.body2, with: text)
+            $0.applyWSSFont(.body5, with: text)
         }
     }
     

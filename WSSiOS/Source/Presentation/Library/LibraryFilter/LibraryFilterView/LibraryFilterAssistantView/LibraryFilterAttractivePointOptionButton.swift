@@ -49,13 +49,13 @@ final class LibraryFilterAttractivePointOptionButton: UIButton {
         
         statusLabel.do {
             $0.applyWSSFont(.body4, with: attractivePoint.koreanString)
-            $0.textColor = .wssGray200
+            $0.textColor = .wssGray300
             $0.isUserInteractionEnabled = false
         }
         
         statusImageView.do {
             $0.image = attractivePoint.image.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = .wssGray80
+            $0.tintColor = .wssGray100
             $0.contentMode = .scaleAspectFit
             $0.isUserInteractionEnabled = false
         }
@@ -86,7 +86,7 @@ final class LibraryFilterAttractivePointOptionButton: UIButton {
     func updateButton(selectedOptions: [AttractivePoint]) {
         let isSelected = selectedOptions.contains(where: {$0 == self.attractivePoint})
         
-        statusImageView.tintColor = isSelected ? .wssPrimary100 : .wssGray80
-        statusLabel.textColor = isSelected ? .wssPrimary100 : .wssGray200
+        statusImageView.tintColor = isSelected ? .wssPrimary100 : .wssGray100
+        statusLabel.textColor = isSelected ? .wssPrimary100 : .wssGray300
     }
 }
