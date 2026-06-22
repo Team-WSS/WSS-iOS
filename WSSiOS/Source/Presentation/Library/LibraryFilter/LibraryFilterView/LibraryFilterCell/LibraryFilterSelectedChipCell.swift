@@ -18,7 +18,7 @@ final class LibraryFilterSelectedChipCell: UICollectionViewCell {
 
     //MARK: - UI Components
 
-    private let keywordTag = KeywordTag()
+    private let keywordTag = LibraryFilterKeywordTag()
 
     //MARK: - Life Cycle
 
