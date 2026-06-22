@@ -10,6 +10,7 @@ import Foundation
 struct MyLibraryListResponse: Decodable {
     let userNovelCount: Int
     let isLoadable: Bool
+    let nextCursor: String?
     let userNovels: [MyLibraryResponse]
 }
 

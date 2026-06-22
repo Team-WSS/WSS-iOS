@@ -17,7 +17,4 @@ struct LibraryFilterOption: Equatable, Codable {
     var notStarRatedOption: Bool = false
     var attractivePointOptions: [AttractivePoint] = []
     var keywordOptions: [KeywordData] = []
-    
-    // 제거 예정
-    var starRatingOption: NovelRatingStatus? = nil
 }

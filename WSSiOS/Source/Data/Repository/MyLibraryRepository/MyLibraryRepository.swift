@@ -11,40 +11,55 @@ import RxSwift
 
 protocol MyLibraryRepository {
     func getNovelList(filterOption: LibraryFilterOption,
-                      lastUserNovelId: Int,
+                      cursor: String?,
                       size: Int,
                       sortType: LibrarySortType) -> Single<MyLibraryEntity>
 }
 
 struct DefaultMyLibraryRepository: MyLibraryRepository {
-    
+
     private var myLibraryService: MyLibraryService
-    
+
     init(myLibraryService: MyLibraryService) {
         self.myLibraryService = myLibraryService
     }
 
     func getNovelList(filterOption: LibraryFilterOption,
-                      lastUserNovelId: Int,
+                      cursor: String?,
                       size: Int,
                       sortType: LibrarySortType) -> Single<MyLibraryEntity> {
         let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-        // TODO: v2(/novels/v2) 연결 시 sortType.queryValue 사용. v1은 RECENT/OLD만 지원하므로
-        //       새 정렬 4종(제목순/날짜순/별점순)은 그때까지 최신순(RECENT)으로 떨어진다.
-        let sortCriteria = sortType == .createdAsc ? "OLD" : "RECENT"
         var queryItem = MyLibraryNovelListQuery(
-            lastUserNovelId: lastUserNovelId,
             size: size,
-            sortType: sortCriteria)
+            sortType: sortType.queryValue,
+            cursor: cursor)
+
         queryItem.isInterest = filterOption.interestedOption ? true : nil
-        queryItem.novelRating = filterOption.starRatingOption.map { $0.toFloat }
+
         if !filterOption.readStatusOptions.isEmpty {
-            queryItem.readStatus = filterOption.readStatusOptions.map { $0.rawValue }
+            queryItem.readStatuses = filterOption.readStatusOptions.map { $0.rawValue }
+        }
+        if !filterOption.genreOptions.isEmpty {
+            queryItem.genres = filterOption.genreOptions.map { $0.rawValue }
+        }
+        // 연재상태는 단일 Bool. 정확히 1개 선택일 때만 전송(0·2개면 필터 없음)
+        if filterOption.publicationStatusOptions.count == 1 {
+            queryItem.isComplete = filterOption.publicationStatusOptions.first?.isCompleted
+        }
+        // 별점: 미등록만 보기 우선, 아니면 기본범위(0.0~5.0)가 아닐 때만 범위 전송
+        if filterOption.notStarRatedOption {
+            queryItem.unratedOnly = true
+        } else if filterOption.minimumStarRateOption != 0.0 || filterOption.maximumStarRateOption != 5.0 {
+            queryItem.ratingMin = Float(filterOption.minimumStarRateOption)
+            queryItem.ratingMax = Float(filterOption.maximumStarRateOption)
         }
         if !filterOption.attractivePointOptions.isEmpty {
             queryItem.attractivePoints = filterOption.attractivePointOptions.map { $0.rawValue }
         }
-       
+        if !filterOption.keywordOptions.isEmpty {
+            queryItem.keywords = filterOption.keywordOptions.map { $0.keywordName }
+        }
+
         return myLibraryService.getNovelList(userId: userId, queryItem: queryItem).map { $0.toEntity() }
     }
 }

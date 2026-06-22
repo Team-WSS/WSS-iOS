@@ -8,41 +8,55 @@
 import Foundation
 
 struct MyLibraryNovelListQuery {
-    var lastUserNovelId: Int
     var size: Int
     var sortType: String
+    var cursor: String? = nil
     var isInterest: Bool? = nil
-    var readStatus: [String]? = nil
+    var readStatuses: [String]? = nil
+    var genres: [String]? = nil
+    var isComplete: Bool? = nil
+    var ratingMin: Float? = nil
+    var ratingMax: Float? = nil
+    var unratedOnly: Bool? = nil
     var attractivePoints: [String]? = nil
-    var novelRating: Float? = nil
-    var query: String? = nil
-    var updatedSince: String? = nil
+    var keywords: [String]? = nil
 }
 
 extension MyLibraryNovelListQuery {
     func asQueryItems() -> [URLQueryItem] {
         var items: [URLQueryItem] = [
-            URLQueryItem(name: "lastUserNovelId", value: "\(lastUserNovelId)"),
             URLQueryItem(name: "size", value: "\(size)"),
-            URLQueryItem(name: "sortCriteria", value: sortType)
+            URLQueryItem(name: "sortType", value: sortType)
         ]
+        if let cursor = cursor {
+            items.append(URLQueryItem(name: "cursor", value: cursor))
+        }
         if let isInterest = isInterest {
             items.append(URLQueryItem(name: "isInterest", value: String(isInterest)))
         }
-        if let readStatus = readStatus {
-            items.append(URLQueryItem(name: "readStatuses", value: readStatus.joined(separator: ",")))
+        if let readStatuses = readStatuses {
+            items.append(URLQueryItem(name: "readStatuses", value: readStatuses.joined(separator: ",")))
+        }
+        if let genres = genres {
+            items.append(URLQueryItem(name: "genres", value: genres.joined(separator: ",")))
+        }
+        if let isComplete = isComplete {
+            items.append(URLQueryItem(name: "isComplete", value: String(isComplete)))
+        }
+        if let ratingMin = ratingMin {
+            items.append(URLQueryItem(name: "ratingMin", value: String(ratingMin)))
+        }
+        if let ratingMax = ratingMax {
+            items.append(URLQueryItem(name: "ratingMax", value: String(ratingMax)))
+        }
+        if let unratedOnly = unratedOnly {
+            items.append(URLQueryItem(name: "unratedOnly", value: String(unratedOnly)))
         }
         if let attractivePoints = attractivePoints {
             items.append(URLQueryItem(name: "attractivePoints", value: attractivePoints.joined(separator: ",")))
         }
-        if let novelRating = novelRating {
-            items.append(URLQueryItem(name: "novelRating", value: String(novelRating)))
-        }
-        if let query = query {
-            items.append(URLQueryItem(name: "query", value: query))
-        }
-        if let updatedSince = updatedSince {
-            items.append(URLQueryItem(name: "updatedSince", value: updatedSince))
+        if let keywords = keywords {
+            items.append(URLQueryItem(name: "keywords", value: keywords.joined(separator: ",")))
         }
         return items
     }
