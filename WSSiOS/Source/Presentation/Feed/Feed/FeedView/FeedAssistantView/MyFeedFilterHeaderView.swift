@@ -14,7 +14,7 @@ final class MyFeedFilterHeaderView: UIView {
     
     //MARK: - Components
     
-    let filterButton = WSSFilterButton()
+    let filterButton = WSSFilterButton(buttonHeight: 33)
     
     let sortButton = UIButton()
     let sortButtonLabel = UILabel()
