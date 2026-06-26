@@ -14,7 +14,7 @@ struct MyLibraryNovelListQuery {
     var isInterest: Bool? = nil
     var readStatuses: [String]? = nil
     var genres: [String]? = nil
-    var isComplete: Bool? = nil
+    var isCompleted: Bool? = nil
     var ratingMin: Float? = nil
     var ratingMax: Float? = nil
     var unratedOnly: Bool? = nil
@@ -40,8 +40,8 @@ extension MyLibraryNovelListQuery {
         if let genres = genres {
             items.append(URLQueryItem(name: "genres", value: genres.joined(separator: ",")))
         }
-        if let isComplete = isComplete {
-            items.append(URLQueryItem(name: "isComplete", value: String(isComplete)))
+        if let isCompleted = isCompleted {
+            items.append(URLQueryItem(name: "isCompleted", value: String(isCompleted)))
         }
         if let ratingMin = ratingMin {
             items.append(URLQueryItem(name: "ratingMin", value: String(ratingMin)))

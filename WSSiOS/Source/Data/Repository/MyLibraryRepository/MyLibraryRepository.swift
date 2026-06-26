@@ -45,7 +45,7 @@ struct DefaultMyLibraryRepository: MyLibraryRepository {
         }
         // 연재상태는 단일 Bool. 정확히 1개 선택일 때만 전송(0·2개면 필터 없음)
         if filterOption.publicationStatusOptions.count == 1 {
-            queryItem.isComplete = filterOption.publicationStatusOptions.first?.isCompleted
+            queryItem.isCompleted = filterOption.publicationStatusOptions.first?.isCompleted
         }
         // 별점: 미등록만 보기 우선, 아니면 기본범위(0.0~5.0)가 아닐 때만 범위 전송
         if filterOption.notStarRatedOption {
