@@ -110,7 +110,7 @@ final class MyLibraryFilterHeaderView: UIView {
 
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(57)
+            $0.height.equalTo(50)
         }
 
         scrollView.snp.makeConstraints {
@@ -123,13 +123,13 @@ final class MyLibraryFilterHeaderView: UIView {
         }
 
         stackView.do {
-            $0.spacing = 6
+            $0.spacing = 3
             $0.setCustomSpacing(10, after: interestFilterButton)
             $0.setCustomSpacing(10, after: dividerView)
         }
 
         dividerView.snp.makeConstraints {
-            $0.height.equalTo(33)
+            $0.height.equalTo(30)
             $0.width.equalTo(1)
         }
     }

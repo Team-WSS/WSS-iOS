@@ -52,7 +52,7 @@ final class MyLibraryNavigationView: UIView {
 
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(56)
+            $0.height.equalTo(40)
         }
 
         navigationTitle.snp.makeConstraints {
