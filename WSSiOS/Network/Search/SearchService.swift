@@ -13,6 +13,7 @@ protocol SearchService {
     func getSosopicks() -> Single<SosoPickNovels>
     func searchNormalNovels(query: String, page: Int, size: Int) -> Single<NormalSearchNovels>
     func searchDetailNovels(genres: [String],
+                            platforms: [String],
                             isCompleted: Bool?,
                             lowerNovelRating: Float,
                             upperNovelRating: Float,
@@ -118,6 +119,7 @@ extension DefaultSearchService: SearchService {
     }
     
     func searchDetailNovels(genres: [String],
+                            platforms: [String],
                             isCompleted: Bool?,
                             lowerNovelRating: Float,
                             upperNovelRating: Float,
@@ -127,6 +129,7 @@ extension DefaultSearchService: SearchService {
         
         var detailSearchQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "genres", value: genres.joined(separator: ",")),
+            URLQueryItem(name: "platformNames", value: platforms.joined(separator: ",")),
             URLQueryItem(name: "keywordIds", value: keywordIds.map { String($0) }.joined(separator: ",")),
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "size", value: String(size)),

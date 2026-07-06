@@ -13,6 +13,7 @@ protocol SearchRepository {
     func getSosoPickNovels() -> Observable<SosoPickNovels>
     func getSearchNovels(query: String, page: Int) -> Observable<NormalSearchNovels>
     func getDetailSearchNovels(genres: [String],
+                               platforms: [String],
                                isCompleted: Bool?,
                                lowerNovelRating: Float,
                                upperNovelRating: Float,
@@ -42,12 +43,14 @@ struct DefaultSearchRepository: SearchRepository {
     }
     
     func getDetailSearchNovels(genres: [String],
+                               platforms: [String],
                                isCompleted: Bool?,
                                lowerNovelRating: Float,
                                upperNovelRating: Float,
                                keywordIds: [Int],
                                page: Int) -> Observable<DetailSearchNovels> {
         return searchService.searchDetailNovels(genres: genres,
+                                                platforms: platforms,
                                                 isCompleted: isCompleted,
                                                 lowerNovelRating: lowerNovelRating,
                                                 upperNovelRating: upperNovelRating,

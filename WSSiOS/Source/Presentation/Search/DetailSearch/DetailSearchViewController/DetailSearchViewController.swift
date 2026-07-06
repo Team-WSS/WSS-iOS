@@ -63,7 +63,10 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.detailSearchInfoView.genreCollectionView
             .register(DetailSearchInfoGenreCollectionViewCell.self,
                       forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
-        
+        rootView.detailSearchInfoView.platformCollectionView
+            .register(DetailSearchInfoPlatformCollectionViewCell.self,
+                      forCellWithReuseIdentifier: DetailSearchInfoPlatformCollectionViewCell.cellIdentifier)
+
         //키워드뷰
         rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView
             .register(NovelSelectedKeywordCollectionViewCell.self,
@@ -78,7 +81,12 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .genreCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
-        
+
+        rootView.detailSearchInfoView
+            .platformCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+
         rootView.detailSearchKeywordView.novelSelectedKeywordListView
             .selectedKeywordCollectionView.rx
             .setDelegate(self)
@@ -113,6 +121,9 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             searchNovelButtonDidTap: rootView.detailSearchButton.rx.tap,
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
+            platformColletionViewItemSelected: rootView.detailSearchInfoView.platformCollectionView.rx.itemSelected.asObservable(),
+            platformColletionViewItemDeselected: rootView.detailSearchInfoView.platformCollectionView.rx.itemDeselected.asObservable(),
+            tooltipButtonDidTap: rootView.detailSearchInfoView.tooltipButton.rx.tap,
             publicationStatusButtonDidTap: completedStatusButtonDidTap,
             ratingSliderValueChanged: ratingSliderValueChanged,
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
@@ -184,8 +195,29 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
                 cell.bindData(genre: element.withKorean)
             }
             .disposed(by: disposeBag)
-        
-        
+
+        output.platformListData
+            .bind(to: rootView.detailSearchInfoView.platformCollectionView.rx.items(cellIdentifier: DetailSearchInfoPlatformCollectionViewCell.cellIdentifier, cellType: DetailSearchInfoPlatformCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+
+                if self.viewModel.selectedPlatfromListData.value.contains(element) {
+                    self.rootView.detailSearchInfoView.platformCollectionView.selectItem(at: indexPath,
+                                                                                         animated: false,
+                                                                                         scrollPosition: [])
+                } else {
+                    self.rootView.detailSearchInfoView.platformCollectionView.deselectItem(at: indexPath,
+                                                                                           animated: false)
+                }
+                cell.bindData(platform: element.title)
+            }
+            .disposed(by: disposeBag)
+
+        output.showPlatformTooltip
+            .drive(with: self, onNext: { owner, isVisible in
+                owner.rootView.detailSearchInfoView.updatePlatformTooltip(isVisible: isVisible)
+            })
+            .disposed(by: disposeBag)
+
         output.selectedPublicationStatus
             .drive(with: self, onNext: { owner, selectedCompletedStatus in
                 owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
@@ -354,6 +386,13 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+            return CGSize(width: width, height: 37)
+        }
+        else if collectionView == rootView.detailSearchInfoView.platformCollectionView {
+            let novelPlatformList = NovelPlatform.detailSearchPlatforms.map { $0.title }
+            let text = novelPlatformList[indexPath.item]
+
+            let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 37)
         }
         else if collectionView ==  rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView{
