@@ -41,7 +41,7 @@ extension StringLiterals {
             static let tabKeyword = "키워드"
 
             // 별점 탭
-            static let notRatedOnly = "별점 등록 안 된 작품만 보기"
+            static let notRatedOnly = "별점 등록 안된 작품만 보기"
 
             // 키워드 탭
             static func registeredKeywordCount(_ count: Int) -> String {
