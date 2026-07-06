@@ -25,11 +25,7 @@ final class DetailSearchHeaderView: UIView {
     let keywordLabel = UILabel()
     let newKeywordImageView = UIImageView()
     let underLineView = UIView()
-    
-    let resetStackView = UIStackView()
-    private let resetImageView = UIImageView()
-    private let resetLabel = UILabel()
-    
+
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -73,23 +69,6 @@ final class DetailSearchHeaderView: UIView {
             $0.image = .icSearchNew.withTintColor(.wssPrimary100)
             $0.isHidden = true
         }
-        
-        resetStackView.do {
-            $0.axis = .horizontal
-            $0.spacing  = 4
-        }
-        
-        resetImageView.do {
-            $0.image = .icReload
-                .withRenderingMode(.alwaysOriginal)
-                .withTintColor(.wssGray300)
-            $0.contentMode = .scaleAspectFit
-        }
-        
-        resetLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.reload)
-            $0.textColor = .wssGray300
-        }
     }
     
     private func setHierarchy() {
@@ -98,11 +77,7 @@ final class DetailSearchHeaderView: UIView {
                          newInfoImageView,
                          keywordLabel,
                          newKeywordImageView,
-                         underLineView,
-                         resetStackView)
-        
-        resetStackView.addArrangedSubviews(resetImageView,
-                                           resetLabel)
+                         underLineView)
     }
     
     private func setLayout() {
@@ -139,14 +114,6 @@ final class DetailSearchHeaderView: UIView {
             $0.horizontalEdges.equalTo(infoLabel.snp.horizontalEdges)
             $0.height.equalTo(2)
             $0.bottom.equalToSuperview().inset(4)
-        }
-        
-        resetStackView.snp.makeConstraints {
-            $0.trailing.centerY.equalToSuperview()
-            
-            resetImageView.snp.makeConstraints {
-                $0.size.equalTo(14)
-            }
         }
     }
     
