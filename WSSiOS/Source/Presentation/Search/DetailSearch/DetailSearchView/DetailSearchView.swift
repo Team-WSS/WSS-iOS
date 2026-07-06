@@ -18,7 +18,7 @@ final class DetailSearchView: UIView {
     let detailSearchInfoView = DetailSearchInfoView()
     let detailSearchKeywordView = DetailSearchKeywordView()
     
-    let bottomView = LibraryFilterBottomActionView()
+    let bottomView = WSSBottomActionView()
  
     //MARK: - Life Cycle
     

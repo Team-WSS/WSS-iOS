@@ -85,7 +85,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             searchResultCollectionViewItemSelected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
             resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap,
+            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.searchButton.rx.tap,
             contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap,
             selectedKeywordData: selectedKeywordData.asObservable(),
             deselectedKeywordData: deselectedKeywordData.asObservable()
@@ -119,7 +119,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         
         output.selectedKeywordListData
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
+                owner.rootView.novelKeywordSelectModalButtonView.updateSearchButtonTitle("\(selectedKeywordList.count)\(StringLiterals.NovelReview.KeywordSearch.selectButtonText)")
                 owner.rootView.updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: !selectedKeywordList.isEmpty)
                 owner.keywordCategoryListData.accept(owner.keywordCategoryList)
             })
