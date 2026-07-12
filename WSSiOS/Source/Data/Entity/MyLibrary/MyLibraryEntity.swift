@@ -10,6 +10,7 @@ import Foundation
 struct MyLibraryEntity {
     var userNovelCount: Int
     var isLoadable: Bool
+    var nextCursor: String?
     var userNovels: [MyLibraryNovel]
 }
 
@@ -17,6 +18,7 @@ extension MyLibraryListResponse {
     func toEntity() -> MyLibraryEntity {
         return MyLibraryEntity(userNovelCount: self.userNovelCount,
                                    isLoadable: self.isLoadable,
+                                   nextCursor: self.nextCursor,
                                    userNovels: self.userNovels.map { $0.toEntity() })
     }
 }

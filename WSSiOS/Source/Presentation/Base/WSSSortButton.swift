@@ -54,26 +54,26 @@ final class WSSSortButton: UIButton {
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(33)
+            $0.height.equalTo(31)
         }
         
         sortButtonImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().offset(9.5)
             $0.size.equalTo(16)
         }
         
         sortButtonLabel.snp.makeConstraints {
             $0.leading.equalTo(sortButtonImageView.snp.trailing).offset(4)
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-9.5)
         }
     }
     
     //MARK: - Custom Method
     
-    func updateSortButton(sortType: SortType) {
-        sortButtonLabel.applyWSSFont(.body3, with: sortType.text)
+    func updateSortButton(sortType: LibrarySortType) {
+        sortButtonLabel.applyWSSFont(.body4, with: sortType.text)
     }
 }
 

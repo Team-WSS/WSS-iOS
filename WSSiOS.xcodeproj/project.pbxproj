@@ -34,9 +34,19 @@
 		B9C8AC4D2DDF646800F2076A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AGENTS.md,
+				CLAUDE.md,
 				Debug.xcconfig,
 				Info.plist,
+				Network/AGENTS.md,
+				Network/CLAUDE.md,
 				Release.xcconfig,
+				Resource/AGENTS.md,
+				Resource/CLAUDE.md,
+				Source/Data/AGENTS.md,
+				Source/Data/CLAUDE.md,
+				Source/Presentation/AGENTS.md,
+				Source/Presentation/CLAUDE.md,
 			);
 			target = 2CD229172B42E685005400BE /* WSSiOS */;
 		};
@@ -338,7 +348,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2026061002;
+				CURRENT_PROJECT_VERSION = 2026070602;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -356,7 +366,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.0;
+				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso.debug2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -383,7 +393,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2026061002;
+				CURRENT_PROJECT_VERSION = 2026070602;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -401,7 +411,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.0;
+				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

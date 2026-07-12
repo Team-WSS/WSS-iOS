@@ -14,7 +14,7 @@ final class WSSFilterButton: UIButton {
     
     //MARK: - Properties
     
-    private let buttonHeight: CGFloat = 33
+    let buttonHeight: CGFloat
     
     //MARK: - Components
     
@@ -23,8 +23,10 @@ final class WSSFilterButton: UIButton {
     
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(buttonHeight: CGFloat = 30) {
+        
+        self.buttonHeight = buttonHeight
+        super.init(frame: .zero)
         
         setUI()
         setHierarchy()

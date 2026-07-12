@@ -18,10 +18,10 @@ final class MyLibraryHeaderView: UIView {
     private let bottomContentView = UIView()
     private let countLabel = UILabel()
     let sortButton = WSSSortButton()
+    private let buttonDividerView = UIView()
     let layoutToggleButton = UIButton()
-    let layoutToggleButtonImageView = UIImageView()
     private let dividerView = UIView()
-    
+   
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -46,21 +46,19 @@ final class MyLibraryHeaderView: UIView {
         }
         
         sortButton.do {
-            $0.updateSortButton(sortType: .newest)
+            $0.updateSortButton(sortType: .createdDesc)
         }
         
         layoutToggleButton.do {
-            $0.configuration = .plain()
-            $0.configuration?.background.backgroundColor = .white
+            $0.setImage(.layoutGrid.withTintColor(.wssGray100), for: .normal)
         }
-        
-        layoutToggleButtonImageView.do {
-            $0.image = .layoutGrid.withTintColor(.wssGray100)
-            $0.isUserInteractionEnabled = false
-        }
-        
+
         dividerView.do {
             $0.backgroundColor = .wssGray50
+        }
+        
+        buttonDividerView.do {
+            $0.backgroundColor = .wssGray80
         }
     }
     
@@ -69,9 +67,9 @@ final class MyLibraryHeaderView: UIView {
                          bottomContentView)
         bottomContentView.addSubviews(countLabel,
                                       sortButton,
+                                      buttonDividerView,
                                       layoutToggleButton,
                                       dividerView)
-        layoutToggleButton.addSubview(layoutToggleButtonImageView)
     }
     
     private func setLayout() {
@@ -93,21 +91,25 @@ final class MyLibraryHeaderView: UIView {
         
         sortButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(buttonDividerView.snp.leading).offset(-5)
+        }
+        
+        buttonDividerView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
             $0.trailing.equalTo(layoutToggleButton.snp.leading).offset(-10)
+            $0.width.equalTo(1)
+            $0.height.equalTo(10)
         }
         
         layoutToggleButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(33)
+
+            layoutToggleButton.imageView?.snp.makeConstraints {
+                $0.size.equalTo(18)
+            }
         }
-        
-        layoutToggleButtonImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.size.equalTo(12)
-        }
-        
+
         dividerView.snp.makeConstraints {
             $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(1)
@@ -115,7 +117,7 @@ final class MyLibraryHeaderView: UIView {
     }
     
     func updateLayoutToggleButton(selectedType: LayoutType) {
-        layoutToggleButtonImageView.image = selectedType.image.withTintColor(.wssGray100)
+        layoutToggleButton.setImage(selectedType.image.withTintColor(.wssGray100), for: .normal)
     }
     
     func updateCountLabel(count: Int) {

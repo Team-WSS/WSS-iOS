@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PublicationStatus: String, CaseIterable {
+enum PublicationStatus: String, CaseIterable, Codable {
     case onGoing
     case completed
     

@@ -27,6 +27,10 @@ final class DetailSearchViewModel: ViewModelType {
     private var selectedGenreList: [NovelGenre] = []
     let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
     private let genreListData = PublishRelay<[NovelGenre]>()
+    private var selectedPlatformList: [NovelPlatform] = []
+    let selectedPlatfromListData = BehaviorRelay<[NovelPlatform]>(value: [])
+    private let platformListData = PublishRelay<[NovelPlatform]>()
+    private let showPlatformTooltip = BehaviorRelay<Bool>(value: false)
     private var selectedCompletedStatus = BehaviorRelay<PublicationStatus?>(value: nil)
     private let selectedRatingLower = BehaviorRelay<CGFloat>(value: 0.0)
     private let selectedRatingUpper = BehaviorRelay<CGFloat>(value: 5.0)
@@ -59,6 +63,9 @@ final class DetailSearchViewModel: ViewModelType {
         // 정보
         let genreColletionViewItemSelected: Observable<IndexPath>
         let genreColletionViewItemDeselected: Observable<IndexPath>
+        let platformColletionViewItemSelected: Observable<IndexPath>
+        let platformColletionViewItemDeselected: Observable<IndexPath>
+        let tooltipButtonDidTap: ControlEvent<Void>
         let publicationStatusButtonDidTap: Observable<PublicationStatus>
         let ratingSliderValueChanged: Observable<(CGFloat, CGFloat)>
         
@@ -87,6 +94,8 @@ final class DetailSearchViewModel: ViewModelType {
         
         // 정보
         let genreListData: Observable<[NovelGenre]>
+        let platformListData: Observable<[NovelPlatform]>
+        let showPlatformTooltip: Driver<Bool>
         let selectedPublicationStatus: Driver<PublicationStatus?>
         let ratingRange: Driver<(CGFloat, CGFloat)>
         let resetSelectedInfoData: Observable<Void>
@@ -116,6 +125,7 @@ final class DetailSearchViewModel: ViewModelType {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
                 owner.genreListData.accept(NovelGenre.detailSearchGenres)
+                owner.platformListData.accept(NovelPlatform.detailSearchPlatforms)
             })
             .disposed(by: disposeBag)
         
@@ -157,6 +167,8 @@ final class DetailSearchViewModel: ViewModelType {
                     // 정보뷰
                     owner.selectedGenreList = []
                     owner.selectedGenreListData.accept(owner.selectedGenreList)
+                    owner.selectedPlatformList = []
+                    owner.selectedPlatfromListData.accept(owner.selectedPlatformList)
                     owner.resetSelectedInfoData.accept(())
                     owner.selectedCompletedStatus.accept(nil)
                     owner.selectedRatingLower.accept(0.0)
@@ -177,6 +189,7 @@ final class DetailSearchViewModel: ViewModelType {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 let keywords = owner.selectedKeywordList
+                let platforms = owner.selectedPlatformList
                 let genres: [NovelGenre] = owner.selectedGenreListData.value
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
                 let lowernovelRating = Float(owner.selectedRatingLower.value)
@@ -184,6 +197,7 @@ final class DetailSearchViewModel: ViewModelType {
 
                 let filterQuery = SearchFilterQuery(
                     keywords: keywords,
+                    platforms: platforms,
                     genres: genres,
                     isCompleted: isCompleted,
                     lowerNovelRating: lowernovelRating,
@@ -210,6 +224,29 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
+        
+        input.platformColletionViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.selectedPlatformList = owner.selectedPlatfromListData.value
+                owner.selectedPlatformList.append(NovelPlatform.detailSearchPlatforms[indexPath.row])
+                owner.selectedPlatfromListData.accept(owner.selectedPlatformList)
+            })
+            .disposed(by: disposeBag)
+
+        input.platformColletionViewItemDeselected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.selectedPlatformList = owner.selectedPlatfromListData.value
+                owner.selectedPlatformList.removeAll { $0 == NovelPlatform.detailSearchPlatforms[indexPath.row] }
+                owner.selectedPlatfromListData.accept(owner.selectedPlatformList)
+            })
+            .disposed(by: disposeBag)
+
+        input.tooltipButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showPlatformTooltip.accept(!owner.showPlatformTooltip.value)
+            })
+            .disposed(by: disposeBag)
+        
         
         input.publicationStatusButtonDidTap
             .subscribe(with: self, onNext: { owner, selectedCompletedStatus in
@@ -364,6 +401,8 @@ final class DetailSearchViewModel: ViewModelType {
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       pushToResultViewController: pushToResultViewController.asObservable(),
                       genreListData: genreListData.asObservable(),
+                      platformListData: platformListData.asObservable(),
+                      showPlatformTooltip: showPlatformTooltip.asDriver(),
                       selectedPublicationStatus: selectedCompletedStatus.asDriver(),
                       ratingRange: ratingRange.asDriver(onErrorJustReturn: (0.0, 5.0)),
                       resetSelectedInfoData: resetSelectedInfoData.asObservable(),

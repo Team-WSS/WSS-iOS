@@ -58,6 +58,9 @@ final class DetailSearchResultHeaderView: UIView {
         if !option.genres.isEmpty {
             appliedFilters.append(StringLiterals.DetailSearch.genre)
         }
+        if !option.platforms.isEmpty {
+            appliedFilters.append(StringLiterals.DetailSearch.platform)
+        }
         if option.isCompleted != nil {
             appliedFilters.append(StringLiterals.DetailSearch.serialStatus)
         }

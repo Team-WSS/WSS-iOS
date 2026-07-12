@@ -40,6 +40,8 @@ extension StringLiterals {
         
         static let genre = "장르"
         
+        static let platform = "플랫폼"
+        
         static let serialStatus = "연재상태"
   
         static let rating = "별점"

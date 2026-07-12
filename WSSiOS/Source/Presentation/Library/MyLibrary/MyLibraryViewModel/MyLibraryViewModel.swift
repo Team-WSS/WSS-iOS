@@ -19,12 +19,12 @@ final class MyLibraryViewModel: ViewModelType {
     
     //Rx
     let filterOption = BehaviorRelay<LibraryFilterOption>(value: LibraryFilterOption())
-    private let sortType = BehaviorRelay<SortType>(value: .newest)
+    let sortType = BehaviorRelay<LibrarySortType>(value: .createdDesc)
     private let layoutType = BehaviorRelay<LayoutType>(value: .grid)
     private let novelCount = BehaviorRelay<Int>(value: 0)
     
     private let libraryNovelList = BehaviorRelay<[MyLibraryNovel]>(value: [])
-    private let lastUserNovelId = BehaviorRelay<Int>(value: 0)
+    private let cursor = BehaviorRelay<String?>(value: nil)
     private let isFetching = BehaviorRelay<Bool>(value: false)
     private let isLoadable = BehaviorRelay<Bool>(value: true)
     private let fetchNovelList = PublishRelay<Void>()
@@ -50,7 +50,7 @@ final class MyLibraryViewModel: ViewModelType {
     struct Input {
         let viewWillAppear: Observable<Void>
         let interestFilterButtonDidTap: ControlEvent<Void>
-        let sortButtonDidTap: ControlEvent<Void>
+        let sortTypeSelected: Observable<LibrarySortType>
         let layoutToggleButtonDidTap: ControlEvent<Void>
         let collectionViewDidReachBottom: Observable<Void>
         let tableViewDidReachBottom: Observable<Void>
@@ -60,7 +60,7 @@ final class MyLibraryViewModel: ViewModelType {
     
     struct Output {
         let selectedFilterOption: Driver<LibraryFilterOption>
-        let selectedSortType: Driver<SortType>
+        let selectedSortType: Driver<LibrarySortType>
         let selectedLayoutType: Driver<LayoutType>
         let novelCount: Driver<Int>
         let libraryNovelList: Observable<[MyLibraryNovel]>
@@ -113,9 +113,7 @@ final class MyLibraryViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.sortButtonDidTap
-            .withLatestFrom(sortType)
-            .map { $0.toggle() }
+        input.sortTypeSelected
             .bind(to: sortType)
             .disposed(by: disposeBag)
         
@@ -156,10 +154,10 @@ final class MyLibraryViewModel: ViewModelType {
             .filter { !$0.0 && $0.1 }
             .withLatestFrom(libraryNovelList)
             .do(onNext: { [weak self] in self?.updateRequestState(isStarting: true, isReloading: $0.isEmpty)})
-            .withLatestFrom(Observable.combineLatest(filterOption, lastUserNovelId, sortType))
-            .flatMapLatest { (filterOption, lastUserNovelId, sortType) in
+            .withLatestFrom(Observable.combineLatest(filterOption, cursor, sortType))
+            .flatMapLatest { (filterOption, cursor, sortType) in
                 self.getNovelListData(filterOption: filterOption,
-                                      lastUserNovelId: lastUserNovelId,
+                                      cursor: cursor,
                                       sortType: sortType)
             }
             .do(onNext: { [weak self] _ in self?.updateRequestState(isStarting: false)})
@@ -181,7 +179,7 @@ final class MyLibraryViewModel: ViewModelType {
             .flatMapLatest { (filterOption, sortType, novelList) in
                 let size = novelList.count == 0 ? 12 : novelList.count + 12
                 return self.getNovelListData(filterOption: filterOption,
-                                             lastUserNovelId: 0,
+                                             cursor: nil,
                                              size: size,
                                              sortType: sortType)
             }
@@ -232,10 +230,10 @@ final class MyLibraryViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getNovelListData(filterOption: LibraryFilterOption, lastUserNovelId: Int, size: Int = 12, sortType: SortType) -> Observable<MyLibraryEntity> {
+    private func getNovelListData(filterOption: LibraryFilterOption, cursor: String?, size: Int = 12, sortType: LibrarySortType) -> Observable<MyLibraryEntity> {
         return self.myLibraryRepository.getNovelList(
             filterOption: filterOption,
-            lastUserNovelId: lastUserNovelId,
+            cursor: cursor,
             size: size,
             sortType: sortType
         )
@@ -253,7 +251,7 @@ final class MyLibraryViewModel: ViewModelType {
         libraryNovelList.accept([])
         isLoadable.accept(true)
         novelCount.accept(0)
-        lastUserNovelId.accept(0)
+        cursor.accept(nil)
         isLibraryEmpty.accept(false)
     }
     
@@ -261,7 +259,7 @@ final class MyLibraryViewModel: ViewModelType {
         libraryNovelList.accept(entity.userNovels)
         isLoadable.accept(entity.isLoadable)
         novelCount.accept(entity.userNovelCount)
-        lastUserNovelId.accept(entity.userNovels.last?.userNovelId ?? 0)
+        cursor.accept(entity.nextCursor)
         isLibraryEmpty.accept(entity.userNovels.isEmpty)
     }
     
@@ -284,7 +282,7 @@ final class MyLibraryViewModel: ViewModelType {
         }
     }
     
-    private func saveSortType(_ sortType: SortType) {
+    private func saveSortType(_ sortType: LibrarySortType) {
         UserDefaults.standard.set(sortType.text,
                                   forKey: StringLiterals.UserDefault.librarySortOption)
     }
@@ -299,12 +297,12 @@ final class MyLibraryViewModel: ViewModelType {
         }
     }
     
-    private func loadSortType() -> SortType {
+    private func loadSortType() -> LibrarySortType {
         if let savedData = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.librarySortOption),
-           let sortType = SortType.fromText(savedData) {
+           let sortType = LibrarySortType.fromText(savedData) {
             return sortType
         } else {
-            return SortType.newest
+            return LibrarySortType.createdDesc
         }
     }
 }

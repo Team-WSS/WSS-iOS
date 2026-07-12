@@ -91,6 +91,7 @@ final class DetailSearchResultViewModel: ViewModelType {
             .flatMapLatest {
                 return self.getDetailSearchNovels(
                     genres: self.option.genres.map { $0.rawValue },
+                    platforms: self.option.platforms.map { $0.title },
                     isCompleted: self.option.isCompleted,
                     lowerNovelRating: self.option.lowerNovelRating,
                     upperNovelRating: self.option.upperNovelRating,
@@ -124,6 +125,7 @@ final class DetailSearchResultViewModel: ViewModelType {
             .flatMapLatest { _ in
                 self.getDetailSearchNovels(
                     genres: self.option.genres.map { $0.rawValue },
+                    platforms: self.option.platforms.map { $0.title },
                     isCompleted: self.option.isCompleted,
                     lowerNovelRating: self.option.lowerNovelRating,
                     upperNovelRating: self.option.upperNovelRating,
@@ -161,12 +163,14 @@ final class DetailSearchResultViewModel: ViewModelType {
     //MARK: - API
     
     private func getDetailSearchNovels(genres: [String],
+                                       platforms: [String],
                                        isCompleted: Bool?,
                                        lowerNovelRating: Float,
                                        upperNovelRating: Float,
                                        keywordIds: [Int],
                                        page: Int) -> Observable<DetailSearchNovels> {
         searchRepository.getDetailSearchNovels(genres: genres,
+                                               platforms: platforms,
                                                isCompleted: isCompleted,
                                                lowerNovelRating: lowerNovelRating,
                                                upperNovelRating: upperNovelRating,

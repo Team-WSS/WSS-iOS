@@ -17,7 +17,7 @@ struct KeywordCategory: Codable {
     let keywords: [KeywordData]
 }
 
-struct KeywordData: Codable {
+struct KeywordData: Codable, Equatable {
     let keywordId: Int
     let keywordName: String
 }

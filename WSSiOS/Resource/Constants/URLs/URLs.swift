@@ -206,7 +206,10 @@ enum URLs {
     enum MyLibrary {
         private static let myLibraryBasePath = "/users"
         static func getMyLibrarList(userId: Int) -> String {
-            return "\(myLibraryBasePath)/\(userId)/novels"
+            return "\(myLibraryBasePath)/\(userId)/novels/v2"
+        }
+        static func getLibraryKeywords(userId: Int) -> String {
+            return "\(myLibraryBasePath)/\(userId)/novels/keywords"
         }
     }
 }

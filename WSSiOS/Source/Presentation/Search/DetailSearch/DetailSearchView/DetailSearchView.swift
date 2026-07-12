@@ -18,8 +18,7 @@ final class DetailSearchView: UIView {
     let detailSearchInfoView = DetailSearchInfoView()
     let detailSearchKeywordView = DetailSearchKeywordView()
     
-    let detailSearchButton = UIButton()
-    private let detailSearchButtonLabel = UILabel()
+    let bottomView = WSSBottomActionView()
  
     //MARK: - Life Cycle
     
@@ -40,25 +39,13 @@ final class DetailSearchView: UIView {
         self.do {
             $0.backgroundColor = .wssWhite
         }
-        
-        detailSearchButton.do {
-            $0.backgroundColor = .wssPrimary100
-            $0.layer.cornerRadius = 14
-            $0.isEnabled = true
-        }
-        
-        detailSearchButtonLabel.do {
-            $0.applyWSSFont(.title1, with: "작품 찾기")
-            $0.textColor = .wssWhite
-        }
     }
     
     private func setHierarchy() {
         self.addSubviews(detailSearchHeaderView,
                          detailSearchInfoView,
                          detailSearchKeywordView,
-                         detailSearchButton)
-        detailSearchButton.addSubview(detailSearchButtonLabel)
+                         bottomView)
     }
     
     private func setLayout() {
@@ -71,23 +58,18 @@ final class DetailSearchView: UIView {
         detailSearchKeywordView.snp.makeConstraints {
             $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(detailSearchButton.snp.top).offset(-10)
+            $0.bottom.equalTo(bottomView.snp.top).offset(-10)
         }
 
         detailSearchInfoView.snp.makeConstraints {
             $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(detailSearchButton.snp.top).offset(-10)
+            $0.bottom.equalTo(bottomView.snp.top).offset(-10)
         }
 
-        detailSearchButton.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-10)
-            $0.leading.trailing.equalToSuperview().inset(16)
-        }
-        
-        detailSearchButtonLabel.snp.makeConstraints {
-            $0.verticalEdges.equalTo(detailSearchButton).inset(14)
-            $0.centerX.equalToSuperview()
+        bottomView.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
         }
     }
     

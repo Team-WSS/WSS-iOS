@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum NovelGenre: String, CaseIterable {
+enum NovelGenre: String, CaseIterable, Codable {
     case all = "all"
     case fantasy = "fantasy"
     case modernFantasy = "modernFantasy"

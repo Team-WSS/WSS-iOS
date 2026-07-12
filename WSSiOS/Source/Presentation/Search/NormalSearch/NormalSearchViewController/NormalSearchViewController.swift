@@ -309,6 +309,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             .subscribe(with: self, onNext: { owner, genre in
                 let filterQuery = SearchFilterQuery(
                     keywords: [],
+                    platforms: [],
                     genres: [genre],
                     isCompleted: nil,
                     lowerNovelRating: 0.0,
@@ -365,6 +366,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             .subscribe(with: self, onNext: { owner, keyword in
                 let filterQuery = SearchFilterQuery(
                     keywords: [keyword],
+                    platforms: [],
                     genres: [],
                     isCompleted: nil,
                     lowerNovelRating: 0.0,
