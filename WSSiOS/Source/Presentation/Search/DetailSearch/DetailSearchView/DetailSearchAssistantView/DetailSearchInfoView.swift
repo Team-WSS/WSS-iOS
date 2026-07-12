@@ -16,12 +16,18 @@ final class DetailSearchInfoView: UIView {
     
     /// 장르
     private let genreTitleLabel = UILabel()
-    
     let genreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    
+    ///플랫폼
+    private let platformHeaderStackView = UIStackView()
+    private let platformTItleLabel = UILabel()
+    let tooltipButton = UIButton()
+    private let tooltipBackgroundImageView = UIImageView()
+    private let tooltipLabel = UILabel()
+    let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     /// 연재상태
     private let statusTitleLabel = UILabel()
-    
     private let statusStackView = UIStackView()
     let completedStatusButtons = PublicationStatus.allCases.map { DetailSearchCompletedStatusButton(status: $0) }
     
@@ -56,6 +62,42 @@ final class DetailSearchInfoView: UIView {
         }
         
         genreCollectionView.do {
+            let layout = LeftAlignedCollectionViewFlowLayout()
+            layout.scrollDirection = .vertical
+            layout.minimumLineSpacing = 14
+            layout.minimumInteritemSpacing = 6
+            
+            $0.collectionViewLayout = layout
+            $0.isScrollEnabled = false
+            $0.backgroundColor = .clear
+            $0.allowsMultipleSelection = true
+        }
+        
+        platformHeaderStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 8
+        }
+        
+        platformTItleLabel.do {
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.platform)
+            $0.textColor = .wssBlack
+        }
+        
+        tooltipBackgroundImageView.do {
+            $0.image = .icTooltipBackground
+            $0.isHidden = true
+        }
+        
+        tooltipLabel.do {
+            $0.applyWSSFont(.body5, with: "아직 개발 중인 베타 기능이에요.")
+            $0.textColor = .wssPrimary100
+        }
+        
+        tooltipButton.do {
+            $0.setImage(.icTooltip, for: .normal)
+        }
+        
+        platformCollectionView.do {
             let layout = LeftAlignedCollectionViewFlowLayout()
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 14
@@ -116,9 +158,17 @@ final class DetailSearchInfoView: UIView {
         completedStatusButtons.forEach { statusStackView.addArrangedSubview($0) }
         ratingMinLabelBackgroundView.addSubview(ratingMinLabel)
         ratingMaxLabelBackgroundView.addSubview(ratingMaxLabel)
+        platformHeaderStackView.addArrangedSubviews(
+            platformTItleLabel,
+            tooltipButton,
+            tooltipBackgroundImageView
+        )
+        tooltipBackgroundImageView.addSubview(tooltipLabel)
         
         self.addSubviews(genreTitleLabel,
                          genreCollectionView,
+                         platformHeaderStackView,
+                         platformCollectionView,
                          statusTitleLabel,
                          statusStackView,
                          ratingTitleLabel,
@@ -140,8 +190,23 @@ final class DetailSearchInfoView: UIView {
             $0.height.equalTo(88)
         }
         
+        platformHeaderStackView.snp.makeConstraints {
+            $0.top.equalTo(genreCollectionView.snp.bottom).offset(40)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        tooltipLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+
+        platformCollectionView.snp.makeConstraints {
+            $0.top.equalTo(platformHeaderStackView.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(88)
+        }
+        
         statusTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(genreCollectionView.snp.bottom).offset(42)
+            $0.top.equalTo(platformCollectionView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -192,7 +257,34 @@ final class DetailSearchInfoView: UIView {
     }
     
     //MARK: - Custom Method
-    
+
+    /// 플랫폼 툴팁 표시 여부를 애니메이션과 함께 갱신
+    func updatePlatformTooltip(isVisible: Bool) {
+        guard tooltipBackgroundImageView.isHidden == isVisible else { return }
+
+        if isVisible {
+            tooltipBackgroundImageView.alpha = 0
+            tooltipBackgroundImageView.isHidden = false
+            UIView.animate(withDuration: 0.3,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 0.5,
+                           options: [.curveEaseOut]) {
+                self.tooltipBackgroundImageView.alpha = 1
+                self.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.2,
+                           delay: 0,
+                           options: [.curveEaseIn]) {
+                self.tooltipBackgroundImageView.alpha = 0
+                self.layoutIfNeeded()
+            } completion: { _ in
+                self.tooltipBackgroundImageView.isHidden = true
+            }
+        }
+    }
+
     func updateCompletedKeyword(_ selectedCompletedStatus: PublicationStatus?) {
         completedStatusButtons.forEach {
             $0.updateButton(selectedCompletedStatus: selectedCompletedStatus)
@@ -202,6 +294,9 @@ final class DetailSearchInfoView: UIView {
     func resetAllStates() {
         genreCollectionView.indexPathsForSelectedItems?.forEach { indexPath in
             genreCollectionView.deselectItem(at: indexPath, animated: false)
+        }
+        platformCollectionView.indexPathsForSelectedItems?.forEach { indexPath in
+            platformCollectionView.deselectItem(at: indexPath, animated: false)
         }
     }
 

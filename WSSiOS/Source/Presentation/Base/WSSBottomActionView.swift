@@ -1,5 +1,5 @@
 //
-//  LibraryFilterBottomActionView.swift
+//  WSSBottomActionView.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 6/21/26.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LibraryFilterBottomActionView: UIView {
+final class WSSBottomActionView: UIView {
 
     //MARK: - UI Components
 
@@ -21,11 +21,14 @@ final class LibraryFilterBottomActionView: UIView {
 
     let searchButton = UIButton()
     private let searchLabel = UILabel()
+    
+    private let searchButtonTitle: String
 
     //MARK: - Life Cycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(searchButtonTitle: String = StringLiterals.DetailSearch.searchNovel) {
+        self.searchButtonTitle = searchButtonTitle
+        super.init(frame: .zero)
 
         setUI()
         setHierarchy()
@@ -70,7 +73,7 @@ final class LibraryFilterBottomActionView: UIView {
         }
 
         searchLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.searchNovel)
+            $0.applyWSSFont(.title2, with: searchButtonTitle)
             $0.textColor = .wssWhite
             $0.isUserInteractionEnabled = false
         }
@@ -111,5 +114,11 @@ final class LibraryFilterBottomActionView: UIView {
         searchLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+
+    //MARK: - Custom Method
+
+    func updateSearchButtonTitle(_ title: String) {
+        searchLabel.applyWSSFont(.title2, with: title)
     }
 }

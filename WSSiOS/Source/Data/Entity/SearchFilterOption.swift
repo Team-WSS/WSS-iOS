@@ -9,6 +9,7 @@ import Foundation
 
 struct SearchFilterQuery {
     let keywords: [KeywordData]
+    let platforms: [NovelPlatform]
     let genres: [NovelGenre]
     let isCompleted: Bool?
     let lowerNovelRating: Float

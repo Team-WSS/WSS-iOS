@@ -23,7 +23,7 @@ final class NovelKeywordSelectModalView: UIView {
     let novelKeywordSelectEmptyView = NovelKeywordSelectEmptyView()
     let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
     let novelKeywordSelectCategoryListView = NovelKeywordSelectCategoryListView()
-    let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
+    let novelKeywordSelectModalButtonView = WSSBottomActionView(searchButtonTitle: "")
     
     //MARK: - Life Cycle
     

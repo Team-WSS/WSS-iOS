@@ -30,7 +30,7 @@ final class LibraryFilterView: UIView {
     let ratingView = LibraryFilterRatingView()
     let attractivePointView = LibraryFilterAttractivePointView()
     let keywordView = LibraryFilterKeywordView()
-    let bottomActionView = LibraryFilterBottomActionView()
+    let bottomActionView = WSSBottomActionView()
 
     //MARK: - Life Cycle
 

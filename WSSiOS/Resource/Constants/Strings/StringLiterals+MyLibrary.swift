@@ -35,7 +35,7 @@ extension StringLiterals {
             // 탭 타이틀
             static let tabReadStatus = "읽기상태"
             static let tabGenre = "장르"
-            static let tabPublicationStatus = "연재 상태"
+            static let tabPublicationStatus = "연재상태"
             static let tabRating = "별점"
             static let tabAttractivePoint = "매력포인트"
             static let tabKeyword = "키워드"
