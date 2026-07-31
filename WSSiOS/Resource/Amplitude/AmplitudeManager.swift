@@ -12,9 +12,12 @@ import AmplitudeSwift
 final class AmplitudeManager {
     static let shared = AmplitudeManager()
     
-    let amplitude: Amplitude
+    private let amplitude: Amplitude?
 
     private init() {
+#if DEBUG
+        amplitude = nil
+#else
         let apiKey = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.amplitudeAPIKey) as? String ?? ""
         amplitude = Amplitude(
             configuration: Configuration(
@@ -22,9 +25,10 @@ final class AmplitudeManager {
                 autocapture: [.sessions, .appLifecycles]
             )
         )
+#endif
     }
-    
+
     func track<T: RawRepresentable>(_ event: T, properties: [String: Any]? = nil) where T.RawValue == String {
-        amplitude.track(eventType: event.rawValue, eventProperties: properties)
+        amplitude?.track(eventType: event.rawValue, eventProperties: properties)
     }
 }
