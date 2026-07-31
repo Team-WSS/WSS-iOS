@@ -16,6 +16,7 @@ enum Config {
             static let kakaoAppKey = "KAKAO_APP_KEY"
             static let appStoreID = "APPSTORE_ID"
             static let amplitudeAPIKey = "AMPLITUDE_API_KEY"
+            static let clarityProjectId = "CLARITY_PROJECT_ID"
         }
     }
     

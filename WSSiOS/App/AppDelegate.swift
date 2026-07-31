@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Clarity
 import Firebase
 import FirebaseCore
 import RxKakaoSDKCommon
@@ -25,10 +26,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let _: FirebaseOptions? = FirebaseOptions.init(contentsOfFile: filePath)
         
         RxKakaoSDK.initSDK(appKey: APIConstants.kakaoAppKey)
-        
+
         FirebaseApp.configure()
         NotificationHelper.shared.configure()
-        
+
+#if !DEBUG
+        let clarityProjectId = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.clarityProjectId) as? String ?? ""
+        let clarityConfig = ClarityConfig(projectId: clarityProjectId)
+        ClaritySDK.initialize(config: clarityConfig)
+#endif
+
         return true
     }
     
