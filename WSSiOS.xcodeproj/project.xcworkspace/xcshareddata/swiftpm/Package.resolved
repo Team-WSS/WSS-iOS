@@ -1,5 +1,5 @@
 {
-  "originHash" : "9c71ddbfbd1b05c2ae3aa13f7f2393f53dd7eaad031b5647c59f14e920a8e124",
+  "originHash" : "0c499a792764b8da718d47e36852e8211034a3bdd2703d30ff2cac66ef12e694",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
         "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "clarity-apps",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/microsoft/clarity-apps",
+      "state" : {
+        "revision" : "88652502e9427779c8c10a75bab49125143865af",
+        "version" : "3.5.4"
       }
     },
     {

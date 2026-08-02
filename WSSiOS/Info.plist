@@ -12,6 +12,8 @@
 	<string>$(BASE_URL)</string>
 	<key>BUCKET_URL</key>
 	<string>$(BUCKET_URL)</string>
+	<key>CLARITY_PROJECT_ID</key>
+	<string>$(CLARITY_PROJECT_ID)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

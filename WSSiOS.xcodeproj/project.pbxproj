@@ -22,6 +22,7 @@
 		39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB382D38D9A7009F071A /* FirebaseAnalytics */; };
 		39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
+		B9BAA9B5301CD5B400BCCD24 /* Clarity in Frameworks */ = {isa = PBXBuildFile; productRef = B9BAA9B4301CD5B400BCCD24 /* Clarity */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
 		CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDE0C0302D23B04D000BC822 /* AmplitudeSwift */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,7 @@
 				390162CE2CE6575D00B7476C /* RxKakaoSDKUser in Frameworks */,
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
+				B9BAA9B5301CD5B400BCCD24 /* Clarity in Frameworks */,
 				CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */,
 				394401AA2CE9B07B007B5E04 /* Then in Frameworks */,
 				390162CC2CE6575D00B7476C /* RxKakaoSDKAuth in Frameworks */,
@@ -137,6 +139,7 @@
 				CDE0C0302D23B04D000BC822 /* AmplitudeSwift */,
 				39EDFB382D38D9A7009F071A /* FirebaseAnalytics */,
 				39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */,
+				B9BAA9B4301CD5B400BCCD24 /* Clarity */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -178,6 +181,7 @@
 				394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */,
 				CDE0C02F2D23B04C000BC822 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 				39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B9BAA9B3301CD5B400BCCD24 /* XCRemoteSwiftPackageReference "clarity-apps" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -366,7 +370,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.0;
+				MARKETING_VERSION = 1.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso.debug2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -411,7 +415,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.0;
+				MARKETING_VERSION = 1.9.1;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -523,6 +527,14 @@
 				minimumVersion = 11.7.0;
 			};
 		};
+		B9BAA9B3301CD5B400BCCD24 /* XCRemoteSwiftPackageReference "clarity-apps" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/microsoft/clarity-apps";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.5.4;
+			};
+		};
 		CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
@@ -616,6 +628,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		B9BAA9B4301CD5B400BCCD24 /* Clarity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9BAA9B3301CD5B400BCCD24 /* XCRemoteSwiftPackageReference "clarity-apps" */;
+			productName = Clarity;
 		};
 		CD3E5A842B54254F00C0A659 /* RxKeyboard */ = {
 			isa = XCSwiftPackageProductDependency;
