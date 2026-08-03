@@ -7,15 +7,16 @@
 
 import UIKit
 
+import Lottie
 import SnapKit
 import Then
 
 final class WSSLoadingView: UIView {
-    
+
     // MARK: - UI Components
-    
+
     private let stackView = UIStackView()
-    private let loadingLottieView = Lottie.loading
+    private let loadingLottieView = LottieAnimationView(name: "loading")
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     

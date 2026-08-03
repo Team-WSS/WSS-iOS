@@ -52,7 +52,7 @@ final class HomeRealtimePopularView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.realtimePopular)
+            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInRealtimePopular)
             $0.textColor = .wssBlack
         }
         
@@ -72,7 +72,7 @@ final class HomeRealtimePopularView: UIView {
         realtimePopularCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 0
-            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 245)
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 244)
             realtimePopularCollectionView.setCollectionViewLayout($0, animated: false)
         }
         
@@ -111,11 +111,11 @@ final class HomeRealtimePopularView: UIView {
         backgroundView.snp.makeConstraints {
             $0.top.equalTo(titleStackView.snp.bottom).offset(14)
             $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.height.equalTo(245)
-            
+            $0.height.equalTo(244)
+
             realtimePopularCollectionView.snp.makeConstraints {
                 $0.top.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(245)
+                $0.height.equalTo(244)
             }
             
             dividerView.snp.makeConstraints {
@@ -131,6 +131,14 @@ final class HomeRealtimePopularView: UIView {
         }
     }
     
+    func updateView(_ isLogined: Bool, _ nickname: String?) {
+        if isLogined, let nickname = nickname {
+            titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.realtimePopular)")
+        } else {
+            titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInRealtimePopular)
+        }
+    }
+
     func configureDots(numberOfItems: Int) {
         self.dotStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         self.dotImageViews.removeAll()

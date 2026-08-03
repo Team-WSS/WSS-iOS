@@ -42,7 +42,9 @@ extension APIConstants {
     }
     
     static var accessTokenHeader: Dictionary<String, String> {
-        [contentType: applicationJSON,
+        guard !accessToken.isEmpty else { return noTokenHeader }
+
+        return [contentType: applicationJSON,
                 auth: "Bearer " + accessToken]
     }
     

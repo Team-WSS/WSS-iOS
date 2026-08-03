@@ -142,6 +142,14 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.updateRealtimePopularView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, updateData in
+                let (isLogined, nickname) = updateData
+                owner.rootView.realtimePopularView.updateView(isLogined, nickname)
+            })
+            .disposed(by: disposeBag)
+
         output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToNormalSearchViewController()

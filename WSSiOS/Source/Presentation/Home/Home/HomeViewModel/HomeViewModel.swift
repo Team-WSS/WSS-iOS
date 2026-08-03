@@ -29,6 +29,7 @@ final class HomeViewModel: ViewModelType {
     // 지금 뜨는 수다글
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
     private let realtimePopularDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
+    private let updateRealtimePopularView = PublishRelay<(Bool, String?)>()
     
     // 취향추천
     private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
@@ -68,7 +69,8 @@ final class HomeViewModel: ViewModelType {
         
         var realtimePopularList: Observable<[RealtimePopularFeed]>
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
-        
+        let updateRealtimePopularView: Observable<(Bool, String?)>
+
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
         let updateTasteRecommendView: Observable<(Bool, Bool)>
@@ -103,23 +105,32 @@ extension HomeViewModel {
             })
             .flatMapLatest {
                 let todayPopularNovelsObservable = self.getTodayPopularNovels()
+                    .catch { error in
+                        print("❌ TodayPopular fetch failed: \(error)")
+                        return Observable.just(TodayDiscoveryNovels(popularNovels: []))
+                    }
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
-                let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
-                let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
-                
+                    .catch { error in
+                        print("❌ RealtimePopularFeeds fetch failed: \(error)")
+                        return Observable.just(RealtimePopularFeeds(popularFeeds: []))
+                    }
+                let tasteRecommendNovelsObservable = (self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: [])))
+                    .catch { error in
+                        print("❌ TasteRecommend fetch failed: \(error)")
+                        return Observable.just(TasteRecommendNovels(tasteNovels: []))
+                    }
+
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
-                                      tasteRecommendNovelsObservable,
-                                      isNotificationUnreadObservable)
+                                      tasteRecommendNovelsObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let todayPopularNovels = data.0
                 let realtimeFeeds = data.1
                 let tasteRecommendNovels = data.2
-                let isNotificationUnread = data.3
-                
+
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
-                
+
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
                 let limitedFeeds = Array(realtimeFeeds.popularFeeds.prefix(6))
                 let groupedData = stride(from: 0, to: limitedFeeds.count, by: 2)
@@ -134,16 +145,32 @@ extension HomeViewModel {
                 } else {
                     owner.updateTasteRecommendView.accept((false, true))
                 }
-                
-                owner.isNotificationUnread.accept(isNotificationUnread.hasUnreadNotifications)
-                
+
                 owner.showLoadingView.accept(false)
             }, onError: { owner, error in
-                owner.realtimePopularList.onError(error)
+                print("❌ Home data fetch failed: \(error)")
                 owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
-        
+
+        // 알림 미확인 여부는 핵심 콘텐츠 로딩과 무관하므로 별도로 조회해
+        // 응답이 느려도 홈 화면 전체 로딩을 지연시키지 않도록 분리
+        input.viewWillAppearEvent
+            .flatMapLatest { () -> Observable<NotificationUnreadStatusResponse> in
+                guard self.isLogined else {
+                    return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
+                }
+                return self.getNotificationUnreadStatus()
+                    .catch { error in
+                        print("❌ NotificationUnreadStatus fetch failed: \(error)")
+                        return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
+                    }
+            }
+            .subscribe(with: self, onNext: { owner, response in
+                owner.isNotificationUnread.accept(response.hasUnreadNotifications)
+            })
+            .disposed(by: disposeBag)
+
         input.viewWillAppearEvent
             .flatMapLatest { self.getAppMinimumVersion() }
             .subscribe(with: self, onNext: { owner, versionInfo in
@@ -155,15 +182,17 @@ extension HomeViewModel {
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
-            .filter { self.isLogined }
-            .flatMapLatest {
-                return self.getUserMeData()
+            .flatMapLatest { () -> Observable<UserMeEntity?> in
+                self.isLogined ? self.getUserMeData().map { $0 } : Observable.just(nil)
             }
             .subscribe(with: self, onNext: { owner, data in
-                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
-                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
-                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
-                owner.getTermSetting(disposeBag: disposeBag)
+                if let data = data {
+                    UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                    UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                    owner.getTermSetting(disposeBag: disposeBag)
+                }
+                owner.updateRealtimePopularView.accept((owner.isLogined, data?.nickname))
             })
             .disposed(by: disposeBag)
         
@@ -232,6 +261,7 @@ extension HomeViewModel {
                       todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
+                      updateRealtimePopularView: updateRealtimePopularView.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight.asDriver(),
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
