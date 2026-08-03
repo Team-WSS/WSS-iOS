@@ -52,7 +52,7 @@ final class HomeRealtimePopularView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.realtimePopular)
+            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInRealtimePopular)
             $0.textColor = .wssBlack
         }
         
@@ -131,6 +131,14 @@ final class HomeRealtimePopularView: UIView {
         }
     }
     
+    func updateView(_ isLogined: Bool, _ nickname: String?) {
+        if isLogined, let nickname = nickname {
+            titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.realtimePopular)")
+        } else {
+            titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInRealtimePopular)
+        }
+    }
+
     func configureDots(numberOfItems: Int) {
         self.dotStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         self.dotImageViews.removeAll()
