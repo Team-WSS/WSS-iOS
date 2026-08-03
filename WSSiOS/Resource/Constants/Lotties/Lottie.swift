@@ -10,8 +10,6 @@ import Foundation
 import Lottie
 
 enum Lottie {
-    static let loading = LottieAnimationView(name: "loading")
-    
     enum Onboarding {
         static let success = LottieAnimationView(name: "scroll")
     }
