@@ -72,7 +72,7 @@ final class HomeRealtimePopularView: UIView {
         realtimePopularCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 0
-            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 245)
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 244)
             realtimePopularCollectionView.setCollectionViewLayout($0, animated: false)
         }
         
@@ -111,11 +111,11 @@ final class HomeRealtimePopularView: UIView {
         backgroundView.snp.makeConstraints {
             $0.top.equalTo(titleStackView.snp.bottom).offset(14)
             $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.height.equalTo(245)
-            
+            $0.height.equalTo(244)
+
             realtimePopularCollectionView.snp.makeConstraints {
                 $0.top.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(245)
+                $0.height.equalTo(244)
             }
             
             dividerView.snp.makeConstraints {
