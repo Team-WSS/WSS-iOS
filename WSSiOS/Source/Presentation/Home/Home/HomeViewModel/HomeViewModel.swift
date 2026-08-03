@@ -105,10 +105,26 @@ extension HomeViewModel {
             })
             .flatMapLatest {
                 let todayPopularNovelsObservable = self.getTodayPopularNovels()
+                    .catch { error in
+                        print("❌ TodayPopular fetch failed: \(error)")
+                        return Observable.just(TodayDiscoveryNovels(popularNovels: []))
+                    }
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
-                let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
-                let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
-                
+                    .catch { error in
+                        print("❌ RealtimePopularFeeds fetch failed: \(error)")
+                        return Observable.just(RealtimePopularFeeds(popularFeeds: []))
+                    }
+                let tasteRecommendNovelsObservable = (self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: [])))
+                    .catch { error in
+                        print("❌ TasteRecommend fetch failed: \(error)")
+                        return Observable.just(TasteRecommendNovels(tasteNovels: []))
+                    }
+                let isNotificationUnreadObservable = (self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false)))
+                    .catch { error in
+                        print("❌ NotificationUnreadStatus fetch failed: \(error)")
+                        return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
+                    }
+
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
                                       tasteRecommendNovelsObservable,
@@ -141,7 +157,7 @@ extension HomeViewModel {
                 
                 owner.showLoadingView.accept(false)
             }, onError: { owner, error in
-                owner.realtimePopularList.onError(error)
+                print("❌ Home data fetch failed: \(error)")
                 owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
