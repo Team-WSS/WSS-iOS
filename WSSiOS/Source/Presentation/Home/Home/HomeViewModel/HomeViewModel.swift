@@ -119,25 +119,18 @@ extension HomeViewModel {
                         print("❌ TasteRecommend fetch failed: \(error)")
                         return Observable.just(TasteRecommendNovels(tasteNovels: []))
                     }
-                let isNotificationUnreadObservable = (self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false)))
-                    .catch { error in
-                        print("❌ NotificationUnreadStatus fetch failed: \(error)")
-                        return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
-                    }
 
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
-                                      tasteRecommendNovelsObservable,
-                                      isNotificationUnreadObservable)
+                                      tasteRecommendNovelsObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let todayPopularNovels = data.0
                 let realtimeFeeds = data.1
                 let tasteRecommendNovels = data.2
-                let isNotificationUnread = data.3
-                
+
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
-                
+
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
                 let limitedFeeds = Array(realtimeFeeds.popularFeeds.prefix(6))
                 let groupedData = stride(from: 0, to: limitedFeeds.count, by: 2)
@@ -152,16 +145,32 @@ extension HomeViewModel {
                 } else {
                     owner.updateTasteRecommendView.accept((false, true))
                 }
-                
-                owner.isNotificationUnread.accept(isNotificationUnread.hasUnreadNotifications)
-                
+
                 owner.showLoadingView.accept(false)
             }, onError: { owner, error in
                 print("❌ Home data fetch failed: \(error)")
                 owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
-        
+
+        // 알림 미확인 여부는 핵심 콘텐츠 로딩과 무관하므로 별도로 조회해
+        // 응답이 느려도 홈 화면 전체 로딩을 지연시키지 않도록 분리
+        input.viewWillAppearEvent
+            .flatMapLatest { () -> Observable<NotificationUnreadStatusResponse> in
+                guard self.isLogined else {
+                    return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
+                }
+                return self.getNotificationUnreadStatus()
+                    .catch { error in
+                        print("❌ NotificationUnreadStatus fetch failed: \(error)")
+                        return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
+                    }
+            }
+            .subscribe(with: self, onNext: { owner, response in
+                owner.isNotificationUnread.accept(response.hasUnreadNotifications)
+            })
+            .disposed(by: disposeBag)
+
         input.viewWillAppearEvent
             .flatMapLatest { self.getAppMinimumVersion() }
             .subscribe(with: self, onNext: { owner, versionInfo in
