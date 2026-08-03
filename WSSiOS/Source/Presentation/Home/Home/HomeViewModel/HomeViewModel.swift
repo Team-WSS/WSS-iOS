@@ -29,6 +29,7 @@ final class HomeViewModel: ViewModelType {
     // 지금 뜨는 수다글
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
     private let realtimePopularDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
+    private let updateRealtimePopularView = PublishRelay<(Bool, String?)>()
     
     // 취향추천
     private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
@@ -68,7 +69,8 @@ final class HomeViewModel: ViewModelType {
         
         var realtimePopularList: Observable<[RealtimePopularFeed]>
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
-        
+        let updateRealtimePopularView: Observable<(Bool, String?)>
+
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
         let updateTasteRecommendView: Observable<(Bool, Bool)>
@@ -155,15 +157,17 @@ extension HomeViewModel {
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
-            .filter { self.isLogined }
-            .flatMapLatest {
-                return self.getUserMeData()
+            .flatMapLatest { () -> Observable<UserMeEntity?> in
+                self.isLogined ? self.getUserMeData().map { $0 } : Observable.just(nil)
             }
             .subscribe(with: self, onNext: { owner, data in
-                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
-                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
-                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
-                owner.getTermSetting(disposeBag: disposeBag)
+                if let data = data {
+                    UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                    UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                    owner.getTermSetting(disposeBag: disposeBag)
+                }
+                owner.updateRealtimePopularView.accept((owner.isLogined, data?.nickname))
             })
             .disposed(by: disposeBag)
         
@@ -232,6 +236,7 @@ extension HomeViewModel {
                       todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
+                      updateRealtimePopularView: updateRealtimePopularView.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight.asDriver(),
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
