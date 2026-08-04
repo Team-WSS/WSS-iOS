@@ -300,14 +300,14 @@ extension HomeViewModel {
         return userRepository.getUserMeData()
     }
 
-    // 오늘의 인기작 조회
+    // 오늘의 인기작 조회 (스플래시 단계에서 프리페치된 결과가 있으면 그것을 우선 사용)
     func getTodayPopularNovels() -> Observable<TodayDiscoveryNovels> {
-        return recommendRepository.getTodayPopularNovels()
+        return HomePrefetchService.shared.consumeTodayPopular() ?? recommendRepository.getTodayPopularNovels()
     }
 
-    // 지금 뜨는 수다글 조회
+    // 지금 뜨는 수다글 조회 (스플래시 단계에서 프리페치된 결과가 있으면 그것을 우선 사용)
     func getRealtimePopularFeeds() -> Observable<RealtimePopularFeeds> {
-        return recommendRepository.getRealtimePopularFeeds()
+        return HomePrefetchService.shared.consumeRealtimeFeeds() ?? recommendRepository.getRealtimePopularFeeds()
     }
 
     // 관심글 조회 - Deprecated
