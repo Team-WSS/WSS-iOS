@@ -31,7 +31,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let spashViewController = SplashViewController()
         window.rootViewController = spashViewController
         window.makeKeyAndVisible()
-        
+
+        // 스플래시가 떠 있는 동안 홈 상단 콘텐츠(오늘의 인기작/지금 뜨는 수다글)를 미리 요청해
+        // 홈 진입 시 로딩 스피너가 보이는 시간을 줄인다.
+        HomePrefetchService.shared.prefetchTopSections()
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.checkIsRegistered()
             

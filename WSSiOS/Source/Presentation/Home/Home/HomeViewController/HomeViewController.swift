@@ -178,6 +178,13 @@ final class HomeViewController: UIViewController {
                 owner.rootView.tasteRecommendView.updateView(isLogined, isEmpty)
             })
             .disposed(by: disposeBag)
+
+        output.showTasteRecommendLoading
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isLoading in
+                owner.rootView.tasteRecommendView.setLoading(isLoading)
+            })
+            .disposed(by: disposeBag)
         
         output.pushToAnnouncementViewController
             .bind(with: self, onNext: { owner, _ in

@@ -21,6 +21,7 @@ final class HomeTasteRecommendView: UIView {
                                                         collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
     let unregisterView = HomeUnregisterView(.tasteRecommend)
+    private let skeletonView = HomeTasteRecommendSkeletonView()
     
     //MARK: - Life Cycle
     
@@ -70,14 +71,19 @@ final class HomeTasteRecommendView: UIView {
         unregisterView.do {
             $0.isHidden = true
         }
+
+        skeletonView.do {
+            $0.isHidden = true
+        }
     }
-    
+
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(titleLabel,
                                       subTitleLabel,
                                       tasteRecommendCollectionView,
-                                      unregisterView)
+                                      unregisterView,
+                                      skeletonView)
     }
     
     private func setLayout() {
@@ -94,11 +100,36 @@ final class HomeTasteRecommendView: UIView {
         unregisterView.snp.makeConstraints {
             $0.height.equalTo(133)
         }
+
+        skeletonView.snp.makeConstraints {
+            $0.height.equalTo(580)
+        }
     }
-    
+
     //MARK: - Custom Method
-    
+
+    func setLoading(_ isLoading: Bool) {
+        skeletonView.isHidden = !isLoading
+        isLoading ? skeletonView.startShimmering() : skeletonView.stopShimmering()
+
+        if isLoading {
+            subTitleLabel.isHidden = false
+            tasteRecommendCollectionView.isHidden = true
+            unregisterView.isHidden = true
+            stackView.do {
+                $0.setCustomSpacing(2, after: titleLabel)
+                $0.setCustomSpacing(20, after: subTitleLabel)
+                $0.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(40)
+                }
+            }
+        }
+    }
+
     func updateView(_ isLogined: Bool, _ isEmpty: Bool) {
+        skeletonView.isHidden = true
+        skeletonView.stopShimmering()
+
         if isLogined {
             if isEmpty {
                 unregisterView.isHidden = false

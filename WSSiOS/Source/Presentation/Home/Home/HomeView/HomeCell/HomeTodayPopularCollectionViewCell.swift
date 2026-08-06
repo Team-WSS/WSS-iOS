@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import UIImageViewAlignedSwift
 import RxSwift
 
@@ -16,6 +17,9 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     
     private let blurRadius: CGFloat = 8
     private var disposeBag = DisposeBag()
+
+    // 플레이스홀더 블러 이미지는 항상 동일한 결과이므로 앱 생애주기 동안 한 번만 계산
+    private static let blurredPlaceholderImage: UIImage = .imgLoadingThumbnail.asBlurredBannerImage(radius: 8)
     
     //MARK: - Components
   
@@ -78,7 +82,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = true
 
         backgroundNovelImageView.do {
-            $0.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: blurRadius)
+            $0.image = Self.blurredPlaceholderImage
             $0.contentMode = .scaleAspectFill
             $0.alignment = .top
             $0.clipsToBounds = true
@@ -299,22 +303,29 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             chip.setText(keyword)
             keywordStackView.addArrangedSubview(chip)
         }
-        self.novelImageView.kfSetImage(url: data.novelImage)
-       
+        // 썸네일과 배경 블러가 동일한 이미지를 쓰므로, 네트워크 요청을 한 번만 보내고
+        // 완료 콜백에서 받은 이미지로 블러 배경까지 함께 채운다 (중복 요청 제거)
+        if let imageURL = URL(string: data.novelImage) {
+            self.novelImageView.kf.indicatorType = .activity
+            self.novelImageView.kf.setImage(
+                with: imageURL,
+                placeholder: nil,
+                options: [.transition(.fade(1.0))]
+            ) { [weak self] result in
+                guard let self, case .success(let imageResult) = result else { return }
+                imageResult.image.asBlurredBannerImage(radius: self.blurRadius) { [weak self] blurred in
+                    self?.backgroundNovelImageView.image = blurred
+                }
+            }
+        }
+
         self.novelGenreImageView.image = NovelGenre.allCases
             .first(where: { $0.rawValue == data.genreName })?.image
-        
+
         self.commentContentLabel.do {
             $0.lineBreakStrategy = .hangulWordPriority
             $0.lineBreakMode = .byTruncatingTail
         }
-        
-        KingFisherRxHelper.kingFisherImage(urlString: data.novelImage)
-            .observe(on: MainScheduler.instance)
-            .bind(with: self) { owner, image in
-                owner.backgroundNovelImageView.image = image.asBlurredBannerImage(radius: owner.blurRadius)
-            }
-            .disposed(by: disposeBag)
         
         // 대응하는 피드가 존재할 경우
         if let feedContent = data.feedContent,
