@@ -27,12 +27,25 @@ extension UIButton {
 }
 
 final class DifferentRadiusButton: UIButton {
-    var topLeftRadius: CGFloat = 0.0
-    var topRightRadius: CGFloat = 0.0
-    var bottomLeftRadius: CGFloat = 0.0
-    var bottomRightRadius: CGFloat = 0.0
+    var topLeftRadius: CGFloat = 0.0 {
+        didSet { setNeedsLayout() }
+    }
+    var topRightRadius: CGFloat = 0.0 {
+        didSet { setNeedsLayout() }
+    }
+    var bottomLeftRadius: CGFloat = 0.0 {
+        didSet { setNeedsLayout() }
+    }
+    var bottomRightRadius: CGFloat = 0.0 {
+        didSet { setNeedsLayout() }
+    }
 
-    override func draw(_ rect: CGRect) {
+    private let maskLayer = CAShapeLayer()
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let rect = bounds
         let path = UIBezierPath()
 
         path.move(to: CGPoint(x: rect.minX + topLeftRadius, y: rect.minY))
@@ -66,7 +79,6 @@ final class DifferentRadiusButton: UIButton {
 
         path.close()
 
-        let maskLayer = CAShapeLayer()
         maskLayer.path = path.cgPath
         layer.mask = maskLayer
     }
