@@ -35,23 +35,34 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          RESPONSE=$(gh api "repos/${{ github.repository }}/releases/generate-notes" \
-            -f tag_name="${{ steps.version.outputs.tag }}" \
-            -f target_commitish="release")
+          TAG="${{ steps.version.outputs.tag }}"
+
+          # generate-notes API는 tag_name이 이미 존재하는 태그면 target_commitish를 무시하고
+          # 그 태그가 가리키는(과거) 커밋 기준으로만 노트를 만든다. 버전을 올리지 않은 채
+          # release에 커밋이 더 쌓인 경우에도 최신 커밋까지 반영되도록, 존재하지 않는 임시
+          # 태그 이름으로 요청하고 이전 버전 태그를 previous_tag_name으로 직접 지정한다.
+          PREV_TAG=$(gh release list --limit 20 --json tagName,createdAt \
+            --jq "[.[] | select(.tagName != \"$TAG\")] | sort_by(.createdAt) | last | .tagName // empty")
+
+          ARGS=(-f tag_name="${TAG}-preview" -f target_commitish="release")
+          if [ -n "$PREV_TAG" ]; then
+            echo "이전 버전 태그: $PREV_TAG"
+            ARGS+=(-f previous_tag_name="$PREV_TAG")
+          fi
+
+          RESPONSE=$(gh api "repos/${{ github.repository }}/releases/generate-notes" "${ARGS[@]}")
           echo "$RESPONSE" | jq -r .body > /tmp/release-notes.md
-          echo "name=$(echo "$RESPONSE" | jq -r .name)" >> "$GITHUB_OUTPUT"
 
       - name: Create or update GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="${{ steps.version.outputs.tag }}"
-          TITLE="${{ steps.notes.outputs.name }}"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "기존 릴리즈($TAG)의 노트를 업데이트합니다."
-            gh release edit "$TAG" --title "$TITLE" --notes-file /tmp/release-notes.md
+            gh release edit "$TAG" --title "$TAG" --notes-file /tmp/release-notes.md
           else
             echo "새 릴리즈($TAG)를 생성합니다."
-            gh release create "$TAG" --target release --title "$TITLE" --notes-file /tmp/release-notes.md
+            gh release create "$TAG" --target release --title "$TAG" --notes-file /tmp/release-notes.md
           fi
